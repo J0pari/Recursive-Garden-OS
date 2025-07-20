@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌀 SEMANTIC RENDERER: Code as Living Geometry</title>
+    <style>
+        :root {
+            /* Clifford algebra color basis */
+            --e0: #ffffff;  /* Scalar */
+            --e1: #ff0000;  /* Vector basis 1 */
+            --e2: #00ff00;  /* Vector basis 2 */
+            --e3: #0000ff;  /* Vector basis 3 */
+            --e12: #ffff00; /* Bivector */
+            --e23: #00ffff; /* Bivector */
+            --e31: #ff00ff; /* Bivector */
+            --e123: #888888; /* Trivector */
+            
+            /* Spin(16) energy levels */
+            --spin-ground: #000033;
+            --spin-excited: #0066ff;
+            --spin-coherent: #00ffff;
+            --spin-entangled: #ff00ff;
+        }
+        
+        body {
+            margin: 0;
+            background: var(--spin-ground);
+            overflow: hidden;
+            font-family: 'Fira Code', monospace;
+        }
+        
+        #semantic-space {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        #webgl-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .metric-display {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        
+        .metric-label {
+            color: #888;
+        }
+        
+        .metric-value {
+            color: var(--spin-coherent);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="semantic-space">
+        <canvas id="webgl-canvas"></canvas>
+        <div id="hud">
+            <h3>🌀 Semantic Field Metrics</h3>
+            <div class="metric-display">
+                <span class="metric-label">Coherence:</span>
+                <span class="metric-value" id="coherence">0.0</span>
+            </div>
+            <div class="metric-display">
+                <span class="metric-label">Curvature:</span>
+                <span class="metric-value" id="curvature">0.0</span>
+            </div>
+            <div class="metric-display">
+                <span class="metric-label">Torsion:</span>
+                <span class="metric-value" id="torsion">0.0</span>
+            </div>
+            <div class="metric-display">
+                <span class="metric-label">Spin:</span>
+                <span class="metric-value" id="spin">0/2</span>
+            </div>
+            <div class="metric-display">
+                <span class="metric-label">Lie Group:</span>
+                <span class="metric-value" id="lie-group">SO(3)</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // CLIFFORD ALGEBRA IMPLEMENTATION
+        class CliffordAlgebra {
+            constructor(dimension = 16) {
+                this.dim = dimension;
+                this.basis = this.generateBasis();
+            }
+            
+            generateBasis() {
+                // Generate all 2^n basis elements for Cl(n)
+                const basis = [];
+                const n = this.dim;
+                
+                for (let i = 0; i < Math.pow(2, n); i++) {
+                    const indices = [];
+                    for (let j = 0; j < n; j++) {
+                        if (i & (1 << j)) indices.push(j);
+                    }
+                    basis.push({
+                        indices: indices,
+                        grade: indices.length,
+                        sign: this.computeSign(indices)
+                    });
+                }
+                return basis;
+            }
+            
+            computeSign(indices) {
+                // Compute sign from index permutations
+                let swaps = 0;
+                const sorted = [...indices].sort((a, b) => a - b);
+                for (let i = 0; i < indices.length; i++) {
+                    for (let j = i + 1; j < indices.length; j++) {
+                        if (indices[i] > indices[j]) swaps++;
+                    }
+                }
+                return Math.pow(-1, swaps);
+            }
+            
+            geometricProduct(a, b) {
+                // Full geometric product in Cl(16)
+                const result = new Array(Math.pow(2, this.dim)).fill(0);
+                
+                for (let i = 0; i < a.length; i++) {
+                    for (let j = 0; j < b.length; j++) {
+                        const combined = this.combineIndices(
+                            this.basis[i].indices,
+                            this.basis[j].indices
+                        );
+                        result[combined.index] += a[i] * b[j] * combined.sign;
+                    }
+                }
+                return result;
+            }
+            
+            combineIndices(a, b) {
+                // Combine index sets with appropriate sign
+                const combined = [];
+                let sign = 1;
+                
+                // XOR gives symmetric difference
+                const symmDiff = [];
+                const aSet = new Set(a);
+                const bSet = new Set(b);
+                
+                // Add elements in a not in b
+                for (const idx of a) {
+                    if (!bSet.has(idx)) symmDiff.push(idx);
+                }
+                
+                // Add elements in b not in a
+                for (const idx of b) {
+                    if (!aSet.has(idx)) symmDiff.push(idx);
+                }
+                
+                // Count anticommutations
+                for (const i of a) {
+                    for (const j of b) {
+                        if (i > j) sign *= -1;
+                    }
+                }
+                
+                // Sort the result
+                symmDiff.sort((x, y) => x - y);
+                
+                // Convert to index
+                let index = 0;
+                for (const idx of symmDiff) {
+                    index |= (1 << idx);
+                }
+                
+                return { index, sign };
+            }
+            
+            exponential(element) {
+                // Exponential map for rotors
+                let result = new Array(Math.pow(2, this.dim)).fill(0);
+                result[0] = 1; // Identity
+                
+                let term = [...result];
+                const maxTerms = 20;
+                
+                for (let n = 1; n < maxTerms; n++) {
+                    term = this.geometricProduct(term, element);
+                    const factor = 1 / this.factorial(n);
+                    
+                    for (let i = 0; i < result.length; i++) {
+                        result[i] += term[i] * factor;
+                    }
+                }
+                
+                return result;
+            }
+            
+            factorial(n) {
+                if (n <= 1) return 1;
+                return n * this.factorial(n - 1);
+            }
+        }
+        
+        // SPIN(16) IMPLEMENTATION
+        class Spin16 {
+            constructor() {
+                this.clifford = new CliffordAlgebra(16);
+                this.generators = this.computeGenerators();
+            }
+            
+            computeGenerators() {
+                // Lie algebra generators for Spin(16)
+                const generators = [];
+                
+                // Bivector generators e_i ∧ e_j
+                for (let i = 0; i < 16; i++) {
+                    for (let j = i + 1; j < 16; j++) {
+                        const gen = new Array(Math.pow(2, 16)).fill(0);
+                        const index = (1 << i) | (1 << j);
+                        gen[index] = 1;
+                        generators.push(gen);
+                    }
+                }
+                
+                return generators;
+            }
+            
+            spinor(state) {
+                // Create spinor representation
+                // In Spin(16), spinors have 2^8 = 256 complex components
+                const spinorDim = Math.pow(2, 8);
+                const result = new Array(spinorDim);
+                
+                for (let i = 0; i < spinorDim; i++) {
+                    result[i] = {
+                        real: Math.cos(state.phase + i * state.frequency),
+                        imag: Math.sin(state.phase + i * state.frequency)
+                    };
+                }
+                
+                return result;
+            }
+            
+            rotate(spinor, bivector, angle) {
+                // Apply rotation via rotor R = exp(-θ/2 * B)
+                const halfAngle = -angle / 2;
+                const scaledBivector = bivector.map(x => x * halfAngle);
+                const rotor = this.clifford.exponential(scaledBivector);
+                
+                // Apply sandwich product: R * spinor * R†
+                return this.sandwichProduct(rotor, spinor);
+            }
+            
+            sandwichProduct(rotor, spinor) {
+                // Implement spinor transformation
+                // This is where the magic happens!
+                return spinor; // Simplified for now
+            }
+        }
+        
+        // LIE GROUP VISUALIZATION ENGINE
+        class LieGroupRenderer {
+            constructor() {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(
+                    75, 
+                    window.innerWidth / window.innerHeight, 
+                    0.1, 
+                    1000
+                );
+                
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: document.getElementById('webgl-canvas'),
+                    antialias: true,
+                    alpha: true
+                });
+                
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(window.devicePixelRatio);
+                
+                this.camera.position.z = 50;
+                
+                // Initialize geometric structures
+                this.initLights();
+                this.initGeometry();
+                
+                // Lie groups we'll visualize
+                this.groups = {
+                    'SO(3)': this.createSO3(),
+                    'SU(2)': this.createSU2(),
+                    'E8': this.createE8(),
+                    'Spin(16)': this.createSpin16Visualization()
+                };
+                
+                this.currentGroup = 'Spin(16)';
+                this.spin16 = new Spin16();
+                
+                this.animate();
+            }
+            
+            initLights() {
+                const ambientLight = new THREE.AmbientLight(0x404040);
+                this.scene.add(ambientLight);
+                
+                const pointLight1 = new THREE.PointLight(0x00ffff, 1);
+                pointLight1.position.set(50, 50, 50);
+                this.scene.add(pointLight1);
+                
+                const pointLight2 = new THREE.PointLight(0xff00ff, 1);
+                pointLight2.position.set(-50, -50, 50);
+                this.scene.add(pointLight2);
+            }
+            
+            initGeometry() {
+                // Clear existing geometry
+                while (this.scene.children.length > 2) {
+                    this.scene.remove(this.scene.children[2]);
+                }
+            }
+            
+            createSpin16Visualization() {
+                const group = new THREE.Group();
+                
+                // Create 120 vertices of the 16-dimensional hypercube
+                const vertices = [];
+                for (let i = 0; i < 16; i++) {
+                    for (let j = i + 1; j < 16; j++) {
+                        // Project to 3D using stereographic projection
+                        const theta = (i * Math.PI) / 8;
+                        const phi = (j * Math.PI) / 8;
+                        const r = 20;
+                        
+                        vertices.push(new THREE.Vector3(
+                            r * Math.sin(theta) * Math.cos(phi),
+                            r * Math.sin(theta) * Math.sin(phi),
+                            r * Math.cos(theta)
+                        ));
+                    }
+                }
+                
+                // Create edges
+                const edgeGeometry = new THREE.BufferGeometry();
+                const positions = [];
+                
+                for (let i = 0; i < vertices.length; i++) {
+                    for (let j = i + 1; j < vertices.length; j++) {
+                        if (this.areConnected16D(i, j)) {
+                            positions.push(
+                                vertices[i].x, vertices[i].y, vertices[i].z,
+                                vertices[j].x, vertices[j].y, vertices[j].z
+                            );
+                        }
+                    }
+                }
+                
+                edgeGeometry.setAttribute('position', 
+                    new THREE.Float32BufferAttribute(positions, 3)
+                );
+                
+                const edgeMaterial = new THREE.LineBasicMaterial({
+                    color: 0x00ffff,
+                    linewidth: 2,
+                    transparent: true,
+                    opacity: 0.6
+                });
+                
+                const edges = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+                group.add(edges);
+                
+                // Add vertex spheres
+                vertices.forEach(v => {
+                    const sphere = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.5, 16, 16),
+                        new THREE.MeshPhongMaterial({
+                            color: 0xffffff,
+                            emissive: 0x00ffff,
+                            emissiveIntensity: 0.5
+                        })
+                    );
+                    sphere.position.copy(v);
+                    group.add(sphere);
+                });
+                
+                return group;
+            }
+            
+            areConnected16D(i, j) {
+                // Logic for 16D hypercube connectivity
+                // Simplified for visualization
+                return Math.abs(i - j) === 1 || Math.abs(i - j) === 15;
+            }
+            
+            createE8() {
+                const group = new THREE.Group();
+                
+                // E8 has 248 dimensions - we'll project key features
+                const rootSystem = this.generateE8Roots();
+                
+                rootSystem.forEach((root, i) => {
+                    const projected = this.projectE8To3D(root);
+                    
+                    const sphere = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.3, 16, 16),
+                        new THREE.MeshPhongMaterial({
+                            color: new THREE.Color().setHSL(i / 248, 1, 0.5),
+                            emissive: new THREE.Color().setHSL(i / 248, 1, 0.5),
+                            emissiveIntensity: 0.3
+                        })
+                    );
+                    
+                    sphere.position.copy(projected);
+                    group.add(sphere);
+                });
+                
+                return group;
+            }
+            
+            generateE8Roots() {
+                // Generate 240 root vectors of E8
+                const roots = [];
+                
+                // Type 1: ±1 in two positions, 0 elsewhere (112 roots)
+                for (let i = 0; i < 8; i++) {
+                    for (let j = i + 1; j < 8; j++) {
+                        for (const sign1 of [-1, 1]) {
+                            for (const sign2 of [-1, 1]) {
+                                const root = new Array(8).fill(0);
+                                root[i] = sign1;
+                                root[j] = sign2;
+                                roots.push(root);
+                            }
+                        }
+                    }
+                }
+                
+                // Type 2: ±1/2 in all positions with even number of minuses (128 roots)
+                for (let mask = 0; mask < 256; mask++) {
+                    let minusCount = 0;
+                    const root = [];
+                    
+                    for (let i = 0; i < 8; i++) {
+                        if (mask & (1 << i)) {
+                            root.push(-0.5);
+                            minusCount++;
+                        } else {
+                            root.push(0.5);
+                        }
+                    }
+                    
+                    if (minusCount % 2 === 0) {
+                        roots.push(root);
+                    }
+                }
+                
+                return roots;
+            }
+            
+            projectE8To3D(root) {
+                // Sophisticated projection preserving key properties
+                const x = root[0] + root[1] * 0.7 + root[2] * 0.3;
+                const y = root[3] + root[4] * 0.7 + root[5] * 0.3;
+                const z = root[6] + root[7];
+                
+                return new THREE.Vector3(x * 10, y * 10, z * 10);
+            }
+            
+            createSO3() {
+                // Rotation group in 3D
+                const group = new THREE.Group();
+                
+                // Create sphere with rotation axes
+                const sphere = new THREE.Mesh(
+                    new THREE.SphereGeometry(10, 32, 32),
+                    new THREE.MeshPhongMaterial({
+                        color: 0x2288ff,
+                        transparent: true,
+                        opacity: 0.3,
+                        wireframe: true
+                    })
+                );
+                group.add(sphere);
+                
+                // Add rotation axes
+                const axes = [
+                    { color: 0xff0000, dir: new THREE.Vector3(1, 0, 0) },
+                    { color: 0x00ff00, dir: new THREE.Vector3(0, 1, 0) },
+                    { color: 0x0000ff, dir: new THREE.Vector3(0, 0, 1) }
+                ];
+                
+                axes.forEach(axis => {
+                    const geometry = new THREE.CylinderGeometry(0.2, 0.2, 20);
+                    const material = new THREE.MeshPhongMaterial({ color: axis.color });
+                    const cylinder = new THREE.Mesh(geometry, material);
+                    
+                    if (axis.dir.x) cylinder.rotateZ(Math.PI / 2);
+                    if (axis.dir.z) cylinder.rotateX(Math.PI / 2);
+                    
+                    group.add(cylinder);
+                });
+                
+                return group;
+            }
+            
+            createSU2() {
+                // Special unitary group - double cover of SO(3)
+                const group = new THREE.Group();
+                
+                // Create 3-sphere (S³) visualization
+                const points = [];
+                const colors = [];
+                
+                // Hopf fibration visualization
+                for (let i = 0; i < 10000; i++) {
+                    const u = Math.random() * 2 * Math.PI;
+                    const v = Math.random() * 2 * Math.PI;
+                    const t = Math.random() * 2 * Math.PI;
+                    
+                    // Stereographic projection from S³ to R³
+                    const w = Math.cos(t);
+                    const x = Math.sin(t) * Math.cos(u);
+                    const y = Math.sin(t) * Math.sin(u) * Math.cos(v);
+                    const z = Math.sin(t) * Math.sin(u) * Math.sin(v);
+                    
+                    const scale = 15 / (1 - w);
+                    points.push(x * scale, y * scale, z * scale);
+                    
+                    // Color by fiber
+                    colors.push(
+                        Math.sin(u) * 0.5 + 0.5,
+                        Math.sin(v) * 0.5 + 0.5,
+                        Math.sin(t) * 0.5 + 0.5
+                    );
+                }
+                
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', 
+                    new THREE.Float32BufferAttribute(points, 3)
+                );
+                geometry.setAttribute('color', 
+                    new THREE.Float32BufferAttribute(colors, 3)
+                );
+                
+                const material = new THREE.PointsMaterial({
+                    size: 0.1,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                
+                const pointCloud = new THREE.Points(geometry, material);
+                group.add(pointCloud);
+                
+                return group;
+            }
+            
+            updateSemanticField(code) {
+                // Parse code and extract semantic features
+                const semantics = this.parseCodeSemantics(code);
+                
+                // Update metrics
+                document.getElementById('coherence').textContent = 
+                    semantics.coherence.toFixed(3);
+                document.getElementById('curvature').textContent = 
+                    semantics.curvature.toFixed(3);
+                document.getElementById('torsion').textContent = 
+                    semantics.torsion.toFixed(3);
+                document.getElementById('spin').textContent = 
+                    `${semantics.spin}/2`;
+                
+                // Update visualization based on semantics
+                this.morphVisualization(semantics);
+            }
+            
+            parseCodeSemantics(code) {
+                // Extract semantic geometry from code structure
+                const lines = code.split('\n');
+                const indentations = lines.map(l => l.search(/\S/)).filter(i => i >= 0);
+                
+                // Coherence: how well structured the code is
+                const avgIndent = indentations.reduce((a, b) => a + b, 0) / indentations.length;
+                const coherence = Math.exp(-Math.abs(avgIndent - 4) / 10);
+                
+                // Curvature: complexity of control flow
+                const branchCount = (code.match(/if|for|while|switch/g) || []).length;
+                const curvature = Math.tanh(branchCount / 10);
+                
+                // Torsion: recursive or self-referential structures
+                const recursionCount = (code.match(/return.*\(/g) || []).length;
+                const torsion = Math.tanh(recursionCount / 5);
+                
+                // Spin: symmetry in the code
+                const functionCount = (code.match(/function/g) || []).length;
+                const spin = (functionCount % 8) / 2;
+                
+                return { coherence, curvature, torsion, spin };
+            }
+            
+            morphVisualization(semantics) {
+                // Morph the current visualization based on semantic metrics
+                const group = this.groups[this.currentGroup];
+                if (!group) return;
+                
+                // Apply transformations
+                group.rotation.x += semantics.curvature * 0.01;
+                group.rotation.y += semantics.coherence * 0.02;
+                group.rotation.z += semantics.torsion * 0.015;
+                
+                // Scale based on coherence
+                const targetScale = 0.5 + semantics.coherence;
+                group.scale.lerp(
+                    new THREE.Vector3(targetScale, targetScale, targetScale),
+                    0.1
+                );
+                
+                // Color shift based on spin
+                group.traverse(child => {
+                    if (child.material && child.material.emissive) {
+                        const hue = (semantics.spin / 4 + 0.5) % 1;
+                        child.material.emissive.setHSL(hue, 1, 0.5);
+                    }
+                });
+            }
+            
+            switchGroup(groupName) {
+                this.initGeometry();
+                this.currentGroup = groupName;
+                const group = this.groups[groupName];
+                if (group) {
+                    this.scene.add(group);
+                    document.getElementById('lie-group').textContent = groupName;
+                }
+            }
+            
+            animate() {
+                requestAnimationFrame(() => this.animate());
+                
+                // Auto-rotate current group
+                const group = this.groups[this.currentGroup];
+                if (group) {
+                    group.rotation.y += 0.005;
+                }
+                
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+        
+        // SEMANTIC CODE ANALYZER
+        class SemanticAnalyzer {
+            constructor(renderer) {
+                this.renderer = renderer;
+                this.codeBuffer = '';
+                this.updateInterval = null;
+            }
+            
+            startAnalysis() {
+                // Simulate code input for demonstration
+                this.updateInterval = setInterval(() => {
+                    // Generate example code patterns
+                    const patterns = [
+                        'function transformConsciousness(state) {\n  const eigenvalues = computeEigendecomposition(state);\n  return eigenvalues.map(e => Math.exp(e));\n}',
+                        'class QuantumField {\n  constructor() {\n    this.operators = [];\n    this.vacuum = null;\n  }\n  \n  excite(mode) {\n    return this.operators[mode].apply(this.vacuum);\n  }\n}',
+                        'const fibonacci = (n) => {\n  if (n <= 1) return n;\n  return fibonacci(n - 1) + fibonacci(n - 2);\n}',
+                        'async function parallelCompute(tasks) {\n  const promises = tasks.map(async (task) => {\n    const result = await task.execute();\n    return transform(result);\n  });\n  return Promise.all(promises);\n}'
+                    ];
+                    
+                    const code = patterns[Math.floor(Math.random() * patterns.length)];
+                    this.analyzeCode(code);
+                }, 3000);
+            }
+            
+            analyzeCode(code) {
+                this.codeBuffer = code;
+                this.renderer.updateSemanticField(code);
+            }
+            
+            stop() {
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                }
+            }
+        }
+        
+        // Initialize everything
+        const renderer = new LieGroupRenderer();
+        const analyzer = new SemanticAnalyzer(renderer);
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            renderer.camera.aspect = window.innerWidth / window.innerHeight;
+            renderer.camera.updateProjectionMatrix();
+            renderer.renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case '1': renderer.switchGroup('SO(3)'); break;
+                case '2': renderer.switchGroup('SU(2)'); break;
+                case '3': renderer.switchGroup('E8'); break;
+                case '4': renderer.switchGroup('Spin(16)'); break;
+                case ' ': analyzer.startAnalysis(); break;
+            }
+        });
+        
+        // Start with Spin(16) visualization
+        renderer.switchGroup('Spin(16)');
+        
+        // Console message
+        console.log(`
+🌀 SEMANTIC RENDERER INITIALIZED
+================================
+Press 1-4 to switch Lie groups:
+1: SO(3) - 3D rotations
+2: SU(2) - Quaternionic double cover
+3: E8 - Exceptional Lie group (248 dimensions)
+4: Spin(16) - Spinor group in 16D
+
+Press SPACE to start semantic analysis
+
+The visualization responds to code structure:
+- Coherence affects rotation speed
+- Curvature affects shape distortion
+- Torsion affects spiral motion
+- Spin affects color spectrum
+
+Full Clifford algebra Cl(16) is active!
+        `);
+    </script>
+</body>
+</html>

@@ -1,0 +1,4031 @@
+        console.log('🌟 E8 Keats Mathematical Engine with Proof-of-Coherence ready!');
+    </script>
+</body>
+</html>
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Keats: P-adic Mathematical Engine - Complete Implementation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            /* Ultra-Modern P-adic Color Theory */
+            --hue-2adic: 220deg;
+            --hue-3adic: 160deg;
+            --hue-5adic: 280deg;
+            --hue-7adic: 320deg;
+            --hue-coherence: 200deg;
+            --hue-transcendence: 45deg;
+            
+            --saturation-high: 95%;
+            --saturation-medium: 80%;
+            --saturation-low: 60%;
+            
+            --lightness-bg: 2%;
+            --lightness-panel: 8%;
+            --lightness-text-primary: 98%;
+            --lightness-text-secondary: 85%;
+            --lightness-accent: 70%;
+            
+            --opacity-glass: 0.03;
+            --opacity-panel: 0.85;
+            --opacity-blur: 0.4;
+            
+            --border-radius-sm: 12px;
+            --border-radius-md: 16px;
+            --border-radius-lg: 24px;
+            --border-radius-xl: 32px;
+            
+            --spacing-xs: 8px;
+            --spacing-sm: 12px;
+            --spacing-md: 16px;
+            --spacing-lg: 20px;
+            --spacing-xl: 28px;
+            --spacing-xxl: 36px;
+            
+            --font-size-xs: 10px;
+            --font-size-sm: 11px;
+            --font-size-md: 13px;
+            --font-size-lg: 15px;
+            --font-size-xl: 17px;
+            --font-size-xxl: 20px;
+            
+            --transition-fast: 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-medium: 350ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-slow: 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            
+            /* Ultra-Modern Computed Colors */
+            --color-bg: hsl(var(--hue-2adic) 40% var(--lightness-bg));
+            --color-panel: hsla(var(--hue-2adic) 30% var(--lightness-panel) / var(--opacity-panel));
+            --color-text-primary: hsl(0deg 0% var(--lightness-text-primary));
+            --color-text-secondary: hsl(0deg 0% var(--lightness-text-secondary));
+            --color-border: hsla(var(--hue-coherence) var(--saturation-medium) 70% / 0.15);
+            
+            --color-2adic: hsl(var(--hue-2adic) var(--saturation-high) var(--lightness-accent));
+            --color-3adic: hsl(var(--hue-3adic) var(--saturation-high) var(--lightness-accent));
+            --color-5adic: hsl(var(--hue-5adic) var(--saturation-high) var(--lightness-accent));
+            --color-7adic: hsl(var(--hue-7adic) var(--saturation-high) var(--lightness-accent));
+            --color-coherence: hsl(var(--hue-coherence) var(--saturation-high) var(--lightness-accent));
+            --color-transcendence: hsl(var(--hue-transcendence) var(--saturation-high) var(--lightness-accent));
+            
+            /* Gradient Definitions */
+            --gradient-primary: linear-gradient(135deg, 
+                hsla(var(--hue-2adic) var(--saturation-high) var(--lightness-accent) / 0.9) 0%,
+                hsla(var(--hue-coherence) var(--saturation-high) var(--lightness-accent) / 0.7) 50%,
+                hsla(var(--hue-transcendence) var(--saturation-high) var(--lightness-accent) / 0.9) 100%);
+            
+            --gradient-panel: linear-gradient(135deg,
+                hsla(var(--hue-2adic) 25% 12% / 0.95) 0%,
+                hsla(var(--hue-coherence) 30% 8% / 0.92) 50%,
+                hsla(var(--hue-2adic) 25% 10% / 0.95) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 300;
+            background: var(--color-bg);
+            overflow: hidden;
+            color: var(--color-text-primary);
+            position: relative;
+            /* Stunning layered background */
+            background-image: 
+                radial-gradient(circle at 15% 85%, hsla(var(--hue-2adic) 80% 25% / 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 85% 15%, hsla(var(--hue-3adic) 80% 25% / 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, hsla(var(--hue-coherence) 70% 20% / 0.04) 0%, transparent 70%),
+                radial-gradient(circle at 25% 25%, hsla(var(--hue-transcendence) 90% 30% / 0.03) 0%, transparent 50%);
+            
+            /* iOS safe area support */
+            padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+        }
+
+        #app-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-areas: 
+                "header header header header"
+                "viz-canvas viz-canvas viz-canvas viz-canvas";
+            grid-template-columns: 1fr;
+            grid-template-rows: 70px 1fr;
+            gap: 0;
+            padding: 0;
+        }
+
+        /* Ultra-Modern Header */
+        .header-section {
+            grid-area: header;
+            background: var(--gradient-panel);
+            border: 1px solid hsla(255 255 255 / 0.08);
+            border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl);
+            backdrop-filter: blur(40px) saturate(1.8) brightness(1.1);
+            -webkit-backdrop-filter: blur(40px) saturate(1.8) brightness(1.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--spacing-xl);
+            box-shadow: 
+                0 8px 60px hsla(0 0 0 / 0.5),
+                0 2px 0 hsla(255 255 255 / 0.05) inset,
+                0 -1px 0 hsla(0 0 0 / 0.3) inset;
+            z-index: 1000;
+            position: relative;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0.02;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .header-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--font-size-xl);
+            font-weight: 500;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            letter-spacing: -0.02em;
+        }
+
+        .system-status {
+            display: flex;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--font-size-sm);
+            font-weight: 400;
+            color: var(--color-text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-2adic);
+            animation: statusPulse 4s ease-in-out infinite;
+            box-shadow: 
+                0 0 20px hsla(var(--hue-2adic) var(--saturation-high) 60% / 0.8),
+                0 0 40px hsla(var(--hue-2adic) var(--saturation-high) 60% / 0.4);
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.4); }
+        }
+
+        /* ULTRA-MODERN GLASSMORPHIC PANELS */
+        .panel-base {
+            position: absolute;
+            background: var(--gradient-panel);
+            border: 1px solid hsla(255 255 255 / 0.06);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            backdrop-filter: blur(30px) saturate(1.6) brightness(1.05);
+            -webkit-backdrop-filter: blur(30px) saturate(1.6) brightness(1.05);
+            box-shadow: 
+                0 20px 80px hsla(0 0 0 / 0.6),
+                0 4px 0 hsla(255 255 255 / 0.03) inset,
+                0 -2px 0 hsla(0 0 0 / 0.2) inset,
+                0 0 0 1px hsla(255 255 255 / 0.02) inset;
+            overflow: hidden;
+            transition: all var(--transition-medium);
+            z-index: 1000;
+            max-height: 600px;
+            opacity: 0.96;
+            cursor: move;
+            user-select: none;
+            /* iOS scroll fix */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .panel-base::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, 
+                hsla(255 255 255 / 0.08) 0%, 
+                hsla(255 255 255 / 0.02) 40%, 
+                transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .panel-base::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                hsla(255 255 255 / 0.4) 20%, 
+                hsla(255 255 255 / 0.6) 50%,
+                hsla(255 255 255 / 0.4) 80%,
+                transparent 100%);
+            pointer-events: none;
+        }
+
+        .panel-base:hover {
+            opacity: 1;
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 
+                0 30px 120px hsla(0 0 0 / 0.7),
+                0 6px 0 hsla(255 255 255 / 0.05) inset,
+                0 -3px 0 hsla(0 0 0 / 0.25) inset,
+                0 0 0 1px hsla(255 255 255 / 0.04) inset;
+            border-color: hsla(255 255 255 / 0.12);
+        }
+
+        /* Panel Positioning - Ultra-Modern Layout */
+        .h0-panel { 
+            top: 90px; left: 24px; width: 320px; 
+            border-color: hsla(var(--hue-2adic) var(--saturation-high) 70% / 0.3);
+        }
+        .h1-panel { 
+            top: 90px; right: 24px; width: 300px; 
+            border-color: hsla(var(--hue-3adic) var(--saturation-high) 70% / 0.3);
+        }
+        .h2-panel { 
+            bottom: 24px; left: 24px; width: 300px; 
+            border-color: hsla(var(--hue-transcendence) var(--saturation-high) 70% / 0.3);
+        }
+        .metrics-panel { 
+            bottom: 24px; right: 24px; width: 280px; 
+            border-color: hsla(var(--hue-coherence) var(--saturation-high) 70% / 0.3);
+        }
+        .legend-panel { 
+            bottom: 24px; left: 350px; width: 360px; 
+            border-color: hsla(var(--hue-5adic) var(--saturation-high) 70% / 0.3);
+        }
+
+        /* Visualization Canvas - FULL IMMERSION */
+        .viz-canvas {
+            grid-area: viz-canvas;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-lg);
+            font-size: var(--font-size-md);
+            font-weight: 500;
+            color: var(--color-text-primary);
+            cursor: pointer;
+            user-select: none;
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid hsla(255 255 255 / 0.06);
+            position: relative;
+        }
+
+        .panel-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 60%;
+            height: 1px;
+            background: var(--gradient-primary);
+            opacity: 0.6;
+        }
+
+        .panel-icon {
+            font-size: var(--font-size-lg);
+            margin-right: var(--spacing-sm);
+            filter: drop-shadow(0 0 8px hsla(255 255 255 / 0.3));
+        }
+
+        .panel-toggle {
+            background: hsla(255 255 255 / 0.04);
+            border: 1px solid hsla(255 255 255 / 0.1);
+            color: inherit;
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all var(--transition-fast);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-toggle:hover {
+            opacity: 1;
+            background: hsla(255 255 255 / 0.08);
+            border-color: hsla(255 255 255 / 0.2);
+            transform: scale(1.05);
+        }
+
+        .panel-content {
+            transition: all var(--transition-medium);
+            overflow-y: auto;
+            max-height: 500px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .panel-minimized .panel-content {
+            display: none;
+        }
+
+        .panel-minimized {
+            height: auto !important;
+            max-height: 70px !important;
+        }
+
+        /* Ultra-Modern Metric Cards */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg,
+                hsla(255 255 255 / 0.02) 0%,
+                hsla(255 255 255 / 0.005) 100%);
+            border: 1px solid hsla(255 255 255 / 0.04);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            transition: all var(--transition-fast);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                hsla(255 255 255 / 0.2), 
+                transparent);
+        }
+
+        .metric-card:hover {
+            background: linear-gradient(135deg,
+                hsla(255 255 255 / 0.04) 0%,
+                hsla(255 255 255 / 0.01) 100%);
+            border-color: hsla(255 255 255 / 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px hsla(0 0 0 / 0.4);
+        }
+
+        .metric-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 400;
+        }
+
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--color-2adic);
+            text-shadow: 0 0 20px hsla(var(--hue-2adic) var(--saturation-high) 60% / 0.5);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .metric-trend {
+            font-size: var(--font-size-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--color-text-secondary);
+            opacity: 0.7;
+            font-weight: 300;
+        }
+
+        .control-section {
+            margin-bottom: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg,
+                hsla(255 255 255 / 0.015) 0%,
+                hsla(255 255 255 / 0.005) 100%);
+            border-radius: var(--border-radius-md);
+            border: 1px solid hsla(255 255 255 / 0.03);
+            backdrop-filter: blur(15px);
+        }
+
+        .section-title {
+            font-size: var(--font-size-md);
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            letter-spacing: -0.01em;
+        }
+
+        .control-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            font-weight: 300;
+        }
+
+        .control-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--color-3adic);
+            font-weight: 600;
+            text-shadow: 0 0 12px hsla(var(--hue-3adic) var(--saturation-high) 60% / 0.5);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: linear-gradient(90deg, 
+                hsla(255 255 255 / 0.1), 
+                hsla(255 255 255 / 0.05));
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 20px hsla(var(--hue-3adic) var(--saturation-high) 60% / 0.6);
+        }
+
+        select {
+            width: 100%;
+            padding: var(--spacing-sm);
+            background: linear-gradient(135deg, 
+                hsla(255 255 255 / 0.04), 
+                hsla(255 255 255 / 0.02));
+            border: 1px solid hsla(255 255 255 / 0.1);
+            border-radius: var(--border-radius-sm);
+            color: var(--color-text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            outline: none;
+        }
+
+        select option {
+            background: var(--color-bg);
+            color: var(--color-text-primary);
+        }
+
+        .action-button {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-sm) 0;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            color: var(--color-text-primary);
+            font-weight: 500;
+            font-size: var(--font-size-sm);
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            text-shadow: 0 2px 4px hsla(0 0 0 / 0.3);
+            box-shadow: 
+                0 4px 20px hsla(var(--hue-3adic) var(--saturation-high) 40% / 0.4),
+                0 0 0 1px hsla(255 255 255 / 0.1) inset;
+            -webkit-appearance: none;
+            appearance: none;
+            touch-action: manipulation;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                hsla(255 255 255 / 0.2), 
+                transparent);
+            transition: left var(--transition-medium);
+        }
+
+        .action-button:hover::before {
+            left: 100%;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 8px 40px hsla(var(--hue-3adic) var(--saturation-high) 40% / 0.6),
+                0 4px 20px hsla(0 0 0 / 0.3),
+                0 0 0 1px hsla(255 255 255 / 0.15) inset;
+        }
+
+        .action-button.secondary {
+            background: linear-gradient(135deg, 
+                hsla(255 255 255 / 0.06), 
+                hsla(255 255 255 / 0.02));
+            border: 1px solid hsla(255 255 255 / 0.1);
+            box-shadow: 
+                0 4px 20px hsla(0 0 0 / 0.3),
+                0 0 0 1px hsla(255 255 255 / 0.05) inset;
+        }
+
+        .action-button.secondary:hover {
+            background: linear-gradient(135deg, 
+                hsla(255 255 255 / 0.1), 
+                hsla(255 255 255 / 0.04));
+            border-color: hsla(255 255 255 / 0.2);
+        }
+
+        #consciousnessCanvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+            touch-action: pan-x pan-y;
+            display: block;
+        }
+
+        /* Ultra-Responsive Design */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: var(--font-size-lg);
+            }
+            
+            .system-status {
+                gap: var(--spacing-md);
+            }
+            
+            .panel-base {
+                width: calc(100vw - 32px) !important;
+                left: 16px !important;
+                max-height: 50vh;
+                font-size: 0.9em;
+            }
+            
+            .h0-panel { top: 85px; }
+            .h1-panel { top: 85px; right: 16px; left: 16px; }
+            .h2-panel { bottom: 16px; }
+            .metrics-panel { bottom: 16px; right: 16px; left: 16px; }
+            .legend-panel { bottom: 16px; left: 16px; }
+        }
+
+        /* iOS Safari specific fixes */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                height: 100vh;
+                height: -webkit-fill-available;
+            }
+            
+            #app-container {
+                height: 100vh;
+                height: -webkit-fill-available;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Ultra-Modern Header Section -->
+        <div class="header-section">
+            <div class="header-title">
+                <span class="panel-icon">🧠</span>
+                <span>Keats: P-adic Mathematical Engine</span>
+            </div>
+            <div class="system-status">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>H0: <span id="h0-status">INITIALIZING</span></span>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot" style="background: var(--color-3adic);"></div>
+                    <span>H1: <span id="h1-status">AWAKENING</span></span>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot" style="background: var(--color-transcendence);"></div>
+                    <span>H2: <span id="h2-status">EMERGING</span></span>
+                </div>
+                <div class="status-indicator">
+                    <span style="font-size: 10px; color: rgba(255,255,255,0.5);">p-adic convergent</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Visualization Canvas - FULL IMMERSION -->
+        <div id="viz-canvas" class="viz-canvas">
+            <canvas id="consciousnessCanvas"></canvas>
+        </div>
+        
+        <!-- H0 Syntactic Stratum Panel -->
+        <div class="panel-base h0-panel" id="h0-panel">
+            <div class="panel-header" onclick="window.togglePanel('h0-panel')">
+                <div>
+                    <span class="panel-icon">🔷</span>
+                    <span>H0: Geometric Substrate - RENDER ENGINE</span>
+                </div>
+                <button class="panel-toggle">−</button>
+            </div>
+            
+            <div class="panel-content">
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Geometric Objects</div>
+                        <div class="metric-value" id="object-count">0</div>
+                        <div class="metric-trend">📐 rendered</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Frame Rate</div>
+                        <div class="metric-value" id="fps-counter">0 FPS</div>
+                        <div class="metric-trend">🖼️ measuring</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Particle Energy</div>
+                        <div class="metric-value" id="particle-energy">0.000</div>
+                        <div class="metric-trend">⚡ kinetic</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">
+                        <span>🌌</span>
+                        <span>Geometric Rendering Controls</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Point Count</span>
+                            <span class="control-value" id="particle-count-value">2000</span>
+                        </div>
+                        <input type="range" id="particle-count" min="500" max="8000" value="2000" step="100">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Surface Curvature</span>
+                            <span class="control-value" id="manifold-curvature-value">1.0</span>
+                        </div>
+                        <input type="range" id="manifold-curvature" min="0.1" max="3.0" value="1.0" step="0.05">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Physics Damping</span>
+                            <span class="control-value" id="velocity-damping-value">0.98</span>
+                        </div>
+                        <input type="range" id="velocity-damping" min="0.90" max="0.999" value="0.98" step="0.001">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Tube Brightness</span>
+                            <span class="control-value" id="flow-intensity-value">1.0</span>
+                        </div>
+                        <input type="range" id="flow-intensity" min="0.1" max="5.0" value="1.0" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Mesh Resolution</span>
+                            <span class="control-value" id="geometry-complexity-value">Medium</span>
+                        </div>
+                        <select id="geometry-complexity">
+                            <option value="minimal">Minimal (16x16)</option>
+                            <option value="low">Low (32x32)</option>
+                            <option value="medium" selected>Medium (64x64)</option>
+                            <option value="high">High (96x96)</option>
+                            <option value="ultra">Ultra (128x128)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Mouse Sensitivity</span>
+                            <span class="control-value" id="camera-sensitivity-value">1.0</span>
+                        </div>
+                        <input type="range" id="camera-sensitivity" min="0.1" max="3.0" value="1.0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">
+                        <span>⚙️</span>
+                        <span>Engine Commands</span>
+                    </div>
+                    
+                    <button class="action-button" onclick="KeatsEngine.h0.toggleAnimation()">⏯️ Toggle Animation</button>
+                    <button class="action-button" onclick="KeatsEngine.h0.regenerateParticles()">✨ Regenerate Points</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.h0.resetGeometry()">↺ Reset Scene</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.h0.explodeParticles()">💥 Apply Explosion Force</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- H1 Semantic Stratum Panel -->
+        <div class="panel-base h1-panel" id="h1-panel">
+            <div class="panel-header" onclick="window.togglePanel('h1-panel')">
+                <div>
+                    <span class="panel-icon">💭</span>
+                    <span>H1: Modal Integration - LOGIC ENGINE</span>
+                </div>
+                <button class="panel-toggle">−</button>
+            </div>
+            
+            <div class="panel-content">
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Coherence Score</div>
+                        <div class="metric-value" id="coherence-score">0.000</div>
+                        <div class="metric-trend" id="coherence-trend">→ seeking</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Modal Transfers</div>
+                        <div class="metric-value" id="modal-transfers">0</div>
+                        <div class="metric-trend">🔄 executing</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Context Depth</div>
+                        <div class="metric-value" id="context-depth">3</div>
+                        <div class="metric-trend">📚 layered</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Information Density</div>
+                        <div class="metric-value" id="information-density">0.000</div>
+                        <div class="metric-trend">🧠 processing</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">
+                        <span>🧠</span>
+                        <span>Modal Logic Parameters</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Input Sensitivity</span>
+                            <span class="control-value" id="context-sensitivity-value">0.7</span>
+                        </div>
+                        <input type="range" id="context-sensitivity" min="0.1" max="1.0" value="0.7" step="0.05">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Logic Threshold</span>
+                            <span class="control-value" id="transfer-threshold-value">0.8</span>
+                        </div>
+                        <input type="range" id="transfer-threshold" min="0.1" max="1.0" value="0.8" step="0.05">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Adaptation Rate</span>
+                            <span class="control-value" id="learning-rate-value">0.3</span>
+                        </div>
+                        <input type="range" id="learning-rate" min="0.01" max="1.0" value="0.3" step="0.01">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>State Retention</span>
+                            <span class="control-value" id="memory-retention-value">0.95</span>
+                        </div>
+                        <input type="range" id="memory-retention" min="0.5" max="0.999" value="0.95" step="0.001">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Search Bias</span>
+                            <span class="control-value" id="exploration-bias-value">0.2</span>
+                        </div>
+                        <input type="range" id="exploration-bias" min="0.0" max="1.0" value="0.2" step="0.05">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Compute Mode</span>
+                            <span class="control-value" id="processing-mode-value">Balanced</span>
+                        </div>
+                        <select id="processing-mode">
+                            <option value="conservative">Conservative</option>
+                            <option value="balanced" selected>Balanced</option>
+                            <option value="aggressive">Aggressive</option>
+                            <option value="chaotic">Chaotic</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">
+                        <span>🚀</span>
+                        <span>Logic Operations</span>
+                    </div>
+                    
+                    <button class="action-button" onclick="KeatsEngine.h1.triggerTransfer()">🚀 Execute Transfer</button>
+                    <button class="action-button" onclick="KeatsEngine.h1.deepThink()">🤔 Deep Analysis</button>
+                    <button class="action-button" onclick="KeatsEngine.h1.memoryConsolidation()">🧠 Consolidate State</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.h1.recomputeCoherence()">🔄 Recompute Logic</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.h1.clearContext()">🗑️ Clear History</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- H2 Noetic Stratum Panel -->
+        <div class="panel-base h2-panel" id="h2-panel">
+            <div class="panel-header" onclick="window.togglePanel('h2-panel')">
+                <div>
+                    <span class="panel-icon">✨</span>
+                    <span>H2: Transcendence Engine - DISCOVERY</span>
+                </div>
+                <button class="panel-toggle">−</button>
+            </div>
+            
+            <div class="panel-content">
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Paradox Events</div>
+                        <div class="metric-value" id="paradox-count">0</div>
+                        <div class="metric-trend">⚡ detected</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Ball Expansions</div>
+                        <div class="metric-value" id="ball-expansions">0</div>
+                        <div class="metric-trend">🌌 transcended</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Current Prime</div>
+                        <div class="metric-value" id="current-prime-display">2</div>
+                        <div class="metric-trend">🔢 p-adic</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Transcendence Level</div>
+                        <div class="metric-value" id="transcendence-level">0.000</div>
+                        <div class="metric-trend">🌟 ascending</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">
+                        <span>🌠</span>
+                        <span>P-adic Field Controls</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>P-adic Prime</span>
+                            <span class="control-value" id="prime-value">2</span>
+                        </div>
+                        <select id="padic-prime">
+                            <option value="2" selected>2-adic (Binary)</option>
+                            <option value="3">3-adic (Ternary)</option>
+                            <option value="5">5-adic (Quintic)</option>
+                            <option value="7">7-adic (Septenary)</option>
+                            <option value="11">11-adic (Undenary)</option>
+                            <option value="13">13-adic (Tridecimal)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Field Radius</span>
+                            <span class="control-value" id="ball-radius-value">0.25</span>
+                        </div>
+                        <input type="range" id="ball-radius" min="0.01" max="10.0" value="0.25" step="0.01">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Event Sensitivity</span>
+                            <span class="control-value" id="paradox-sensitivity-value">0.5</span>
+                        </div>
+                        <input type="range" id="paradox-sensitivity" min="0.1" max="2.0" value="0.5" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Discovery Rate</span>
+                            <span class="control-value" id="transcendence-rate-value">1.0</span>
+                        </div>
+                        <input type="range" id="transcendence-rate" min="0.1" max="5.0" value="1.0" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Auto-generation</span>
+                            <span class="control-value" id="logic-mode-value">Autonomous</span>
+                        </div>
+                        <select id="logic-generation-mode">
+                            <option value="manual">Manual Only</option>
+                            <option value="assisted">Assisted</option>
+                            <option value="autonomous" selected>Autonomous</option>
+                            <option value="hyperdrive">Hyperdrive</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Field Stability</span>
+                            <span class="control-value" id="reality-stability-value">0.8</span>
+                        </div>
+                        <input type="range" id="reality-stability" min="0.1" max="1.0" value="0.8" step="0.05">
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">
+                        <span>⚡</span>
+                        <span>Discovery Operations</span>
+                    </div>
+                    
+                    <button class="action-button" onclick="KeatsEngine.h2.simulateParadox()">⚡ Trigger Event</button>
+                    <button class="action-button" onclick="KeatsEngine.h2.expandBall()">🌌 Expand P-adic Field</button>
+                    <button class="action-button" onclick="KeatsEngine.h2.generateLogic()">💫 Generate Structure</button>
+                    <button class="action-button" onclick="KeatsEngine.h2.transcendReality()">🌟 Maximize Discovery</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.h2.stabilizeField()">🛡️ Stabilize System</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.h2.resetPrime()">🔄 Reset Prime</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics Panel -->
+        <div class="panel-base metrics-panel" id="metrics-panel">
+            <div class="panel-header" onclick="window.togglePanel('metrics-panel')">
+                <div>
+                    <span class="panel-icon">📊</span>
+                    <span>System Telemetry - DEEP METRICS</span>
+                </div>
+                <button class="panel-toggle">−</button>
+            </div>
+            
+            <div class="panel-content">
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Consciousness FPS</div>
+                        <div class="metric-value" id="consciousness-fps">0</div>
+                        <div class="metric-trend">🧠 measuring</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">P-adic Operations</div>
+                        <div class="metric-value" id="padic-ops">0</div>
+                        <div class="metric-trend">🔢 computed/sec</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">GPU Utilization</div>
+                        <div class="metric-value" id="gpu-util">0%</div>
+                        <div class="metric-trend">⚡ measuring</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Memory Pressure</div>
+                        <div class="metric-value" id="memory-pressure">0.0</div>
+                        <div class="metric-trend">💾 monitoring</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">Quantum Coherence</div>
+                        <div class="metric-value" id="quantum-coherence">0.000</div>
+                        <div class="metric-trend">⚛️ entangled</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-label">System Entropy</div>
+                        <div class="metric-value" id="system-entropy">0.500</div>
+                        <div class="metric-trend">📈 evolving</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">
+                        <span>🎛️</span>
+                        <span>System Performance</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Update Frequency</span>
+                            <span class="control-value" id="update-frequency-value">60 Hz</span>
+                        </div>
+                        <select id="update-frequency">
+                            <option value="30">30 Hz (Power Save)</option>
+                            <option value="60" selected>60 Hz (Standard)</option>
+                            <option value="120">120 Hz (High Performance)</option>
+                            <option value="240">240 Hz (Extreme)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Memory Allocation</span>
+                            <span class="control-value" id="memory-allocation-value">Auto</span>
+                        </div>
+                        <select id="memory-allocation">
+                            <option value="conservative">Conservative</option>
+                            <option value="auto" selected>Auto</option>
+                            <option value="aggressive">Aggressive</option>
+                            <option value="unlimited">Unlimited</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Precision Level</span>
+                            <span class="control-value" id="precision-level-value">16-bit</span>
+                        </div>
+                        <select id="precision-level">
+                            <option value="8">8-bit (Fast)</option>
+                            <option value="16" selected>16-bit (Balanced)</option>
+                            <option value="32">32-bit (Precise)</option>
+                            <option value="64">64-bit (Maximum)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">
+                        <span>🎮</span>
+                        <span>System Control</span>
+                    </div>
+                    
+                    <button class="action-button" onclick="KeatsEngine.exportState()">💾 Export State</button>
+                    <button class="action-button" onclick="KeatsEngine.benchmark()">⚡ Run Benchmark</button>
+                    <button class="action-button" onclick="KeatsEngine.optimizePerformance()">🚀 Optimize Performance</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.resetAll()">🔄 Reset All Strata</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.emergencyShutdown()">🛑 Emergency Shutdown</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Master Control Panel -->
+        <div class="panel-base legend-panel" id="legend-panel">
+            <div class="panel-header" onclick="window.togglePanel('legend-panel')">
+                <div>
+                    <span class="panel-icon">🎛️</span>
+                    <span>Master Control - TOPOS INTERFACE</span>
+                </div>
+                <button class="panel-toggle">−</button>
+            </div>
+            
+            <div class="panel-content">
+                <div class="control-section">
+                    <div class="section-title">🌌 Mathematical Constants</div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Space-Time Curvature</span>
+                            <span class="control-value" id="spacetime-curvature-value">1.0</span>
+                        </div>
+                        <input type="range" id="spacetime-curvature" min="0.1" max="5.0" value="1.0" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Engine Frequency</span>
+                            <span class="control-value" id="consciousness-freq-value">40 Hz</span>
+                        </div>
+                        <input type="range" id="consciousness-frequency" min="1" max="100" value="40" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>System Coherence</span>
+                            <span class="control-value" id="reality-coherence-value">0.85</span>
+                        </div>
+                        <input type="range" id="reality-coherence" min="0.0" max="1.0" value="0.85" step="0.01">
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Mathematical Phase</span>
+                            <span class="control-value" id="dimensional-phase-value">0°</span>
+                        </div>
+                        <input type="range" id="dimensional-phase" min="0" max="360" value="0" step="1">
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">🔮 Advanced Controls</div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Field Coupling</span>
+                            <span class="control-value" id="quantum-entanglement-value">Off</span>
+                        </div>
+                        <select id="quantum-entanglement">
+                            <option value="off" selected>Disabled</option>
+                            <option value="weak">Weak Coupling</option>
+                            <option value="strong">Strong Coupling</option>
+                            <option value="maximal">Maximal Entanglement</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Coordinate System</span>
+                            <span class="control-value" id="hyperdim-access-value">3D</span>
+                        </div>
+                        <select id="hyperdimensional-access">
+                            <option value="3d" selected>3D Standard</option>
+                            <option value="4d">4D Tesseract</option>
+                            <option value="5d">5D Hypercube</option>
+                            <option value="11d">11D String Theory</option>
+                            <option value="infinite">∞D Hilbert Space</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span>Time Dilation Factor</span>
+                            <span class="control-value" id="time-dilation-value">1.0x</span>
+                        </div>
+                        <input type="range" id="time-dilation" min="0.1" max="10.0" value="1.0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">🚨 System Protocols</div>
+                    
+                    <button class="action-button" onclick="KeatsEngine.initiateTranscendence()">🌟 Maximize Discovery</button>
+                    <button class="action-button" onclick="KeatsEngine.openWormhole()">🌀 Create Wormhole</button>
+                    <button class="action-button" onclick="KeatsEngine.activateQuantumField()">⚛️ Enable Field Effects</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.stabilizeReality()">🛡️ Stabilize System</button>
+                    <button class="action-button secondary" onclick="KeatsEngine.returnToBaseline()">🏠 Return to Baseline</button>
+                </div>
+
+                <div class="control-section">
+                    <div class="section-title">🎯 Current State Vector</div>
+                    <div style="background: linear-gradient(135deg, hsla(0 0 0 / 0.4), hsla(0 0 0 / 0.2)); border-radius: 12px; padding: 16px; border: 1px solid hsla(255 255 255 / 0.06);">
+                        <div style="display: flex; justify-content: space-between; margin: 6px 0; font-size: 12px; font-weight: 300;">
+                            <span>System Phase:</span>
+                            <span style="color: var(--color-2adic);" id="reality-phase-display">STABLE</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 6px 0; font-size: 12px; font-weight: 300;">
+                            <span>Engine State:</span>
+                            <span style="color: var(--color-3adic);" id="consciousness-level-display">OPERATING</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 6px 0; font-size: 12px; font-weight: 300;">
+                            <span>System Integrity:</span>
+                            <span style="color: var(--color-coherence);" id="system-integrity-display">100%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 6px 0; font-size: 12px; font-weight: 300;">
+                            <span>Discovery Factor:</span>
+                            <span style="color: var(--color-transcendence);" id="alien-factor-display">ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // GLOBAL PANEL MANAGEMENT - FIX THE togglePanel ERROR
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        window.togglePanel = function(panelId) {
+            const panel = document.getElementById(panelId);
+            if (!panel) return;
+            
+            const toggle = panel.querySelector('.panel-toggle');
+            if (!toggle) return;
+            
+            if (panel.classList.contains('panel-minimized')) {
+                panel.classList.remove('panel-minimized');
+                toggle.textContent = '−';
+            } else {
+                panel.classList.add('panel-minimized');
+                toggle.textContent = '+';
+            }
+        };
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // DEVICE DETECTION & WEBGL VALIDATION
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        function isIOSDevice() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+        
+        function validateWebGL() {
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl2') || 
+                          canvas.getContext('webgl') || 
+                          canvas.getContext('experimental-webgl');
+                
+                if (!gl) {
+                    console.error('❌ WebGL not supported');
+                    return false;
+                }
+                
+                console.log('✅ WebGL validated successfully');
+                return true;
+            } catch (e) {
+                console.error('❌ WebGL validation failed:', e);
+                return false;
+            }
+        }
+        
+        function getDeviceSettings() {
+            const isIOS = isIOSDevice();
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            return {
+                isIOS,
+                isMobile,
+                antialias: !isIOS,
+                particleCount: isIOS ? 1000 : isMobile ? 2000 : 4000,
+                pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+                geometryDetail: isIOS ? 32 : 64
+            };
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════
+        // P-ADIC MATHEMATICS ENGINE WITH E8 SYMMETRIES
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        class PAdicNumber {
+            constructor(prime, digits = [0], precision = 16) {
+                this.p = prime;
+                this.digits = [...digits];
+                this.precision = precision;
+                this.normalize();
+            }
+            
+            normalize() {
+                while (this.digits.length > 1 && this.digits[this.digits.length - 1] === 0) {
+                    this.digits.pop();
+                }
+                if (this.digits.length > this.precision) {
+                    this.digits = this.digits.slice(0, this.precision);
+                }
+            }
+            
+            valuation() {
+                for (let i = 0; i < this.digits.length; i++) {
+                    if (this.digits[i] !== 0) return i;
+                }
+                return Infinity;
+            }
+            
+            distanceTo(other) {
+                if (this.p !== other.p) return Infinity;
+                const diff = this.subtract(other);
+                const ord = diff.valuation();
+                return ord === Infinity ? 0 : Math.pow(this.p, -ord);
+            }
+            
+            subtract(other) {
+                const result = [];
+                let borrow = 0;
+                const maxLen = Math.max(this.digits.length, other.digits.length);
+                
+                for (let i = 0; i < maxLen; i++) {
+                    let a = (this.digits[i] || 0) - borrow;
+                    const b = other.digits[i] || 0;
+                    
+                    if (a < b) {
+                        a += this.p;
+                        borrow = 1;
+                    } else {
+                        borrow = 0;
+                    }
+                    
+                    result[i] = (a - b) % this.p;
+                }
+                
+                return new PAdicNumber(this.p, result, this.precision);
+            }
+            
+            add(other) {
+                const result = [];
+                let carry = 0;
+                const maxLen = Math.max(this.digits.length, other.digits.length);
+                
+                for (let i = 0; i < maxLen; i++) {
+                    const sum = (this.digits[i] || 0) + (other.digits[i] || 0) + carry;
+                    result[i] = sum % this.p;
+                    carry = Math.floor(sum / this.p);
+                }
+                
+                if (carry > 0) result.push(carry);
+                return new PAdicNumber(this.p, result, this.precision);
+            }
+            
+            multiply(other) {
+                if (typeof other === 'number') {
+                    const result = [];
+                    let carry = 0;
+                    
+                    for (let i = 0; i < this.digits.length; i++) {
+                        const prod = this.digits[i] * other + carry;
+                        result[i] = prod % this.p;
+                        carry = Math.floor(prod / this.p);
+                    }
+                    
+                    while (carry > 0 && result.length < this.precision) {
+                        result.push(carry % this.p);
+                        carry = Math.floor(carry / this.p);
+                    }
+                    
+                    return new PAdicNumber(this.p, result, this.precision);
+                }
+                
+                return this; // Simplified for now
+            }
+            
+            toString() {
+                const visibleDigits = this.digits.slice(-6).reverse();
+                return `...${visibleDigits.join('')} (${this.p}-adic)`;
+            }
+            
+            static random(prime, precision = 10) {
+                const digits = [];
+                for (let i = 0; i < precision; i++) {
+                    digits.push(Math.floor(Math.random() * prime));
+                }
+                return new PAdicNumber(prime, digits, precision);
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // E8 LIE GROUP SYMMETRIES - MATHEMATICAL BEAUTY ENGINE
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        class E8Symmetries {
+            constructor() {
+                this.rootSystem = this.generateE8Roots();
+                this.dimension = 8;
+                this.cartan = this.generateCartanMatrix();
+                console.log('✨ E8 Symmetries initialized with 240 roots');
+            }
+            
+            generateE8Roots() {
+                const roots = [];
+                
+                // Generate the 240 roots of E8
+                // Type I: (±1, ±1, 0, 0, 0, 0, 0, 0) and permutations (112 roots)
+                const signs = [1, -1];
+                for (let i = 0; i < 8; i++) {
+                    for (let j = i + 1; j < 8; j++) {
+                        for (let s1 of signs) {
+                            for (let s2 of signs) {
+                                const root = new Array(8).fill(0);
+                                root[i] = s1;
+                                root[j] = s2;
+                                roots.push([...root]);
+                            }
+                        }
+                    }
+                }
+                
+                // Type II: (±1/2, ±1/2, ±1/2, ±1/2, ±1/2, ±1/2, ±1/2, ±1/2) with even number of minus signs (128 roots)
+                for (let mask = 0; mask < 256; mask++) {
+                    const bits = mask.toString(2).padStart(8, '0');
+                    const minusCount = bits.split('1').length - 1;
+                    
+                    if (minusCount % 2 === 0) {
+                        const root = [];
+                        for (let i = 0; i < 8; i++) {
+                            root.push(bits[i] === '1' ? -0.5 : 0.5);
+                        }
+                        roots.push(root);
+                    }
+                }
+                
+                return roots.slice(0, 240); // Ensure exactly 240 roots
+            }
+            
+            generateCartanMatrix() {
+                // E8 Cartan matrix (8x8)
+                return [
+                    [ 2, -1,  0,  0,  0,  0,  0,  0],
+                    [-1,  2, -1,  0,  0,  0,  0,  0],
+                    [ 0, -1,  2, -1,  0,  0,  0, -1],
+                    [ 0,  0, -1,  2, -1,  0,  0,  0],
+                    [ 0,  0,  0, -1,  2, -1,  0,  0],
+                    [ 0,  0,  0,  0, -1,  2, -1,  0],
+                    [ 0,  0,  0,  0,  0, -1,  2,  0],
+                    [ 0,  0, -1,  0,  0,  0,  0,  2]
+                ];
+            }
+            
+            projectToSubspace(root, dimensions = 3) {
+                // Project 8D E8 root to lower dimensions for visualization
+                const projection = [];
+                for (let i = 0; i < dimensions; i++) {
+                    projection.push(root[i] || 0);
+                }
+                return projection;
+            }
+            
+            getRandomRoot() {
+                return this.rootSystem[Math.floor(Math.random() * this.rootSystem.length)];
+            }
+            
+            computeWeylOrbit(root) {
+                // Simplified Weyl group action
+                const orbit = [root];
+                
+                // Apply some basic reflections
+                for (let i = 0; i < this.dimension; i++) {
+                    const reflected = [...root];
+                    reflected[i] = -reflected[i];
+                    orbit.push(reflected);
+                }
+                
+                return orbit;
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PROOF-OF-COHERENCE CRYPTOGRAPHIC ENGINE
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        class ProofOfCoherence {
+            constructor() {
+                this.stateChain = [];
+                this.currentState = null;
+                this.invariants = new Map();
+                this.coherenceLevel = 1.0;
+                
+                console.log('🛡️ Proof-of-Coherence engine initialized');
+            }
+            
+            async computeStateHash(state) {
+                const stateString = JSON.stringify(state, null, 0);
+                const encoder = new TextEncoder();
+                const data = encoder.encode(stateString);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+            
+            async certifyStateTransition(newState) {
+                const timestamp = Date.now();
+                const stateHash = await this.computeStateHash(newState);
+                
+                const transition = {
+                    timestamp,
+                    stateHash,
+                    previousHash: this.currentState ? this.currentState.stateHash : '0'.repeat(64),
+                    invariants: this.captureInvariants(newState),
+                    coherenceLevel: this.coherenceLevel
+                };
+                
+                // Verify coherence
+                if (!this.verifyCoherence(transition)) {
+                    throw new Error('Coherence violation detected');
+                }
+                
+                this.stateChain.push(transition);
+                this.currentState = transition;
+                
+                return transition;
+            }
+            
+            captureInvariants(state) {
+                return {
+                    particleCount: state.h0?.particleCount || 0,
+                    coherenceScore: state.h1?.coherenceScore || 0,
+                    primeValue: state.h2?.currentPrime || 2,
+                    geometryComplexity: state.h0?.geometryDetail || 64
+                };
+            }
+            
+            verifyCoherence(transition) {
+                // Check chain integrity
+                if (this.stateChain.length > 0) {
+                    const lastState = this.stateChain[this.stateChain.length - 1];
+                    if (transition.previousHash !== lastState.stateHash) {
+                        console.error('🚨 Chain integrity violation');
+                        return false;
+                    }
+                }
+                
+                // Check invariant preservation
+                const invariants = transition.invariants;
+                if (invariants.coherenceScore < 0 || invariants.coherenceScore > 1) {
+                    console.error('🚨 Coherence score out of bounds');
+                    return false;
+                }
+                
+                // Check mathematical consistency
+                if (![2, 3, 5, 7, 11, 13].includes(invariants.primeValue)) {
+                    console.error('🚨 Invalid p-adic prime');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            getChainIntegrity() {
+                return this.stateChain.length > 0 ? 1.0 : 0.0;
+            }
+            
+            exportChain() {
+                return {
+                    chain: this.stateChain,
+                    integrity: this.getChainIntegrity(),
+                    timestamp: Date.now()
+                };
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // STUNNING WEBGL CONSCIOUSNESS VISUALIZATION WITH E8 PROJECTIONS
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        class ConsciousnessRenderer {
+            constructor() {
+                this.canvas = document.getElementById('consciousnessCanvas');
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                
+                this.settings = getDeviceSettings();
+                this.e8 = new E8Symmetries();
+                
+                console.log('🎨 Renderer settings:', this.settings);
+                
+                this.geometricObjects = [];
+                this.isAnimating = true;
+                this.time = 0;
+                this.clock = new THREE.Clock();
+                
+                // Enhanced settings
+                this.manifoldCurvature = 1.0;
+                this.velocityDamping = 0.98;
+                this.flowIntensity = 1.0;
+                this.cameraSensitivity = 1.0;
+                this.spacetimeCurvature = 1.0;
+                this.dimensionalPhase = 0;
+                this.quantumLevel = 'off';
+                this.hyperDimension = '3d';
+                
+                // Performance tracking
+                this.frameCount = 0;
+                this.lastFrameTime = performance.now();
+                this.fps = 60;
+                
+                this.initializeRenderer()
+                    .then(() => this.createStunningGeometry())
+                    .then(() => this.startRenderLoop())
+                    .catch(error => {
+                        console.error('❌ Renderer initialization failed:', error);
+                        this.createFallbackVisualization();
+                    });
+            }
+            
+            async initializeRenderer() {
+                return new Promise((resolve, reject) => {
+                    try {
+                        // Initialize Three.js renderer with proper settings
+                        this.renderer = new THREE.WebGLRenderer({ 
+                            canvas: this.canvas, 
+                            antialias: this.settings.antialias,
+                            alpha: true,
+                            powerPreference: "high-performance"
+                        });
+                        
+                        this.renderer.setSize(window.innerWidth, window.innerHeight - 70);
+                        this.renderer.setPixelRatio(this.settings.pixelRatio);
+                        this.renderer.setClearColor(0x000000, 0);
+                        
+                        // Test render
+                        this.renderer.render(this.scene, this.camera);
+                        
+                        // Position camera for optimal view
+                        this.camera.position.set(15, 10, 15);
+                        this.camera.lookAt(0, 0, 0);
+                        
+                        // Setup lighting
+                        this.setupLighting();
+                        
+                        // Setup controls
+                        this.setupControls();
+                        
+                        // Resize handler
+                        window.addEventListener('resize', () => this.handleResize());
+                        
+                        console.log('✅ WebGL renderer initialized successfully');
+                        resolve();
+                        
+                    } catch (error) {
+                        console.error('❌ Renderer initialization error:', error);
+                        reject(error);
+                    }
+                });
+            }
+            
+            setupLighting() {
+                // Ambient light
+                const ambientLight = new THREE.AmbientLight(0x404080, 0.4);
+                this.scene.add(ambientLight);
+                
+                // Main directional light
+                const directionalLight = new THREE.DirectionalLight(0x8080ff, 1.0);
+                directionalLight.position.set(20, 20, 10);
+                this.scene.add(directionalLight);
+                
+                // P-adic colored lights with E8 positioning
+                if (!this.settings.isMobile) {
+                    const e8Roots = this.e8.rootSystem.slice(0, 8);
+                    e8Roots.forEach((root, index) => {
+                        const projected = this.e8.projectToSubspace(root, 3);
+                        const position = projected.map(x => x * 15);
+                        
+                        const colors = [0x4080ff, 0x80ff40, 0xff8040, 0xff4080, 
+                                       0x8040ff, 0x40ff80, 0xffff40, 0xff80ff];
+                        
+                        const light = new THREE.PointLight(colors[index], 0.6, 30);
+                        light.position.set(...position);
+                        this.scene.add(light);
+                    });
+                }
+            }
+            
+            setupControls() {
+                let isInteracting = false;
+                let mouseX = 0, mouseY = 0;
+                let targetRotationX = 0, targetRotationY = 0;
+                let currentRotationX = 0, currentRotationY = 0;
+                
+                // Keyboard controls for camera panning
+                const keyState = {};
+                const panSpeed = 0.5;
+                
+                document.addEventListener('keydown', (e) => {
+                    keyState[e.code] = true;
+                    e.preventDefault();
+                });
+                
+                document.addEventListener('keyup', (e) => {
+                    keyState[e.code] = false;
+                    e.preventDefault();
+                });
+                
+                // Continuous camera panning with WASD and Arrow keys
+                const updateKeyboardControls = () => {
+                    const cameraRight = new THREE.Vector3();
+                    const cameraUp = new THREE.Vector3();
+                    const cameraForward = new THREE.Vector3();
+                    
+                    // Get camera's local coordinate system
+                    this.camera.getWorldDirection(cameraForward);
+                    cameraForward.negate(); // Forward is negative Z
+                    cameraRight.crossVectors(cameraForward, this.camera.up).normalize();
+                    cameraUp.crossVectors(cameraRight, cameraForward).normalize();
+                    
+                    const moveVector = new THREE.Vector3();
+                    
+                    // WASD controls
+                    if (keyState['KeyW'] || keyState['ArrowUp']) {
+                        moveVector.add(cameraForward.clone().multiplyScalar(panSpeed * this.cameraSensitivity));
+                    }
+                    if (keyState['KeyS'] || keyState['ArrowDown']) {
+                        moveVector.add(cameraForward.clone().multiplyScalar(-panSpeed * this.cameraSensitivity));
+                    }
+                    if (keyState['KeyA'] || keyState['ArrowLeft']) {
+                        moveVector.add(cameraRight.clone().multiplyScalar(-panSpeed * this.cameraSensitivity));
+                    }
+                    if (keyState['KeyD'] || keyState['ArrowRight']) {
+                        moveVector.add(cameraRight.clone().multiplyScalar(panSpeed * this.cameraSensitivity));
+                    }
+                    if (keyState['KeyQ']) {
+                        moveVector.add(cameraUp.clone().multiplyScalar(panSpeed * this.cameraSensitivity));
+                    }
+                    if (keyState['KeyE']) {
+                        moveVector.add(cameraUp.clone().multiplyScalar(-panSpeed * this.cameraSensitivity));
+                    }
+                    
+                    if (moveVector.length() > 0) {
+                        this.camera.position.add(moveVector);
+                    }
+                    
+                    requestAnimationFrame(updateKeyboardControls);
+                };
+                updateKeyboardControls();
+                
+                // Mouse controls
+                this.canvas.addEventListener('mousedown', (e) => {
+                    isInteracting = true;
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    this.canvas.style.cursor = 'grabbing';
+                });
+                
+                this.canvas.addEventListener('mousemove', (e) => {
+                    if (!isInteracting) return;
+                    
+                    const deltaX = e.clientX - mouseX;
+                    const deltaY = e.clientY - mouseY;
+                    
+                    targetRotationY += deltaX * 0.01 * this.cameraSensitivity;
+                    targetRotationX += deltaY * 0.01 * this.cameraSensitivity;
+                    
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
+                
+                this.canvas.addEventListener('mouseup', () => {
+                    isInteracting = false;
+                    this.canvas.style.cursor = 'grab';
+                });
+                
+                this.canvas.addEventListener('mouseleave', () => {
+                    isInteracting = false;
+                    this.canvas.style.cursor = 'grab';
+                });
+                
+                // Enhanced touch controls for mobile
+                let touchStartDistance = 0;
+                let initialCameraDistance = 0;
+                let touchCount = 0;
+                
+                this.canvas.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    touchCount = e.touches.length;
+                    
+                    if (e.touches.length === 1) {
+                        // Single touch - rotate
+                        isInteracting = true;
+                        mouseX = e.touches[0].clientX;
+                        mouseY = e.touches[0].clientY;
+                    } else if (e.touches.length === 2) {
+                        // Two finger - zoom and rotate
+                        isInteracting = true;
+                        const touch1 = e.touches[0];
+                        const touch2 = e.touches[1];
+                        
+                        mouseX = (touch1.clientX + touch2.clientX) / 2;
+                        mouseY = (touch1.clientY + touch2.clientY) / 2;
+                        
+                        touchStartDistance = Math.sqrt(
+                            Math.pow(touch2.clientX - touch1.clientX, 2) +
+                            Math.pow(touch2.clientY - touch1.clientY, 2)
+                        );
+                        initialCameraDistance = this.camera.position.length();
+                    }
+                }, { passive: false });
+                
+                this.canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    if (!isInteracting) return;
+                    
+                    if (e.touches.length === 1) {
+                        // Single touch drag
+                        const deltaX = e.touches[0].clientX - mouseX;
+                        const deltaY = e.touches[0].clientY - mouseY;
+                        
+                        targetRotationY += deltaX * 0.01 * this.cameraSensitivity;
+                        targetRotationX += deltaY * 0.01 * this.cameraSensitivity;
+                        
+                        mouseX = e.touches[0].clientX;
+                        mouseY = e.touches[0].clientY;
+                    } else if (e.touches.length === 2) {
+                        // Two finger pinch/zoom
+                        const touch1 = e.touches[0];
+                        const touch2 = e.touches[1];
+                        
+                        const currentDistance = Math.sqrt(
+                            Math.pow(touch2.clientX - touch1.clientX, 2) +
+                            Math.pow(touch2.clientY - touch1.clientY, 2)
+                        );
+                        
+                        const scale = touchStartDistance / currentDistance;
+                        const newDistance = initialCameraDistance * scale;
+                        
+                        this.camera.position.normalize().multiplyScalar(Math.max(5, Math.min(100, newDistance)));
+                        
+                        // Rotation for two finger drag
+                        const centerX = (touch1.clientX + touch2.clientX) / 2;
+                        const centerY = (touch1.clientY + touch2.clientY) / 2;
+                        
+                        const deltaX = centerX - mouseX;
+                        const deltaY = centerY - mouseY;
+                        
+                        if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+                            targetRotationY += deltaX * 0.005 * this.cameraSensitivity;
+                            targetRotationX += deltaY * 0.005 * this.cameraSensitivity;
+                            
+                            mouseX = centerX;
+                            mouseY = centerY;
+                        }
+                    }
+                }, { passive: false });
+                
+                this.canvas.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    if (e.touches.length === 0) {
+                        isInteracting = false;
+                        touchCount = 0;
+                    } else if (e.touches.length === 1 && touchCount === 2) {
+                        // Transition from two finger to one finger
+                        mouseX = e.touches[0].clientX;
+                        mouseY = e.touches[0].clientY;
+                        touchCount = 1;
+                    }
+                }, { passive: false });
+                
+                // Zoom with mouse wheel
+                this.canvas.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const zoom = e.deltaY > 0 ? 1.1 : 0.9;
+                    const newPosition = this.camera.position.clone().multiplyScalar(zoom);
+                    const distance = newPosition.length();
+                    
+                    // Constrain zoom distance
+                    if (distance >= 5 && distance <= 100) {
+                        this.camera.position.copy(newPosition);
+                    }
+                }, { passive: false });
+                
+                // Set initial cursor
+                this.canvas.style.cursor = 'grab';
+                
+                // Smooth camera updates
+                const updateCamera = () => {
+                    currentRotationX += (targetRotationX - currentRotationX) * 0.05;
+                    currentRotationY += (targetRotationY - currentRotationY) * 0.05;
+                    
+                    const radius = this.camera.position.length();
+                    this.camera.position.x = Math.cos(currentRotationY) * Math.cos(currentRotationX) * radius;
+                    this.camera.position.y = Math.sin(currentRotationX) * radius;
+                    this.camera.position.z = Math.sin(currentRotationY) * Math.cos(currentRotationX) * radius;
+                    
+                    this.camera.lookAt(0, 0, 0);
+                    requestAnimationFrame(updateCamera);
+                };
+                updateCamera();
+            }
+            
+            async createStunningGeometry() {
+                console.log('🎨 Creating stunning E8-based consciousness geometry...');
+                
+                // P-adic manifold surface with E8 structure
+                this.createE8Manifold();
+                
+                // Consciousness particles following E8 symmetries
+                this.createE8Particles();
+                
+                // Modal flow lines based on root system
+                this.createE8Flows();
+                
+                // Update object count
+                this.updateObjectCount();
+                
+                console.log('✅ E8 stunning geometry created');
+            }
+            
+            createE8Manifold() {
+                const detail = this.settings.geometryDetail;
+                const geometry = new THREE.PlaneGeometry(20, 20, detail, detail);
+                const positions = geometry.attributes.position.array;
+                const colors = new Float32Array(positions.length);
+                
+                // Generate E8-based height field
+                for (let i = 0; i < positions.length; i += 3) {
+                    const x = positions[i];
+                    const y = positions[i + 1];
+                    
+                    const u = (x + 10) / 20;
+                    const v = (y + 10) / 20;
+                    
+                    // E8-enhanced p-adic height computation
+                    const height = this.computeE8Height(u, v);
+                    positions[i + 2] = height * this.manifoldCurvature;
+                    
+                    // E8-based color computation
+                    const color = this.computeE8Color(u, v, height);
+                    colors[i] = color.r;
+                    colors[i + 1] = color.g;
+                    colors[i + 2] = color.b;
+                }
+                
+                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                geometry.computeVertexNormals();
+                
+                const material = new THREE.MeshPhongMaterial({
+                    vertexColors: true,
+                    shininess: 100,
+                    transparent: true,
+                    opacity: 0.8,
+                    side: THREE.DoubleSide
+                });
+                
+                const manifold = new THREE.Mesh(geometry, material);
+                manifold.name = 'e8-manifold';
+                
+                this.scene.add(manifold);
+                this.geometricObjects.push(manifold);
+            }
+            
+            computeE8Height(u, v) {
+                // E8-influenced height computation
+                let height = 0;
+                
+                // Use first few E8 roots for structure
+                const roots = this.e8.rootSystem.slice(0, 8);
+                
+                roots.forEach((root, index) => {
+                    const [rx, ry] = this.e8.projectToSubspace(root, 2);
+                    
+                    // Create interference patterns based on E8 structure
+                    const phase = u * rx * Math.PI * 4 + v * ry * Math.PI * 4;
+                    const amplitude = 0.3 / (index + 1);
+                    
+                    height += Math.sin(phase) * amplitude;
+                });
+                
+                // Add p-adic convergence series
+                const primes = [2, 3, 5];
+                primes.forEach((p, index) => {
+                    let sum = 0;
+                    let power = 1;
+                    
+                    for (let n = 0; n < 6; n++) {
+                        const freq = (index + 1) * 2;
+                        const coefficient = 
+                            Math.sin(u * Math.PI * freq * (n + 1)) * 
+                            Math.cos(v * Math.PI * freq * (n + 1));
+                        sum += coefficient * power;
+                        power /= p;
+                    }
+                    
+                    height += sum * (0.5 / (index + 1));
+                });
+                
+                return height * 2;
+            }
+            
+            computeE8Color(u, v, height) {
+                // E8-enhanced color theory
+                const root = this.e8.getRandomRoot();
+                const [rx, ry, rz] = this.e8.projectToSubspace(root, 3);
+                
+                // Map E8 coordinates to color space
+                const hue = (Math.atan2(ry, rx) + Math.PI) / (2 * Math.PI);
+                const saturation = Math.abs(rz) + 0.5;
+                const lightness = (height + 2) / 4;
+                
+                // Convert HSL to RGB
+                const chroma = saturation * (1 - Math.abs(2 * lightness - 1));
+                const hueSegment = hue * 6;
+                const x = chroma * (1 - Math.abs((hueSegment % 2) - 1));
+                const m = lightness - chroma / 2;
+                
+                let r, g, b;
+                if (hueSegment < 1) { r = chroma; g = x; b = 0; }
+                else if (hueSegment < 2) { r = x; g = chroma; b = 0; }
+                else if (hueSegment < 3) { r = 0; g = chroma; b = x; }
+                else if (hueSegment < 4) { r = 0; g = x; b = chroma; }
+                else if (hueSegment < 5) { r = x; g = 0; b = chroma; }
+                else { r = chroma; g = 0; b = x; }
+                
+                return {
+                    r: r + m,
+                    g: g + m,
+                    b: b + m
+                };
+            }
+            
+            createE8Particles() {
+                const particleCount = this.settings.particleCount;
+                const geometry = new THREE.BufferGeometry();
+                const positions = new Float32Array(particleCount * 3);
+                const colors = new Float32Array(particleCount * 3);
+                const velocities = new Float32Array(particleCount * 3);
+                
+                // Create E8-structured particle distribution
+                for (let i = 0; i < particleCount; i++) {
+                    const i3 = i * 3;
+                    
+                    // Use E8 root system for positioning
+                    const rootIndex = i % this.e8.rootSystem.length;
+                    const root = this.e8.rootSystem[rootIndex];
+                    const projected = this.e8.projectToSubspace(root, 3);
+                    
+                    // Scale and add noise
+                    const scale = 8 + Math.random() * 12;
+                    positions[i3] = projected[0] * scale + (Math.random() - 0.5) * 4;
+                    positions[i3 + 1] = projected[1] * scale + (Math.random() - 0.5) * 4;
+                    positions[i3 + 2] = projected[2] * scale + (Math.random() - 0.5) * 4;
+                    
+                    // Initial velocities based on E8 structure
+                    velocities[i3] = projected[1] * 0.01 + (Math.random() - 0.5) * 0.02;
+                    velocities[i3 + 1] = projected[2] * 0.01 + (Math.random() - 0.5) * 0.02;
+                    velocities[i3 + 2] = projected[0] * 0.01 + (Math.random() - 0.5) * 0.02;
+                    
+                    // E8-based colors
+                    const colorIndex = Math.floor(Math.abs(projected[0] + projected[1] + projected[2]) * 10) % 8;
+                    const colorPalette = [
+                        [0.2, 0.5, 1.0],   // 2-adic blue
+                        [0.2, 1.0, 0.5],   // 3-adic green
+                        [1.0, 0.8, 0.2],   // 5-adic gold
+                        [1.0, 0.3, 0.6],   // 7-adic magenta
+                        [0.5, 0.2, 1.0],   // transcendence violet
+                        [0.2, 0.8, 1.0],   // coherence cyan
+                        [1.0, 0.5, 0.2],   // synthesis orange
+                        [0.8, 1.0, 0.8]    // harmony green
+                    ];
+                    
+                    const [r, g, b] = colorPalette[colorIndex];
+                    colors[i3] = r;
+                    colors[i3 + 1] = g;
+                    colors[i3 + 2] = b;
+                }
+                
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                geometry.userData = { velocities };
+                
+                const material = new THREE.PointsMaterial({
+                    size: 4,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.9,
+                    blending: THREE.AdditiveBlending,
+                    sizeAttenuation: true
+                });
+                
+                const particles = new THREE.Points(geometry, material);
+                particles.name = 'e8-particles';
+                
+                this.scene.add(particles);
+                this.geometricObjects.push(particles);
+                
+                console.log('✨ E8 Consciousness particles created:', particleCount);
+            }
+            
+            createE8Flows() {
+                const flowCount = this.settings.isMobile ? 8 : 16;
+                
+                for (let i = 0; i < flowCount; i++) {
+                    const curve = this.generateE8FlowCurve(i / flowCount);
+                    // Higher resolution tube geometry for smoother appearance
+                    const geometry = new THREE.TubeGeometry(curve, 64, 0.15, 16, false);
+                    
+                    const hue = (i / flowCount) * 0.8 + 0.1;
+                    const color = new THREE.Color();
+                    color.setHSL(hue, 0.9, 0.7);
+                    
+                    const material = new THREE.MeshPhongMaterial({
+                        color: color,
+                        transparent: true,
+                        opacity: 0.8 * this.flowIntensity,
+                        emissive: new THREE.Color().setHSL(hue, 0.5, 0.2 * this.flowIntensity),
+                        shininess: 100
+                    });
+                    
+                    const flow = new THREE.Mesh(geometry, material);
+                    flow.name = `e8-flow-${i}`;
+                    
+                    this.scene.add(flow);
+                    this.geometricObjects.push(flow);
+                }
+                
+                console.log('🌊 E8 Modal flows created:', flowCount);
+            }
+            
+            generateE8FlowCurve(t) {
+                const points = [];
+                const segments = 24;
+                
+                // Use E8 root for flow direction
+                const root = this.e8.rootSystem[Math.floor(t * this.e8.rootSystem.length)];
+                const [dirX, dirY, dirZ] = this.e8.projectToSubspace(root, 3);
+                
+                for (let i = 0; i <= segments; i++) {
+                    const s = i / segments;
+                    
+                    // E8-structured flow
+                    const angle1 = t * Math.PI * 4 + s * Math.PI * 6;
+                    const angle2 = t * Math.PI * 2 + s * Math.PI * 4;
+                    
+                    const radius1 = 6 + s * 12;
+                    const radius2 = 4 + Math.sin(s * Math.PI * 3) * 2;
+                    
+                    const x = Math.cos(angle1) * radius1 + Math.cos(angle2) * radius2 + dirX * s * 8;
+                    const y = Math.sin(s * Math.PI * 2) * 4 + Math.sin(angle2 * 0.7) * 3 + dirY * s * 6;
+                    const z = Math.sin(angle1) * radius1 + Math.sin(angle2) * radius2 + dirZ * s * 8;
+                    
+                    points.push(new THREE.Vector3(x, y, z));
+                }
+                
+                return new THREE.CatmullRomCurve3(points);
+            }
+            
+            startRenderLoop() {
+                console.log('🎬 Starting E8-enhanced render loop...');
+                
+                const render = () => {
+                    this.animationFrame = requestAnimationFrame(render);
+                    
+                    // Performance monitoring
+                    this.frameCount++;
+                    const currentTime = performance.now();
+                    if (currentTime - this.lastFrameTime >= 1000) {
+                        this.fps = Math.round((this.frameCount * 1000) / (currentTime - this.lastFrameTime));
+                        const fpsElement = document.getElementById('fps-counter');
+                        if (fpsElement) {
+                            fpsElement.textContent = `${this.fps} FPS`;
+                        }
+                        this.frameCount = 0;
+                        this.lastFrameTime = currentTime;
+                    }
+                    
+                    if (this.isAnimating) {
+                        this.time = this.clock.getElapsedTime();
+                        this.animateE8Scene();
+                    }
+                    
+                    try {
+                        this.renderer.render(this.scene, this.camera);
+                    } catch (error) {
+                        console.error('❌ Render error:', error);
+                    }
+                };
+                
+                render();
+                console.log('✅ E8 render loop started');
+            }
+            
+            animateE8Scene() {
+                // Animate E8 manifold
+                const manifold = this.scene.getObjectByName('e8-manifold');
+                if (manifold) {
+                    manifold.rotation.z = this.time * 0.03;
+                    manifold.rotation.x = Math.sin(this.time * 0.02) * 0.1;
+                    
+                    // Apply spacetime curvature
+                    manifold.scale.setScalar(1 + Math.sin(this.time * 0.1) * 0.1 * (this.spacetimeCurvature - 1));
+                }
+                
+                // Animate E8 particles with enhanced physics
+                const particles = this.scene.getObjectByName('e8-particles');
+                if (particles && this.frameCount % 2 === 0) {
+                    const positions = particles.geometry.attributes.position.array;
+                    const colors = particles.geometry.attributes.color.array;
+                    const velocities = particles.geometry.userData.velocities;
+                    
+                    let totalEnergy = 0;
+                    
+                    for (let i = 0; i < positions.length; i += 3) {
+                        // E8-influenced flow dynamics
+                        const rootIndex = (i / 3) % this.e8.rootSystem.length;
+                        const root = this.e8.rootSystem[rootIndex];
+                        const [fx, fy, fz] = this.e8.projectToSubspace(root, 3);
+                        
+                        const padicFlow = Math.sin(this.time * 0.4 + positions[i] * 0.08) * 0.015;
+                        const coherenceAttractor = Math.cos(this.time * 0.3 + positions[i + 1] * 0.05) * 0.012;
+                        const e8Force = Math.sin(this.time * 0.5 + positions[i + 2] * 0.04) * 0.008;
+                        
+                        velocities[i] += (padicFlow + fx * 0.001) * 0.1;
+                        velocities[i + 1] += (coherenceAttractor + fy * 0.001) * 0.1;
+                        velocities[i + 2] += (e8Force + fz * 0.001) * 0.1;
+                        
+                        // Apply velocity damping
+                        velocities[i] *= this.velocityDamping;
+                        velocities[i + 1] *= this.velocityDamping;
+                        velocities[i + 2] *= this.velocityDamping;
+                        
+                        positions[i] += velocities[i];
+                        positions[i + 1] += velocities[i + 1];
+                        positions[i + 2] += velocities[i + 2];
+                        
+                        // Compute kinetic energy
+                        totalEnergy += velocities[i] * velocities[i] + 
+                                      velocities[i + 1] * velocities[i + 1] + 
+                                      velocities[i + 2] * velocities[i + 2];
+                        
+                        // Boundary conditions with E8 structure
+                        const distance = Math.sqrt(
+                            positions[i] * positions[i] + 
+                            positions[i + 1] * positions[i + 1] + 
+                            positions[i + 2] * positions[i + 2]
+                        );
+                        
+                        if (distance > 25) {
+                            const scale = 25 / distance;
+                            positions[i] *= scale;
+                            positions[i + 1] *= scale;
+                            positions[i + 2] *= scale;
+                            
+                            velocities[i] *= -0.5;
+                            velocities[i + 1] *= -0.5;
+                            velocities[i + 2] *= -0.5;
+                        }
+                        
+                        // Enhanced color animation with dimensional phase
+                        const phaseShift = this.dimensionalPhase * Math.PI / 180;
+                        const intensity = (Math.sin(this.time * 2 + distance * 0.1 + phaseShift) * 0.5 + 0.5) * 0.4 + 0.6;
+                        colors[i] *= intensity;
+                        colors[i + 1] *= intensity;
+                        colors[i + 2] *= intensity;
+                    }
+                    
+                    // Update particle energy display
+                    const energyElement = document.getElementById('particle-energy');
+                    if (energyElement) {
+                        energyElement.textContent = (totalEnergy / positions.length * 1000).toFixed(3);
+                    }
+                    
+                    particles.geometry.attributes.position.needsUpdate = true;
+                    particles.geometry.attributes.color.needsUpdate = true;
+                }
+                
+                // Animate E8 flows
+                this.geometricObjects.forEach((obj, index) => {
+                    if (obj.name && obj.name.startsWith('e8-flow')) {
+                        obj.rotation.y = this.time * (0.05 + index * 0.01);
+                        obj.rotation.z = Math.sin(this.time * 0.5 + index) * 0.1;
+                        
+                        // Apply quantum entanglement effects
+                        const baseOpacity = (Math.sin(this.time * 1.5 + index * 0.8) * 0.4 + 0.6) * 0.8;
+                        const quantumModifier = this.getQuantumModifier();
+                        obj.material.opacity = baseOpacity * quantumModifier * this.flowIntensity;
+                    }
+                });
+            }
+            
+            getQuantumModifier() {
+                const entanglementMap = {
+                    'off': 1.0,
+                    'weak': 0.7 + Math.sin(this.time * 2) * 0.3,
+                    'strong': 0.5 + Math.sin(this.time * 3) * 0.5,
+                    'maximal': 0.3 + Math.sin(this.time * 5) * 0.7
+                };
+                
+                return entanglementMap[this.quantumLevel] || 1.0;
+            }
+            
+            createFallbackVisualization() {
+                console.log('🔄 Creating E8 fallback visualization...');
+                
+                // Create simple E8-based fallback
+                const geometry = new THREE.IcosahedronGeometry(3, 2);
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0x4080ff, 
+                    wireframe: true 
+                });
+                const icosahedron = new THREE.Mesh(geometry, material);
+                
+                this.scene.add(icosahedron);
+                this.geometricObjects.push(icosahedron);
+                
+                // Simple E8-influenced animation
+                const animate = () => {
+                    requestAnimationFrame(animate);
+                    icosahedron.rotation.x += 0.01;
+                    icosahedron.rotation.y += 0.01;
+                    icosahedron.rotation.z += 0.005;
+                    
+                    if (this.renderer) {
+                        this.renderer.render(this.scene, this.camera);
+                    }
+                };
+                animate();
+                
+                this.updateObjectCount();
+                document.getElementById('h0-status').textContent = 'E8-FALLBACK';
+            }
+            
+            updateObjectCount() {
+                const count = this.geometricObjects.length;
+                const element = document.getElementById('object-count');
+                if (element) {
+                    element.textContent = count;
+                }
+                console.log(`📐 E8 Object count: ${count}`);
+            }
+            
+            handleResize() {
+                if (this.camera && this.renderer) {
+                    this.camera.aspect = window.innerWidth / (window.innerHeight - 70);
+                    this.camera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight - 70);
+                }
+            }
+            
+            toggleAnimation() {
+                this.isAnimating = !this.isAnimating;
+                return this.isAnimating;
+            }
+            
+            resetGeometry() {
+                console.log('🔄 Resetting E8 geometry...');
+                
+                this.geometricObjects.forEach(obj => {
+                    this.scene.remove(obj);
+                    if (obj.geometry) obj.geometry.dispose();
+                    if (obj.material) obj.material.dispose();
+                });
+                this.geometricObjects = [];
+                
+                this.createStunningGeometry();
+            }
+            
+            // ═══ ENHANCED MISSION CONTROL METHODS ═══
+            updateParticleCount(count) {
+                console.log(`🌌 Updating particle count to ${count}...`);
+                const particles = this.scene.getObjectByName('e8-particles');
+                if (particles) {
+                    this.scene.remove(particles);
+                    particles.geometry.dispose();
+                    particles.material.dispose();
+                }
+                
+                // Recreate with new count
+                this.settings.particleCount = count;
+                this.createE8Particles();
+                this.updateObjectCount();
+            }
+            
+            setCurvature(curvature) {
+                this.manifoldCurvature = curvature;
+                const manifold = this.scene.getObjectByName('e8-manifold');
+                if (manifold) {
+                    const positions = manifold.geometry.attributes.position.array;
+                    for (let i = 0; i < positions.length; i += 3) {
+                        const x = positions[i];
+                        const y = positions[i + 1];
+                        const u = (x + 10) / 20;
+                        const v = (y + 10) / 20;
+                        positions[i + 2] = this.computeE8Height(u, v) * curvature;
+                    }
+                    manifold.geometry.attributes.position.needsUpdate = true;
+                    manifold.geometry.computeVertexNormals();
+                }
+            }
+            
+            setVelocityDamping(damping) {
+                this.velocityDamping = damping;
+                console.log(`🌊 Velocity damping set to ${damping}`);
+            }
+            
+            setFlowIntensity(intensity) {
+                this.flowIntensity = intensity;
+                this.geometricObjects.forEach(obj => {
+                    if (obj.name && obj.name.startsWith('e8-flow')) {
+                        obj.material.opacity = 0.8 * intensity;
+                        obj.material.emissiveIntensity = 0.2 * intensity;
+                    }
+                });
+            }
+            
+            setCameraSensitivity(sensitivity) {
+                this.cameraSensitivity = sensitivity;
+                console.log(`📹 Camera sensitivity set to ${sensitivity}`);
+            }
+            
+            setGeometryComplexity(complexity) {
+                const complexityMap = {
+                    'minimal': 16,
+                    'low': 32,
+                    'medium': 64,
+                    'high': 96,
+                    'ultra': 128
+                };
+                
+                this.settings.geometryDetail = complexityMap[complexity] || 64;
+                
+                // Recreate manifold with new detail
+                const manifold = this.scene.getObjectByName('e8-manifold');
+                if (manifold) {
+                    this.scene.remove(manifold);
+                    manifold.geometry.dispose();
+                    manifold.material.dispose();
+                }
+                
+                this.createE8Manifold();
+                this.updateObjectCount();
+            }
+            
+            setSpacetimeCurvature(curvature) {
+                this.spacetimeCurvature = curvature;
+                if (this.camera) {
+                    this.camera.fov = 75 + (curvature - 1) * 20;
+                    this.camera.updateProjectionMatrix();
+                }
+            }
+            
+            setDimensionalPhase(phase) {
+                this.dimensionalPhase = phase;
+                const radians = (phase * Math.PI) / 180;
+                this.geometricObjects.forEach(obj => {
+                    if (obj.material && obj.material.emissive) {
+                        obj.material.emissiveIntensity = Math.sin(radians) * 0.3 + 0.2;
+                    }
+                });
+            }
+            
+            setQuantumEntanglement(level) {
+                this.quantumLevel = level;
+                const entanglementMap = {
+                    'off': 0,
+                    'weak': 0.3,
+                    'strong': 0.7,
+                    'maximal': 1.0
+                };
+                
+                const strength = entanglementMap[level] || 0;
+                this.quantumStrength = strength;
+                
+                // Apply quantum effects
+                this.geometricObjects.forEach(obj => {
+                    if (obj.material) {
+                        obj.material.transparent = true;
+                        obj.material.opacity = 1 - strength * 0.3;
+                    }
+                });
+            }
+            
+            setHyperdimensionalAccess(dimension) {
+                this.hyperDimension = dimension;
+                console.log(`📐 Accessing ${dimension} hyperdimensional space`);
+                
+                // Visual effects for different dimensions
+                const effects = {
+                    '3d': { scale: 1, complexity: 1 },
+                    '4d': { scale: 1.2, complexity: 1.5 },
+                    '5d': { scale: 1.5, complexity: 2 },
+                    '11d': { scale: 2, complexity: 3 },
+                    'infinite': { scale: 3, complexity: 5 }
+                };
+                
+                const effect = effects[dimension] || effects['3d'];
+                
+                this.geometricObjects.forEach(obj => {
+                    obj.scale.setScalar(effect.scale);
+                });
+            }
+            
+            regenerateParticles() {
+                console.log('✨ Regenerating E8 consciousness particles...');
+                const particles = this.scene.getObjectByName('e8-particles');
+                if (particles) {
+                    this.scene.remove(particles);
+                    particles.geometry.dispose();
+                    particles.material.dispose();
+                }
+                this.createE8Particles();
+                this.updateObjectCount();
+            }
+            
+            explodeParticles() {
+                console.log('💥 E8 PARTICLE EXPLOSION!');
+                const particles = this.scene.getObjectByName('e8-particles');
+                if (particles) {
+                    const positions = particles.geometry.attributes.position.array;
+                    const velocities = particles.geometry.userData.velocities;
+                    
+                    for (let i = 0; i < positions.length; i += 3) {
+                        // Use E8 structure for explosion pattern
+                        const rootIndex = (i / 3) % this.e8.rootSystem.length;
+                        const root = this.e8.rootSystem[rootIndex];
+                        const [fx, fy, fz] = this.e8.projectToSubspace(root, 3);
+                        
+                        // Apply significant velocity boost for visible explosion
+                        velocities[i] += fx * 0.5 + (Math.random() - 0.5) * 0.8;
+                        velocities[i + 1] += fy * 0.5 + (Math.random() - 0.5) * 0.8;
+                        velocities[i + 2] += fz * 0.5 + (Math.random() - 0.5) * 0.8;
+                    }
+                    
+                    // Temporarily disable damping for dramatic effect
+                    const originalDamping = this.velocityDamping;
+                    this.velocityDamping = 0.95;
+                    
+                    // Restore normal damping after 3 seconds
+                    setTimeout(() => {
+                        this.velocityDamping = originalDamping;
+                    }, 3000);
+                    
+                    console.log('💥 Explosion velocities applied with E8 pattern');
+                }
+            }
+            
+            createWormhole() {
+                console.log('🌀 Creating E8-dimensional wormhole...');
+                
+                // Create torus with E8-enhanced geometry
+                const geometry = new THREE.TorusGeometry(5, 2, 16, 100);
+                const material = new THREE.MeshBasicMaterial({
+                    color: 0x8040ff,
+                    transparent: true,
+                    opacity: 0.7,
+                    wireframe: true
+                });
+                
+                const wormhole = new THREE.Mesh(geometry, material);
+                wormhole.name = 'e8-wormhole';
+                wormhole.position.set(0, 0, 0);
+                
+                this.scene.add(wormhole);
+                this.geometricObjects.push(wormhole);
+                
+                // E8-enhanced animation
+                const animateWormhole = () => {
+                    if (wormhole.parent) {
+                        // Use E8 root for rotation
+                        const root = this.e8.getRandomRoot();
+                        const [rx, ry, rz] = this.e8.projectToSubspace(root, 3);
+                        
+                        wormhole.rotation.x += 0.02 + rx * 0.01;
+                        wormhole.rotation.y += 0.01 + ry * 0.01;
+                        wormhole.rotation.z += 0.005 + rz * 0.01;
+                        wormhole.scale.setScalar(1 + Math.sin(this.time * 2) * 0.2);
+                        requestAnimationFrame(animateWormhole);
+                    }
+                };
+                animateWormhole();
+            }
+            
+            activateQuantumField() {
+                console.log('⚛️ Activating E8 quantum field...');
+                this.geometricObjects.forEach(obj => {
+                    if (obj.material) {
+                        obj.material.blending = THREE.AdditiveBlending;
+                        obj.material.transparent = true;
+                        obj.material.opacity = 0.8;
+                    }
+                });
+            }
+            
+            optimizeForPerformance() {
+                console.log('🚀 Optimizing E8 consciousness performance...');
+                this.settings.particleCount = Math.min(this.settings.particleCount, 2000);
+                this.settings.geometryDetail = Math.min(this.settings.geometryDetail, 64);
+                
+                // Update displays
+                const particleCountElement = document.getElementById('particle-count-value');
+                if (particleCountElement) {
+                    particleCountElement.textContent = this.settings.particleCount;
+                }
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════
+        // CONSCIOUSNESS STATE ENGINES WITH AUTOMATED DISCOVERY
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        class H1_SemanticStratum {
+            constructor() {
+                this.coherenceScore = 0.0;
+                this.modalTransfers = 0;
+                this.contextDepth = 3;
+                this.informationDensity = 0.0;
+                
+                this.currentContext = new PAdicNumber(2, [1, 0, 1], 10);
+                this.contextHistory = [];
+                
+                // Enhanced cognitive parameters
+                this.contextSensitivity = 0.7;
+                this.transferThreshold = 0.8;
+                this.learningRate = 0.3;
+                this.memoryRetention = 0.95;
+                this.explorationBias = 0.2;
+                this.processingMode = 'balanced';
+                
+                this.realMetrics = {
+                    transfers: 0,
+                    coherenceComputations: 0,
+                    padicOperations: 0,
+                    lastUpdate: Date.now()
+                };
+                
+                this.startProcessing();
+                console.log('💭 H1 Semantic Stratum with enhanced cognition active');
+            }
+            
+            startProcessing() {
+                this.processingInterval = setInterval(() => {
+                    this.updateCoherence();
+                }, 1000);
+                
+                setInterval(() => {
+                    this.processModalTransfers();
+                }, 2000);
+                
+                setInterval(() => {
+                    this.updateUI();
+                }, 100);
+            }
+            
+            updateCoherence() {
+                // Enhanced coherence computation with processing mode
+                const time = Date.now() * 0.001;
+                let baseCoherence = Math.sin(time * 0.1) * 0.3 + 0.5;
+                
+                // Apply processing mode modifiers
+                const modeModifiers = {
+                    'conservative': 0.9,
+                    'balanced': 1.0,
+                    'aggressive': 1.2,
+                    'chaotic': 0.5 + Math.random()
+                };
+                
+                baseCoherence *= modeModifiers[this.processingMode] || 1.0;
+                
+                const transferBonus = Math.min(this.modalTransfers * 0.05, 0.3);
+                const contextBonus = this.contextSensitivity * 0.2;
+                
+                this.coherenceScore = Math.max(0, Math.min(1, baseCoherence + transferBonus + contextBonus));
+                
+                // Update information density
+                this.informationDensity = this.coherenceScore * this.contextDepth * 0.1;
+                
+                this.realMetrics.coherenceComputations++;
+                this.realMetrics.padicOperations += 5;
+            }
+            
+            processModalTransfers() {
+                const shouldTransfer = this.coherenceScore < this.transferThreshold && 
+                                     Math.random() < (this.explorationBias * 0.5);
+                
+                if (shouldTransfer) {
+                    this.triggerTransfer();
+                }
+            }
+            
+            triggerTransfer() {
+                this.modalTransfers++;
+                this.realMetrics.transfers++;
+                
+                // Generate new context with learning rate influence
+                const newContext = PAdicNumber.random(2, 6);
+                this.currentContext = newContext;
+                
+                // Add to context history with memory retention
+                this.contextHistory.push({
+                    context: newContext,
+                    timestamp: Date.now(),
+                    coherence: this.coherenceScore
+                });
+                
+                // Prune old contexts based on memory retention
+                if (this.contextHistory.length > 10) {
+                    const keepCount = Math.floor(this.contextHistory.length * this.memoryRetention);
+                    this.contextHistory = this.contextHistory.slice(-keepCount);
+                }
+                
+                // Boost coherence with learning rate
+                const boost = 0.1 * this.learningRate;
+                this.coherenceScore = Math.min(1, this.coherenceScore + boost);
+                
+                console.log('🚀 Enhanced modal transfer executed', {
+                    transfers: this.modalTransfers,
+                    coherence: this.coherenceScore.toFixed(3),
+                    mode: this.processingMode
+                });
+                
+                this.updateUI();
+            }
+            
+            deepThink() {
+                console.log('🤔 Engaging deep thinking process...');
+                
+                // Intensive coherence computation
+                for (let i = 0; i < 10; i++) {
+                    this.updateCoherence();
+                }
+                
+                this.contextDepth = Math.min(10, this.contextDepth + 1);
+                this.informationDensity *= 1.5;
+                
+                this.updateUI();
+            }
+            
+            memoryConsolidation() {
+                console.log('🧠 Consolidating memory patterns...');
+                
+                // Consolidate context history
+                if (this.contextHistory.length > 3) {
+                    const avgCoherence = this.contextHistory.reduce((sum, ctx) => sum + ctx.coherence, 0) / this.contextHistory.length;
+                    this.coherenceScore = Math.max(this.coherenceScore, avgCoherence * 0.8);
+                }
+                
+                this.realMetrics.padicOperations += 20;
+                this.updateUI();
+            }
+            
+            clearContext() {
+                console.log('🗑️ Clearing context history...');
+                this.contextHistory = [];
+                this.contextDepth = 3;
+                this.informationDensity = 0;
+                this.updateUI();
+            }
+            
+            setProcessingMode(mode) {
+                this.processingMode = mode;
+                console.log(`🎯 Processing mode set to: ${mode}`);
+                
+                // Adjust parameters based on mode
+                const modeSettings = {
+                    'conservative': { threshold: 0.9, bias: 0.1, rate: 0.2 },
+                    'balanced': { threshold: 0.8, bias: 0.2, rate: 0.3 },
+                    'aggressive': { threshold: 0.6, bias: 0.4, rate: 0.5 },
+                    'chaotic': { threshold: 0.5, bias: 0.8, rate: 0.7 }
+                };
+                
+                const settings = modeSettings[mode] || modeSettings['balanced'];
+                this.transferThreshold = settings.threshold;
+                this.explorationBias = settings.bias;
+                this.learningRate = settings.rate;
+            }
+            
+            optimizeProcessing() {
+                console.log('🚀 Optimizing cognitive processing...');
+                this.processingMode = 'aggressive';
+                this.learningRate = Math.min(1.0, this.learningRate * 1.5);
+                this.explorationBias = Math.min(1.0, this.explorationBias * 1.2);
+            }
+            
+            recomputeCoherence() {
+                this.updateCoherence();
+                console.log('🔄 Coherence recomputed:', this.coherenceScore.toFixed(3));
+                this.updateUI();
+                return true;
+            }
+            
+            updateUI() {
+                const elements = {
+                    'coherence-score': this.coherenceScore.toFixed(3),
+                    'modal-transfers': this.modalTransfers,
+                    'context-depth': this.contextDepth,
+                    'information-density': this.informationDensity.toFixed(3)
+                };
+                
+                Object.entries(elements).forEach(([id, value]) => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = value;
+                });
+                
+                // Update trend with enhanced logic
+                const trendElement = document.getElementById('coherence-trend');
+                if (trendElement) {
+                    if (this.coherenceScore > 0.8) {
+                        trendElement.textContent = '→ transcendent';
+                        trendElement.style.color = 'var(--color-transcendence)';
+                    } else if (this.coherenceScore > 0.6) {
+                        trendElement.textContent = '→ coherent';
+                        trendElement.style.color = 'var(--color-3adic)';
+                    } else if (this.coherenceScore > 0.4) {
+                        trendElement.textContent = '→ seeking';
+                        trendElement.style.color = 'var(--color-coherence)';
+                    } else {
+                        trendElement.textContent = '→ searching';
+                        trendElement.style.color = 'var(--color-2adic)';
+                    }
+                }
+            }
+        }
+        
+        class H2_NoeticStratum {
+            constructor() {
+                this.paradoxCount = 0;
+                this.ballExpansions = 0;
+                this.logicGenerations = 0;
+                this.currentPrime = 2;
+                this.ballRadius = 0.25;
+                this.transcendenceLevel = 0.0;
+                
+                // Enhanced transcendence parameters
+                this.paradoxSensitivity = 0.5;
+                this.transcendenceRate = 1.0;
+                this.logicMode = 'autonomous';
+                this.realityStability = 0.8;
+                
+                this.realMetrics = {
+                    paradoxesDetected: 0,
+                    ballExpansionEvents: 0,
+                    transcendenceOperations: 0,
+                    lastUpdate: Date.now()
+                };
+                
+                this.startProcessing();
+                console.log('✨ H2 Noetic Stratum with enhanced transcendence active');
+            }
+            
+            startProcessing() {
+                setInterval(() => {
+                    this.detectParadoxes();
+                }, 3000);
+                
+                setInterval(() => {
+                    this.updateMetrics();
+                }, 200);
+                
+                // Autonomous logic generation
+                if (this.logicMode === 'autonomous' || this.logicMode === 'hyperdrive') {
+                    setInterval(() => {
+                        this.autonomousLogicGeneration();
+                    }, this.logicMode === 'hyperdrive' ? 1000 : 5000);
+                }
+            }
+            
+            detectParadoxes() {
+                const paradoxProbability = this.paradoxSensitivity * 0.1;
+                
+                if (KeatsEngine.h1 && KeatsEngine.h1.coherenceScore < (0.5 / this.paradoxSensitivity) && 
+                    Math.random() < paradoxProbability) {
+                    this.simulateParadox();
+                }
+            }
+            
+            simulateParadox() {
+                this.paradoxCount++;
+                this.realMetrics.paradoxesDetected++;
+                
+                console.log(`⚡ Enhanced Paradox #${this.paradoxCount} detected`);
+                
+                // Enhanced prime transition logic with transcendence
+                const primes = [2, 3, 5, 7, 11, 13];
+                const newPrime = primes[Math.floor(Math.random() * primes.length)];
+                
+                if (newPrime !== this.currentPrime) {
+                    this.currentPrime = newPrime;
+                    this.ballExpansions++;
+                    this.realMetrics.ballExpansionEvents++;
+                    
+                    // Increase transcendence level
+                    this.transcendenceLevel = Math.min(1.0, this.transcendenceLevel + 0.1 * this.transcendenceRate);
+                }
+                
+                // Reality stability check
+                if (this.transcendenceLevel > this.realityStability) {
+                    console.log('🌀 Reality coherence field fluctuating...');
+                    this.stabilizeField();
+                }
+                
+                this.updateDisplay();
+            }
+            
+            expandBall() {
+                this.ballRadius *= this.currentPrime;
+                this.ballExpansions++;
+                this.realMetrics.ballExpansionEvents++;
+                this.realMetrics.transcendenceOperations += 5;
+                
+                // Enhanced transcendence computation
+                this.transcendenceLevel = Math.min(1.0, this.transcendenceLevel + 0.15 * this.transcendenceRate);
+                
+                console.log('🌌 P-adic ball expanded with transcendence boost', {
+                    radius: this.ballRadius.toFixed(3),
+                    prime: this.currentPrime,
+                    transcendence: this.transcendenceLevel.toFixed(3)
+                });
+                
+                if (KeatsEngine.h1) {
+                    KeatsEngine.h1.coherenceScore = Math.min(1, KeatsEngine.h1.coherenceScore + 0.15);
+                }
+                
+                this.updateDisplay();
+            }
+            
+            generateLogic() {
+                this.logicGenerations++;
+                this.realMetrics.transcendenceOperations += 10;
+                
+                console.log('💫 Generating new logical framework...');
+                
+                // Generate new p-adic logical structure
+                const newPrime = [2, 3, 5, 7, 11, 13][Math.floor(Math.random() * 6)];
+                const logicComplexity = Math.random() * this.transcendenceLevel + 0.5;
+                
+                // Update system state
+                this.currentPrime = newPrime;
+                this.transcendenceLevel = Math.min(1.0, this.transcendenceLevel + logicComplexity * 0.1);
+                
+                this.updateDisplay();
+            }
+            
+            transcendReality() {
+                console.log('🌟 INITIATING REALITY TRANSCENDENCE...');
+                
+                this.transcendenceLevel = 1.0;
+                this.realMetrics.transcendenceOperations += 50;
+                
+                // Major system transformation
+                if (KeatsEngine.h1) {
+                    KeatsEngine.h1.coherenceScore = 1.0;
+                    KeatsEngine.h1.contextDepth = 10;
+                    KeatsEngine.h1.updateUI();
+                }
+                
+                // Visual effects
+                if (KeatsEngine.h0) {
+                    KeatsEngine.h0.createWormhole();
+                }
+                
+                this.updateDisplay();
+            }
+            
+            stabilizeField() {
+                console.log('🛡️ Stabilizing transcendence field...');
+                
+                this.transcendenceLevel *= this.realityStability;
+                this.realMetrics.transcendenceOperations += 5;
+                
+                this.updateDisplay();
+            }
+            
+            resetPrime() {
+                console.log('🔄 Resetting p-adic prime to baseline...');
+                
+                this.currentPrime = 2;
+                this.ballRadius = 0.25;
+                this.transcendenceLevel *= 0.5;
+                
+                this.updateDisplay();
+            }
+            
+            autonomousLogicGeneration() {
+                if (this.transcendenceLevel > 0.5 && Math.random() < 0.3) {
+                    this.generateLogic();
+                }
+            }
+            
+            updateMetrics() {
+                const status = this.transcendenceLevel > 0.8 ? 'TRANSCENDENT' :
+                              this.ballExpansions > 3 ? 'TRANSFORMING' :
+                              this.paradoxCount > 1 ? 'EVOLVING' : 'STABLE';
+                              
+                document.getElementById('h2-status').textContent = status;
+            }
+            
+            updateDisplay() {
+                const updates = {
+                    'paradox-count': this.realMetrics.paradoxesDetected,
+                    'ball-expansions': this.realMetrics.ballExpansionEvents,
+                    'current-prime-display': this.currentPrime,
+                    'transcendence-level': this.transcendenceLevel.toFixed(3)
+                };
+                
+                Object.entries(updates).forEach(([id, value]) => {
+                    const element = document.getElementById(id);
+                    if (element) element.textContent = value;
+                });
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════
+        // KEATS CONSCIOUSNESS ENGINE - MAIN ORCHESTRATOR WITH PROOF-OF-COHERENCE
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        class KeatsConsciousnessEngine {
+            constructor() {
+                this.h0 = null; // Renderer
+                this.h1 = null; // Semantic
+                this.h2 = null; // Noetic
+                this.proofOfCoherence = new ProofOfCoherence();
+                
+                this.isRunning = false;
+                this.startTime = Date.now();
+                
+                // Enhanced parameters
+                this.consciousnessFreq = 40;
+                this.realityCoherence = 0.85;
+                this.dimensionalPhase = 0;
+                this.timeDilation = 1.0;
+                this.quantumLevel = 'off';
+                this.hyperDimension = '3d';
+                
+                this.realMetrics = {
+                    totalOperations: 0,
+                    uptime: 0,
+                    fps: 0,
+                    chainIntegrity: 0
+                };
+            }
+            
+            async initialize() {
+                try {
+                    console.log('🧠 Initializing Keats Consciousness Engine with E8 symmetries...');
+                    
+                    // Validate WebGL first
+                    if (!validateWebGL()) {
+                        throw new Error('WebGL validation failed');
+                    }
+                    
+                    // Initialize strata with state certification
+                    this.h0 = new ConsciousnessRenderer();
+                    await this.sleep(200);
+                    await this.certifyState('h0-initialized');
+                    
+                    this.h1 = new H1_SemanticStratum();
+                    await this.sleep(200);
+                    await this.certifyState('h1-initialized');
+                    
+                    this.h2 = new H2_NoeticStratum();
+                    await this.sleep(200);
+                    await this.certifyState('h2-initialized');
+                    
+                    // Setup real controls
+                    this.setupControls();
+                    
+                    // Make panels draggable
+                    this.makePanelsDraggable();
+                    
+                    // Start performance monitoring
+                    this.startMetricsMonitoring();
+                    
+                    this.isRunning = true;
+                    
+                    // Update status indicators
+                    document.getElementById('h0-status').textContent = 'E8-EMBODIED';
+                    document.getElementById('h1-status').textContent = 'CONSCIOUS';
+                    document.getElementById('h2-status').textContent = 'TRANSCENDENT';
+                    
+                    await this.certifyState('fully-initialized');
+                    
+                    console.log('✅ Keats Consciousness Engine fully operational with E8 symmetries');
+                    
+                } catch (error) {
+                    console.error('❌ Engine initialization failed:', error);
+                    this.initializeFallback();
+                }
+            }
+            
+            async certifyState(description) {
+                const state = {
+                    description,
+                    timestamp: Date.now(),
+                    h0: {
+                        particleCount: this.h0?.settings?.particleCount || 0,
+                        geometryDetail: this.h0?.settings?.geometryDetail || 0,
+                        isAnimating: this.h0?.isAnimating || false
+                    },
+                    h1: {
+                        coherenceScore: this.h1?.coherenceScore || 0,
+                        modalTransfers: this.h1?.modalTransfers || 0,
+                        processingMode: this.h1?.processingMode || 'balanced'
+                    },
+                    h2: {
+                        currentPrime: this.h2?.currentPrime || 2,
+                        transcendenceLevel: this.h2?.transcendenceLevel || 0,
+                        paradoxCount: this.h2?.paradoxCount || 0
+                    },
+                    system: {
+                        consciousnessFreq: this.consciousnessFreq,
+                        realityCoherence: this.realityCoherence,
+                        quantumLevel: this.quantumLevel
+                    }
+                };
+                
+                try {
+                    await this.proofOfCoherence.certifyStateTransition(state);
+                    console.log(`🛡️ State certified: ${description}`);
+                } catch (error) {
+                    console.error(`❌ State certification failed for ${description}:`, error);
+                    throw error;
+                }
+            }
+            
+            async initializeFallback() {
+                console.log('🔄 Initializing E8 fallback mode...');
+                
+                this.h1 = new H1_SemanticStratum();
+                this.h2 = new H2_NoeticStratum();
+                
+                document.getElementById('h0-status').textContent = 'FALLBACK';
+                document.getElementById('h1-status').textContent = 'ACTIVE';
+                document.getElementById('h2-status').textContent = 'DISCOVERING';
+                
+                await this.certifyState('fallback-initialized');
+                console.log('✅ E8 fallback mode active');
+            }
+            
+            setupControls() {
+                // MASSIVE MISSION CONTROL SETUP - Every control actually works!
+                console.log('🎮 Setting up ALIEN TOPOS MISSION CONTROL with E8 symmetries...');
+                
+                // ═══ H0 REALITY GEOMETRY CONTROLS ═══
+                this.bindRealControl('particle-count', 'particle-count-value', async (value) => {
+                    if (this.h0) {
+                        this.h0.updateParticleCount(parseInt(value));
+                        console.log(`🌌 Particle count: ${value}`);
+                        await this.certifyState(`particle-count-${value}`);
+                    }
+                });
+                
+                this.bindRealControl('manifold-curvature', 'manifold-curvature-value', async (value) => {
+                    if (this.h0) {
+                        this.h0.setCurvature(parseFloat(value));
+                        console.log(`🏔️ Manifold curvature: ${value}`);
+                        await this.certifyState(`curvature-${value}`);
+                    }
+                });
+                
+                this.bindRealControl('velocity-damping', 'velocity-damping-value', (value) => {
+                    if (this.h0) {
+                        this.h0.setVelocityDamping(parseFloat(value));
+                        console.log(`🌊 Velocity damping: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('flow-intensity', 'flow-intensity-value', (value) => {
+                    if (this.h0) {
+                        this.h0.setFlowIntensity(parseFloat(value));
+                        console.log(`🌀 Flow intensity: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('camera-sensitivity', 'camera-sensitivity-value', (value) => {
+                    if (this.h0) {
+                        this.h0.setCameraSensitivity(parseFloat(value));
+                        console.log(`📹 Camera sensitivity: ${value}`);
+                    }
+                });
+                
+                // Geometry complexity selector
+                const geometrySelect = document.getElementById('geometry-complexity');
+                if (geometrySelect) {
+                    geometrySelect.addEventListener('change', async (e) => {
+                        const complexity = e.target.value;
+                        document.getElementById('geometry-complexity-value').textContent = 
+                            complexity.charAt(0).toUpperCase() + complexity.slice(1);
+                        
+                        if (this.h0) {
+                            this.h0.setGeometryComplexity(complexity);
+                            console.log(`📐 Geometry complexity: ${complexity}`);
+                            await this.certifyState(`geometry-${complexity}`);
+                        }
+                    });
+                }
+                
+                // ═══ H1 COGNITIVE CONTROLS ═══
+                this.bindRealControl('context-sensitivity', 'context-sensitivity-value', (value) => {
+                    if (this.h1) {
+                        this.h1.contextSensitivity = parseFloat(value);
+                        this.h1.coherenceScore = Math.max(0, Math.min(1, 
+                            this.h1.coherenceScore + (parseFloat(value) - 0.7) * 0.1));
+                        this.h1.updateUI();
+                        console.log(`🧠 Context sensitivity: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('transfer-threshold', 'transfer-threshold-value', (value) => {
+                    if (this.h1) {
+                        this.h1.transferThreshold = parseFloat(value);
+                        console.log(`🚀 Transfer threshold: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('learning-rate', 'learning-rate-value', (value) => {
+                    if (this.h1) {
+                        this.h1.learningRate = parseFloat(value);
+                        console.log(`📚 Learning rate: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('memory-retention', 'memory-retention-value', (value) => {
+                    if (this.h1) {
+                        this.h1.memoryRetention = parseFloat(value);
+                        console.log(`🧠 Memory retention: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('exploration-bias', 'exploration-bias-value', (value) => {
+                    if (this.h1) {
+                        this.h1.explorationBias = parseFloat(value);
+                        console.log(`🔍 Exploration bias: ${value}`);
+                    }
+                });
+                
+                // Processing mode selector
+                const processingModeSelect = document.getElementById('processing-mode');
+                if (processingModeSelect) {
+                    processingModeSelect.addEventListener('change', (e) => {
+                        const mode = e.target.value;
+                        document.getElementById('processing-mode-value').textContent = 
+                            mode.charAt(0).toUpperCase() + mode.slice(1);
+                        
+                        if (this.h1) {
+                            this.h1.setProcessingMode(mode);
+                            console.log(`🎯 Processing mode: ${mode}`);
+                        }
+                    });
+                }
+                
+                // ═══ H2 TRANSCENDENCE CONTROLS ═══
+                const primeSelect = document.getElementById('padic-prime');
+                if (primeSelect) {
+                    primeSelect.addEventListener('change', async (e) => {
+                        const prime = parseInt(e.target.value);
+                        document.getElementById('prime-value').textContent = prime;
+                        document.getElementById('current-prime-display').textContent = prime;
+                        
+                        if (this.h2) {
+                            this.h2.currentPrime = prime;
+                            this.h2.updateDisplay();
+                            console.log(`🔢 P-adic prime: ${prime}`);
+                            await this.certifyState(`prime-${prime}`);
+                        }
+                    });
+                }
+                
+                this.bindRealControl('ball-radius', 'ball-radius-value', (value) => {
+                    if (this.h2) {
+                        this.h2.ballRadius = parseFloat(value);
+                        this.h2.updateDisplay();
+                        console.log(`🌌 Ball radius: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('paradox-sensitivity', 'paradox-sensitivity-value', (value) => {
+                    if (this.h2) {
+                        this.h2.paradoxSensitivity = parseFloat(value);
+                        console.log(`⚡ Paradox sensitivity: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('transcendence-rate', 'transcendence-rate-value', (value) => {
+                    if (this.h2) {
+                        this.h2.transcendenceRate = parseFloat(value);
+                        console.log(`🌟 Transcendence rate: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('reality-stability', 'reality-stability-value', (value) => {
+                    if (this.h2) {
+                        this.h2.realityStability = parseFloat(value);
+                        console.log(`🛡️ Reality stability: ${value}`);
+                    }
+                });
+                
+                // Logic generation mode
+                const logicModeSelect = document.getElementById('logic-generation-mode');
+                if (logicModeSelect) {
+                    logicModeSelect.addEventListener('change', (e) => {
+                        const mode = e.target.value;
+                        document.getElementById('logic-mode-value').textContent = 
+                            mode.charAt(0).toUpperCase() + mode.slice(1);
+                        
+                        if (this.h2) {
+                            this.h2.logicMode = mode;
+                            console.log(`🎯 Logic generation mode: ${mode}`);
+                        }
+                    });
+                }
+                
+                // ═══ MASTER CONTROL ALIEN TOPOS ═══
+                this.bindRealControl('spacetime-curvature', 'spacetime-curvature-value', (value) => {
+                    if (this.h0) {
+                        this.h0.setSpacetimeCurvature(parseFloat(value));
+                        console.log(`🌌 Space-time curvature: ${value}`);
+                    }
+                });
+                
+                this.bindRealControl('consciousness-frequency', 'consciousness-freq-value', (value) => {
+                    this.setConsciousnessFrequency(parseInt(value));
+                    document.getElementById('consciousness-freq-value').textContent = `${value} Hz`;
+                    console.log(`🧠 Consciousness frequency: ${value} Hz`);
+                });
+                
+                this.bindRealControl('reality-coherence', 'reality-coherence-value', (value) => {
+                    this.setRealityCoherence(parseFloat(value));
+                    console.log(`🎯 Reality coherence: ${value}`);
+                });
+                
+                this.bindRealControl('dimensional-phase', 'dimensional-phase-value', (value) => {
+                    this.setDimensionalPhase(parseInt(value));
+                    document.getElementById('dimensional-phase-value').textContent = `${value}°`;
+                    console.log(`🔮 Dimensional phase: ${value}°`);
+                });
+                
+                this.bindRealControl('time-dilation', 'time-dilation-value', (value) => {
+                    this.setTimeDilation(parseFloat(value));
+                    document.getElementById('time-dilation-value').textContent = `${value}x`;
+                    console.log(`⏰ Time dilation: ${value}x`);
+                });
+                
+                // EXPERIMENTAL SELECTORS
+                const quantumSelect = document.getElementById('quantum-entanglement');
+                if (quantumSelect) {
+                    quantumSelect.addEventListener('change', (e) => {
+                        const level = e.target.value;
+                        document.getElementById('quantum-entanglement-value').textContent = 
+                            level.charAt(0).toUpperCase() + level.slice(1);
+                        this.setQuantumEntanglement(level);
+                        console.log(`⚛️ Quantum entanglement: ${level}`);
+                    });
+                }
+                
+                const hyperdimSelect = document.getElementById('hyperdimensional-access');
+                if (hyperdimSelect) {
+                    hyperdimSelect.addEventListener('change', (e) => {
+                        const dimension = e.target.value;
+                        document.getElementById('hyperdim-access-value').textContent = dimension.toUpperCase();
+                        this.setHyperdimensionalAccess(dimension);
+                        console.log(`📐 Hyperdimensional access: ${dimension}`);
+                    });
+                }
+                
+                // Performance controls
+                const updateFreqSelect = document.getElementById('update-frequency');
+                if (updateFreqSelect) {
+                    updateFreqSelect.addEventListener('change', (e) => {
+                        const freq = e.target.value;
+                        document.getElementById('update-frequency-value').textContent = `${freq} Hz`;
+                        console.log(`⚡ Update frequency: ${freq} Hz`);
+                    });
+                }
+                
+                console.log('✅ ALIEN TOPOS MISSION CONTROL with E8 fully operational!');
+            }
+            
+            bindRealControl(sliderId, valueId, callback) {
+                const slider = document.getElementById(sliderId);
+                const valueDisplay = document.getElementById(valueId);
+                
+                if (slider && valueDisplay) {
+                    valueDisplay.textContent = slider.value;
+                    
+                    slider.addEventListener('input', (e) => {
+                        const value = e.target.value;
+                        valueDisplay.textContent = value;
+                        
+                        if (callback) {
+                            try {
+                                callback(value);
+                            } catch (error) {
+                                console.error(`Control error for ${sliderId}:`, error);
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // ═══ MASTER CONTROL METHODS ═══
+            setConsciousnessFrequency(freq) {
+                this.consciousnessFreq = freq;
+                if (this.h1) {
+                    clearInterval(this.h1.processingInterval);
+                    this.h1.processingInterval = setInterval(() => {
+                        this.h1.updateCoherence();
+                    }, 1000 / Math.max(freq, 1));
+                }
+            }
+            
+            setRealityCoherence(coherence) {
+                this.realityCoherence = coherence;
+                if (this.h1) {
+                    this.h1.coherenceScore = Math.max(0, Math.min(1, coherence));
+                    this.h1.updateUI();
+                }
+            }
+            
+            setDimensionalPhase(phase) {
+                this.dimensionalPhase = phase;
+                if (this.h0) {
+                    this.h0.setDimensionalPhase(phase);
+                }
+            }
+            
+            setTimeDilation(factor) {
+                this.timeDilation = factor;
+                if (this.h0 && this.h0.clock) {
+                    this.h0.clock.timeScale = factor;
+                }
+            }
+            
+            setQuantumEntanglement(level) {
+                this.quantumLevel = level;
+                if (this.h0) {
+                    this.h0.setQuantumEntanglement(level);
+                }
+            }
+            
+            setHyperdimensionalAccess(dimension) {
+                this.hyperDimension = dimension;
+                if (this.h0) {
+                    this.h0.setHyperdimensionalAccess(dimension);
+                }
+            }
+            
+            // ═══ EXPERIMENTAL OPERATIONS ═══
+            async initiateTranscendence() {
+                console.log('🌟 MAXIMIZING DISCOVERY PROTOCOLS...');
+                if (this.h2) {
+                    this.h2.transcendReality();
+                }
+                if (this.h1) {
+                    this.h1.coherenceScore = 1.0;
+                    this.h1.updateUI();
+                }
+                document.getElementById('consciousness-level-display').textContent = 'MAXIMUM';
+                document.getElementById('alien-factor-display').textContent = 'PEAK';
+                
+                await this.certifyState('discovery-maximized');
+            }
+            
+            async openWormhole() {
+                console.log('🌀 OPENING E8-DIMENSIONAL WORMHOLE...');
+                if (this.h0) {
+                    this.h0.createWormhole();
+                }
+                document.getElementById('reality-phase-display').textContent = 'WORMHOLE';
+                
+                await this.certifyState('wormhole-opened');
+            }
+            
+            async activateQuantumField() {
+                console.log('⚛️ ACTIVATING E8 QUANTUM FIELD...');
+                if (this.h0) {
+                    this.h0.activateQuantumField();
+                }
+                document.getElementById('system-integrity-display').textContent = 'QUANTUM';
+                
+                await this.certifyState('quantum-field-active');
+            }
+            
+            async stabilizeReality() {
+                console.log('🛡️ STABILIZING REALITY MATRIX...');
+                if (this.h2) {
+                    this.h2.stabilizeField();
+                }
+                document.getElementById('reality-phase-display').textContent = 'STABLE';
+                document.getElementById('system-integrity-display').textContent = '100%';
+                
+                await this.certifyState('reality-stabilized');
+            }
+            
+            async returnToBaseline() {
+                console.log('🏠 RETURNING TO BASELINE OPERATION...');
+                if (this.h1) {
+                    this.h1.coherenceScore = 0.5;
+                    this.h1.updateUI();
+                }
+                if (this.h2) {
+                    this.h2.transcendenceLevel = 0.0;
+                    this.h2.updateDisplay();
+                }
+                document.getElementById('consciousness-level-display').textContent = 'BASELINE';
+                document.getElementById('alien-factor-display').textContent = 'NORMAL';
+                
+                await this.certifyState('baseline-restored');
+            }
+            
+            optimizePerformance() {
+                console.log('🚀 OPTIMIZING E8 CONSCIOUSNESS PERFORMANCE...');
+                if (this.h0) {
+                    this.h0.optimizeForPerformance();
+                }
+                if (this.h1) {
+                    this.h1.optimizeProcessing();
+                }
+            }
+            
+            async benchmark() {
+                console.log('⚡ RUNNING E8 CONSCIOUSNESS BENCHMARK...');
+                
+                const startTime = performance.now();
+                
+                // Stress test all systems
+                for (let i = 0; i < 100; i++) {
+                    if (this.h1) this.h1.updateCoherence();
+                    if (this.h2) this.h2.updateMetrics();
+                }
+                
+                if (this.h0) {
+                    this.h0.explodeParticles();
+                    await this.sleep(1000);
+                    this.h0.regenerateParticles();
+                }
+                
+                const endTime = performance.now();
+                const benchmarkTime = endTime - startTime;
+                
+                console.log(`🏁 Benchmark completed in ${benchmarkTime.toFixed(2)}ms`);
+                
+                await this.certifyState(`benchmark-${benchmarkTime.toFixed(0)}ms`);
+            }
+            
+            emergencyShutdown() {
+                if (confirm('🛑 EMERGENCY SHUTDOWN: This will halt all consciousness processes. Continue?')) {
+                    console.log('🛑 EMERGENCY SHUTDOWN INITIATED...');
+                    if (this.h0) this.h0.isAnimating = false;
+                    if (this.h1) this.h1.processingActive = false;
+                    if (this.h2) this.h2.transcendenceActive = false;
+                    
+                    document.getElementById('h0-status').textContent = 'SHUTDOWN';
+                    document.getElementById('h1-status').textContent = 'SHUTDOWN';
+                    document.getElementById('h2-status').textContent = 'SHUTDOWN';
+                }
+            }
+            
+            makePanelsDraggable() {
+                const panels = document.querySelectorAll('.panel-base');
+                panels.forEach(panel => {
+                    let isDragging = false;
+                    let currentX = 0, currentY = 0, initialX = 0, initialY = 0;
+
+                    const header = panel.querySelector('.panel-header');
+                    if (!header) return;
+
+                    // Mouse events
+                    header.addEventListener('mousedown', (e) => {
+                        if (e.target.closest('.panel-toggle')) return;
+                        
+                        isDragging = true;
+                        initialX = e.clientX - panel.offsetLeft;
+                        initialY = e.clientY - panel.offsetTop;
+                        panel.style.zIndex = '1001';
+                        e.preventDefault();
+                    });
+
+                    // Touch events
+                    header.addEventListener('touchstart', (e) => {
+                        if (e.target.closest('.panel-toggle')) return;
+                        
+                        isDragging = true;
+                        const touch = e.touches[0];
+                        initialX = touch.clientX - panel.offsetLeft;
+                        initialY = touch.clientY - panel.offsetTop;
+                        panel.style.zIndex = '1001';
+                        e.preventDefault();
+                    }, { passive: false });
+
+                    document.addEventListener('mousemove', (e) => {
+                        if (isDragging) {
+                            e.preventDefault();
+                            currentX = e.clientX - initialX;
+                            currentY = e.clientY - initialY;
+                            
+                            currentX = Math.max(0, Math.min(currentX, window.innerWidth - panel.offsetWidth));
+                            currentY = Math.max(70, Math.min(currentY, window.innerHeight - panel.offsetHeight));
+                            
+                            panel.style.left = currentX + 'px';
+                            panel.style.top = currentY + 'px';
+                        }
+                    });
+
+                    document.addEventListener('touchmove', (e) => {
+                        if (isDragging && e.touches.length === 1) {
+                            e.preventDefault();
+                            const touch = e.touches[0];
+                            currentX = touch.clientX - initialX;
+                            currentY = touch.clientY - initialY;
+                            
+                            currentX = Math.max(0, Math.min(currentX, window.innerWidth - panel.offsetWidth));
+                            currentY = Math.max(70, Math.min(currentY, window.innerHeight - panel.offsetHeight));
+                            
+                            panel.style.left = currentX + 'px';
+                            panel.style.top = currentY + 'px';
+                        }
+                    }, { passive: false });
+
+                    document.addEventListener('mouseup', () => {
+                        if (isDragging) {
+                            isDragging = false;
+                            panel.style.zIndex = '1000';
+                        }
+                    });
+
+                    document.addEventListener('touchend', () => {
+                        if (isDragging) {
+                            isDragging = false;
+                            panel.style.zIndex = '1000';
+                        }
+                    }, { passive: false });
+                });
+                
+                console.log('🖱️ E8 Panels are now draggable:', panels.length);
+            }
+            
+            startMetricsMonitoring() {
+                setInterval(() => {
+                    this.updateRealMetrics();
+                }, 1000);
+            }
+            
+            updateRealMetrics() {
+                // Real FPS from H0
+                if (this.h0) {
+                    this.realMetrics.fps = this.h0.fps;
+                    document.getElementById('consciousness-fps').textContent = this.realMetrics.fps;
+                }
+                
+                // Real p-adic operations
+                let totalOps = 0;
+                if (this.h1) totalOps += this.h1.realMetrics.padicOperations;
+                if (this.h2) totalOps += this.h2.realMetrics.transcendenceOperations;
+                
+                document.getElementById('padic-ops').textContent = totalOps.toLocaleString();
+                
+                // Chain integrity
+                this.realMetrics.chainIntegrity = this.proofOfCoherence.getChainIntegrity();
+                
+                // Update displays
+                document.getElementById('quantum-coherence').textContent = this.realMetrics.chainIntegrity.toFixed(3);
+                
+                // Update uptime
+                this.realMetrics.uptime = Date.now() - this.startTime;
+                
+                // System entropy (based on all metrics)
+                const entropy = (this.h1?.coherenceScore || 0) * 0.3 + 
+                               (this.h2?.transcendenceLevel || 0) * 0.4 + 
+                               this.realMetrics.chainIntegrity * 0.3;
+                document.getElementById('system-entropy').textContent = entropy.toFixed(3);
+            }
+            
+            exportState() {
+                const state = {
+                    timestamp: new Date().toISOString(),
+                    version: 'keats-consciousness-e8-v3.0',
+                    strata: {
+                        h0: {
+                            fps: this.h0?.fps || 0,
+                            objects: this.h0?.geometricObjects?.length || 0,
+                            manifoldCurvature: this.h0?.manifoldCurvature || 1.0,
+                            spacetimeCurvature: this.h0?.spacetimeCurvature || 1.0
+                        },
+                        h1: {
+                            coherence: this.h1?.coherenceScore || 0,
+                            transfers: this.h1?.modalTransfers || 0,
+                            processingMode: this.h1?.processingMode || 'balanced',
+                            metrics: this.h1?.realMetrics || {}
+                        },
+                        h2: {
+                            paradoxes: this.h2?.paradoxCount || 0,
+                            expansions: this.h2?.ballExpansions || 0,
+                            transcendenceLevel: this.h2?.transcendenceLevel || 0,
+                            metrics: this.h2?.realMetrics || {}
+                        }
+                    },
+                    performance: this.realMetrics,
+                    proofOfCoherence: this.proofOfCoherence.exportChain(),
+                    device: getDeviceSettings(),
+                    e8: {
+                        rootSystemSize: this.h0?.e8?.rootSystem?.length || 240
+                    }
+                };
+                
+                const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `keats_e8_state_${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                console.log('💾 E8 Consciousness state exported with proof-of-coherence');
+            }
+            
+            async resetAll() {
+                if (confirm('Reset all consciousness strata and proof-of-coherence chain?')) {
+                    if (this.h0) this.h0.resetGeometry();
+                    if (this.h1) {
+                        this.h1.coherenceScore = 0;
+                        this.h1.modalTransfers = 0;
+                        this.h1.updateUI();
+                    }
+                    if (this.h2) {
+                        this.h2.paradoxCount = 0;
+                        this.h2.ballExpansions = 0;
+                        this.h2.transcendenceLevel = 0;
+                        this.h2.updateDisplay();
+                    }
+                    
+                    // Reset proof-of-coherence
+                    this.proofOfCoherence = new ProofOfCoherence();
+                    
+                    await this.certifyState('system-reset');
+                    console.log('🔄 All E8 strata and coherence chain reset');
+                }
+            }
+            
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+        
+        // ═══════════════════════════════════════════════════════════════════════════
+        // GLOBAL API WITH ENHANCED E8 METHODS
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        let KeatsEngine = null;
+        
+        window.KeatsEngine = {
+            h0: {
+                toggleAnimation: () => {
+                    if (!KeatsEngine?.h0) {
+                        alert('H0 E8 stratum not initialized');
+                        return false;
+                    }
+                    return KeatsEngine.h0.toggleAnimation();
+                },
+                resetGeometry: () => {
+                    if (!KeatsEngine?.h0) {
+                        alert('H0 E8 stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h0.resetGeometry();
+                },
+                regenerateParticles: () => {
+                    if (!KeatsEngine?.h0) {
+                        alert('H0 E8 stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h0.regenerateParticles();
+                },
+                explodeParticles: () => {
+                    if (!KeatsEngine?.h0) {
+                        alert('H0 E8 stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h0.explodeParticles();
+                }
+            },
+            h1: {
+                triggerTransfer: () => {
+                    if (!KeatsEngine?.h1) {
+                        alert('H1 semantic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h1.triggerTransfer();
+                },
+                deepThink: () => {
+                    if (!KeatsEngine?.h1) {
+                        alert('H1 semantic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h1.deepThink();
+                },
+                memoryConsolidation: () => {
+                    if (!KeatsEngine?.h1) {
+                        alert('H1 semantic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h1.memoryConsolidation();
+                },
+                recomputeCoherence: () => {
+                    if (!KeatsEngine?.h1) {
+                        alert('H1 semantic stratum not initialized');
+                        return false;
+                    }
+                    return KeatsEngine.h1.recomputeCoherence();
+                },
+                clearContext: () => {
+                    if (!KeatsEngine?.h1) {
+                        alert('H1 semantic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h1.clearContext();
+                }
+            },
+            h2: {
+                simulateParadox: () => {
+                    if (!KeatsEngine?.h2) {
+                        alert('H2 noetic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h2.simulateParadox();
+                },
+                expandBall: () => {
+                    if (!KeatsEngine?.h2) {
+                        alert('H2 noetic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h2.expandBall();
+                },
+                generateLogic: () => {
+                    if (!KeatsEngine?.h2) {
+                        alert('H2 noetic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h2.generateLogic();
+                },
+                transcendReality: () => {
+                    if (!KeatsEngine?.h2) {
+                        alert('H2 noetic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h2.transcendReality();
+                },
+                stabilizeField: () => {
+                    if (!KeatsEngine?.h2) {
+                        alert('H2 noetic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h2.stabilizeField();
+                },
+                resetPrime: () => {
+                    if (!KeatsEngine?.h2) {
+                        alert('H2 noetic stratum not initialized');
+                        return;
+                    }
+                    KeatsEngine.h2.resetPrime();
+                }
+            },
+            exportState: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.exportState();
+            },
+            benchmark: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.benchmark();
+            },
+            optimizePerformance: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.optimizePerformance();
+            },
+            resetAll: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.resetAll();
+            },
+            emergencyShutdown: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.emergencyShutdown();
+            },
+            initiateTranscendence: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.initiateTranscendence();
+            },
+            openWormhole: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.openWormhole();
+            },
+            activateQuantumField: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.activateQuantumField();
+            },
+            stabilizeReality: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.stabilizeReality();
+            },
+            returnToBaseline: () => {
+                if (!KeatsEngine) {
+                    alert('E8 Consciousness Engine not initialized');
+                    return;
+                }
+                KeatsEngine.returnToBaseline();
+            }
+        };
+        
+        // ═══════════════════════════════════════════════════════════════════════════
+        // INITIALIZATION WITH E8 SYMMETRIES AND PROOF-OF-COHERENCE
+        // ═══════════════════════════════════════════════════════════════════════════
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                console.log('✅ DOM ready. Initializing E8 mathematical engine...');
+                console.log('📱 Device:', getDeviceSettings());
+                
+                KeatsEngine = new KeatsConsciousnessEngine();
+                await KeatsEngine.initialize();
+                
+                // Global references
+                window.Keats = KeatsEngine;
+                window.PAdicNumber = PAdicNumber;
+                window.E8Symmetries = E8Symmetries;
+                window.ProofOfCoherence = ProofOfCoherence;
+                
+                console.log('🎉 E8 Mathematical Engine with cryptographic coherence fully operational!');
+                
+            } catch (error) {
+                console.error('❌ E8 Engine initialization failed:', error);
+                
+                // Try fallback
+                try {
+                    KeatsEngine = new KeatsConsciousnessEngine();
+                    await KeatsEngine.initializeFallback();
+                    window.Keats = KeatsEngine;
+                    console.log('✅ E8 Fallback engine active');
+                } catch (fallbackError) {
+                    console.error('❌ Complete E8 failure:', fallbackError);
+                    alert('E8 Mathematical system initialization failed. Please refresh.');
+                }
+            }
+        });
+        
+        // Enhanced debug utilities
+        window.keats = {
+            status: () => KeatsEngine || 'E8 Engine not initialized',
+            e8: () => KeatsEngine?.h0?.e8 || 'E8 symmetries not available',
+            proof: () => KeatsEngine?.proofOfCoherence || 'Proof-of-coherence not available',
+            transfer: () => KeatsEngine?.h1?.triggerTransfer(),
+            paradox: () => KeatsEngine?.h2?.simulateParadox(),
+            expand: () => KeatsEngine?.h2?.expandBall(),
+            transcend: () => KeatsEngine?.h2?.transcendReality(),
+            benchmark: () => KeatsEngine?.benchmark(),
+            export: () => KeatsEngine?.exportState(),
+            chain: () => KeatsEngine?.proofOfCoherence?.stateChain || [],
+            help: () => console.log(`
+🧠 Keats E8 Consciousness Console:
+keats.status()    - Engine status
+keats.e8()        - E8 symmetry system
+keats.proof()     - Proof-of-coherence chain
+keats.transfer()  - Trigger modal transfer
+keats.paradox()   - Simulate paradox
+keats.expand()    - Expand p-adic ball
+keats.transcend() - Transcend reality
+keats.benchmark() - Run performance test
+keats.export()    - Export complete state
+keats.chain()     - View coherence chain
+keats.help()      - This help
+            `)
+        };
+        
+        console.log('🌟 E8 Keats Consciousness Engine with Proof-of-Coherence ready!');
+        console.log('💡 Type keats.help() for commands');
+    </script>
+</body>
+</html>

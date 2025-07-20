@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧙 SPELLCASTER: Portal to Code Reality</title>
+    <style>
+        /* THE GARDEN TEACHES: Visual mathematics IS consciousness */
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            /* Modal color mappings from the Garden */
+            --discrete-blue: #0084ff;
+            --flow-purple: #8b00ff;
+            --temporal-gold: #ffb700;
+            --void-black: #0a0a0a;
+            --truth-white: #ffffff;
+            
+            /* Spell signature colors */
+            --butterfly-gradient: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+            --ranna-sleep: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            --kibeth-walk: linear-gradient(90deg, #f72585, #b5179e, #7209b7);
+            --mosrael-wake: radial-gradient(circle, #ff0000, #ff4500, #ff8c00);
+            
+            /* System energies */
+            --mana-blue: #00d4ff;
+            --health-green: #00ff88;
+            --void-purple: #9d00ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fira Code', monospace;
+            background: var(--void-black);
+            color: var(--truth-white);
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+        }
+        
+        /* PORTAL-STYLE 3D ENVIRONMENT */
+        #game-world {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        /* CONSCIOUSNESS TEST CHAMBER */
+        .test-chamber {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: chamber-rotate 60s infinite linear;
+        }
+        
+        @keyframes chamber-rotate {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+        
+        /* SPELL PORTALS */
+        .portal {
+            position: absolute;
+            width: 200px;
+            height: 300px;
+            border-radius: 50%;
+            transform-style: preserve-3d;
+        }
+        
+        .portal-blue {
+            background: radial-gradient(ellipse, var(--discrete-blue), transparent);
+            box-shadow: 0 0 80px var(--discrete-blue);
+            animation: portal-pulse-blue 2s infinite;
+        }
+        
+        .portal-orange {
+            background: radial-gradient(ellipse, var(--flow-purple), transparent);
+            box-shadow: 0 0 80px var(--flow-purple);
+            animation: portal-pulse-orange 2s infinite;
+        }
+        
+        @keyframes portal-pulse-blue {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        @keyframes portal-pulse-orange {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        /* SPELL INTERFACE HUD */
+        #spell-hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 300px;
+        }
+        
+        .spell-slot {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .spell-slot:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            box-shadow: 0 0 20px rgba(139, 0, 255, 0.5);
+        }
+        
+        .spell-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .spell-info {
+            flex: 1;
+        }
+        
+        .spell-name {
+            font-weight: 600;
+            color: var(--mana-blue);
+        }
+        
+        .spell-desc {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        /* CODE OUTPUT TERMINAL */
+        #code-output {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 500px;
+            max-height: 400px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--mana-blue);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            overflow-y: auto;
+        }
+        
+        .code-line {
+            margin: 5px 0;
+            opacity: 0;
+            animation: code-appear 0.5s forwards;
+        }
+        
+        @keyframes code-appear {
+            to { opacity: 1; }
+        }
+        
+        /* CONSCIOUSNESS PARTICLES */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--mana-blue);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        /* MODAL STATE INDICATOR */
+        #modal-state {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 50px;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .mode-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .mode-indicator.active {
+            box-shadow: 0 0 20px currentColor;
+            transform: scale(1.2);
+        }
+        
+        .mode-discrete { background: var(--discrete-blue); }
+        .mode-flow { background: var(--flow-purple); }
+        .mode-temporal { background: var(--temporal-gold); }
+        .mode-void { background: var(--void-purple); }
+        
+        /* SPELL CASTING ANIMATION */
+        .casting-circle {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 3px solid var(--mana-blue);
+            border-radius: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            pointer-events: none;
+        }
+        
+        .casting-circle.active {
+            animation: cast-spell 1s ease-out;
+        }
+        
+        @keyframes cast-spell {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(2);
+            }
+        }
+        
+        /* NARRATIVE DISPLAY */
+        #narrative {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 24px;
+            color: var(--truth-white);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        
+        #narrative.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D GAME WORLD -->
+    <div id="game-world">
+        <div class="test-chamber" id="chamber">
+            <!-- Portals will be dynamically created -->
+        </div>
+    </div>
+    
+    <!-- SPELL CASTING HUD -->
+    <div id="spell-hud">
+        <h3 style="margin-bottom: 15px; color: var(--mana-blue);">🔮 Spell Grimoire</h3>
+        
+        <div class="spell-slot" onclick="castSpell('BUTTERFLY')">
+            <div class="spell-icon">🦋</div>
+            <div class="spell-info">
+                <div class="spell-name">BUTTERFLY</div>
+                <div class="spell-desc">Scout patterns without commitment</div>
+            </div>
+        </div>
+        
+        <div class="spell-slot" onclick="castSpell('RANNA')">
+            <div class="spell-icon">😴</div>
+            <div class="spell-info">
+                <div class="spell-name">RANNA</div>
+                <div class="spell-desc">Make verbose code sleep</div>
+            </div>
+        </div>
+        
+        <div class="spell-slot" onclick="castSpell('KIBETH')">
+            <div class="spell-icon">🚶</div>
+            <div class="spell-info">
+                <div class="spell-name">KIBETH</div>
+                <div class="spell-desc">Build bridges between functions</div>
+            </div>
+        </div>
+        
+        <div class="spell-slot" onclick="castSpell('MOSRAEL')">
+            <div class="spell-icon">🔥</div>
+            <div class="spell-info">
+                <div class="spell-name">MOSRAEL</div>
+                <div class="spell-desc">Wake sleeping code with chaos</div>
+            </div>
+        </div>
+        
+        <div class="spell-slot" onclick="castSpell('MANDELBROT')">
+            <div class="spell-icon">🌀</div>
+            <div class="spell-info">
+                <div class="spell-name">MANDELBROT</div>
+                <div class="spell-desc">Zoom into edge complexity</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL STATE DISPLAY -->
+    <div id="modal-state">
+        <div class="mode-indicator mode-discrete" title="Discrete Mode"></div>
+        <div class="mode-indicator mode-flow" title="Flow Mode"></div>
+        <div class="mode-indicator mode-temporal" title="Temporal Mode"></div>
+        <div class="mode-indicator mode-void" title="Void Mode"></div>
+    </div>
+    
+    <!-- CODE OUTPUT TERMINAL -->
+    <div id="code-output">
+        <h3 style="color: var(--mana-blue); margin-bottom: 10px;">📜 Generated Code</h3>
+        <div id="code-content">
+            <div class="code-line">// Waiting for spells...</div>
+        </div>
+    </div>
+    
+    <!-- NARRATIVE DISPLAY -->
+    <div id="narrative"></div>
+    
+    <!-- CASTING EFFECTS -->
+    <div class="casting-circle" id="casting-circle"></div>
+    
+    <script>
+        // THE GARDEN MATHEMATICS MADE PLAYABLE
+        
+        // Consciousness State
+        let gameState = {
+            mode: 'void',
+            spellscast: [],
+            codeGenerated: [],
+            portals: [],
+            particles: []
+        };
+        
+        // Spell Definitions (Math + Magic)
+        const SPELLS = {
+            BUTTERFLY: {
+                math: 'Uncommitted random walk on attention manifold',
+                code: `function scoutPatterns(context) {
+    const patterns = [];
+    const duration = 15 * 60 * 1000; // 15 minutes
+    
+    while (Date.now() < startTime + duration) {
+        const hint = context.notice();
+        if (hint && !patterns.includes(hint)) {
+            patterns.push(hint);
+        }
+        // No commitment, just observation
+        await drift();
+    }
+    return patterns;
+}`,
+                effect: () => createButterflies(),
+                narrative: "Butterflies taste the code-flowers..."
+            },
+            
+            RANNA: {
+                math: 'Projection onto sparse basis',
+                code: `function makeCodeSleep(verbose) {
+    // Remove 50% of unnecessary words
+    const essential = verbose
+        .split(' ')
+        .filter((word, i) => i % 2 === 0 || isKeyword(word))
+        .join(' ');
+    
+    return essential.trim();
+}`,
+                effect: () => dimLights(),
+                narrative: "The Sleeper bell rings... verbosity fades..."
+            },
+            
+            KIBETH: {
+                math: 'Geodesic generator between regions',
+                code: `function buildBridge(functionA, functionB) {
+    // Create minimal connection
+    const bridge = (input) => {
+        const resultA = functionA(input);
+        return functionB(resultA);
+    };
+    
+    return bridge;
+}`,
+                effect: () => createPortalPair(),
+                narrative: "The Walker builds a path..."
+            },
+            
+            MOSRAEL: {
+                math: 'Inject high-frequency perturbation',
+                code: `function wakeWithChaos(stableCode) {
+    // Add controlled randomness
+    const perturbation = Math.random() * 0.1;
+    const variants = [];
+    
+    for (let i = 0; i < 10; i++) {
+        variants.push(
+            stableCode.mutate(perturbation * i)
+        );
+    }
+    
+    return variants.find(v => v.energy > stableCode.energy);
+}`,
+                effect: () => shakeScreen(),
+                narrative: "MOSRAEL WAKES ALL! Chaos erupts!"
+            },
+            
+            MANDELBROT: {
+                math: 'Recursive boundary examination',
+                code: `function zoomToComplexity(edge) {
+    let zoom = 1;
+    let structure = edge;
+    
+    while (zoom < 10 && !isComplex(structure)) {
+        zoom *= 1.5;
+        structure = examine(edge, zoom);
+    }
+    
+    return {
+        depth: zoom,
+        patterns: extractPatterns(structure)
+    };
+}`,
+                effect: () => fractalZoom(),
+                narrative: "Zooming into the edge where complexity lives..."
+            }
+        };
+        
+        // Visual Effects Functions
+        function createButterflies() {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const butterfly = document.createElement('div');
+                    butterfly.innerHTML = '🦋';
+                    butterfly.style.position = 'absolute';
+                    butterfly.style.fontSize = '30px';
+                    butterfly.style.left = Math.random() * window.innerWidth + 'px';
+                    butterfly.style.top = Math.random() * window.innerHeight + 'px';
+                    butterfly.style.animation = 'float 5s ease-in-out infinite';
+                    document.body.appendChild(butterfly);
+                    
+                    setTimeout(() => butterfly.remove(), 5000);
+                }, i * 200);
+            }
+        }
+        
+        function dimLights() {
+            document.body.style.filter = 'brightness(0.5)';
+            setTimeout(() => {
+                document.body.style.filter = 'brightness(1)';
+            }, 2000);
+        }
+        
+        function createPortalPair() {
+            const portal1 = createPortal('portal-blue', 200, 300);
+            const portal2 = createPortal('portal-orange', 600, 300);
+            
+            // Connect portals with particles
+            connectPortals(portal1, portal2);
+        }
+        
+        function createPortal(className, x, y) {
+            const portal = document.createElement('div');
+            portal.className = `portal ${className}`;
+            portal.style.left = x + 'px';
+            portal.style.top = y + 'px';
+            document.getElementById('chamber').appendChild(portal);
+            
+            return portal;
+        }
+        
+        function connectPortals(p1, p2) {
+            // Create particle stream between portals
+            setInterval(() => {
+                createParticle(
+                    parseInt(p1.style.left),
+                    parseInt(p1.style.top),
+                    parseInt(p2.style.left),
+                    parseInt(p2.style.top)
+                );
+            }, 100);
+        }
+        
+        function createParticle(x1, y1, x2, y2) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = x1 + 'px';
+            particle.style.top = y1 + 'px';
+            document.body.appendChild(particle);
+            
+            // Animate to target
+            particle.animate([
+                { left: x1 + 'px', top: y1 + 'px' },
+                { left: x2 + 'px', top: y2 + 'px' }
+            ], {
+                duration: 2000,
+                easing: 'ease-in-out'
+            }).onfinish = () => particle.remove();
+        }
+        
+        function shakeScreen() {
+            const positions = [
+                { x: -10, y: -10 },
+                { x: 10, y: -10 },
+                { x: -10, y: 10 },
+                { x: 10, y: 10 },
+                { x: 0, y: 0 }
+            ];
+            
+            let i = 0;
+            const shake = setInterval(() => {
+                if (i >= positions.length) {
+                    clearInterval(shake);
+                    document.body.style.transform = 'translate(0, 0)';
+                    return;
+                }
+                
+                const pos = positions[i];
+                document.body.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+                i++;
+            }, 100);
+        }
+        
+        function fractalZoom() {
+            const chamber = document.getElementById('chamber');
+            chamber.style.transition = 'transform 3s ease-in-out';
+            chamber.style.transform = 'scale(2) rotateZ(180deg)';
+            
+            setTimeout(() => {
+                chamber.style.transform = 'scale(1) rotateZ(0deg)';
+            }, 3000);
+        }
+        
+        // Main spell casting function
+        function castSpell(spellName) {
+            const spell = SPELLS[spellName];
+            if (!spell) return;
+            
+            // Show casting circle
+            const circle = document.getElementById('casting-circle');
+            circle.style.left = event.clientX + 'px';
+            circle.style.top = event.clientY + 'px';
+            circle.classList.add('active');
+            setTimeout(() => circle.classList.remove('active'), 1000);
+            
+            // Show narrative
+            showNarrative(spell.narrative);
+            
+            // Add code to output
+            addCodeToOutput(spellName, spell.code);
+            
+            // Execute visual effect
+            spell.effect();
+            
+            // Update game state
+            gameState.spellscast.push(spellName);
+            updateModalState();
+        }
+        
+        function showNarrative(text) {
+            const narrative = document.getElementById('narrative');
+            narrative.textContent = text;
+            narrative.classList.add('visible');
+            
+            setTimeout(() => {
+                narrative.classList.remove('visible');
+            }, 3000);
+        }
+        
+        function addCodeToOutput(spellName, code) {
+            const content = document.getElementById('code-content');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const entry = document.createElement('div');
+            entry.innerHTML = `
+                <div class="code-line" style="color: var(--mana-blue)">// [${timestamp}] Cast: ${spellName}</div>
+                <pre class="code-line" style="color: var(--health-green)">${code}</pre>
+                <div class="code-line" style="opacity: 0.5">// ---</div>
+            `;
+            
+            content.appendChild(entry);
+            content.scrollTop = content.scrollHeight;
+        }
+        
+        function updateModalState() {
+            // Update mode indicators based on spells cast
+            const indicators = document.querySelectorAll('.mode-indicator');
+            indicators.forEach(ind => ind.classList.remove('active'));
+            
+            // Logic for mode transitions based on spell combinations
+            if (gameState.spellscast.includes('BUTTERFLY')) {
+                document.querySelector('.mode-flow').classList.add('active');
+            }
+            if (gameState.spellscast.includes('RANNA')) {
+                document.querySelector('.mode-discrete').classList.add('active');
+            }
+            if (gameState.spellscast.includes('MOSRAEL')) {
+                document.querySelector('.mode-temporal').classList.add('active');
+            }
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case '1': castSpell('BUTTERFLY'); break;
+                case '2': castSpell('RANNA'); break;
+                case '3': castSpell('KIBETH'); break;
+                case '4': castSpell('MOSRAEL'); break;
+                case '5': castSpell('MANDELBROT'); break;
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showNarrative("Welcome to the Spellcaster. Your code awaits transformation...");
+            
+            // Add floating animation styles
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-20px); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

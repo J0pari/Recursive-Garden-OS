@@ -1,0 +1,17 @@
+id,phase,title,status,lines_tokens,interfaces_deps,provides_capabilities,tests_pass_pct,wobble_impact,risk_score,notes
+S0-001,0,Protocell Container,draft,0,none,process_boundary,0,baseline,0.1,Basic containerization with capability membrane
+S1-001,1,Digital Mitosis,draft,70,S0-001,cell_division;lineage_tracking,0,critical,0.2,Energy-conserving division with invariant preservation
+S2-001,2,Morphogen Fields,planned,0,S1-001,field_sampling;diffusion,0,medium,0.3,Spatial gradients for differentiation
+S3-001,3,Cell Differentiation,planned,0,"S1-001,S2-001",type_activation;specialization,0,medium,0.4,Threshold-based capability profiles
+S4-001,4,Tissue Formation,planned,0,"S3-001",cooperative_clusters,0,low,0.5,Emergent multi-cell behaviors
+S5-001,5,Signaling Network,planned,0,"S4-001",message_routing;event_bus,0,medium,0.6,Inter-cell communication
+S6-001,6,Plastic Synapses,planned,0,"S5-001",weight_adaptation;learning,0,high,0.7,Hebbian weight updates
+S7-001,7,Global Workspace,planned,0,"S5-001,S6-001",broadcast_integration,0,high,0.8,Consciousness integration layer
+S8-001,8,Reflective Monitor,planned,0,"S7-001",introspection;adaptation,0,critical,0.9,Self-awareness and error correction
+INST-001,0,WobbleMonitor,frozen,350,"none",wobble_measurement,100,none,0.0,Phase 0 instrumentation complete
+INST-002,0,SheafHarness,frozen,420,"none",coherence_verification,100,none,0.0,Automated gluing proofs
+INST-003,0,EnergyLedger,frozen,380,"none",efficiency_tracking,100,none,0.0,Resource accounting
+INST-004,0,NumericalStability,frozen,290,"none",error_bounds,100,none,0.0,Drift prevention
+INST-005,0,PropertySatisfaction,frozen,310,"none",completion_criteria,100,none,0.0,Replaces token counting
+INST-006,0,RiskClassifier,frozen,340,"none",capability_gating,100,none,0.0,Emergence safety
+INST-007,0,ReversibleSandbox,frozen,410,"none",trial_runs,100,none,0.0,Safe testing environment

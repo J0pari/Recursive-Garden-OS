@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌀 CLAUDE CODE VISUALIZER: Live Token Topology</title>
+    <style>
+        :root {
+            /* Claude colors */
+            --claude-primary: #6B46C1;
+            --claude-secondary: #9333EA;
+            --claude-accent: #C084FC;
+            --claude-dark: #1E1B4B;
+            --claude-light: #EDE9FE;
+            
+            /* Token energy levels */
+            --token-hot: #FF006E;
+            --token-warm: #FFB700;
+            --token-cool: #00D4FF;
+            --token-cold: #0084FF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--claude-dark);
+            color: white;
+            font-family: 'Fira Code', monospace;
+            overflow: hidden;
+        }
+        
+        #token-universe {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        #canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* HUD showing live metrics */
+        #hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(30, 27, 75, 0.9);
+            border: 2px solid var(--claude-accent);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            min-width: 300px;
+        }
+        
+        .metric {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .metric-label {
+            color: var(--claude-accent);
+            font-size: 14px;
+        }
+        
+        .metric-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .token-count {
+            font-size: 36px;
+            color: var(--claude-primary);
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        /* Live edit indicator */
+        #live-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(107, 70, 193, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--claude-accent);
+        }
+        
+        .pulse {
+            width: 12px;
+            height: 12px;
+            background: var(--token-hot);
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+        
+        /* ZNFE Cluster visualization */
+        .znfe-cluster {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 2px solid var(--claude-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, 
+                rgba(147, 51, 234, 0.3) 0%, 
+                rgba(107, 70, 193, 0.1) 50%, 
+                transparent 100%);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .znfe-cluster:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--claude-accent);
+        }
+        
+        .znfe-label {
+            color: white;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        /* Code preview panel */
+        #code-preview {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-height: 200px;
+            background: rgba(30, 27, 75, 0.95);
+            border: 2px solid var(--claude-accent);
+            border-radius: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            font-size: 12px;
+            display: none;
+        }
+        
+        #code-preview.active {
+            display: block;
+        }
+        
+        .code-line {
+            margin: 2px 0;
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+        
+        .code-line.active {
+            opacity: 1;
+            color: var(--token-warm);
+            transform: translateX(10px);
+        }
+        
+        /* Spell cast effect */
+        .spell-ring {
+            position: absolute;
+            border: 3px solid var(--claude-accent);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .spell-ring.casting {
+            animation: spell-cast 1.5s ease-out;
+        }
+        
+        @keyframes spell-cast {
+            0% {
+                width: 50px;
+                height: 50px;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="token-universe">
+        <canvas id="canvas"></canvas>
+        
+        <!-- HUD -->
+        <div id="hud">
+            <h3 style="color: var(--claude-accent); margin-bottom: 15px;">Token Topology</h3>
+            <div class="token-count" id="token-count">0</div>
+            <div class="metric">
+                <span class="metric-label">Tokens/Second</span>
+                <span class="metric-value" id="token-rate">0</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Complexity</span>
+                <span class="metric-value" id="complexity">0.0</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Coherence</span>
+                <span class="metric-value" id="coherence">0.0</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Active Spells</span>
+                <span class="metric-value" id="active-spells">0</span>
+            </div>
+        </div>
+        
+        <!-- Live indicator -->
+        <div id="live-indicator">
+            <div class="pulse"></div>
+            <span>LIVE CLAUDE CODE</span>
+        </div>
+        
+        <!-- ZNFE Clusters (lily pads) -->
+        <div class="znfe-cluster" style="top: 150px; right: 200px;" data-cluster="syntax">
+            <div class="znfe-label">SYNTAX<br>CLUSTER</div>
+        </div>
+        <div class="znfe-cluster" style="top: 300px; right: 100px;" data-cluster="semantic">
+            <div class="znfe-label">SEMANTIC<br>CLUSTER</div>
+        </div>
+        <div class="znfe-cluster" style="bottom: 200px; right: 150px;" data-cluster="quantum">
+            <div class="znfe-label">QUANTUM<br>CLUSTER</div>
+        </div>
+        
+        <!-- Code preview -->
+        <div id="code-preview">
+            <div id="code-content"></div>
+        </div>
+        
+        <!-- Spell cast effects -->
+        <div class="spell-ring" id="spell-ring"></div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // TOKEN TOPOLOGY ENGINE
+        class TokenTopologyEngine {
+            constructor() {
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(
+                    75, 
+                    window.innerWidth / window.innerHeight, 
+                    0.1, 
+                    1000
+                );
+                
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: document.getElementById('canvas'),
+                    antialias: true
+                });
+                
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(window.devicePixelRatio);
+                
+                this.camera.position.z = 50;
+                
+                // Token particles
+                this.tokens = [];
+                this.tokenGeometry = new THREE.BufferGeometry();
+                this.tokenMaterial = new THREE.PointsMaterial({
+                    size: 3,
+                    vertexColors: true,
+                    blending: THREE.AdditiveBlending,
+                    transparent: true
+                });
+                
+                // Metrics
+                this.metrics = {
+                    tokenCount: 0,
+                    tokensPerSecond: 0,
+                    complexity: 0,
+                    coherence: 0,
+                    activeSpells: 0
+                };
+                
+                // ZNFE connections
+                this.znfeConnections = [];
+                
+                // Initialize
+                this.initLights();
+                this.initTokenField();
+                this.connectToClaude();
+                
+                this.animate();
+            }
+            
+            initLights() {
+                const ambientLight = new THREE.AmbientLight(0x404040);
+                this.scene.add(ambientLight);
+                
+                const pointLight = new THREE.PointLight(0x6B46C1, 2);
+                pointLight.position.set(0, 0, 50);
+                this.scene.add(pointLight);
+            }
+            
+            initTokenField() {
+                // Create initial token field
+                const positions = [];
+                const colors = [];
+                
+                for (let i = 0; i < 1000; i++) {
+                    // Positions in 3D space
+                    positions.push(
+                        (Math.random() - 0.5) * 100,
+                        (Math.random() - 0.5) * 100,
+                        (Math.random() - 0.5) * 100
+                    );
+                    
+                    // Colors based on token "temperature"
+                    const heat = Math.random();
+                    colors.push(heat, 0.5, 1 - heat);
+                }
+                
+                this.tokenGeometry.setAttribute('position', 
+                    new THREE.Float32BufferAttribute(positions, 3)
+                );
+                this.tokenGeometry.setAttribute('color', 
+                    new THREE.Float32BufferAttribute(colors, 3)
+                );
+                
+                this.tokenCloud = new THREE.Points(this.tokenGeometry, this.tokenMaterial);
+                this.scene.add(this.tokenCloud);
+            }
+            
+            connectToClaude() {
+                // Simulate connection to Claude Code
+                // In real implementation, this would connect to VS Code extension
+                console.log('🔮 Connecting to Claude Code...');
+                
+                // Simulate receiving token updates
+                this.simulateTokenStream();
+                
+                // Listen for ZNFE cluster clicks
+                document.querySelectorAll('.znfe-cluster').forEach(cluster => {
+                    cluster.addEventListener('click', (e) => {
+                        this.activateZNFECluster(e.target.dataset.cluster);
+                    });
+                });
+            }
+            
+            simulateTokenStream() {
+                // Simulate live token updates from Claude Code
+                setInterval(() => {
+                    const newTokens = Math.floor(Math.random() * 50) + 10;
+                    this.addTokens(newTokens);
+                    
+                    // Update metrics
+                    this.metrics.tokenCount += newTokens;
+                    this.metrics.tokensPerSecond = newTokens * 2; // 500ms interval
+                    this.metrics.complexity = Math.sin(Date.now() * 0.0001) * 0.5 + 0.5;
+                    this.metrics.coherence = Math.cos(Date.now() * 0.00015) * 0.3 + 0.7;
+                    
+                    this.updateHUD();
+                }, 500);
+            }
+            
+            addTokens(count) {
+                const positions = this.tokenGeometry.attributes.position.array;
+                const colors = this.tokenGeometry.attributes.color.array;
+                
+                // Add new tokens with beautiful patterns
+                for (let i = 0; i < count; i++) {
+                    const index = (this.metrics.tokenCount + i) % (positions.length / 3);
+                    const idx3 = index * 3;
+                    
+                    // Create spiral pattern
+                    const angle = index * 0.1;
+                    const radius = 20 + index * 0.01;
+                    const height = (index * 0.1) % 100 - 50;
+                    
+                    positions[idx3] = Math.cos(angle) * radius;
+                    positions[idx3 + 1] = height;
+                    positions[idx3 + 2] = Math.sin(angle) * radius;
+                    
+                    // Color based on position
+                    const heat = (height + 50) / 100;
+                    colors[idx3] = heat;
+                    colors[idx3 + 1] = 0.5;
+                    colors[idx3 + 2] = 1 - heat;
+                }
+                
+                this.tokenGeometry.attributes.position.needsUpdate = true;
+                this.tokenGeometry.attributes.color.needsUpdate = true;
+            }
+            
+            activateZNFECluster(clusterType) {
+                console.log(`🌺 Activating ZNFE ${clusterType} cluster`);
+                
+                // Visual feedback
+                this.castSpell(event.clientX, event.clientY);
+                
+                // Apply transformation based on cluster type
+                switch(clusterType) {
+                    case 'syntax':
+                        this.applySyntaxTransform();
+                        break;
+                    case 'semantic':
+                        this.applySemanticTransform();
+                        break;
+                    case 'quantum':
+                        this.applyQuantumTransform();
+                        break;
+                }
+                
+                this.metrics.activeSpells++;
+                this.updateHUD();
+            }
+            
+            applySyntaxTransform() {
+                // Rearrange tokens into syntax tree structure
+                const positions = this.tokenGeometry.attributes.position.array;
+                const tokenCount = positions.length / 3;
+                
+                for (let i = 0; i < tokenCount; i++) {
+                    const idx = i * 3;
+                    const level = Math.floor(Math.log2(i + 1));
+                    const posInLevel = i - (Math.pow(2, level) - 1);
+                    
+                    // Tree structure
+                    positions[idx] = (posInLevel - Math.pow(2, level - 1) / 2) * 10;
+                    positions[idx + 1] = -level * 10;
+                    positions[idx + 2] = 0;
+                }
+                
+                this.tokenGeometry.attributes.position.needsUpdate = true;
+            }
+            
+            applySemanticTransform() {
+                // Cluster tokens by semantic similarity
+                const positions = this.tokenGeometry.attributes.position.array;
+                const colors = this.tokenGeometry.attributes.color.array;
+                const tokenCount = positions.length / 3;
+                
+                // Create semantic clusters
+                const clusterCount = 7;
+                for (let i = 0; i < tokenCount; i++) {
+                    const idx = i * 3;
+                    const cluster = i % clusterCount;
+                    const angleInCluster = (i / clusterCount) * 0.1;
+                    
+                    // Cluster positions
+                    const clusterAngle = (cluster / clusterCount) * Math.PI * 2;
+                    const clusterRadius = 30;
+                    
+                    positions[idx] = Math.cos(clusterAngle) * clusterRadius + 
+                                    Math.cos(angleInCluster) * 10;
+                    positions[idx + 1] = Math.sin(angleInCluster) * 10;
+                    positions[idx + 2] = Math.sin(clusterAngle) * clusterRadius + 
+                                        Math.sin(angleInCluster) * 10;
+                    
+                    // Color by cluster
+                    colors[idx] = cluster / clusterCount;
+                    colors[idx + 1] = 1 - cluster / clusterCount;
+                    colors[idx + 2] = 0.5;
+                }
+                
+                this.tokenGeometry.attributes.position.needsUpdate = true;
+                this.tokenGeometry.attributes.color.needsUpdate = true;
+            }
+            
+            applyQuantumTransform() {
+                // Quantum superposition visualization
+                const positions = this.tokenGeometry.attributes.position.array;
+                const tokenCount = positions.length / 3;
+                const time = Date.now() * 0.001;
+                
+                for (let i = 0; i < tokenCount; i++) {
+                    const idx = i * 3;
+                    const phase = i * 0.1 + time;
+                    
+                    // Quantum wave function visualization
+                    const r = 30 * Math.sin(phase * 0.5);
+                    const theta = phase;
+                    const phi = Math.sin(phase * 0.3) * Math.PI;
+                    
+                    positions[idx] = r * Math.sin(phi) * Math.cos(theta);
+                    positions[idx + 1] = r * Math.sin(phi) * Math.sin(theta);
+                    positions[idx + 2] = r * Math.cos(phi);
+                }
+                
+                this.tokenGeometry.attributes.position.needsUpdate = true;
+            }
+            
+            castSpell(x, y) {
+                const ring = document.getElementById('spell-ring');
+                ring.style.left = x + 'px';
+                ring.style.top = y + 'px';
+                ring.classList.remove('casting');
+                void ring.offsetWidth; // Force reflow
+                ring.classList.add('casting');
+            }
+            
+            updateHUD() {
+                document.getElementById('token-count').textContent = 
+                    this.metrics.tokenCount.toLocaleString();
+                document.getElementById('token-rate').textContent = 
+                    this.metrics.tokensPerSecond;
+                document.getElementById('complexity').textContent = 
+                    this.metrics.complexity.toFixed(3);
+                document.getElementById('coherence').textContent = 
+                    this.metrics.coherence.toFixed(3);
+                document.getElementById('active-spells').textContent = 
+                    this.metrics.activeSpells;
+            }
+            
+            animate() {
+                requestAnimationFrame(() => this.animate());
+                
+                // Rotate token cloud
+                this.tokenCloud.rotation.y += 0.001;
+                this.tokenCloud.rotation.x += 0.0005;
+                
+                // Pulse effect based on token rate
+                const scale = 1 + Math.sin(Date.now() * 0.001) * 0.1;
+                this.tokenCloud.scale.set(scale, scale, scale);
+                
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const engine = new TokenTopologyEngine();
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                engine.camera.aspect = window.innerWidth / window.innerHeight;
+                engine.camera.updateProjectionMatrix();
+                engine.renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === ' ') {
+                    document.getElementById('code-preview').classList.toggle('active');
+                }
+            });
+            
+            console.log(`
+🌀 CLAUDE CODE VISUALIZER ACTIVE
+================================
+- Watching live token generation
+- ZNFE clusters ready for activation
+- Press SPACE to toggle code preview
+
+Token topology reflects:
+- Rate of generation
+- Semantic clustering
+- Syntactic structure
+- Quantum superpositions
+
+Click lily pad clusters to transform!
+            `);
+        });
+    </script>
+</body>
+</html>

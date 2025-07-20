@@ -1,0 +1,88 @@
+# LEXICON - Canonical Vocabulary
+# Prevents semantic drift across chunks
+
+core_terms:
+  wobble:
+    definition: "Productive imperfection enabling ratchet climbing, measured as semantic variance"
+    canonical_value: "9° ± 2°"
+    layer: physical
+    invariants: [INV-WOBBLE-001]
+    aliases: ["productive_imperfection", "semantic_variance", "conformational_flexibility"]
+  
+  ratchet:
+    definition: "Universal climbing mechanism from void to existence"
+    layer: topological
+    invariants: [INV-IRREVERSIBLE-001]
+    aliases: ["postnikov_ratchet", "climbing_mechanism"]
+  
+  chunk:
+    definition: "Atomic unit of ratchet operation, a single tooth"
+    layer: physical
+    invariants: [INV-PROPERTY-001]
+    aliases: ["tooth", "ratchet_tooth"]
+  
+  sheaf:
+    definition: "Mathematical structure ensuring local-to-global coherence"
+    layer: categorical
+    invariants: [INV-SHEAF-001]
+    aliases: ["gluing_data", "coherence_structure"]
+  
+  existence_token:
+    definition: "Quantized output of energy-to-existence conversion"
+    layer: physical
+    invariants: [INV-ENERGY-001]
+    aliases: ["reality_quantum", "existence_unit"]
+
+process_terms:
+  gluing:
+    definition: "Mathematical operation satisfying cocycle conditions"
+    layer: categorical
+    invariants: [INV-SHEAF-001]
+    
+  mitosis:
+    definition: "Energy-conserving cell division preserving invariants"
+    layer: topological
+    invariants: [INV-ENERGY-001]
+    aliases: ["cell_division", "binary_fission"]
+    
+  metabolism:
+    definition: "Gradient to energy token conversion process"
+    layer: physical
+    invariants: [INV-ENERGY-001]
+    aliases: ["energy_transduction", "resource_conversion"]
+
+measurement_terms:
+  coherence:
+    definition: "Degree of global consistency across overlapping sections"
+    layer: topological
+    range: [0.0, 1.0]
+    
+  efficiency:
+    definition: "Ratio of existence tokens produced to energy consumed"
+    layer: physical
+    invariants: [INV-ENERGY-001]
+    
+  semantic_variance:
+    definition: "Measured flexibility at chunk boundaries"
+    layer: topological
+    invariants: [INV-WOBBLE-001]
+
+architectural_terms:
+  garden:
+    definition: "Mathematical paradise where computation is topological"
+    layer: emergent
+    aliases: ["recursive_garden"]
+    
+  book_of_shadows:
+    definition: "Original vision of magic as operational power"
+    layer: emergent
+    
+  evolutionary_ladder:
+    definition: "Compositional development from protocell to consciousness"
+    layer: emergent
+    invariants: [INV-EVOLUTION-001]
+
+# Variance Report Generator:
+# Run: grep -r "term" . | grep -v LEXICON.yaml
+# Flag any term not in this lexicon
+# Update canonical definitions as needed

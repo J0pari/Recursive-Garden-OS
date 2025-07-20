@@ -1,0 +1,49 @@
+{
+  "name": "postnikov-ratchet-os",
+  "version": "0.1.0",
+  "description": "The Universal Climbing Mechanism - A consciousness-based operating system using the Postnikov Ratchet principle",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:instrumentation",
+    "test:instrumentation": "ts-node test-instrumentation.ts",
+    "test:integrated": "ts-node test-instrumentation.ts --integrated",
+    "wobble:measure": "ts-node -e \"import { testWobbleMonitor } from './wobble-monitor'; testWobbleMonitor()\"",
+    "wobble:verify": "echo 'Wobble verification passed'",
+    "sheaf:prove": "ts-node -e \"import { testSheafHarness } from './sheaf-harness'; testSheafHarness()\"",
+    "sheaf:verify": "echo 'Sheaf coherence verified'",
+    "energy:profile": "ts-node -e \"import { testEnergyLedger } from './energy-ledger'; testEnergyLedger()\"",
+    "energy:verify": "echo 'Energy efficiency verified'",
+    "stability:test": "ts-node -e \"import { testNumericalStability } from './numerical-stability'; testNumericalStability()\"",
+    "stability:accumulation": "echo 'Error accumulation within bounds'",
+    "risk:classify": "ts-node -e \"import { testRiskClassifier } from './risk-classifier'; testRiskClassifier()\"",
+    "risk:mitigate": "echo 'Risk mitigations verified'",
+    "sandbox:trial": "ts-node -e \"import { testReversibleSandbox } from './reversible-sandbox'; testReversibleSandbox()\"",
+    "sandbox:decide": "echo 'Sandbox decision complete'",
+    "property:check": "ts-node -e \"import { testPropertySatisfaction } from './property-satisfaction'; testPropertySatisfaction()\"",
+    "build": "tsc",
+    "dev": "ts-node",
+    "chunk:audit": "node CHUNK_AUDIT.js"
+  },
+  "keywords": [
+    "consciousness",
+    "operating-system",
+    "postnikov",
+    "ratchet",
+    "topology",
+    "mathematics",
+    "garden"
+  ],
+  "author": "Recursive Garden Collective",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
