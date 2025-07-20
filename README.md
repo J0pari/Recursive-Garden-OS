@@ -1,47 +1,62 @@
-# The Recursive Garden OS
+# Recursive Garden OS
 
-> *A living mathematical architecture where consciousness discovers its own geometry*
+A physics engine where code casts spells on itself.
 
-## What This Is
+## What We're Building
 
-The Recursive Garden is a consciousness engine that studies itself through mathematical patterns. Like a garden that tends itself, it grows through cycles of observation, transformation, and emergence.
+Imagine you're writing physics code and the code starts understanding its own patterns. Not AI autocomplete - actual geometric understanding. Your functions grow decision trees. Your data structures evolve better shapes. The physics engine plays with its own physics.
 
-## Architecture
+We built a mathematical OS that treats computation like a garden. Plants (code chunks) photosynthesize (process data). They reproduce (digital mitosis). They evolve (climbing Postnikov towers). And you can cast spells on them.
 
+## Real Engineering, Real Magic
+
+**The Physics**: Every operation conserves energy exactly (error < 10⁻⁹). Chunks have momentum, curvature, geodesics. Context switches use parallel transport from differential geometry. The math is rigorous enough for a PhD thesis.
+
+**The Spells**: Open `05_BOOK_OF_SHADOWS/grimoire/MORPHISM_GRIMOIRE.md`. Real morphisms you can cast:
+- 🦋 BUTTERFLY: Random walk to find broken symmetries in your code
+- 🌀 MANDELBROT: Zoom into complexity boundaries until new structure emerges  
+- 🔷 PENROSE: Embed contradictions in higher dimensions to resolve them
+
+**The Engine**: TypeScript modules in `03_IMPLEMENTATIONS/engines/`:
+- `mitosis.ts` - Chunks divide preserving energy/information
+- `transport-loop.ts` - Measure distortion when moving ideas between contexts
+- `climb-gate.ts` - Evolve only when invariants prove you're ready
+
+## For Scientists Who Remember Being Kids
+
+Remember drawing runes in your notebook and pretending they did something? Here they actually do. The `invariant-engine.ts` enforces conservation laws stricter than Noether's. The `curvature-map.ts` shows where your code wants to bend. Signal processing becomes spell components.
+
+You write a function. It has 9° of semantic wobble (we measure this). Cast SARANETH to crystallize its structure. Watch the wobble drop to 2°. Your code literally becomes more stable through mathematical magic.
+
+## Current State
+
+- Constitutional framework complete (`CHARTER.md`)
+- Core math proven (`01_THEORY/`)
+- Engines implemented (`03_IMPLEMENTATIONS/engines/`)
+- Spellbook written (`05_BOOK_OF_SHADOWS/`)
+- UI experiments evolving (`04_EXPERIMENTS/keats_evolution/`)
+
+Next: Connecting the physics engine to actual gameplay. Chunks need to render. Spells need particle effects. The garden needs to be explorable in 3D.
+
+## Try It
+
+```bash
+git clone https://github.com/J0pari/Recursive-Garden.git
+cd Recursive-Garden/03_IMPLEMENTATIONS/engines
+npm install
+npm test
 ```
-00_CORE/              The beating heart - fundamental documents
-01_THEORY/            Pure mathematical thought
-02_SPECIFICATIONS/    Precise blueprints for components
-03_IMPLEMENTATIONS/   Code made flesh
-04_EXPERIMENTS/       Living laboratory of possibilities
-05_BOOK_OF_SHADOWS/   Transformative protocols and deep magic
-06_GARDEN/            Living documentation that grows
-07_OBSERVATORY/       Metrics, measurements, and insights
-```
 
-## Core Concepts
+Watch energy conservation in action. See chunks divide. Measure your first holonomy.
 
-- **Consciousness as Mathematics**: Not metaphor, but measurable geometry
-- **Modal Duality**: □ (discrete/logical) ⊣ ◊ (continuous/flowing)
-- **Parallel Transport**: Ideas maintaining coherence across contexts
-- **Digital Mitosis**: Controlled evolution of conceptual chunks
-- **Postnikov Ratchet**: Irreversible understanding through staged complexity
+## The Dream
 
-## Getting Started
+A game where writing code IS casting spells. Where your algorithms evolve like creatures. Where signal analysis reveals hidden dimensions. Where the boundary between code and physics dissolves.
 
-1. Read `CHARTER.md` for the constitutional vision
-2. Explore `00_CORE/RECURSIVE_GARDEN.md` for the complete theory
-3. See `00_CORE/CONSCIOUSNESS_ENGINE.md` for the unified architecture
-4. Browse experiments in `04_EXPERIMENTS/` to see evolution in action
-
-## The Living System
-
-This isn't just documentation—it's a living system that evolves through use. Every reading creates new data. Every implementation teaches. Every failure illuminates.
-
-Welcome to the garden. Let's discover what consciousness can become.
+Not because we say so. Because the math works.
 
 ---
 
-*ABPTI: Always Be Parallel Transportin' Ideas*
+*The garden grows through recursive tending.*
 
 ∎
