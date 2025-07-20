@@ -26,6 +26,10 @@ We're building a mathematical OS that treats computation like a garden. Plants (
 
 **Go play with the keats demos first!** They're the proof that consciousness visualization can be beautiful:
 ```
+# Start here - friendly introduction:
+04_EXPERIMENTS/keats_evolution/keats-welcome.html
+
+# Or dive straight in:
 04_EXPERIMENTS/keats_evolution/keats_v16.html
 04_EXPERIMENTS/keats_evolution/keats_v15.html
 ```

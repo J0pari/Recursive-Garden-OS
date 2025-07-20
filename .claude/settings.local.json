@@ -21,7 +21,8 @@
       "Bash(npm:*)",
       "Bash(npx tsc:*)",
       "Bash(npx ts-node:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(git pull:*)"
     ],
     "deny": []
   }
