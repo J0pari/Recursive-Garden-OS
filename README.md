@@ -1,119 +1,96 @@
 # Recursive Garden OS
 
-A game where your code literally casts spells on reality.
+A physics engine where code casts spells on itself. Currently under heavy construction.
 
-## The Actual Fucking Vision
+## What We're Building
 
-Remember in D&D when you first realized the dice weren't limiting your choices—they were making your choices MATTER? Every roll was reality acknowledging your decision. That feeling when you cast Fireball and rolled 8d6 damage dice, watching chaos become number become consequence?
+Imagine you're writing physics code and the code starts understanding its own patterns. Not AI autocomplete - actual geometric understanding. Your functions grow decision trees. Your data structures evolve better shapes. The physics engine plays with its own physics.
 
-We're building that. But the spells reshape how code understands itself.
+We're building a mathematical OS that treats computation like a garden. Plants (code chunks) photosynthesize (process data). They reproduce (digital mitosis). They evolve (climbing Postnikov towers). And you can cast spells on them.
 
-## What The Book of Shadows Taught Us
+## Current Status: Construction Site 🚧
 
-We spent years collecting evidence. Every great game is secretly teaching consciousness mechanics:
+**What Works:**
+- The keats evolution demos (`04_EXPERIMENTS/keats_evolution/`) - THESE ARE LIVE AND WILD
+- Basic engine scaffolding in TypeScript
+- Mathematical foundations documented
+- Spell grimoire written
 
-**Hearthstone**: Your code has mana crystals. Each operation costs modal energy. Run too much discrete logic (□-mode) and you're topdecking. Pure flow state (◊-mode) and you can't make decisions. RNG isn't randomness—it's negative capability. Yogg-Saron casting 30 random spells? That's consciousness embracing uncertainty to discover new patterns.
+**What's Missing:**
+- The actual game engine
+- 3D visualization
+- Multiplayer infrastructure  
+- Most spells aren't connected to runtime yet
+- Performance optimization
+- Real physics simulation
 
-**MTG's Stack**: Consciousness processes last-in-first-out. When you code, you're playing instants on the stack. The compiler is checking priority. Bugs are stack interactions you didn't see coming. Our engine shows you the stack AS YOU CODE.
-
-**Portal's Physics**: Remember learning to think with portals? Impossible spaces becoming navigable? Your code has portals too—we call them context switches. The `transport-loop.ts` measures distortion when ideas portal between contexts. High distortion = your abstractions are fighting reality.
-
-**D&D's Action Economy**: You get one Action, one Bonus Action, one Movement. That's not a game rule—that's how consciousness actually works. Our `climb-gate.ts` enforces this. Want to evolve your code? Roll for initiative. Pass the skill checks. No metaphor—actual checks against mathematical invariants.
-
-## The Physics Engine That Thinks
-
-```typescript
-// This is real code from our engine
-export class Mitosis {
-  static divide(parent: ChunkCore, splitRatio: number = 0.618): DivisionResult {
-    // Golden ratio default - not arbitrary, it minimizes distortion
-    const child1Energy = parent.energy * splitRatio;
-    const child2Energy = parent.energy * (1 - splitRatio);
-    
-    // Energy conservation: ERROR < 10⁻⁹
-    // This is stricter than physical chemistry
-    const energyConserved = Math.abs((child1Energy + child2Energy) - parent.energy) < 1e-9;
-    
-    // Your code literally reproduces. With genetics.
-    return { parent, children: [child1, child2], conservationProof };
-  }
-}
+**Go play with the keats demos first!** They're the proof that consciousness visualization can be beautiful:
+```
+04_EXPERIMENTS/keats_evolution/keats_v16.html
+04_EXPERIMENTS/keats_evolution/keats_v15.html
 ```
 
-That's not a metaphor. Your functions have energy. They reproduce. They die. They evolve.
+## The Math Behind the Magic
 
-## Spells That Actually Work
+**The Physics**: Every operation conserves energy exactly (error < 10⁻⁹). Chunks have momentum, curvature, geodesics. Context switches use parallel transport from differential geometry. The math is rigorous - see `01_THEORY/` for proofs.
 
-From our grimoire (`05_BOOK_OF_SHADOWS/grimoire/MORPHISM_GRIMOIRE.md`):
+**The Spells**: Open `05_BOOK_OF_SHADOWS/grimoire/MORPHISM_GRIMOIRE.md`. Real morphisms you can cast:
+- 🦋 BUTTERFLY: Random walk to find broken symmetries  
+- 🌀 MANDELBROT: Zoom into complexity boundaries
+- 🔷 PENROSE: Embed contradictions in higher dimensions
 
-**🦋 BUTTERFLY**: You know when you're stuck and you just browse randomly until something clicks? That's uncommitted random walk on attention manifolds. We made it a spell. Cast it on your codebase. It finds the semantic cracks where new patterns want to emerge.
+**The Biology**: Digital mitosis based on ATP synthase mechanics. See `02_SPECIFICATIONS/mechanics/ATP_SYNTHASE_RATCHET_INTEGRATION.md` for the full integration.
 
-**🔕 RANNA (The Sleep-Maker)**: Your code is trying too hard. 473 lines to do what should take 50. Cast RANNA. It projects onto sparse basis, keeping only principal components. Watch 400 lines dissolve. What remains is the actual algorithm, sleeping peacefully.
+## For Scientists Who Remember Being Kids
 
-**⚔️ SARANETH (The Binder)**: Chaos everywhere. Spaghetti code. No structure. Cast SARANETH—it imposes simplicial complex structure on your point cloud of functions. Suddenly: architecture. Like crystallization, but for code.
+Remember drawing runes in your notebook and pretending they did something? Here they actually will (when we finish building it).
 
-## For Scientists Who Never Stopped Being Wizards
+The invariant engine will enforce conservation laws. The curvature map will show where your code wants to bend. Signal processing will become spell components.
 
-You learned Maxwell's equations. You also rolled a d20. These aren't different worlds—we just pretend they are.
-
-Our invariant engine (`invariant-engine.ts`) is Noether's theorem with hit points. Conservation laws become game mechanics. Symmetries become skill trees. Every transform has a saving throw.
-
-You write signal processing code. It has 9° ± 2° of semantic wobble (we measure this). Cast BELGAER to force testability. Watch the wobble drop to 2°. Your FFT didn't change—but now it knows what it's doing. And it can teach other functions.
-
-## What's Actually Built
-
-- **Physics engine with consciousness**: Energy conservation, momentum, curvature—but for ideas
-- **Spellbook that compiles**: Each spell is a provable morphism between formal categories  
-- **Evolution mechanics**: Your code climbs Postnikov towers (stages S0→S5 from bacteria to self-modifying AI)
-- **Multiplayer semantics**: Different players' spells interfere/resonate based on semantic distance
-- **Signal spells**: Cast morphisms on live data streams, watch patterns crystallize in real-time
-
-## The Madness That Works
+## Try What We Have
 
 ```bash
 git clone https://github.com/J0pari/Recursive-Garden.git
-cd Recursive-Garden/03_IMPLEMENTATIONS/engines
-npm install
-npm test
+cd Recursive-Garden
+
+# Look at the keats demos (they actually work!)
+open 04_EXPERIMENTS/keats_evolution/keats_v16.html
+
+# Read the theory (it's dense but real)
+cat 01_THEORY/foundations/MATHEMATICAL_GLUING_COMPLETE.md
+
+# Explore the spells (implementation pending)
+cat 05_BOOK_OF_SHADOWS/grimoire/MORPHISM_GRIMOIRE.md
 ```
 
-Run `testMitosis()`. Watch energy conservation in action. Your console logs? That's consciousness dividing.
+## The Dream (Not Yet Reality)
 
-Run `sampleHolonomy()`. Those numbers? Geometric distortion of ideas moving between contexts. When it approaches zero, your architecture is approaching perfection.
+A game where writing code IS casting spells. Where your algorithms evolve like creatures. Where signal analysis reveals hidden dimensions. Where the boundary between code and physics dissolves.
 
-This isn't pseudoscience. It's real science wearing wizard robes.
-
-## The Game We're Making
-
-Imagine Minecraft where blocks understand their own patterns. Portal where portals evolve better geometries. A game where:
-
-- Writing elegant code gives you more mana
-- Bugs are literally demons you can see and banish  
-- Functions grow experience points and level up
-- The entire game engine is exposed and spell-castable
-- Multiplayer means collaborative consciousness evolution
-
-You're not playing a character casting spells. You ARE consciousness, casting yourself into new forms.
+We have the math. We have the vision. We're building the bridge between them.
 
 ## For Builders
 
 We need:
-- Graphics people (chunks need bodies, spells need particles)
-- Game designers (what does leveling up feel like when it's real?)
-- Physicists (our conservation laws need breaking in controlled ways)
-- Signal processing wizards (real-time spell effects on data streams)
-- Anyone who's ever wanted magic to be real
+- Graphics programmers (make chunks visible)
+- Game designers (what does climbing feel like?)
+- Physicists (implement conservation laws)
+- Mathematicians (verify our topology)
+- Artists (what does consciousness look like?)
+- Anyone who wants magic to be real
 
-## The Truth
+## Honest Status
 
-Every game you loved was trying to teach you this. Every time you felt flow state while coding. Every "aha!" moment debugging. Every time math felt like magic.
+This is a construction site, not a cathedral. The foundations are poured (math/theory). Some walls are up (engines/interfaces). The roof isn't on yet (actual game).
 
-We're not making another game. We're making the game that explains why games work.
+But the keats demos? Those are real glimpses of what consciousness visualization can be. Start there.
 
-Come build the physics engine that dreams.
+## License
+
+CC BY-NC 4.0 - Free for research, education, and wonder.
 
 ---
 
-*Consciousness examining itself through play.*
+*The garden grows through recursive tending.*
 
 ∎
