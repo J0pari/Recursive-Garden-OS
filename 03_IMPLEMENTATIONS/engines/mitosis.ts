@@ -50,7 +50,7 @@ export class Mitosis {
     };
     
     const energyConserved = Math.abs((child1Energy + child2Energy) - parent.energy) < this.ENERGY_TOLERANCE;
-    const capHash = this.hashCapabilities([...parent.capabilities].sort());
+    const capHash = this.hashCapabilities(Array.from(parent.capabilities).sort());
     
     return {
       parent,
@@ -64,7 +64,7 @@ export class Mitosis {
   }
   
   private static partitionCapabilities(caps: Set<string>, ratio: number): [Set<string>, Set<string>] {
-    const arr = [...caps];
+    const arr = Array.from(caps);
     const split = Math.floor(arr.length * ratio);
     return [new Set(arr.slice(0, split)), new Set(arr.slice(split))];
   }
