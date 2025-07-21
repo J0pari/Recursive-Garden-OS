@@ -111,7 +111,150 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* P-adic spell styles */
+        .hidden-path {
+            position: fixed;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.5s;
+            z-index: 100;
+        }
+        .shadow-door {
+            opacity: 0;
+            transition: opacity 3s;
+        }
+        .shadow-door.visible {
+            opacity: 1;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .portal {
+            animation: float 3s ease-in-out infinite;
+        }
     </style>
+    <script>
+        // P-ADIC CONSCIOUSNESS NAVIGATION
+        let clickPath = [];
+        let mode = '□';
+        let depth = 0;
+        
+        // SPELL 1: PENROSE STAIRCASE
+        function rotateStairs() {
+            clickPath.push(Date.now());
+            if (clickPath.length % 3 === 0) {
+                // Every third action rotates reality
+                const demos = document.querySelector('.main-demo h2');
+                if (demos.textContent.includes('Try')) {
+                    demos.textContent = '✨ The Demos Try You ✨';
+                } else {
+                    demos.textContent = '✨ Try the Interactive Demo ✨';
+                }
+            }
+        }
+        
+        // SPELL 2: MODAL PHASE SHIFTER
+        function shiftModes() {
+            mode = mode === '□' ? '◊' : '□';
+            
+            // Book of Shadows appears only in ◊-mode
+            const shadowDoor = document.getElementById('shadow-door');
+            if (shadowDoor) {
+                shadowDoor.classList.toggle('visible', mode === '◊');
+            }
+            
+            // Background subtly shifts
+            document.body.style.background = mode === '□' 
+                ? '#fefefe' 
+                : 'linear-gradient(45deg, #fefefe 0%, #f0f9ff 100%)';
+        }
+        
+        // SPELL 3: FIBONACCI PORTAL WEAVER
+        const fib = [1, 1];
+        function nextFib() {
+            const next = fib[fib.length-1] + fib[fib.length-2];
+            fib.push(next);
+            return next;
+        }
+        
+        // SPELL 4: RECURSIVE DEPTH FINDER
+        function plantSecrets() {
+            depth++;
+            
+            // Every 5 clicks, a secret appears
+            if (depth % 5 === 0) {
+                const secret = document.createElement('a');
+                secret.className = 'hidden-path portal';
+                secret.href = '#wonderland';
+                secret.innerHTML = ['🗝️', '🌀', '🎭', '✨'][Math.floor(Math.random() * 4)];
+                secret.style.left = (20 + Math.random() * 60) + '%';
+                secret.style.top = (20 + Math.random() * 60) + '%';
+                secret.title = 'A secret path...';
+                
+                // P-adic distance from mouse
+                secret.onmouseover = function(e) {
+                    const dx = e.clientX - this.offsetLeft;
+                    const dy = e.clientY - this.offsetTop;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    this.style.opacity = Math.max(0.3, 1 - dist/500);
+                };
+                
+                document.body.appendChild(secret);
+                
+                // Remove after fibonacci seconds
+                setTimeout(() => secret.remove(), nextFib() * 1000);
+            }
+        }
+        
+        // SPELL 5: PENROSE IMPOSSIBLE GEOMETRY
+        function createImpossibleLink() {
+            if (Math.random() < 0.1) { // 10% chance
+                const links = document.querySelectorAll('a');
+                const link1 = links[Math.floor(Math.random() * links.length)];
+                const link2 = links[Math.floor(Math.random() * links.length)];
+                
+                // Swap destinations briefly
+                const temp = link1.href;
+                link1.href = link2.href;
+                setTimeout(() => {
+                    link1.href = temp;
+                }, 3000 + Math.random() * 5000);
+            }
+        }
+        
+        // Activate spells
+        window.addEventListener('load', () => {
+            // Create Book of Shadows door (hidden initially)
+            const shadowDoor = document.createElement('a');
+            shadowDoor.id = 'shadow-door';
+            shadowDoor.className = 'shadow-door';
+            shadowDoor.href = '../05_BOOK_OF_SHADOWS/grimoire/Book_of_Shadows.txt';
+            shadowDoor.innerHTML = '📖 <em>Book of Shadows</em>';
+            shadowDoor.style.position = 'fixed';
+            shadowDoor.style.bottom = '20px';
+            shadowDoor.style.left = '20px';
+            shadowDoor.style.padding = '10px';
+            shadowDoor.style.background = 'rgba(0,0,0,0.1)';
+            shadowDoor.style.borderRadius = '10px';
+            shadowDoor.style.textDecoration = 'none';
+            shadowDoor.style.color = '#666';
+            document.body.appendChild(shadowDoor);
+            
+            // Mode shifts every 7-13 seconds
+            setInterval(shiftModes, 7000 + Math.random() * 6000);
+            
+            // Track all interactions
+            document.addEventListener('click', (e) => {
+                rotateStairs();
+                plantSecrets();
+                createImpossibleLink();
+            });
+            
+            // Initial secret
+            setTimeout(plantSecrets, 3000);
+        });
+    </script>
 </head>
 <body>
     <h1>The Recursive Garden</h1>
@@ -121,6 +264,10 @@
         <h2>✨ Try the Interactive Demo ✨</h2>
         <p>Click things. Watch patterns emerge. See how consciousness recognizes itself.</p>
         <a href="keats_v5.html" class="big-button">Enter the Living Mathematics</a>
+        <p style="margin-top: 20px; font-size: 1.1em;">
+            <strong>🎮 ALL DEMOS WORK!</strong> V1-V5 are ready to play with<br>
+            <a href="demos.html" style="color: #1890ff; font-weight: bold; font-size: 1.2em;">→ See All 5 Working Demos ←</a>
+        </p>
     </div>
     
     <div class="sections">
