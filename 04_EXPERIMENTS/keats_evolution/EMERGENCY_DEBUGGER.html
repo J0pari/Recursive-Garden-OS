@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🚨 EMERGENCY KEATS DEBUGGER</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        #debugger {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            border-left: 2px solid #0f0;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 999999;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #0f0;
+        }
+        
+        .error {
+            color: #f00;
+            font-weight: bold;
+        }
+        
+        .warning {
+            color: #ff0;
+        }
+        
+        .success {
+            color: #0f0;
+        }
+        
+        .collapse {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .collapsed {
+            display: none;
+        }
+        
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        
+        button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #0ff;
+        }
+        
+        #floating-eye {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #f00;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 999998;
+        }
+    </style>
+</head>
+<body>
+    <div id="floating-eye" onclick="toggleDebugger()">👁️</div>
+    
+    <div id="debugger" style="display: none;">
+        <h1>🚨 EMERGENCY KEATS DEBUGGER 🚨</h1>
+        <p>WORKS EVEN IF EVERYTHING IS ON FIRE</p>
+        
+        <div class="section">
+            <h2 class="collapse" onclick="toggle(this)">▼ INITIALIZATION STATUS</h2>
+            <div id="init-status"></div>
+        </div>
+        
+        <div class="section">
+            <h2 class="collapse" onclick="toggle(this)">▼ GLOBAL OBJECTS</h2>
+            <div id="global-status"></div>
+        </div>
+        
+        <div class="section">
+            <h2 class="collapse" onclick="toggle(this)">▼ ERROR LOG</h2>
+            <div id="error-log"></div>
+        </div>
+        
+        <div class="section">
+            <h2 class="collapse" onclick="toggle(this)">▼ MORPHISM TRACKER</h2>
+            <div id="morphism-tracker"></div>
+        </div>
+        
+        <div class="section">
+            <h2 class="collapse" onclick="toggle(this)">▼ CONSCIOUSNESS STATE</h2>
+            <div id="consciousness-state"></div>
+        </div>
+        
+        <div class="section">
+            <h2>EMERGENCY ACTIONS</h2>
+            <button onclick="emergencyInit()">🚨 FORCE INIT</button>
+            <button onclick="dumpEverything()">💾 DUMP ALL</button>
+            <button onclick="resetEverything()">☢️ NUCLEAR RESET</button>
+            <button onclick="injectMorphisms()">💉 INJECT MORPHISMS</button>
+        </div>
+        
+        <div class="section">
+            <h2 class="collapse" onclick="toggle(this)">▼ REAL-TIME MONITOR</h2>
+            <div id="realtime-monitor"></div>
+        </div>
+    </div>
+    
+    <script>
+        // EMERGENCY DEBUGGER - WORKS NO MATTER WHAT
+        const DEBUG = {
+            errors: [],
+            morphisms: new Map(),
+            initialized: false,
+            startTime: Date.now()
+        };
+        
+        // Capture ALL errors
+        window.addEventListener('error', (e) => {
+            DEBUG.errors.push({
+                time: Date.now(),
+                message: e.message,
+                source: e.filename,
+                line: e.lineno,
+                col: e.colno,
+                error: e.error
+            });
+            updateErrorLog();
+        });
+        
+        window.addEventListener('unhandledrejection', (e) => {
+            DEBUG.errors.push({
+                time: Date.now(),
+                message: 'Unhandled Promise: ' + e.reason,
+                promise: e.promise
+            });
+            updateErrorLog();
+        });
+        
+        // Override console methods to capture everything
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = function(...args) {
+            DEBUG.lastLog = args;
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            DEBUG.errors.push({
+                time: Date.now(),
+                message: 'Console Error: ' + args.join(' '),
+                type: 'console'
+            });
+            updateErrorLog();
+            originalError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+            DEBUG.lastWarn = args;
+            originalWarn.apply(console, args);
+        };
+        
+        // Track ALL function calls
+        function trackMorphism(name, args, result) {
+            if (!DEBUG.morphisms.has(name)) {
+                DEBUG.morphisms.set(name, []);
+            }
+            DEBUG.morphisms.get(name).push({
+                time: Date.now(),
+                args: args,
+                result: result
+            });
+            updateMorphismTracker();
+        }
+        
+        // UI Functions
+        function toggleDebugger() {
+            const dbg = document.getElementById('debugger');
+            dbg.style.display = dbg.style.display === 'none' ? 'block' : 'none';
+            if (dbg.style.display === 'block') {
+                updateAllSections();
+            }
+        }
+        
+        function toggle(element) {
+            const content = element.nextElementSibling;
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                element.textContent = '▼ ' + element.textContent.slice(2);
+            } else {
+                content.classList.add('collapsed');
+                element.textContent = '▶ ' + element.textContent.slice(2);
+            }
+        }
+        
+        function updateAllSections() {
+            updateInitStatus();
+            updateGlobalStatus();
+            updateErrorLog();
+            updateMorphismTracker();
+            updateConsciousnessState();
+            updateRealtimeMonitor();
+        }
+        
+        function updateInitStatus() {
+            const status = document.getElementById('init-status');
+            let html = '<pre>';
+            
+            // Check what's loaded
+            html += checkExists('window', window) + '\n';
+            html += checkExists('document.body', document.body) + '\n';
+            html += checkExists('THREE', typeof THREE !== 'undefined' ? THREE : null) + '\n';
+            html += checkExists('portal', window.portal) + '\n';
+            html += checkExists('engine', window.engine) + '\n';
+            html += checkExists('ConsciousnessEngine', window.ConsciousnessEngine) + '\n';
+            html += checkExists('ConsciousnessPortal', window.ConsciousnessPortal) + '\n';
+            html += checkExists('MathUtils', window.MathUtils) + '\n';
+            html += checkExists('mathematicalWorker', window.mathematicalWorker) + '\n';
+            html += checkExists('systemManager', window.systemManager) + '\n';
+            
+            html += '\n<b>Page Load Time:</b> ' + (Date.now() - DEBUG.startTime) + 'ms\n';
+            html += '<b>Errors Count:</b> ' + DEBUG.errors.length + '\n';
+            
+            html += '</pre>';
+            status.innerHTML = html;
+        }
+        
+        function checkExists(name, obj) {
+            if (obj) {
+                return `<span class="success">✓ ${name}</span>`;
+            } else {
+                return `<span class="error">✗ ${name}</span>`;
+            }
+        }
+        
+        function updateGlobalStatus() {
+            const status = document.getElementById('global-status');
+            let html = '<pre>';
+            
+            // Scan window object
+            const globals = Object.keys(window).filter(key => {
+                return !key.startsWith('webkit') && 
+                       !['location', 'history', 'navigator', 'document', 'console', 'performance'].includes(key) &&
+                       typeof window[key] !== 'function' &&
+                       key.toUpperCase() !== key; // Skip constants
+            }).slice(0, 50); // Limit to 50
+            
+            html += '<b>Custom Globals Found:</b>\n';
+            globals.forEach(key => {
+                const type = typeof window[key];
+                const value = type === 'object' ? 
+                    (window[key] ? window[key].constructor.name : 'null') : 
+                    type;
+                html += `  ${key}: <span class="warning">${value}</span>\n`;
+            });
+            
+            html += '</pre>';
+            status.innerHTML = html;
+        }
+        
+        function updateErrorLog() {
+            const log = document.getElementById('error-log');
+            let html = '<pre>';
+            
+            if (DEBUG.errors.length === 0) {
+                html += '<span class="success">No errors detected!</span>';
+            } else {
+                DEBUG.errors.slice(-10).reverse().forEach(err => {
+                    const time = new Date(err.time).toLocaleTimeString();
+                    html += `<span class="error">[${time}] ${err.message}</span>\n`;
+                    if (err.source) {
+                        html += `  at ${err.source}:${err.line}:${err.col}\n`;
+                    }
+                    if (err.error && err.error.stack) {
+                        html += `  ${err.error.stack.split('\n')[1]}\n`;
+                    }
+                    html += '\n';
+                });
+            }
+            
+            html += '</pre>';
+            log.innerHTML = html;
+        }
+        
+        function updateMorphismTracker() {
+            const tracker = document.getElementById('morphism-tracker');
+            let html = '<pre>';
+            
+            if (DEBUG.morphisms.size === 0) {
+                html += '<span class="warning">No morphisms tracked yet</span>';
+            } else {
+                DEBUG.morphisms.forEach((calls, name) => {
+                    html += `<b>${name}</b>: ${calls.length} calls\n`;
+                    const lastCall = calls[calls.length - 1];
+                    if (lastCall) {
+                        const time = new Date(lastCall.time).toLocaleTimeString();
+                        html += `  Last: ${time}\n`;
+                    }
+                });
+            }
+            
+            html += '</pre>';
+            tracker.innerHTML = html;
+        }
+        
+        function updateConsciousnessState() {
+            const state = document.getElementById('consciousness-state');
+            let html = '<pre>';
+            
+            if (window.portal) {
+                html += '<b>Portal State:</b>\n';
+                html += `  Modal: ${portal.modalState || 'unknown'}\n`;
+                html += `  Understanding: ${portal.understandingLevel || 0}\n`;
+                html += `  Interactions: ${portal.interactions || 0}\n`;
+                html += `  P-adic Depth: ${portal.scrollDepth || 0}\n`;
+                html += `  Gametes: ${portal.gametes ? portal.gametes.length : 0}\n`;
+                html += `  Connected Topoi: ${portal.connectedTopoi ? portal.connectedTopoi.size : 0}\n`;
+            } else if (window.engine) {
+                html += '<b>Engine State:</b>\n';
+                html += `  Particles: ${engine.particles ? engine.particles.length : 0}\n`;
+                html += `  Modal: ${engine.modalState || 'unknown'}\n`;
+            } else {
+                html += '<span class="error">No consciousness system detected</span>';
+            }
+            
+            html += '</pre>';
+            state.innerHTML = html;
+        }
+        
+        function updateRealtimeMonitor() {
+            const monitor = document.getElementById('realtime-monitor');
+            let html = '<pre>';
+            
+            // Memory usage
+            if (performance.memory) {
+                const mb = 1024 * 1024;
+                html += '<b>Memory:</b>\n';
+                html += `  Used: ${Math.round(performance.memory.usedJSHeapSize / mb)}MB\n`;
+                html += `  Total: ${Math.round(performance.memory.totalJSHeapSize / mb)}MB\n`;
+                html += `  Limit: ${Math.round(performance.memory.jsHeapSizeLimit / mb)}MB\n`;
+            }
+            
+            // FPS
+            html += `\n<b>Animation Frame:</b> ${DEBUG.lastFrame || 'Not running'}\n`;
+            
+            // Event listeners
+            const listeners = getEventListeners(document);
+            html += `\n<b>Document Event Listeners:</b> ${Object.keys(listeners || {}).length}\n`;
+            
+            html += '</pre>';
+            monitor.innerHTML = html;
+        }
+        
+        // Emergency Functions
+        function emergencyInit() {
+            console.log('🚨 EMERGENCY INIT TRIGGERED');
+            
+            // Try to create portal if missing
+            if (!window.portal && window.ConsciousnessPortal) {
+                try {
+                    window.portal = new ConsciousnessPortal();
+                    alert('✅ Portal created!');
+                } catch (e) {
+                    alert('❌ Portal creation failed: ' + e.message);
+                }
+            }
+            
+            // Try to create engine if missing
+            if (!window.engine && window.ConsciousnessEngine) {
+                try {
+                    window.engine = new ConsciousnessEngine();
+                    alert('✅ Engine created!');
+                } catch (e) {
+                    alert('❌ Engine creation failed: ' + e.message);
+                }
+            }
+            
+            updateAllSections();
+        }
+        
+        function dumpEverything() {
+            const dump = {
+                timestamp: new Date().toISOString(),
+                errors: DEBUG.errors,
+                morphisms: Array.from(DEBUG.morphisms.entries()),
+                globals: Object.keys(window).filter(k => !k.startsWith('webkit')),
+                portal: window.portal ? {
+                    modalState: portal.modalState,
+                    understandingLevel: portal.understandingLevel,
+                    interactions: portal.interactions
+                } : null,
+                performance: performance.memory ? {
+                    used: performance.memory.usedJSHeapSize,
+                    total: performance.memory.totalJSHeapSize
+                } : null
+            };
+            
+            const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `keats_debug_${Date.now()}.json`;
+            a.click();
+        }
+        
+        function resetEverything() {
+            if (confirm('☢️ NUCLEAR RESET - This will reload the page. Continue?')) {
+                window.location.reload(true);
+            }
+        }
+        
+        function injectMorphisms() {
+            console.log('💉 Injecting emergency morphisms...');
+            
+            // Ensure global functions exist
+            const morphisms = [
+                'toggleAnimation', 'showHelp', 'explodeParticles', 'triggerModalTransfer',
+                'computeSemantics', 'clearContext', 'generateLogicalEvent', 'analyzeText',
+                'optimizeSystem', 'resetSystem', 'executeExportWithFeedback'
+            ];
+            
+            morphisms.forEach(name => {
+                if (!window[name]) {
+                    window[name] = function(...args) {
+                        console.log(`🚨 Emergency morphism: ${name}`, args);
+                        trackMorphism(name, args, 'emergency');
+                        alert(`Emergency ${name} called - check console`);
+                    };
+                }
+            });
+            
+            alert('✅ Emergency morphisms injected!');
+        }
+        
+        // Track animation frames
+        let frameCount = 0;
+        function trackFrame() {
+            frameCount++;
+            DEBUG.lastFrame = frameCount;
+            requestAnimationFrame(trackFrame);
+        }
+        trackFrame();
+        
+        // Auto-update every second
+        setInterval(updateAllSections, 1000);
+        
+        // Keyboard shortcut
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'D')) {
+                toggleDebugger();
+            }
+        });
+        
+        console.log('🚨 EMERGENCY DEBUGGER LOADED - Press F12 or Ctrl+Shift+D to open');
+        console.log('👁️ Or click the red eye in bottom right');
+        
+        // Show debugger if there are early errors
+        setTimeout(() => {
+            if (DEBUG.errors.length > 0) {
+                document.getElementById('debugger').style.display = 'block';
+                console.error('🚨 EARLY ERRORS DETECTED - DEBUGGER AUTO-OPENED');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

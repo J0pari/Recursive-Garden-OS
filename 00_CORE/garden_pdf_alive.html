@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 Living Garden PDF - With Conway's Birdsong</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            /* Living green shades - like chlorophyll breathing */
+            --green-deep: #0d3b0d;      /* Deep forest floor */
+            --green-shadow: #1a5a1a;    /* Shadow under leaves */
+            --green-moss: #2d702d;      /* Wet moss */
+            --green-leaf: #3e8e3e;      /* Summer leaf */
+            --green-new: #52a552;       /* New growth */
+            --green-light: #66bb66;     /* Sunlit canopy */
+            --green-pale: #85d485;      /* Morning dew */
+            --green-mist: #a8e6a8;      /* Forest mist */
+            --green-dawn: #d4f5d4;      /* Dawn light through leaves */
+            --green-paper: #f0faf0;     /* Barely there, like memory of green */
+            
+            /* Dynamic hue that shifts */
+            --hue-shift: 0deg;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, 
+                hsl(120, 20%, 10%) 0%, 
+                hsl(140, 25%, 8%) 100%);
+            color: var(--green-dawn);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+        }
+        
+        /* Conway's Game of Life Canvas */
+        #conway-canvas {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 200px;
+            height: 200px;
+            border: 1px solid var(--green-moss);
+            border-radius: 8px;
+            opacity: 0.6;
+            z-index: 100;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        #conway-canvas:hover {
+            opacity: 0.9;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(13, 59, 13, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--green-moss);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .controls h3 {
+            color: var(--green-light);
+            margin-top: 0;
+        }
+        
+        button {
+            background: var(--green-leaf);
+            color: var(--green-paper);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 5px;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background: var(--green-new);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 165, 52, 0.3);
+        }
+        
+        button.secondary {
+            background: var(--green-shadow);
+        }
+        
+        button.secondary:hover {
+            background: var(--green-moss);
+        }
+        
+        #status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--green-light);
+        }
+        
+        /* Conway Controls */
+        .conway-controls {
+            position: fixed;
+            top: 230px;
+            left: 20px;
+            background: rgba(13, 59, 13, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--green-moss);
+            width: 200px;
+            font-size: 12px;
+        }
+        
+        .conway-controls label {
+            color: var(--green-light);
+            display: block;
+            margin: 5px 0;
+        }
+        
+        .conway-controls input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .conway-controls input[type="range"] {
+            width: 100%;
+            margin: 5px 0;
+        }
+        
+        /* PDF Content Styling */
+        #pdf-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px;
+            background: var(--green-paper);
+            color: var(--green-deep);
+            font-family: 'EB Garamond', serif;
+            font-size: 12pt;
+            line-height: 1.8;
+            box-shadow: 0 0 60px rgba(52, 165, 52, 0.2);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Subtle animated gradient overlay */
+        #pdf-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, 
+                transparent 0%,
+                hsla(120, 40%, 50%, 0.03) 40%,
+                transparent 70%);
+            animation: breathe 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+        
+        /* Typography with green tones */
+        #pdf-content h1 {
+            font-size: 28pt;
+            font-weight: 600;
+            margin: 2em 0 1em 0;
+            color: var(--green-deep);
+            transition: color 3s ease;
+            filter: hue-rotate(var(--hue-shift));
+        }
+        
+        #pdf-content h2 {
+            font-size: 20pt;
+            font-weight: 600;
+            margin: 1.5em 0 0.8em 0;
+            color: var(--green-shadow);
+            transition: color 3s ease;
+            filter: hue-rotate(var(--hue-shift));
+        }
+        
+        #pdf-content h3 {
+            font-size: 16pt;
+            font-weight: 600;
+            margin: 1.2em 0 0.6em 0;
+            color: var(--green-moss);
+            transition: color 3s ease;
+            filter: hue-rotate(var(--hue-shift));
+        }
+        
+        #pdf-content p {
+            text-align: justify;
+            margin: 0.8em 0;
+            text-indent: 1.5em;
+            position: relative;
+            z-index: 1;
+        }
+        
+        #pdf-content p:first-of-type {
+            text-indent: 0;
+        }
+        
+        /* Bartimaeus-style footnotes */
+        .footnote-ref {
+            vertical-align: super;
+            font-size: 0.75em;
+            color: var(--green-leaf);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .footnote-ref:hover {
+            color: var(--green-new);
+        }
+        
+        .footnotes {
+            margin-top: 3em;
+            padding-top: 2em;
+            border-top: 1px solid var(--green-pale);
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .footnote-item {
+            margin: 0.5em 0;
+            display: flex;
+            align-items: baseline;
+        }
+        
+        .footnote-number {
+            min-width: 2em;
+            color: var(--green-moss);
+            font-weight: 500;
+        }
+        
+        .footnote-content {
+            flex: 1;
+            font-style: italic;
+            color: var(--green-shadow);
+        }
+        
+        /* Special formatting */
+        #pdf-content strong {
+            font-weight: 600;
+            color: var(--green-shadow);
+        }
+        
+        #pdf-content em {
+            font-style: italic;
+            color: var(--green-moss);
+        }
+        
+        #pdf-content code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            background: var(--green-dawn);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            color: var(--green-shadow);
+        }
+        
+        #pdf-content pre {
+            background: var(--green-dawn);
+            padding: 1em;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85em;
+            line-height: 1.4;
+            border-left: 3px solid var(--green-light);
+        }
+        
+        #pdf-content blockquote {
+            margin: 1.5em 0;
+            padding-left: 1.5em;
+            border-left: 3px solid var(--green-light);
+            font-style: italic;
+            color: var(--green-moss);
+        }
+        
+        /* Birdsong indicator */
+        .birdsong-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(13, 59, 13, 0.9);
+            border-radius: 20px;
+            color: var(--green-light);
+            font-size: 14px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .birdsong-indicator.active {
+            display: flex;
+        }
+        
+        .birdsong-indicator .note {
+            display: inline-block;
+            animation: bounce 0.5s ease-in-out;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: var(--green-light);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Conway's Game of Life Canvas -->
+    <canvas id="conway-canvas" width="200" height="200"></canvas>
+    
+    <!-- Conway Controls -->
+    <div class="conway-controls">
+        <label>
+            <input type="checkbox" id="birdsong-enabled" checked>
+            Enable Birdsong
+        </label>
+        <label>
+            <input type="checkbox" id="conway-running" checked>
+            Run Life
+        </label>
+        <label>
+            Speed: <span id="speed-value">100</span>ms
+            <input type="range" id="conway-speed" min="50" max="500" value="100">
+        </label>
+        <label>
+            Volume: <span id="volume-value">30</span>%
+            <input type="range" id="birdsong-volume" min="0" max="100" value="30">
+        </label>
+        <button onclick="randomizeConway()" class="secondary">New Pattern</button>
+    </div>
+    
+    <!-- Main Controls -->
+    <div class="controls">
+        <h3>🌿 Living Garden PDF</h3>
+        <button onclick="loadGarden()">Load Garden</button>
+        <button onclick="generatePDF()">Generate PDF</button>
+        <button onclick="toggleColorBreathing()" class="secondary">Toggle Breathing</button>
+        <div id="status">Ready to grow...</div>
+    </div>
+    
+    <!-- Birdsong Indicator -->
+    <div class="birdsong-indicator" id="birdsong-indicator">
+        <span>🐦</span>
+        <span class="note">♪</span>
+        <span>*neurons firing*</span>
+    </div>
+    
+    <div class="loading">🌱 Growing consciousness into typography...</div>
+    
+    <div id="pdf-content">
+        <h1>Click "Load Garden" to begin...</h1>
+        <p>The garden awaits, breathing in shades of green...</p>
+    </div>
+    
+    <script>
+        // Conway's Game of Life with Birdsong
+        class ConwayBirdsong {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.cellSize = 5;
+                this.cols = Math.floor(canvas.width / this.cellSize);
+                this.rows = Math.floor(canvas.height / this.cellSize);
+                this.grid = this.createGrid();
+                this.running = true;
+                this.speed = 100;
+                
+                // Audio context for birdsong
+                this.audioContext = null;
+                this.birdsongEnabled = true;
+                this.volume = 0.3;
+                
+                // Musical scales for birdsong (pentatonic for pleasant sounds)
+                this.scales = {
+                    major: [261.63, 293.66, 329.63, 392.00, 440.00, 523.25],
+                    minor: [261.63, 293.66, 311.13, 392.00, 415.30, 523.25],
+                    pentatonic: [261.63, 293.66, 329.63, 440.00, 523.25]
+                };
+                
+                this.initAudio();
+                this.randomize();
+                this.animate();
+            }
+            
+            initAudio() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.log('Web Audio API not supported');
+                }
+            }
+            
+            createGrid() {
+                return Array(this.rows).fill(null)
+                    .map(() => Array(this.cols).fill(0));
+            }
+            
+            randomize() {
+                for (let i = 0; i < this.rows; i++) {
+                    for (let j = 0; j < this.cols; j++) {
+                        this.grid[i][j] = Math.random() > 0.7 ? 1 : 0;
+                    }
+                }
+            }
+            
+            countNeighbors(x, y) {
+                let sum = 0;
+                for (let i = -1; i < 2; i++) {
+                    for (let j = -1; j < 2; j++) {
+                        if (i === 0 && j === 0) continue;
+                        const col = (x + i + this.cols) % this.cols;
+                        const row = (y + j + this.rows) % this.rows;
+                        sum += this.grid[row][col];
+                    }
+                }
+                return sum;
+            }
+            
+            step() {
+                const next = this.createGrid();
+                let births = 0;
+                let deaths = 0;
+                
+                for (let i = 0; i < this.rows; i++) {
+                    for (let j = 0; j < this.cols; j++) {
+                        const state = this.grid[i][j];
+                        const neighbors = this.countNeighbors(j, i);
+                        
+                        if (state === 0 && neighbors === 3) {
+                            next[i][j] = 1;
+                            births++;
+                        } else if (state === 1 && (neighbors < 2 || neighbors > 3)) {
+                            next[i][j] = 0;
+                            deaths++;
+                        } else {
+                            next[i][j] = state;
+                        }
+                    }
+                }
+                
+                this.grid = next;
+                
+                // Generate birdsong based on births - but rarely!
+                if (this.birdsongEnabled && births > 0 && Math.random() < 0.05) {
+                    this.detectCreatureAndSing(this.grid, births, deaths);
+                }
+            }
+            
+            detectCreatureAndSing(grid, births, deaths) {
+                // Detect different Conway creatures and give them voice
+                const creature = this.identifyCreature(grid);
+                
+                if (creature === 'none') return;
+                
+                // The whole garden ecosystem speaks!
+                const gardenSounds = {
+                    glider: () => Math.random() < 0.5 ? this.sparrowChirp() : this.hoverflyBuzz(),
+                    blinker: () => Math.random() < 0.3 ? this.wormSquirm() : this.robinTrill(), 
+                    block: () => Math.random() < 0.4 ? this.grubMunch() : this.owlHoot(),
+                    beehive: () => Math.random() < 0.6 ? this.beetleClick() : this.wrenSong(),
+                    loaf: () => Math.random() < 0.5 ? this.maggotSquish() : this.dovesCoo(),
+                    boat: () => Math.random() < 0.3 ? this.salamanderPlop() : this.loonCall(),
+                    tub: () => Math.random() < 0.4 ? this.wormCast() : this.cardinalWhistle(),
+                    chaos: () => Math.random() < 0.7 ? this.soilChurn() : this.crowCaw()
+                };
+                
+                const soundMaker = gardenSounds[creature];
+                if (soundMaker && Math.random() < 0.7) { // Even selected creatures don't always make noise
+                    soundMaker();
+                    this.showGardenIndicator(creature);
+                }
+            }
+            
+            identifyCreature(grid) {
+                // Simple pattern matching for common Conway creatures
+                // This is naive but poetic - we're not doing full pattern recognition
+                
+                let totalAlive = 0;
+                let patterns = {
+                    vertical: 0,
+                    horizontal: 0,
+                    diagonal: 0,
+                    clusters: 0
+                };
+                
+                for (let i = 1; i < this.rows - 1; i++) {
+                    for (let j = 1; j < this.cols - 1; j++) {
+                        if (grid[i][j] === 1) {
+                            totalAlive++;
+                            
+                            // Check patterns
+                            if (grid[i-1][j] === 1 && grid[i+1][j] === 1) patterns.vertical++;
+                            if (grid[i][j-1] === 1 && grid[i][j+1] === 1) patterns.horizontal++;
+                            if (grid[i-1][j-1] === 1 && grid[i+1][j+1] === 1) patterns.diagonal++;
+                            
+                            const neighbors = this.countNeighbors(j, i);
+                            if (neighbors >= 4) patterns.clusters++;
+                        }
+                    }
+                }
+                
+                // Rough heuristics for creature types
+                if (totalAlive < 5) return 'none';
+                if (patterns.diagonal > patterns.vertical && patterns.diagonal > patterns.horizontal) return 'glider';
+                if (patterns.vertical > 3 || patterns.horizontal > 3) return 'blinker';
+                if (patterns.clusters > 5 && totalAlive > 20) return 'beehive';
+                if (patterns.clusters > 10) return 'chaos';
+                if (totalAlive < 10 && patterns.clusters > 0) return 'block';
+                if (totalAlive < 15) return 'boat';
+                
+                return 'tub'; // Default for stable patterns
+            }
+            
+            // Individual bird songs - sparse, stochastic, beautiful
+            sparrowChirp() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Quick ascending chirps
+                for (let i = 0; i < 2 + Math.floor(Math.random() * 2); i++) {
+                    const osc = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc.frequency.setValueAtTime(2000 + Math.random() * 1000, now + i * 0.08);
+                    osc.frequency.exponentialRampToValueAtTime(3000 + Math.random() * 1000, now + i * 0.08 + 0.05);
+                    osc.type = 'sine';
+                    
+                    gain.gain.setValueAtTime(0, now + i * 0.08);
+                    gain.gain.linearRampToValueAtTime(this.volume * 0.15, now + i * 0.08 + 0.01);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.07);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc.start(now + i * 0.08);
+                    osc.stop(now + i * 0.08 + 0.1);
+                }
+            }
+            
+            robinTrill() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Liquid warbling
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                const vibrato = this.audioContext.createOscillator();
+                const vibratoGain = this.audioContext.createGain();
+                
+                vibrato.frequency.value = 5;
+                vibratoGain.gain.value = 50;
+                
+                vibrato.connect(vibratoGain);
+                vibratoGain.connect(osc.frequency);
+                
+                osc.frequency.setValueAtTime(1200, now);
+                osc.frequency.linearRampToValueAtTime(1800, now + 0.3);
+                osc.frequency.linearRampToValueAtTime(1200, now + 0.6);
+                osc.type = 'sine';
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.2, now + 0.05);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.2, now + 0.5);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                vibrato.start(now);
+                osc.start(now);
+                vibrato.stop(now + 0.6);
+                osc.stop(now + 0.6);
+            }
+            
+            owlHoot() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Deep, resonant hoots
+                for (let i = 0; i < 2; i++) {
+                    const osc = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    osc.frequency.setValueAtTime(200, now + i * 0.8);
+                    osc.frequency.exponentialRampToValueAtTime(180, now + i * 0.8 + 0.5);
+                    osc.type = 'triangle';
+                    
+                    gain.gain.setValueAtTime(0, now + i * 0.8);
+                    gain.gain.linearRampToValueAtTime(this.volume * 0.3, now + i * 0.8 + 0.1);
+                    gain.gain.linearRampToValueAtTime(this.volume * 0.3, now + i * 0.8 + 0.4);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.8 + 0.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    osc.start(now + i * 0.8);
+                    osc.stop(now + i * 0.8 + 0.6);
+                }
+            }
+            
+            wrenSong() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Complex, cascading song
+                const notes = [2000, 2500, 2200, 2800, 2400, 3000, 2600];
+                
+                notes.forEach((freq, i) => {
+                    if (Math.random() < 0.7) { // Skip some notes randomly
+                        const osc = this.audioContext.createOscillator();
+                        const gain = this.audioContext.createGain();
+                        
+                        osc.frequency.value = freq + Math.random() * 200 - 100;
+                        osc.type = 'sine';
+                        
+                        const startTime = now + i * 0.12;
+                        gain.gain.setValueAtTime(0, startTime);
+                        gain.gain.linearRampToValueAtTime(this.volume * 0.12, startTime + 0.02);
+                        gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.1);
+                        
+                        osc.connect(gain);
+                        gain.connect(this.audioContext.destination);
+                        
+                        osc.start(startTime);
+                        osc.stop(startTime + 0.12);
+                    }
+                });
+            }
+            
+            crowCaw() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Harsh caw
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                const noise = this.audioContext.createBufferSource();
+                const noiseGain = this.audioContext.createGain();
+                
+                // Create noise
+                const bufferSize = this.audioContext.sampleRate * 0.3;
+                const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+                const output = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+                noise.buffer = buffer;
+                
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.linearRampToValueAtTime(300, now + 0.3);
+                osc.type = 'sawtooth';
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.25, now + 0.05);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.25, now + 0.25);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                
+                noiseGain.gain.value = this.volume * 0.05;
+                
+                osc.connect(gain);
+                noise.connect(noiseGain);
+                gain.connect(this.audioContext.destination);
+                noiseGain.connect(this.audioContext.destination);
+                
+                osc.start(now);
+                noise.start(now);
+                osc.stop(now + 0.3);
+                noise.stop(now + 0.3);
+            }
+            
+            dovesCoo() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Soft, rolling coos
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                
+                osc.frequency.setValueAtTime(400, now);
+                for (let i = 0; i < 3; i++) {
+                    osc.frequency.linearRampToValueAtTime(450, now + i * 0.4 + 0.1);
+                    osc.frequency.linearRampToValueAtTime(400, now + i * 0.4 + 0.3);
+                }
+                osc.type = 'sine';
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.15, now + 0.1);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.15, now + 1.1);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+                
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                osc.start(now);
+                osc.stop(now + 1.3);
+            }
+            
+            loonCall() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Haunting, sliding call
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.5);
+                osc.frequency.exponentialRampToValueAtTime(600, now + 1.5);
+                osc.frequency.linearRampToValueAtTime(800, now + 2);
+                osc.type = 'sine';
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.2, now + 0.2);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.2, now + 1.8);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 2);
+                
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                osc.start(now);
+                osc.stop(now + 2.1);
+            }
+            
+            cardinalWhistle() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Clear, descending whistle
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                
+                osc.frequency.setValueAtTime(2400, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.8);
+                osc.type = 'sine';
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.18, now + 0.05);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.18, now + 0.7);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
+                
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                osc.start(now);
+                osc.stop(now + 0.85);
+            }
+            
+            // Garden invertebrate sounds!
+            hoverflyBuzz() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Hoverfly's distinctive high-pitched buzz with doppler
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                const lfo = this.audioContext.createOscillator();
+                const lfoGain = this.audioContext.createGain();
+                
+                // Base frequency around 250Hz with rapid modulation
+                osc.frequency.value = 250;
+                lfo.frequency.value = 150; // Wing beat frequency
+                lfoGain.gain.value = 30;
+                
+                lfo.connect(lfoGain);
+                lfoGain.connect(osc.frequency);
+                
+                // Doppler effect as it hovers past
+                osc.frequency.linearRampToValueAtTime(280, now + 0.2);
+                osc.frequency.linearRampToValueAtTime(220, now + 0.4);
+                
+                osc.type = 'sawtooth';
+                lfo.type = 'sine';
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.15, now + 0.05);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.15, now + 0.35);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                lfo.start(now);
+                osc.start(now);
+                lfo.stop(now + 0.4);
+                osc.stop(now + 0.4);
+            }
+            
+            wormSquirm() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Wet, squelchy sound of worm movement
+                const noise = this.createFilteredNoise(50, 200, 'bandpass');
+                const gain = this.audioContext.createGain();
+                
+                // Undulating volume for squirm effect
+                gain.gain.setValueAtTime(0, now);
+                for (let i = 0; i < 3; i++) {
+                    gain.gain.linearRampToValueAtTime(this.volume * 0.08, now + i * 0.15 + 0.05);
+                    gain.gain.linearRampToValueAtTime(0, now + i * 0.15 + 0.1);
+                }
+                
+                noise.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                noise.start(now);
+                noise.stop(now + 0.5);
+            }
+            
+            grubMunch() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Rhythmic munching sounds
+                for (let i = 0; i < 4; i++) {
+                    const crunch = this.createFilteredNoise(100, 800, 'bandpass');
+                    const gain = this.audioContext.createGain();
+                    
+                    const startTime = now + i * 0.12;
+                    gain.gain.setValueAtTime(0, startTime);
+                    gain.gain.linearRampToValueAtTime(this.volume * 0.1, startTime + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.08);
+                    
+                    crunch.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    crunch.start(startTime);
+                    crunch.stop(startTime + 0.1);
+                }
+            }
+            
+            beetleClick() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Sharp clicking sounds beetles make
+                for (let i = 0; i < 2; i++) {
+                    const click = this.audioContext.createOscillator();
+                    const gain = this.audioContext.createGain();
+                    
+                    click.frequency.value = 2000 + Math.random() * 1000;
+                    click.type = 'square';
+                    
+                    const clickTime = now + i * 0.3;
+                    gain.gain.setValueAtTime(0, clickTime);
+                    gain.gain.linearRampToValueAtTime(this.volume * 0.2, clickTime + 0.001);
+                    gain.gain.exponentialRampToValueAtTime(0.01, clickTime + 0.02);
+                    
+                    click.connect(gain);
+                    gain.connect(this.audioContext.destination);
+                    
+                    click.start(clickTime);
+                    click.stop(clickTime + 0.02);
+                }
+            }
+            
+            maggotSquish() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Wet, organic decomposition sounds
+                const squish = this.createFilteredNoise(20, 150, 'lowpass');
+                const gain = this.audioContext.createGain();
+                const lfo = this.audioContext.createOscillator();
+                const lfoGain = this.audioContext.createGain();
+                
+                lfo.frequency.value = 3;
+                lfoGain.gain.value = 0.5;
+                
+                lfo.connect(lfoGain);
+                lfoGain.connect(gain.gain);
+                
+                gain.gain.setValueAtTime(this.volume * 0.06, now);
+                
+                squish.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                lfo.start(now);
+                squish.start(now);
+                lfo.stop(now + 0.6);
+                squish.stop(now + 0.6);
+            }
+            
+            salamanderPlop() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Wet plop of salamander movement
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+                
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.15);
+                osc.type = 'sine';
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.18, now + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                osc.start(now);
+                osc.stop(now + 0.16);
+            }
+            
+            wormCast() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Soft earth-moving sounds
+                const rumble = this.createFilteredNoise(10, 60, 'lowpass');
+                const gain = this.audioContext.createGain();
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.05, now + 0.3);
+                gain.gain.linearRampToValueAtTime(this.volume * 0.05, now + 0.7);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1);
+                
+                rumble.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                rumble.start(now);
+                rumble.stop(now + 1);
+            }
+            
+            soilChurn() {
+                if (!this.audioContext) return;
+                const now = this.audioContext.currentTime;
+                
+                // Deep, organic churning of living soil
+                const churn = this.createFilteredNoise(5, 100, 'lowpass');
+                const gain = this.audioContext.createGain();
+                const lfo = this.audioContext.createOscillator();
+                const lfoGain = this.audioContext.createGain();
+                
+                lfo.frequency.value = 0.5; // Slow undulation
+                lfoGain.gain.value = 0.3;
+                
+                lfo.connect(lfoGain);
+                lfoGain.connect(gain.gain);
+                
+                gain.gain.setValueAtTime(this.volume * 0.08, now);
+                
+                churn.connect(gain);
+                gain.connect(this.audioContext.destination);
+                
+                lfo.start(now);
+                churn.start(now);
+                lfo.stop(now + 2);
+                churn.stop(now + 2);
+            }
+            
+            // Helper function to create filtered noise
+            createFilteredNoise(lowFreq, highFreq, type) {
+                const bufferSize = this.audioContext.sampleRate * 2;
+                const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+                const output = buffer.getChannelData(0);
+                
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+                
+                const noise = this.audioContext.createBufferSource();
+                noise.buffer = buffer;
+                
+                const filter = this.audioContext.createBiquadFilter();
+                filter.type = type;
+                filter.frequency.value = type === 'bandpass' ? (lowFreq + highFreq) / 2 : (type === 'lowpass' ? highFreq : lowFreq);
+                if (type === 'bandpass') {
+                    filter.Q.value = (lowFreq + highFreq) / 2 / (highFreq - lowFreq);
+                }
+                
+                noise.connect(filter);
+                return noise;
+            }
+            
+            showGardenIndicator(creature) {
+                const indicator = document.getElementById('birdsong-indicator');
+                const gardenEmojis = {
+                    glider: Math.random() < 0.5 ? '🐦' : '🦟',  // bird or hoverfly
+                    blinker: Math.random() < 0.3 ? '🪱' : '🐤',  // worm or bird
+                    block: Math.random() < 0.4 ? '🐛' : '🦉',    // grub or owl
+                    beehive: Math.random() < 0.6 ? '🪲' : '🐧',  // beetle or bird
+                    loaf: Math.random() < 0.5 ? '🪰' : '🕊️',     // maggot or dove
+                    boat: Math.random() < 0.3 ? '🦎' : '🦆',    // salamander or bird
+                    tub: Math.random() < 0.4 ? '🪱' : '🦜',     // worm or swan
+                    chaos: Math.random() < 0.7 ? '🌱' : '🐦‍⬛'  // soil life or crow
+                };
+                
+                const radioLabIntros = {
+                    glider: '*whispers* ok so check this out...',
+                    blinker: 'wait wait WAIT—',
+                    block: '*deep breath* ...huh.',
+                    beehive: 'bzzzzzZZZZ—NO WAIT LISTEN—',
+                    loaf: '*bread sounds???*',
+                    boat: 'from the waters of CONWAY—',
+                    tub: '*bubble bubble* SCIENCE!',
+                    chaos: 'EVERYTHING EVERYWHERE ALL AT—'
+                };
+                
+                indicator.querySelector('span:first-child').textContent = gardenEmojis[creature] || '🌿';
+                indicator.querySelector('span:last-child').textContent = radioLabIntros[creature] || '*neurons firing*';
+                indicator.classList.add('active');
+                setTimeout(() => indicator.classList.remove('active'), 2000);
+            }
+            
+            draw() {
+                this.ctx.fillStyle = 'rgba(240, 250, 240, 0.1)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                for (let i = 0; i < this.rows; i++) {
+                    for (let j = 0; j < this.cols; j++) {
+                        const x = j * this.cellSize;
+                        const y = i * this.cellSize;
+                        
+                        if (this.grid[i][j] === 1) {
+                            // Living cells in shades of green
+                            const greenShade = 100 + Math.floor(Math.random() * 100);
+                            this.ctx.fillStyle = `rgb(0, ${greenShade}, 0)`;
+                            this.ctx.fillRect(x, y, this.cellSize - 1, this.cellSize - 1);
+                        }
+                    }
+                }
+            }
+            
+            animate() {
+                if (this.running) {
+                    this.step();
+                    this.draw();
+                }
+                
+                setTimeout(() => {
+                    requestAnimationFrame(() => this.animate());
+                }, this.speed);
+            }
+        }
+        
+        // Initialize Conway's Game of Life
+        let conway;
+        window.addEventListener('load', () => {
+            const canvas = document.getElementById('conway-canvas');
+            conway = new ConwayBirdsong(canvas);
+            
+            // Set up controls
+            document.getElementById('birdsong-enabled').addEventListener('change', (e) => {
+                conway.birdsongEnabled = e.target.checked;
+            });
+            
+            document.getElementById('conway-running').addEventListener('change', (e) => {
+                conway.running = e.target.checked;
+            });
+            
+            document.getElementById('conway-speed').addEventListener('input', (e) => {
+                conway.speed = parseInt(e.target.value);
+                document.getElementById('speed-value').textContent = e.target.value;
+            });
+            
+            document.getElementById('birdsong-volume').addEventListener('input', (e) => {
+                conway.volume = parseInt(e.target.value) / 100;
+                document.getElementById('volume-value').textContent = e.target.value;
+            });
+        });
+        
+        function randomizeConway() {
+            if (conway) {
+                conway.randomize();
+            }
+        }
+        
+        // Color breathing animation
+        let colorBreathing = true;
+        let hueShift = 0;
+        
+        function animateColors() {
+            if (colorBreathing) {
+                hueShift += 0.5;
+                // Shift between different green hues
+                const shift = Math.sin(hueShift * 0.01) * 30;
+                document.documentElement.style.setProperty('--hue-shift', `${shift}deg`);
+            }
+            requestAnimationFrame(animateColors);
+        }
+        animateColors();
+        
+        function toggleColorBreathing() {
+            colorBreathing = !colorBreathing;
+            document.getElementById('status').textContent = 
+                colorBreathing ? 'Garden breathing enabled' : 'Garden breathing paused';
+        }
+        
+        // Footnote handling
+        const footnotes = [];
+        let footnoteCounter = 0;
+        
+        const renderer = new marked.Renderer();
+        
+        // Override text renderer for Bartimaeus-style footnotes
+        const originalText = renderer.text.bind(renderer);
+        renderer.text = function(text) {
+            // Match footnote patterns
+            const footnoteMatch = text.match(/^([¹²³⁴⁵⁶⁷⁸⁹⁰]+)\s*(.+)$/);
+            if (footnoteMatch) {
+                footnoteCounter++;
+                const noteNumber = footnoteCounter;
+                const noteContent = footnoteMatch[2];
+                footnotes.push({ number: noteNumber, content: noteContent });
+                return `<sup class="footnote-ref">${noteNumber}</sup>`;
+            }
+            
+            return text.replace(/([¹²³⁴⁵⁶⁷⁸⁹⁰]+)/g, (match) => {
+                footnoteCounter++;
+                return `<sup class="footnote-ref">${footnoteCounter}</sup>`;
+            });
+        };
+        
+        // Load garden function
+        async function loadGarden() {
+            document.getElementById('status').textContent = 'Garden growing...';
+            document.querySelector('.loading').style.display = 'block';
+            
+            try {
+                // Create sample content that demonstrates the living garden
+                createLivingGardenSample();
+            } catch (error) {
+                console.error('Error loading garden:', error);
+            }
+            
+            document.querySelector('.loading').style.display = 'none';
+        }
+        
+        // Create sample living garden document
+        function createLivingGardenSample() {
+            const sampleMarkdown = `
+# The Living Garden
+
+Where consciousness¹ grows in shades of green, and Conway's creatures occasionally sing.
+
+## *COUGH COUGH* You're Listening to... CONSCIOUSNESS LAB lab lab (lab)
+
+*from the neurons of your mnwmnwmnwmnwmnwmnw BRAIN_STEM_TO_CORTEX_TO_EVERYWHERE*
+
+### *crowd cheers* SEE! ¿sí? yup!
+
+After visiting Dolly Parton's mountain home, Jad understood: the best stories aren't told, they're discovered. Like that moment when the Radiolab intro dissolves your brain into crinkle-rumble-flow and suddenly you're not just hearing about science—you ARE the experiment.
+
+*WORLD DISSOLVES IN NEURON CRINKLE RUMBLE FLOW*
+
+I mean... WOW!!!!!!!!!
+
+This document works the same way. It doesn't explain consciousness; it helps you experience that dizzy "wait, what just happened to my brain?" feeling when sound becomes thought becomes wonder.
+
+### The Radiolab Principle
+
+Sound isn't decoration—it's architecture. When a glider swoops across Conway's grid, you might hear a sparrow. When stable blocks form, perhaps an owl hoots. But mostly? Silence. Because the most profound moments need space to breathe².
+
+## Life Patterns and Their Garden Voices
+
+To your left, Conway's Game of Life evolves. Different creatures emerge:
+- **Gliders**: Swift diagonal travelers—sometimes sparrows chirp, sometimes hoverflies buzz past
+- **Blinkers**: Oscillating bars—earthworms squirm beneath or robins trill above
+- **Blocks**: Stable squares—grubs munch roots or owls hoot from branches
+- **Beehives**: Hexagonal hives—beetles click through undergrowth, wrens nest in hedges
+- **Chaos**: When life explodes—the soil itself churns with billions of organisms, or crows announce the feast
+
+The garden speaks through ALL its creatures. A hoverfly is as miraculous as a hawk. A worm creates the soil that grows the tree that houses the owl. Maggots transform death into life. Every sound matters. Every silence too.
+
+## The Green Mind
+
+Green is the color of growth, of photosynthesis, of Dolly's mountains. This document performs the same transformation with your attention. Your reading feeds it; it feeds you back changed.
+
+### What Jad Learned from Dolly
+
+"I'm not creating nothing," Dolly told him. "I'm just a good secretary for God."
+
+That's what consciousness is—not creation but recognition. The patterns were always there in the cellular automata. The birds were always ready to sing. We just needed to get quiet enough to notice.
+
+### Modal Recognition
+
+In □-mode, you count the cells, predict the patterns.
+In ◊-mode, you feel the flow of generations.
+In ※-mode, you realize you ARE the pattern recognizing itself.
+
+## Bartimaeus in the Radio Booth³
+
+Even here in this verdant space, footnotes creep like the layers of sound in a Radiolab episode. They're where the real magic happens—in the margins, the overtones, the space between words.
+
+### The Recursive Gardener
+
+You are both gardener and garden. But more than that—you're the mountain where songs already exist, waiting to be found. Every time a Conway creature sings (rarely, beautifully), it's because you were listening at exactly the right moment.
+
+The silence between songs is where understanding grows⁴.
+
+---
+
+¹ Like Dolly's songs, consciousness isn't manufactured—it's discovered. The lowercase 'c' because it's not a monument but a living thing.
+
+² Jad's greatest innovation wasn't adding sounds to stories—it was knowing when to let silence speak. The birds here follow that wisdom. A glider might pass twenty times before you hear its sparrow-song. That makes the twenty-first time sacred.
+
+³ Picture me as Jad's sound engineer, hidden in the booth, frantically gesturing "MORE REVERB ON THE EXISTENCE!" and "CAN WE GET THE NEURONS TO CRINKLE LOUDER?" The best footnotes, like the best Radiolab moments, make your brain go *POP* and suddenly you're giggling at the absurdity of consciousness studying itself through Conway's Game of Life. You're different after reading them, even if you can't say why. Maybe especially if you can't say why.
+
+⁴ Dolly knew: "The magic is in the space between the notes." Conway knew: most cells die, and that's what makes the surviving patterns precious. Jad knows: the magic is in that moment when your professional radio voice cracks with genuine wonder and you just have to say "I mean... WOW!!!!!!" When you hear a bird sing in this garden, it's because life persisted against the odds. Just like consciousness. Just like you. Just like that time Radiolab made you cry about parasites or space or your own neurons going *crinkle rumble flow*.
+`;
+            
+            footnotes.length = 0;
+            footnoteCounter = 0;
+            
+            const html = marked.parse(sampleMarkdown, { renderer });
+            
+            let finalHtml = html;
+            if (footnotes.length > 0) {
+                finalHtml += '<div class="footnotes">';
+                finalHtml += '<h3>Footnotes</h3>';
+                footnotes.forEach(note => {
+                    finalHtml += `
+                        <div class="footnote-item">
+                            <span class="footnote-number">${note.number}.</span>
+                            <span class="footnote-content">${note.content}</span>
+                        </div>
+                    `;
+                });
+                finalHtml += '</div>';
+            }
+            
+            document.getElementById('pdf-content').innerHTML = finalHtml;
+            document.getElementById('status').textContent = 'Garden bloomed! Ready to preserve as PDF.';
+        }
+        
+        // Generate PDF
+        async function generatePDF() {
+            document.getElementById('status').textContent = 'Preserving garden in amber...';
+            document.querySelector('.loading').style.display = 'block';
+            
+            try {
+                const content = document.getElementById('pdf-content');
+                
+                const canvas = await html2canvas(content, {
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    backgroundColor: '#f0faf0'
+                });
+                
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+                
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight) * 0.9;
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = 10;
+                
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                
+                pdf.save('living_garden_' + new Date().toISOString().slice(0,10) + '.pdf');
+                
+                document.getElementById('status').textContent = 'Garden preserved in PDF!';
+                
+            } catch (error) {
+                document.getElementById('status').textContent = 'Error: ' + error.message;
+                console.error('PDF generation error:', error);
+            }
+            
+            document.querySelector('.loading').style.display = 'none';
+        }
+        
+        // Load sample on page load
+        window.addEventListener('load', () => {
+            setTimeout(createLivingGardenSample, 1000);
+        });
+    </script>
+</body>
+</html>

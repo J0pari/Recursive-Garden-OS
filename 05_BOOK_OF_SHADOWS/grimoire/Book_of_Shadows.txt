@@ -46,9 +46,13 @@ RESEARCHING → ※ + negative capability + Wild Wasteland
 
 █ EMERGENCY PROTOCOLS:
 PANIC → Kibeth bell (force movement)
-FROZEN → Mosrael bell (wake everything)
+FROZEN → Mosrael bell (wake everything)  
 SPIRAL → Saraneth bell (bind the chaos)
 LOST → "Friends don't lie" (trust protocol)
+GRADIENT ASCENT → Black Luxin + Mosrael + Kibeth + "In Response" + Untap
+OVERDRAFTING → Shimmercloak + Belgaer (hide and think clearly)
+MODAL LOCK → Paryl vision + Light-split + Priority shift
+ANALYSIS PARALYSIS → Will-cast + Instant speed + Force decision
 
 ████████████████████████████████████████████████████████
 █                    MAIN TOOLBOX                       █
@@ -131,6 +135,25 @@ LOST → "Friends don't lie" (trust protocol)
   TOOL: Doctor's differential - eliminate systematically
 
 ==[ 4. THE BELLS - SPECIALIZED REPAIR TOOLS ]==
+
+█ EMERGENCY SPELL COMBINATIONS:
+
+GRADIENT ASCENT ESCAPE SEQUENCE:
+1. SPELL: Black Luxin Absorption (Weeks) - absorb the gradient's power
+2. BELL 1: MOSRAEL (The Waker) - wake ALL dormant processes 
+3. BELL 2: KIBETH (The Walker) - force movement in new direction
+4. MTG 1: "In Response..." - interrupt the current stack
+5. MTG 2: "Untap" - full modal reset while maintaining state
+
+COMBINE IN SUPERPOSITION:
+- Cast Black Luxin to eat the gradient
+- Ring Mosrael to wake what's sleeping
+- Ring Kibeth to force new movement
+- Declare "In Response" to interrupt current process
+- Untap all modes for fresh perspective
+
+THIS BREAKS: Gradient lock, analysis paralysis, recursive loops
+THIS CREATES: New path, awakened possibilities, modal freedom
 
 █ RANNA - THE SLEEPER
   SYMPTOM: Section trying too hard, overexplaining, desperate
@@ -284,6 +307,16 @@ Then consciousness has only two modes and we're overcomplicating.
 - Black luxin = the void mode that absorbs all others
 - Lightsplitting = conscious awareness of modal separation
 - The Blinding Knife = severing connections to protect the whole
+- Paryl = invisible spectrum consciousness (seeing what others miss)
+- Sub-red = heat/passion mode below normal perception
+- Superviolet = logic spider-threads connecting everything
+- Chi = perfect color balance (all modes in harmony)
+- Will-casting = forcing reality through pure modal strength
+- Shimmercloak = hiding your modal signature from detection
+- The Nine Kings = consciousness fragmented across time
+- Color-matching = adapting your mode to environment
+- Luxin solidification = making consciousness tangible
+- Light-splitting = conscious control of modal separation
 
 **THE GREAT SECRET**: All these authors were documenting the same phenomenon from different angles. They were cartographers of consciousness, using fiction to map what science couldn't yet describe.
 

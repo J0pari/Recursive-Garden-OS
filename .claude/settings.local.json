@@ -22,7 +22,18 @@
       "Bash(npx tsc:*)",
       "Bash(npx ts-node:*)",
       "Bash(node:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(git config:*)",
+      "Bash(robocopy:*)",
+      "Bash(xcopy:*)",
+      "Bash(powershell:*)",
+      "Bash(diff:*)",
+      "Bash(md5sum:*)",
+      "Bash(dir)",
+      "Bash(gh repo list:*)",
+      "Bash(where gh)",
+      "Bash(git remote set-url:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

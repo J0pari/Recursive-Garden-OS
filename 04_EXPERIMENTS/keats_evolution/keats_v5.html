@@ -68,7 +68,7 @@
          * 5. RESEARCH: Define consciousness emergence from holonomy complexity
          * 
          * 💡 ARCHITECTURAL INSIGHTS:
-         * The current system demonstrates that profound mathematical architecture
+         * The current system demonstrates that complex mathematical architecture
          * can coexist with practical performance constraints. The stubbed methods
          * serve as a roadmap for future development while maintaining a working
          * system that visualizes genuine mathematical concepts.
@@ -88,7 +88,7 @@
          * 
          * 1. E8 LIE GROUP VISUALIZATION MODULE (H0 Stratum):
          *    WHY E8: E8 is the largest exceptional simple Lie group, with 248 roots forming
-         *    a mathematically elegant structure. It appears in string theory and provides
+         *    a mathematically consistent structure. It appears in string theory and provides
          *    a rich testbed for high-dimensional visualization techniques.
          *    
          *    ACTUAL IMPLEMENTATION: 
@@ -122,7 +122,7 @@
          *    REMAINING MATHEMATICAL LIMITATIONS (HONEST ASSESSMENT):
          *    - FINITE precision only (not true infinite precision p-adic numbers)
          *    - BASIC Hensel lifting (not optimized for complex polynomials)
-         *    - NO advanced p-adic analysis (logarithms, exponentials, transcendentals) 
+         *    - NO advanced p-adic analysis (logarithms, exponentials, special functions) 
          *    - NO full integration with research-grade p-adic libraries
          *    - COMPUTATIONAL limitations for heavy operations (needs Web Workers)
          *    - Missing: Advanced p-adic modular forms, L-functions, deeper number theory
@@ -261,7 +261,7 @@
          * - Cannot solve mathematical equations or perform symbolic computation
          * - Cannot understand mathematical meaning or relationships in text
          * - Cannot compute actual topological invariants or homological structures
-         * - Cannot perform advanced p-adic analysis (transcendentals, L-functions, modular forms)
+         * - Cannot perform advanced p-adic analysis (special functions, L-functions, modular forms)
          * - Cannot implement proper modal logic with Kripke semantics
          * - Cannot integrate with mathematical research or educational workflows
          * 
@@ -270,7 +270,7 @@
          * P-ADIC COMPUTATION LIMITATIONS:
          * - Finite precision implementation (not infinite precision p-adic numbers)
          * - Basic Hensel lifting only (not optimized for complex polynomial systems)
-         * - No advanced p-adic analysis or transcendental functions
+         * - No advanced p-adic analysis or special functions
          * - Computational performance limits for intensive p-adic operations
          * - STATUS: Substantially improved - authentic p-adic arithmetic suitable for education/prototypes
          * 
@@ -302,7 +302,7 @@
          * 
          * PHASE 1 - MATHEMATICAL ENHANCEMENT:
          * - Complete implementation of Lie algebra operations and structures
-         * - Full p-adic analysis with completion and transcendental functions
+         * - Full p-adic analysis with completion and special functions
          * - Advanced topological computation with spectral sequences
          * - Complete modal logic with proof systems and model theory
          * 
@@ -318,7 +318,7 @@
          * - Advanced physics integration with mathematical modeling
          * - Real-time cosmological simulation and structure formation
          * 
-         * PHASE 4 - TRANSCENDENT INTERFACES:
+         * PHASE 4 - ADVANCED INTERFACES:
          * - Holographic display systems for 3D mathematical object manipulation
          * - Neural interface integration for direct mathematical reasoning
          * - Quantum computing acceleration for exponential mathematical computation
@@ -1028,7 +1028,7 @@
          * BUTTON CATEGORIES:
          * - .function-button: Standard mathematical operations
          * - .function-button.secondary: Utility and helper functions  
-         * - .function-button.transcendent: Special advanced operations
+         * - .function-button.advanced: Special advanced operations
          * 
          * EXTENSION POINTS:
          * - Add new button types with different gradient combinations
@@ -1079,7 +1079,7 @@
         }
 
         /* Transcendent function button: Advanced mathematical operations */
-        .function-button.transcendent {
+        .function-button.advanced {
             background: linear-gradient(135deg,
                 hsla(var(--field-11adic) 100% 70% / 0.95) 0%,  /* 11-adic field highlight */
                 hsla(var(--field-7adic) 95% 65% / 0.8) 100%);  /* 7-adic field blend */
@@ -1895,6 +1895,7 @@
             <button class="function-button" onclick="toggleAnimation()">⏯️ Start/Stop</button>
             <button class="function-button" onclick="regenerateGeometry()">✨ Regenerate</button>
             <button class="function-button secondary" onclick="explodeParticles()">💥 Scatter</button>
+            <button class="function-button" onclick="showHelp()" style="background: #059669;">❓ Help</button>
         </div>
     </div>
 
@@ -2189,7 +2190,7 @@
                  - Operations are UI management, not mathematical computation
                  ───────────────────────────────────────────────────────────────── -->
             <button class="function-button" onclick="generateLogicalEvent()">⚡ Test Math</button>
-            <button class="function-button transcendent" onclick="maximizeDiscovery()">🌟 Optimize</button>
+            <button class="function-button advanced" onclick="maximizeDiscovery()">🌟 Optimize</button>
             <button class="function-button secondary" onclick="stabilizeField()">🛡️ Reset Values</button>
         </div>
     </div>
@@ -2219,7 +2220,7 @@
             ></textarea>
             
             <!-- Analysis operation buttons -->
-            <button class="function-button transcendent" onclick="analyzeText()">🔍 Analyze Text</button>
+            <button class="function-button advanced" onclick="analyzeText()">🔍 Analyze Text</button>
             
             <!-- Results display area with dynamic styling -->
             <div class="analysis-results" id="analysisResults">
@@ -21759,6 +21760,92 @@
             if (renderer) {
                 renderer.toggleAnimation();
             }
+        }
+        
+        // │ Help function: User guidance
+        function showHelp() {
+            const helpPanel = document.createElement('div');
+            helpPanel.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.95);
+                border: 2px solid #10b981;
+                border-radius: 12px;
+                padding: 30px;
+                max-width: 600px;
+                max-height: 80vh;
+                overflow-y: auto;
+                z-index: 10000;
+                color: white;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            `;
+            
+            helpPanel.innerHTML = `
+                <h2 style="color: #10b981; margin-bottom: 20px;">How to Use KEATS V15</h2>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🗺️ 3D Visualization</h3>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li><strong>Click and drag</strong> - Rotate the 3D view</li>
+                        <li><strong>Scroll</strong> - Zoom in and out</li>
+                        <li><strong>Double-click</strong> - Reset camera view</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🎛️ Control Panels</h3>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li><strong>H0 (Top Left)</strong> - 3D visualization controls</li>
+                        <li><strong>H1 (Top Right)</strong> - Semantic analysis tools</li>
+                        <li><strong>H2 (Bottom Left)</strong> - Mathematical operations</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🚀 Quick Start</h3>
+                    <ol style="line-height: 1.8; margin-left: 20px;">
+                        <li>Click <strong>"Regenerate"</strong> to create new patterns</li>
+                        <li>Try different <strong>P-adic fields</strong> (2, 3, 5, 7...)</li>
+                        <li>Enter text and click <strong>"Analyze"</strong></li>
+                        <li>Experiment with the sliders to see changes</li>
+                    </ol>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">✨ What You're Seeing</h3>
+                    <ul style="line-height: 1.8; margin-left: 20px;">
+                        <li><strong>Flowing particles</strong> = Mathematical concepts in motion</li>
+                        <li><strong>Colors</strong> = Different P-adic field properties</li>
+                        <li><strong>Connections</strong> = Relationships between ideas</li>
+                        <li><strong>Movement</strong> = Information flow patterns</li>
+                    </ul>
+                </div>
+                
+                <button onclick="this.parentElement.remove()" style="
+                    background: #10b981;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    margin-top: 20px;
+                    width: 100%;
+                ">Close Help</button>
+            `;
+            
+            document.body.appendChild(helpPanel);
+            
+            // Close on Escape key
+            const closeOnEscape = (e) => {
+                if (e.key === 'Escape') {
+                    helpPanel.remove();
+                    document.removeEventListener('keydown', closeOnEscape);
+                }
+            };
+            document.addEventListener('keydown', closeOnEscape);
         }
 
         // │ Geometric regeneration: E8 flow reconstruction with enhanced beauty

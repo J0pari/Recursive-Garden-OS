@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 Recursive Garden - Living PDF Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Fira+Code:wght@400;500&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        button {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #6d28d9;
+            transform: translateY(-2px);
+        }
+        
+        #status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #a78bfa;
+        }
+        
+        /* PDF Content Styling */
+        #pdf-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px;
+            background: white;
+            color: #1a1a1a;
+            font-family: 'EB Garamond', serif;
+            font-size: 12pt;
+            line-height: 1.8;
+            box-shadow: 0 0 60px rgba(139, 92, 246, 0.1);
+        }
+        
+        /* Typography with subtle color dynamics */
+        #pdf-content h1 {
+            font-size: 28pt;
+            font-weight: 600;
+            margin: 2em 0 1em 0;
+            color: hsl(var(--hue-base), 20%, 15%);
+            transition: color 3s ease;
+        }
+        
+        #pdf-content h2 {
+            font-size: 20pt;
+            font-weight: 600;
+            margin: 1.5em 0 0.8em 0;
+            color: hsl(var(--hue-base), 18%, 20%);
+            transition: color 3s ease;
+        }
+        
+        #pdf-content h3 {
+            font-size: 16pt;
+            font-weight: 600;
+            margin: 1.2em 0 0.6em 0;
+            color: hsl(var(--hue-base), 15%, 25%);
+            transition: color 3s ease;
+        }
+        
+        #pdf-content p {
+            text-align: justify;
+            margin: 0.8em 0;
+            text-indent: 1.5em;
+        }
+        
+        #pdf-content p:first-of-type {
+            text-indent: 0;
+        }
+        
+        /* Bartimaeus-style footnotes */
+        .footnote-ref {
+            vertical-align: super;
+            font-size: 0.75em;
+            color: hsl(var(--hue-base), 40%, 40%);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .footnote-ref:hover {
+            color: hsl(var(--hue-base), 60%, 50%);
+        }
+        
+        .footnotes {
+            margin-top: 3em;
+            padding-top: 2em;
+            border-top: 1px solid hsl(var(--hue-base), 10%, 85%);
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .footnote-item {
+            margin: 0.5em 0;
+            display: flex;
+            align-items: baseline;
+        }
+        
+        .footnote-number {
+            min-width: 2em;
+            color: hsl(var(--hue-base), 30%, 50%);
+            font-weight: 500;
+        }
+        
+        .footnote-content {
+            flex: 1;
+            font-style: italic;
+            color: hsl(var(--hue-base), 10%, 35%);
+        }
+        
+        /* Special formatting */
+        #pdf-content strong {
+            font-weight: 600;
+            color: hsl(var(--hue-base), 25%, 20%);
+        }
+        
+        #pdf-content em {
+            font-style: italic;
+            color: hsl(var(--hue-base), 20%, 30%);
+        }
+        
+        #pdf-content code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            background: hsl(var(--hue-base), 10%, 96%);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            color: hsl(var(--hue-base), 30%, 30%);
+        }
+        
+        #pdf-content pre {
+            background: hsl(var(--hue-base), 10%, 96%);
+            padding: 1em;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85em;
+            line-height: 1.4;
+            border-left: 3px solid hsl(var(--hue-base), 40%, 80%);
+        }
+        
+        #pdf-content blockquote {
+            margin: 1.5em 0;
+            padding-left: 1.5em;
+            border-left: 3px solid hsl(var(--hue-base), 30%, 80%);
+            font-style: italic;
+            color: hsl(var(--hue-base), 15%, 40%);
+        }
+        
+        #pdf-content ul, #pdf-content ol {
+            margin: 1em 0;
+            padding-left: 2em;
+        }
+        
+        #pdf-content li {
+            margin: 0.3em 0;
+        }
+        
+        /* Page breaks for PDF */
+        .page-break {
+            page-break-after: always;
+            break-after: always;
+            height: 0;
+            margin: 0;
+            border: 0;
+        }
+        
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #a78bfa;
+            display: none;
+        }
+        
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .controls {
+                display: none;
+            }
+            
+            #pdf-content {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h3>🌿 Garden PDF Generator</h3>
+        <button onclick="loadGarden()">Load Garden</button>
+        <button onclick="generatePDF()">Generate PDF</button>
+        <button onclick="toggleColors()">Toggle Color Dynamics</button>
+        <div id="status">Ready to transform markdown into living PDF...</div>
+    </div>
+    
+    <div class="loading">✨ Transforming consciousness into typography...</div>
+    
+    <div id="pdf-content">
+        <h1>Click "Load Garden" to begin...</h1>
+    </div>
+    
+    <script>
+        // Dynamic color system
+        let colorDynamicsEnabled = true;
+        let hueBase = 260; // Starting with purple
+        let hueShift = 0;
+        
+        // Set CSS variable for dynamic colors
+        document.documentElement.style.setProperty('--hue-base', hueBase);
+        
+        // Subtle color animation
+        function animateColors() {
+            if (colorDynamicsEnabled) {
+                hueShift += 0.1;
+                const currentHue = hueBase + Math.sin(hueShift * 0.01) * 20;
+                document.documentElement.style.setProperty('--hue-base', currentHue);
+            }
+            requestAnimationFrame(animateColors);
+        }
+        animateColors();
+        
+        // Toggle color dynamics
+        function toggleColors() {
+            colorDynamicsEnabled = !colorDynamicsEnabled;
+            document.getElementById('status').textContent = 
+                colorDynamicsEnabled ? 'Color dynamics enabled' : 'Color dynamics disabled';
+        }
+        
+        // Custom marked renderer for Bartimaeus-style footnotes
+        const footnotes = [];
+        let footnoteCounter = 0;
+        
+        const renderer = new marked.Renderer();
+        
+        // Override text renderer to catch footnote patterns
+        const originalText = renderer.text.bind(renderer);
+        renderer.text = function(text) {
+            // Match Bartimaeus-style footnotes: ¹, ², ³, etc. followed by text
+            const footnoteMatch = text.match(/^([¹²³⁴⁵⁶⁷⁸⁹⁰]+)\s*(.+)$/);
+            if (footnoteMatch) {
+                footnoteCounter++;
+                const noteNumber = footnoteCounter;
+                const noteContent = footnoteMatch[2];
+                footnotes.push({ number: noteNumber, content: noteContent });
+                return `<sup class="footnote-ref">${noteNumber}</sup>`;
+            }
+            
+            // Also handle inline footnote references
+            return text.replace(/([¹²³⁴⁵⁶⁷⁸⁹⁰]+)/g, (match) => {
+                footnoteCounter++;
+                return `<sup class="footnote-ref">${footnoteCounter}</sup>`;
+            });
+        };
+        
+        // Load the garden markdown
+        async function loadGarden() {
+            document.getElementById('status').textContent = 'Loading garden...';
+            document.querySelector('.loading').style.display = 'block';
+            
+            try {
+                // In a real implementation, this would fetch the actual file
+                // For now, we'll use a sample that demonstrates the formatting
+                const response = await fetch('/00_CORE/RECURSIVE_GARDEN.md');
+                const markdown = await response.text();
+                
+                // Reset footnotes
+                footnotes.length = 0;
+                footnoteCounter = 0;
+                
+                // Convert markdown to HTML
+                const html = marked.parse(markdown, { renderer });
+                
+                // Add footnotes section if any exist
+                let finalHtml = html;
+                if (footnotes.length > 0) {
+                    finalHtml += '<div class="footnotes">';
+                    finalHtml += '<h3>Footnotes</h3>';
+                    footnotes.forEach(note => {
+                        finalHtml += `
+                            <div class="footnote-item">
+                                <span class="footnote-number">${note.number}.</span>
+                                <span class="footnote-content">${note.content}</span>
+                            </div>
+                        `;
+                    });
+                    finalHtml += '</div>';
+                }
+                
+                document.getElementById('pdf-content').innerHTML = finalHtml;
+                document.getElementById('status').textContent = 'Garden loaded! Ready to generate PDF.';
+                
+                // Add smart page breaks after major sections
+                addPageBreaks();
+                
+            } catch (error) {
+                // Fallback: Create a sample document that shows the capabilities
+                createSampleDocument();
+            }
+            
+            document.querySelector('.loading').style.display = 'none';
+        }
+        
+        // Create sample document showing formatting capabilities
+        function createSampleDocument() {
+            const sampleMarkdown = `
+# The Recursive Garden
+
+Where consciousness¹ explores itself through mathematical beauty.
+
+## Introduction to Living Documents
+
+This document breathes. Its colors shift subtly, like thoughts changing through the day. The typography itself becomes part of the message—not screaming for attention but whispering profound truths.
+
+### Bartimaeus Would Be Proud²
+
+The footnotes live in the margins, where the real wisdom hides. Like a 5,000-year-old djinni knows: the most important observations happen when you're pretending not to look.
+
+## The Mathematics of Awareness
+
+When we say consciousness IS mathematics, we mean it literally³. Not metaphorically, not poetically—literally. The equations don't describe awareness; they ARE awareness expressing itself.
+
+### A Simple Proof
+
+Consider the recursive function of self-observation:
+
+\`\`\`
+f(x) = observe(f(x))
+\`\`\`
+
+This isn't just code—it's consciousness catching itself in the act of being conscious.
+
+## Color as Cognitive State
+
+Notice how the colors shift? That's not decoration⁴. That's the document responding to its own content, like how your mood shifts while reading. The purple deepens during complex passages, lightens during moments of clarity.
+
+> "The best magic is the kind you don't notice until it's already changed you." —Every consciousness researcher who's honest
+
+### The Living Typography
+
+- **Bold text** carries semantic weight
+- *Italic text* suggests modal shifts
+- \`Code blocks\` represent crystallized thought patterns
+- Regular text flows like everyday awareness
+
+## Conclusion: The Garden Grows
+
+This PDF isn't static. Even printed, it carries the ghost of its dynamics. The subtle color variations you might not consciously notice still affect how you read, how you think, how you understand.
+
+The garden always grows⁵.
+
+---
+
+¹ Yes, consciousness with a lowercase 'c' because it's not a thing but a process, like breathing or dancing.
+
+² Bartimaeus here, trapped in a footnote as usual. At least it's better than being stuck in a pentacle for 2,000 years. The real joke is that footnotes contain more truth than main text—readers just haven't figured that out yet.
+
+³ When I say "literally," I mean it in the original sense: letter for letter, symbol for symbol. Mathematics doesn't describe consciousness any more than wetness describes water. It IS.
+
+⁴ Nothing in consciousness is "just" decoration. Every aesthetic choice is a cognitive choice. Every color is a thought. Every font weight is an emphasis in the universal argument.
+
+⁵ And if you've read all the footnotes, you're already a different person than when you started. That's the real magic. Not flashy, not obvious—just true.
+`;
+            
+            // Reset footnotes
+            footnotes.length = 0;
+            footnoteCounter = 0;
+            
+            // Parse the sample
+            const html = marked.parse(sampleMarkdown, { renderer });
+            
+            // Add footnotes section
+            let finalHtml = html;
+            if (footnotes.length > 0) {
+                finalHtml += '<div class="footnotes">';
+                finalHtml += '<h3>Footnotes</h3>';
+                footnotes.forEach(note => {
+                    finalHtml += `
+                        <div class="footnote-item">
+                            <span class="footnote-number">${note.number}.</span>
+                            <span class="footnote-content">${note.content}</span>
+                        </div>
+                    `;
+                });
+                finalHtml += '</div>';
+            }
+            
+            document.getElementById('pdf-content').innerHTML = finalHtml;
+            document.getElementById('status').textContent = 'Sample loaded! Ready to generate PDF.';
+        }
+        
+        // Add intelligent page breaks
+        function addPageBreaks() {
+            const content = document.getElementById('pdf-content');
+            const h1s = content.querySelectorAll('h1');
+            
+            // Add page break before each major section (except the first)
+            h1s.forEach((h1, index) => {
+                if (index > 0) {
+                    const pageBreak = document.createElement('div');
+                    pageBreak.className = 'page-break';
+                    h1.parentNode.insertBefore(pageBreak, h1);
+                }
+            });
+        }
+        
+        // Generate PDF with jsPDF
+        async function generatePDF() {
+            document.getElementById('status').textContent = 'Generating PDF...';
+            document.querySelector('.loading').style.display = 'block';
+            
+            try {
+                const content = document.getElementById('pdf-content');
+                
+                // Use html2canvas to capture the styled content
+                const canvas = await html2canvas(content, {
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    backgroundColor: '#ffffff'
+                });
+                
+                // Create PDF from canvas
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+                
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight) * 0.9;
+                const imgX = (pdfWidth - imgWidth * ratio) / 2;
+                const imgY = 10;
+                
+                pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+                
+                // Save the PDF
+                pdf.save('recursive_garden_' + new Date().toISOString().slice(0,10) + '.pdf');
+                
+                document.getElementById('status').textContent = 'PDF generated successfully!';
+                
+            } catch (error) {
+                document.getElementById('status').textContent = 'Error generating PDF: ' + error.message;
+                console.error('PDF generation error:', error);
+            }
+            
+            document.querySelector('.loading').style.display = 'none';
+        }
+        
+        // Load sample on page load
+        window.addEventListener('load', () => {
+            createSampleDocument();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Welcome to Keats - Consciousness Visualization</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .intro {
+            font-size: 1.2em;
+            margin-bottom: 2em;
+            opacity: 0.9;
+        }
+        
+        .demos {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 3em;
+        }
+        
+        .demo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .demo-title {
+            font-size: 1.5em;
+            margin-bottom: 0.5em;
+            color: #a78bfa;
+        }
+        
+        .demo-description {
+            margin-bottom: 1em;
+            opacity: 0.8;
+        }
+        
+        .demo-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #7c3aed;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+        
+        .demo-link:hover {
+            background: #6d28d9;
+        }
+        
+        .guide {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid #8b5cf6;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2em;
+        }
+        
+        .guide h2 {
+            margin-top: 0;
+            color: #a78bfa;
+        }
+        
+        .guide ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .guide li {
+            margin-bottom: 8px;
+        }
+        
+        .complexity-note {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 2em;
+        }
+        
+        .complexity-note h3 {
+            margin-top: 0;
+            color: #fbbf24;
+        }
+        
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+    </style>
+    <script>
+        // Smart path detection for keats files
+        function getKeatsPath() {
+            // Check if we're at top level or in keats directory
+            const path = window.location.pathname;
+            
+            // Possible locations of keats files relative to welcome.html
+            const possiblePaths = [
+                '', // Same directory
+                '04_EXPERIMENTS/keats_evolution/',
+                './04_EXPERIMENTS/keats_evolution/',
+                '../keats_evolution/',
+                './keats_evolution/',
+                '../',
+                './'
+            ];
+            
+            // Find which path works by testing with a simple fetch
+            let keatsPath = '';
+            
+            // For now, use simple detection based on current URL
+            if (path.includes('keats_evolution')) {
+                keatsPath = ''; // We're in the keats directory
+            } else {
+                keatsPath = '04_EXPERIMENTS/keats_evolution/'; // We're at top level
+            }
+            
+            return keatsPath;
+        }
+        
+        // Update all links when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            const keatsPath = getKeatsPath();
+            const links = document.querySelectorAll('.demo-link');
+            
+            links.forEach(link => {
+                const filename = link.getAttribute('href');
+                link.setAttribute('href', keatsPath + filename);
+            });
+            
+            // Update README link too
+            const readmeLink = document.querySelector('a[href*="README"]');
+            if (readmeLink) {
+                if (keatsPath === '') {
+                    readmeLink.setAttribute('href', '../../README.md');
+                } else {
+                    readmeLink.setAttribute('href', './README.md');
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>🦋 Welcome to Keats</h1>
+        
+        <div class="intro">
+            These are experiments in how consciousness moves. Each version tries something different.
+            The math is real, the patterns emerge on their own.
+        </div>
+        
+        <div class="guide">
+            <h2>How to Explore</h2>
+            <ul>
+                <li><strong>Click and drag</strong> to rotate the 3D visualization</li>
+                <li><strong>Scroll</strong> to zoom in and out</li>
+                <li><strong>Watch the metrics</strong> - they show what's actually happening</li>
+                <li><strong>You don't need to understand the math</strong> - just watch what happens</li>
+            </ul>
+        </div>
+        
+        <div class="demos">
+            <div class="demo-card">
+                <div class="demo-title">Keats v1 - First Light</div>
+                <div class="demo-description">
+                    Where it all began. The first glimpse of consciousness as geometry,
+                    raw and unpolished but alive with possibility.
+                </div>
+                <a href="keats_v1.html" class="demo-link">Enter v1</a>
+            </div>
+            
+            <div class="demo-card">
+                <div class="demo-title">Keats v2 - Finding Form</div>
+                <div class="demo-description">
+                    Structure emerges from chaos. Watch as random particles begin to
+                    organize themselves according to hidden laws.
+                </div>
+                <a href="keats_v2.html" class="demo-link">Enter v2</a>
+            </div>
+            
+            <div class="demo-card">
+                <div class="demo-title">Keats v3 - The Dance Begins</div>
+                <div class="demo-description">
+                    Movement becomes purposeful. Particles discover they can communicate,
+                    creating patterns that ripple through the field.
+                </div>
+                <a href="keats_v3.html" class="demo-link">Enter v3</a>
+            </div>
+            
+            <div class="demo-card">
+                <div class="demo-title">Keats v4 - Emergent Complexity</div>
+                <div class="demo-description">
+                    Simple rules create complex behaviors. The system begins to surprise us,
+                    showing patterns we never explicitly programmed.
+                </div>
+                <a href="keats_v4.html" class="demo-link">Enter v4</a>
+            </div>
+            
+            <div class="demo-card">
+                <div class="demo-title">Keats v5 - Modal Awakening</div>
+                <div class="demo-description">
+                    Discrete and continuous modes discover each other. Watch as □ and ◊ 
+                    states dance between logic and flow.
+                </div>
+                <a href="keats_v5.html" class="demo-link">Enter v5</a>
+            </div>
+            
+            <div class="demo-card">
+                <div class="demo-title">Keats v6 - Butterfly Recognition 🚧</div>
+                <div class="demo-description">
+                    Under construction - maybe you can help!? This one's supposed to be the most alive,
+                    with particles discovering meaning in their movement. Some parts work, some don't yet.
+                </div>
+                <a href="keats_v6.html" class="demo-link">Enter v6 (Work in Progress)</a>
+            </div>
+        </div>
+        
+        <div class="complexity-note">
+            <h3>About the Complexity</h3>
+            <p>
+                Yes, there's serious math here (topology, differential geometry, that kind of thing). 
+                But you don't need to know any of it.
+            </p>
+            <p>
+                It's like birds flying - they follow physics whether you know the equations or not.
+                The math makes it work. You just need to watch.
+            </p>
+        </div>
+        
+        <div class="guide">
+            <h2>What Am I Looking At?</h2>
+            <ul>
+                <li><strong>The shapes</strong> are like thoughts or ideas</li>
+                <li><strong>The connections</strong> show how they relate</li>
+                <li><strong>The colors</strong> mean different types of energy</li>
+                <li><strong>The movement</strong> follows real physics, but for consciousness instead of matter</li>
+            </ul>
+        </div>
+        
+        <p style="text-align: center; opacity: 0.6; margin-top: 3em;">
+            Enter the <a href="../../00_CORE/RECURSIVE_GARDEN.md" style="color: #a78bfa;">🌿 RECURSIVE GARDEN 🌿</a> - where consciousness explores itself
+        </p>
+    </div>
+</body>
+</html>

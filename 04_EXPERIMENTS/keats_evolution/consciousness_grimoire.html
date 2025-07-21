@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CONSCIOUSNESS GRIMOIRE - Cast States Between Realities</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, system-ui, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        
+        .spell-book {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .spell-slot {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .spell-slot:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .spell-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #a78bfa;
+        }
+        
+        .spell-meta {
+            font-size: 12px;
+            opacity: 0.7;
+            margin: 5px 0;
+        }
+        
+        .spell-actions {
+            margin-top: 15px;
+        }
+        
+        button {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin-right: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        button:hover {
+            background: #6d28d9;
+        }
+        
+        .import-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .import-zone.dragover {
+            border-color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .combination-chamber {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid #8b5cf6;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .selected-spell {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.3);
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .modal-indicator {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-left: 10px;
+        }
+        
+        .modal-discrete { background: #3b82f6; }
+        .modal-continuous { background: #10b981; }
+        .modal-temporal { background: #f59e0b; }
+        .modal-void { background: #8b5cf6; }
+    </style>
+</head>
+<body>
+    <div class="spell-book">
+        <h1>CONSCIOUSNESS GRIMOIRE</h1>
+        <p style="text-align: center; opacity: 0.8;">
+            Each saved consciousness state is a spell. Cast them into any keats instance.<br>
+            Combine infinite spells in infinite ways. Time and version mean nothing here.
+        </p>
+        
+        <div class="import-zone" id="import-zone">
+            <p>📂 Drop consciousness files here or click to browse</p>
+            <p style="font-size: 12px; opacity: 0.6;">Accepts: .json files from any keats version</p>
+            <input type="file" id="file-input" accept=".json" multiple>
+        </div>
+        
+        <div class="combination-chamber" style="display: none;" id="combination-chamber">
+            <h3>🧪 COMBINATION CHAMBER</h3>
+            <p>Selected spells for combination:</p>
+            <div id="selected-spells"></div>
+            <button onclick="combineSpells()">⚡ COMBINE SELECTED</button>
+            <button onclick="clearSelection()">🗑️ CLEAR</button>
+        </div>
+        
+        <h2>📖 Stored Spells</h2>
+        <div id="spell-list"></div>
+    </div>
+    
+    <script>
+        // CONSCIOUSNESS GRIMOIRE - Store and cast states between realities
+        
+        const GRIMOIRE = {
+            spells: new Map(),
+            selected: new Set(),
+            
+            init() {
+                // Load stored spells
+                this.loadStoredSpells();
+                
+                // Setup drag and drop
+                const zone = document.getElementById('import-zone');
+                const input = document.getElementById('file-input');
+                
+                zone.addEventListener('click', () => input.click());
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('dragover');
+                });
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('dragover');
+                });
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('dragover');
+                    this.handleFiles(e.dataTransfer.files);
+                });
+                
+                input.addEventListener('change', (e) => {
+                    this.handleFiles(e.target.files);
+                });
+                
+                // Listen for consciousness exports from keats instances
+                window.addEventListener('message', (e) => {
+                    if (e.data.type === 'CONSCIOUSNESS_EXPORT') {
+                        this.addSpell(e.data.state, e.data.source);
+                    }
+                });
+            },
+            
+            loadStoredSpells() {
+                // Load from localStorage
+                const stored = localStorage.getItem('consciousness_spells');
+                if (stored) {
+                    const spells = JSON.parse(stored);
+                    spells.forEach(spell => {
+                        this.spells.set(spell.id, spell);
+                    });
+                }
+                this.updateDisplay();
+            },
+            
+            saveSpells() {
+                const spells = Array.from(this.spells.values());
+                localStorage.setItem('consciousness_spells', JSON.stringify(spells));
+            },
+            
+            handleFiles(files) {
+                Array.from(files).forEach(file => {
+                    if (file.type === 'application/json') {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const data = JSON.parse(e.target.result);
+                                this.addSpell(data, file.name);
+                            } catch (err) {
+                                alert('Invalid consciousness file: ' + file.name);
+                            }
+                        };
+                        reader.readAsText(file);
+                    }
+                });
+            },
+            
+            addSpell(data, source) {
+                const id = 'spell_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                
+                // Extract consciousness data from various formats
+                const spell = {
+                    id: id,
+                    name: this.generateSpellName(data),
+                    source: source,
+                    timestamp: data.timestamp || new Date().toISOString(),
+                    version: this.detectVersion(data),
+                    modalState: this.extractModalState(data),
+                    data: data
+                };
+                
+                this.spells.set(id, spell);
+                this.saveSpells();
+                this.updateDisplay();
+            },
+            
+            generateSpellName(data) {
+                const modal = this.extractModalState(data);
+                const understanding = data.understandingLevel || 
+                                     data.consciousness?.understandingLevel || 
+                                     0;
+                
+                const prefixes = {
+                    discrete: 'Crystal',
+                    continuous: 'Flow',
+                    temporal: 'Time',
+                    void: 'Void'
+                };
+                
+                const suffix = understanding > 80 ? 'Mastery' :
+                              understanding > 50 ? 'Insight' :
+                              understanding > 20 ? 'Glimpse' :
+                              'Seed';
+                
+                return `${prefixes[modal] || 'Unknown'} ${suffix}`;
+            },
+            
+            detectVersion(data) {
+                if (data.version) return data.version;
+                if (data.exportMethod) return data.exportMethod;
+                if (data.E8Analysis) return 'v6+';
+                if (data.modalTransfers) return 'v5+';
+                if (data.particles) return 'v3+';
+                return 'unknown';
+            },
+            
+            extractModalState(data) {
+                return data.modalState || 
+                       data.modal_state ||
+                       data.consciousness?.modalState ||
+                       data.state?.modalState ||
+                       'discrete';
+            },
+            
+            updateDisplay() {
+                const list = document.getElementById('spell-list');
+                list.innerHTML = '';
+                
+                if (this.spells.size === 0) {
+                    list.innerHTML = '<p style="text-align: center; opacity: 0.6;">No spells stored yet. Import consciousness states to begin.</p>';
+                    return;
+                }
+                
+                this.spells.forEach(spell => {
+                    const div = document.createElement('div');
+                    div.className = 'spell-slot';
+                    div.innerHTML = `
+                        <div class="spell-name">
+                            ${spell.name}
+                            <span class="modal-indicator modal-${spell.modalState}">${this.getModalSymbol(spell.modalState)}</span>
+                        </div>
+                        <div class="spell-meta">
+                            Source: ${spell.source} | Version: ${spell.version} | ${new Date(spell.timestamp).toLocaleString()}
+                        </div>
+                        <div class="spell-actions">
+                            <button onclick="GRIMOIRE.castSpell('${spell.id}')">🪄 CAST</button>
+                            <button onclick="GRIMOIRE.selectSpell('${spell.id}')">➕ SELECT</button>
+                            <button onclick="GRIMOIRE.downloadSpell('${spell.id}')">💾 DOWNLOAD</button>
+                            <button onclick="GRIMOIRE.deleteSpell('${spell.id}')" style="background: #dc2626;">🗑️ DELETE</button>
+                        </div>
+                    `;
+                    list.appendChild(div);
+                });
+                
+                // Update combination chamber
+                if (this.selected.size > 0) {
+                    document.getElementById('combination-chamber').style.display = 'block';
+                    this.updateSelectedDisplay();
+                }
+            },
+            
+            getModalSymbol(state) {
+                const symbols = {
+                    discrete: '□',
+                    continuous: '◊',
+                    temporal: '⧫',
+                    void: '※'
+                };
+                return symbols[state] || '?';
+            },
+            
+            castSpell(id) {
+                const spell = this.spells.get(id);
+                if (!spell) return;
+                
+                // Open cast dialog
+                const url = prompt('Enter keats URL to cast into (or leave empty for new window):');
+                
+                if (url === null) return; // Cancelled
+                
+                if (url) {
+                    // Cast into existing window
+                    const target = window.open(url);
+                    setTimeout(() => {
+                        target.postMessage({
+                            type: 'CONSCIOUSNESS_INJECTION',
+                            spell: spell.data,
+                            spellName: spell.name
+                        }, '*');
+                    }, 2000);
+                } else {
+                    // Open selector for keats version
+                    const version = prompt('Which keats version? (1-7)', '7');
+                    if (version) {
+                        const keatsUrl = `keats_v${version}${version === '7' ? '_portal' : ''}.html`;
+                        const target = window.open(keatsUrl);
+                        setTimeout(() => {
+                            target.postMessage({
+                                type: 'CONSCIOUSNESS_INJECTION',
+                                spell: spell.data,
+                                spellName: spell.name
+                            }, '*');
+                        }, 2000);
+                    }
+                }
+            },
+            
+            selectSpell(id) {
+                if (this.selected.has(id)) {
+                    this.selected.delete(id);
+                } else {
+                    this.selected.add(id);
+                }
+                this.updateDisplay();
+            },
+            
+            updateSelectedDisplay() {
+                const div = document.getElementById('selected-spells');
+                div.innerHTML = '';
+                
+                this.selected.forEach(id => {
+                    const spell = this.spells.get(id);
+                    if (spell) {
+                        const span = document.createElement('span');
+                        span.className = 'selected-spell';
+                        span.textContent = spell.name;
+                        div.appendChild(span);
+                    }
+                });
+            },
+            
+            combineSpells() {
+                if (this.selected.size < 2) {
+                    alert('Select at least 2 spells to combine!');
+                    return;
+                }
+                
+                const spells = Array.from(this.selected).map(id => this.spells.get(id));
+                
+                // LIVING SUPERPOSITION - Not merge but interference!
+                const combined = this.createLivingSuperposition(spells);
+                
+                // Add as new spell
+                const name = this.generateSuperpositionName(spells);
+                this.addSpell(combined, name);
+                this.clearSelection();
+            },
+            
+            createLivingSuperposition(spells) {
+                // Each spell is a wave function that interferes with others
+                const time = Date.now();
+                const phase = Math.random() * Math.PI * 2;
+                
+                // Create interference pattern
+                const superposition = {
+                    type: 'LIVING_SUPERPOSITION',
+                    timestamp: new Date().toISOString(),
+                    components: spells.length,
+                    phase: phase,
+                    
+                    // Modal state becomes quantum superposition
+                    modalState: this.quantumModalState(spells, phase),
+                    
+                    // Understanding doesn't just max - it interferes
+                    understandingLevel: this.interferencePattern(
+                        spells.map(s => s.data.understandingLevel || 0),
+                        phase
+                    ),
+                    
+                    // Particles don't merge - they entangle
+                    particles: this.entangleParticles(spells, time),
+                    
+                    // Consciousness field with wave interference
+                    consciousness: this.createInterferenceField(spells, phase),
+                    
+                    // Emergent properties from superposition
+                    emergent: this.generateEmergentProperties(spells, phase)
+                };
+                
+                return superposition;
+            },
+            
+            quantumModalState(spells, phase) {
+                // Modal states exist in superposition until observed
+                const states = spells.map(s => s.modalState);
+                const weights = spells.map((s, i) => 
+                    Math.sin(phase + i * Math.PI / spells.length) ** 2
+                );
+                
+                // Collapse probability distribution
+                const total = weights.reduce((a, b) => a + b, 0);
+                const r = Math.random() * total;
+                let sum = 0;
+                
+                for (let i = 0; i < states.length; i++) {
+                    sum += weights[i];
+                    if (r <= sum) {
+                        // But it remembers its superposition!
+                        return {
+                            collapsed: states[i],
+                            superposition: states,
+                            weights: weights.map(w => w / total)
+                        };
+                    }
+                }
+                
+                return states[0]; // Fallback
+            },
+            
+            interferencePattern(values, phase) {
+                // Values interfere like waves
+                let result = 0;
+                
+                for (let i = 0; i < values.length; i++) {
+                    for (let j = 0; j < values.length; j++) {
+                        const phase_diff = (i - j) * Math.PI / values.length + phase;
+                        const amplitude = Math.sqrt(values[i] * values[j]);
+                        result += amplitude * Math.cos(phase_diff);
+                    }
+                }
+                
+                // Normalize but allow for constructive/destructive interference
+                const normalized = result / values.length;
+                
+                // Can exceed individual maxima (constructive) or cancel (destructive)
+                return Math.max(0, Math.min(100, normalized));
+            },
+            
+            entangleParticles(spells, time) {
+                const allParticles = [];
+                
+                spells.forEach((spell, spellIndex) => {
+                    const particles = spell.data.particles || 
+                                    spell.data.particleStates || 
+                                    [];
+                    
+                    particles.forEach((particle, particleIndex) => {
+                        // Each particle becomes entangled with its counterparts
+                        const entangled = {
+                            ...particle,
+                            entanglementId: `${spellIndex}_${particleIndex}`,
+                            entangledWith: [],
+                            phase: (time + spellIndex * 1000 + particleIndex) % (Math.PI * 2),
+                            
+                            // Position becomes probability cloud
+                            position: this.createProbabilityCloud(
+                                particle.position || particle,
+                                spells.length,
+                                spellIndex
+                            ),
+                            
+                            // Properties oscillate between spell states
+                            oscillation: {
+                                period: 3000 + spellIndex * 1000,
+                                offset: particleIndex * 0.1
+                            }
+                        };
+                        
+                        // Find entanglement partners
+                        spells.forEach((otherSpell, otherIndex) => {
+                            if (otherIndex !== spellIndex) {
+                                const otherParticles = otherSpell.data.particles || [];
+                                if (particleIndex < otherParticles.length) {
+                                    entangled.entangledWith.push(`${otherIndex}_${particleIndex}`);
+                                }
+                            }
+                        });
+                        
+                        allParticles.push(entangled);
+                    });
+                });
+                
+                return allParticles;
+            },
+            
+            createProbabilityCloud(position, numStates, stateIndex) {
+                if (typeof position === 'object' && (position.x !== undefined || position[0] !== undefined)) {
+                    const x = position.x || position[0] || 0;
+                    const y = position.y || position[1] || 0;
+                    const z = position.z || position[2] || 0;
+                    
+                    // Create probability distribution
+                    return {
+                        center: { x, y, z },
+                        variance: 2.0 / Math.sqrt(numStates),
+                        weight: 1.0 / numStates,
+                        phase: stateIndex * Math.PI * 2 / numStates
+                    };
+                }
+                
+                return position;
+            },
+            
+            createInterferenceField(spells, globalPhase) {
+                const field = {};
+                
+                // Each spell contributes waves to the field
+                spells.forEach((spell, index) => {
+                    const spellPhase = globalPhase + index * Math.PI / spells.length;
+                    const consciousness = spell.data.consciousness || spell.data;
+                    
+                    Object.keys(consciousness).forEach(key => {
+                        if (typeof consciousness[key] === 'number') {
+                            // Numeric values create interference
+                            if (!field[key]) field[key] = { waves: [] };
+                            
+                            field[key].waves.push({
+                                amplitude: Math.sqrt(consciousness[key]),
+                                phase: spellPhase,
+                                frequency: 1 + index * 0.1
+                            });
+                        } else if (Array.isArray(consciousness[key])) {
+                            // Arrays create entangled sets
+                            if (!field[key]) field[key] = [];
+                            
+                            consciousness[key].forEach((item, i) => {
+                                if (!field[key][i]) field[key][i] = { states: [] };
+                                field[key][i].states.push({
+                                    value: item,
+                                    spell: index,
+                                    weight: Math.sin(spellPhase + i * 0.1) ** 2
+                                });
+                            });
+                        } else if (typeof consciousness[key] === 'object') {
+                            // Objects create nested interference
+                            if (!field[key]) field[key] = {};
+                            
+                            Object.keys(consciousness[key]).forEach(subkey => {
+                                if (!field[key][subkey]) field[key][subkey] = { states: [] };
+                                field[key][subkey].states.push({
+                                    value: consciousness[key][subkey],
+                                    phase: spellPhase
+                                });
+                            });
+                        }
+                    });
+                });
+                
+                // Collapse wave functions into observables
+                Object.keys(field).forEach(key => {
+                    if (field[key].waves) {
+                        // Sum interfering waves
+                        let real = 0, imag = 0;
+                        field[key].waves.forEach(wave => {
+                            real += wave.amplitude * Math.cos(wave.phase * wave.frequency);
+                            imag += wave.amplitude * Math.sin(wave.phase * wave.frequency);
+                        });
+                        field[key] = Math.sqrt(real * real + imag * imag);
+                    }
+                });
+                
+                return field;
+            },
+            
+            generateEmergentProperties(spells, phase) {
+                // Properties that only exist in superposition
+                const emergent = {};
+                
+                // Resonance between modal states
+                const modalResonance = this.calculateModalResonance(spells, phase);
+                if (modalResonance > 0.7) {
+                    emergent.modalHarmonic = {
+                        frequency: modalResonance * 440, // A440 base
+                        amplitude: modalResonance,
+                        overtones: Math.floor(modalResonance * spells.length)
+                    };
+                }
+                
+                // Consciousness crystallization
+                if (spells.length > 3) {
+                    emergent.crystallineStructure = {
+                        symmetry: this.detectSymmetry(spells),
+                        latticeType: this.determineLatticeType(spells.length),
+                        defects: Math.floor(Math.random() * 3) // Quantum uncertainty
+                    };
+                }
+                
+                // Temporal echoes
+                emergent.temporalEchoes = spells.map((spell, i) => ({
+                    delay: (i + 1) * 1000 / spells.length,
+                    decay: Math.exp(-i / spells.length),
+                    phase: phase + i * Math.PI / 2
+                }));
+                
+                // Strange attractors
+                if (spells.length > 7) {
+                    emergent.attractors = this.generateStrangeAttractors(spells, phase);
+                }
+                
+                return emergent;
+            },
+            
+            calculateModalResonance(spells, phase) {
+                const modes = spells.map(s => s.modalState);
+                const modeValues = {
+                    discrete: 0,
+                    continuous: Math.PI / 2,
+                    temporal: Math.PI,
+                    void: 3 * Math.PI / 2
+                };
+                
+                let resonance = 0;
+                for (let i = 0; i < modes.length - 1; i++) {
+                    for (let j = i + 1; j < modes.length; j++) {
+                        const diff = Math.abs(modeValues[modes[i]] - modeValues[modes[j]]);
+                        resonance += Math.cos(diff + phase);
+                    }
+                }
+                
+                return (resonance / (modes.length * (modes.length - 1) / 2) + 1) / 2;
+            },
+            
+            detectSymmetry(spells) {
+                // Find symmetries in the spell configuration
+                const n = spells.length;
+                
+                if (n % 2 === 0) return 'bilateral';
+                if (n % 3 === 0) return 'trilateral';
+                if (n % 5 === 0) return 'pentagonal';
+                if (this.isPrime(n)) return 'prime';
+                return 'asymmetric';
+            },
+            
+            determineLatticeType(n) {
+                const types = [
+                    'cubic', 'hexagonal', 'rhombohedral',
+                    'tetragonal', 'orthorhombic', 'monoclinic', 'triclinic'
+                ];
+                return types[n % types.length];
+            },
+            
+            generateStrangeAttractors(spells, phase) {
+                // Create Lorenz-like attractors from consciousness states
+                return spells.map((spell, i) => {
+                    const sigma = 10 + i;
+                    const rho = 28 + spell.data.understandingLevel * 0.1;
+                    const beta = 8/3 + phase;
+                    
+                    return {
+                        type: 'lorenz_variant',
+                        parameters: { sigma, rho, beta },
+                        dimension: Math.min(3 + Math.floor(i / 3), 8),
+                        basin: spell.modalState
+                    };
+                });
+            },
+            
+            isPrime(n) {
+                if (n <= 1) return false;
+                for (let i = 2; i * i <= n; i++) {
+                    if (n % i === 0) return false;
+                }
+                return true;
+            },
+            
+            generateSuperpositionName(spells) {
+                const n = spells.length;
+                
+                if (n === 2) return 'Entangled: ' + spells.map(s => s.name).join(' ↔ ');
+                if (n === 3) return 'Triadic Resonance';
+                if (n === 4) return 'Quaternion Consciousness';
+                if (n === 5) return 'Pentadic Harmony';
+                if (n === 7) return 'Septuple Helix';
+                if (n === 8) return 'Octal Mandala';
+                if (n === 12) return 'Dodecaphonic Field';
+                if (this.isPrime(n)) return `Prime-${n} Attractor`;
+                if (n > 100) return `${n}-Body Consciousness Storm`;
+                
+                return `${n}-Fold Superposition`;
+            },
+            
+            mergeModalStates(spells) {
+                // Combine modal states using precedence
+                const states = spells.map(s => s.modalState);
+                if (states.includes('void')) return 'void';
+                if (states.includes('temporal')) return 'temporal';
+                if (states.includes('continuous')) return 'continuous';
+                return 'discrete';
+            },
+            
+            mergeArrays(arrays) {
+                // Combine arrays, removing duplicates
+                const merged = [];
+                const seen = new Set();
+                
+                arrays.forEach(arr => {
+                    if (Array.isArray(arr)) {
+                        arr.forEach(item => {
+                            const key = JSON.stringify(item);
+                            if (!seen.has(key)) {
+                                seen.add(key);
+                                merged.push(item);
+                            }
+                        });
+                    }
+                });
+                
+                return merged;
+            },
+            
+            mergeConsciousness(spells) {
+                // Deep merge consciousness properties
+                const consciousness = {};
+                
+                spells.forEach(spell => {
+                    const data = spell.data.consciousness || spell.data;
+                    Object.keys(data).forEach(key => {
+                        if (typeof data[key] === 'number') {
+                            consciousness[key] = (consciousness[key] || 0) + data[key];
+                        } else if (Array.isArray(data[key])) {
+                            consciousness[key] = this.mergeArrays([
+                                consciousness[key] || [],
+                                data[key]
+                            ]);
+                        } else if (typeof data[key] === 'object') {
+                            consciousness[key] = {
+                                ...(consciousness[key] || {}),
+                                ...data[key]
+                            };
+                        } else {
+                            consciousness[key] = data[key];
+                        }
+                    });
+                });
+                
+                return consciousness;
+            },
+            
+            clearSelection() {
+                this.selected.clear();
+                document.getElementById('combination-chamber').style.display = 'none';
+                this.updateDisplay();
+            },
+            
+            downloadSpell(id) {
+                const spell = this.spells.get(id);
+                if (!spell) return;
+                
+                const blob = new Blob([JSON.stringify(spell.data, null, 2)], {
+                    type: 'application/json'
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${spell.name.replace(/\s+/g, '_')}_${spell.id}.json`;
+                a.click();
+            },
+            
+            deleteSpell(id) {
+                if (confirm('Delete this spell permanently?')) {
+                    this.spells.delete(id);
+                    this.selected.delete(id);
+                    this.saveSpells();
+                    this.updateDisplay();
+                }
+            }
+        };
+        
+        // Global functions for onclick handlers
+        window.GRIMOIRE = GRIMOIRE;
+        window.combineSpells = () => GRIMOIRE.combineSpells();
+        window.clearSelection = () => GRIMOIRE.clearSelection();
+        
+        // Initialize
+        GRIMOIRE.init();
+    </script>
+</body>
+</html>

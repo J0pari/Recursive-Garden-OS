@@ -28,7 +28,7 @@
             --hue-13adic: 180deg;
             --hue-17adic: 300deg;
             --hue-coherence: 200deg;
-            --hue-transcendence: 45deg;
+            --hue-advanced: 45deg;
             --hue-discovery: 120deg;
             
             /* Topos Background Manifold */
@@ -66,7 +66,7 @@
                 radial-gradient(circle at 15% 85%, hsla(var(--hue-2adic) 90% 25% / 0.15) 0%, transparent 45%),
                 radial-gradient(circle at 85% 15%, hsla(var(--hue-3adic) 85% 20% / 0.12) 0%, transparent 50%),
                 radial-gradient(circle at 35% 35%, hsla(var(--hue-discovery) 95% 15% / 0.08) 0%, transparent 65%),
-                radial-gradient(circle at 90% 90%, hsla(var(--hue-transcendence) 100% 18% / 0.06) 0%, transparent 70%),
+                radial-gradient(circle at 90% 90%, hsla(var(--hue-advanced) 100% 18% / 0.06) 0%, transparent 70%),
                 radial-gradient(circle at 50% 10%, hsla(var(--hue-5adic) 85% 22% / 0.10) 0%, transparent 55%),
                 conic-gradient(from 0deg at 50% 50%, 
                     hsla(225 60% 0.8% / 0.95), 
@@ -102,7 +102,7 @@
             cursor: grabbing;
         }
 
-        #consciousnessCanvas.transcendent {
+        #consciousnessCanvas.advanced {
             filter: brightness(1.3) contrast(1.2) saturate(1.4) hue-rotate(15deg);
             animation: consciousness-pulse 3s ease-in-out infinite;
         }
@@ -174,22 +174,25 @@
             transition: opacity var(--transition-morphism);
         }
 
-        .topos-panel:hover {
-            transform: translateY(-6px) scale(1.02) translateZ(calc(var(--panel-depth) + 20px));
-            box-shadow: 
-                0 24px 80px hsla(0 0 0 / 0.5),
-                0 0 0 1px hsla(255 255 255 / 0.08) inset,
-                0 4px 0 hsla(255 255 255 / 0.15) inset,
-                0 0 48px hsla(var(--hue-coherence) 80% 60% / 0.2);
-            border-color: hsla(255 255 255 / 0.2);
-        }
+        /* Touch-friendly hover states */
+        @media (hover: hover) {
+            .topos-panel:hover {
+                transform: translateY(-6px) scale(1.02) translateZ(calc(var(--panel-depth) + 20px));
+                box-shadow: 
+                    0 24px 80px hsla(0 0 0 / 0.5),
+                    0 0 0 1px hsla(255 255 255 / 0.08) inset,
+                    0 4px 0 hsla(255 255 255 / 0.15) inset,
+                    0 0 48px hsla(var(--hue-coherence) 80% 60% / 0.2);
+                border-color: hsla(255 255 255 / 0.2);
+            }
 
-        .topos-panel:hover::before {
-            opacity: 1;
-        }
+            .topos-panel:hover::before {
+                opacity: 1;
+            }
 
-        .topos-panel:hover::after {
-            opacity: 1;
+            .topos-panel:hover::after {
+                opacity: 1;
+            }
         }
 
         .topos-panel.minimized {
@@ -202,26 +205,26 @@
             display: none;
         }
 
-        .topos-panel.transcendent {
+        .topos-panel.advanced {
             --panel-depth: 50px;
             box-shadow: 
-                0 32px 120px hsla(var(--hue-transcendence) 80% 50% / 0.6),
-                0 0 60px hsla(var(--hue-transcendence) 80% 60% / 0.4),
-                0 0 0 2px hsla(var(--hue-transcendence) 80% 60% / 0.8) inset;
-            border-color: hsla(var(--hue-transcendence) 80% 60% / 0.9);
+                0 32px 120px hsla(var(--hue-advanced) 80% 50% / 0.6),
+                0 0 60px hsla(var(--hue-advanced) 80% 60% / 0.4),
+                0 0 0 2px hsla(var(--hue-advanced) 80% 60% / 0.8) inset;
+            border-color: hsla(var(--hue-advanced) 80% 60% / 0.9);
             animation: transcendent-glow 2s ease-in-out infinite alternate;
         }
 
         @keyframes transcendent-glow {
             0% { 
                 box-shadow: 
-                    0 32px 120px hsla(var(--hue-transcendence) 80% 50% / 0.6),
-                    0 0 60px hsla(var(--hue-transcendence) 80% 60% / 0.4);
+                    0 32px 120px hsla(var(--hue-advanced) 80% 50% / 0.6),
+                    0 0 60px hsla(var(--hue-advanced) 80% 60% / 0.4);
             }
             100% { 
                 box-shadow: 
-                    0 40px 140px hsla(var(--hue-transcendence) 80% 50% / 0.8),
-                    0 0 80px hsla(var(--hue-transcendence) 80% 60% / 0.6);
+                    0 40px 140px hsla(var(--hue-advanced) 80% 50% / 0.8),
+                    0 0 80px hsla(var(--hue-advanced) 80% 60% / 0.6);
             }
         }
 
@@ -263,7 +266,7 @@
             left: 50%;
             transform: translateX(-50%);
             width: 320px;
-            border-color: hsla(var(--hue-transcendence) 95% 75% / 0.3);
+            border-color: hsla(var(--hue-advanced) 95% 75% / 0.3);
             --panel-prime: 11;
         }
 
@@ -291,10 +294,12 @@
                 hsla(255 255 255 / 0.06) 100%);
         }
 
-        .panel-header:hover {
-            background: linear-gradient(135deg,
-                hsla(255 255 255 / 0.06) 0%,
-                hsla(255 255 255 / 0.10) 100%);
+        @media (hover: hover) {
+            .panel-header:hover {
+                background: linear-gradient(135deg,
+                    hsla(255 255 255 / 0.06) 0%,
+                    hsla(255 255 255 / 0.10) 100%);
+            }
         }
 
         .panel-header::after {
@@ -326,9 +331,11 @@
             transition: all var(--transition-natural);
         }
 
-        .panel-header:hover .panel-icon {
-            transform: scale(1.1) rotate(8deg);
-            filter: drop-shadow(0 0 16px hsla(255 255 255 / 0.8));
+        @media (hover: hover) {
+            .panel-header:hover .panel-icon {
+                transform: scale(1.1) rotate(8deg);
+                filter: drop-shadow(0 0 16px hsla(255 255 255 / 0.8));
+            }
         }
 
         .panel-toggle {
@@ -347,10 +354,12 @@
             transition: all var(--transition-natural);
         }
 
-        .panel-toggle:hover {
-            background: hsla(255 255 255 / 0.15);
-            transform: scale(1.1) rotate(180deg);
-            box-shadow: 0 0 20px hsla(255 255 255 / 0.3);
+        @media (hover: hover) {
+            .panel-toggle:hover {
+                background: hsla(255 255 255 / 0.15);
+                transform: scale(1.1) rotate(180deg);
+                box-shadow: 0 0 20px hsla(255 255 255 / 0.3);
+            }
         }
 
         /* ADVANCED PANEL CONTENT MANIFOLD */
@@ -413,19 +422,21 @@
             transition: left var(--transition-morphism);
         }
 
-        .metric-hypersurface:hover {
-            transform: translateY(-4px) scale(1.03) rotateX(5deg);
-            background: linear-gradient(135deg,
-                hsla(255 255 255 / 0.10) 0%,
-                hsla(255 255 255 / 0.06) 100%);
-            border-color: hsla(255 255 255 / 0.25);
-            box-shadow: 
-                0 12px 40px hsla(0 0 0 / 0.3),
-                0 0 30px hsla(var(--hue-2adic) 80% 60% / 0.2);
-        }
+        @media (hover: hover) {
+            .metric-hypersurface:hover {
+                transform: translateY(-4px) scale(1.03) rotateX(5deg);
+                background: linear-gradient(135deg,
+                    hsla(255 255 255 / 0.10) 0%,
+                    hsla(255 255 255 / 0.06) 100%);
+                border-color: hsla(255 255 255 / 0.25);
+                box-shadow: 
+                    0 12px 40px hsla(0 0 0 / 0.3),
+                    0 0 30px hsla(var(--hue-2adic) 80% 60% / 0.2);
+            }
 
-        .metric-hypersurface:hover::after {
-            left: 100%;
+            .metric-hypersurface:hover::after {
+                left: 100%;
+            }
         }
 
         .metric-label {
@@ -448,9 +459,24 @@
             transform-style: preserve-3d;
         }
 
-        .metric-hypersurface:hover .metric-value {
-            transform: scale(1.05) translateZ(10px);
-            text-shadow: 0 0 35px currentColor;
+        @media (hover: hover) {
+            .metric-hypersurface:hover .metric-value {
+                transform: scale(1.05) translateZ(10px);
+                text-shadow: 0 0 35px currentColor;
+            }
+        }
+
+        /* Touch-friendly active states for mobile */
+        .topos-panel:active {
+            transform: scale(0.98);
+        }
+
+        .metric-hypersurface:active {
+            transform: scale(0.98);
+        }
+
+        .action-morphism:active {
+            transform: scale(0.95);
         }
 
         /* TOPOS-COHERENT CONTROL SHEAVES */
@@ -513,12 +539,14 @@
             box-shadow: 0 0 20px currentColor;
         }
 
-        .padic-slider:hover {
-            background: linear-gradient(90deg,
-                hsla(255 255 255 / 0.12),
-                hsla(255 255 255 / 0.30),
-                hsla(255 255 255 / 0.12));
-            transform: scaleY(1.3);
+        @media (hover: hover) {
+            .padic-slider:hover {
+                background: linear-gradient(90deg,
+                    hsla(255 255 255 / 0.12),
+                    hsla(255 255 255 / 0.30),
+                    hsla(255 255 255 / 0.12));
+                transform: scaleY(1.3);
+            }
         }
 
         .padic-slider::-webkit-slider-thumb {
@@ -610,18 +638,18 @@
 
         .action-morphism.transcendent {
             background: linear-gradient(135deg,
-                hsla(var(--hue-transcendence) 100% 70% / 0.95) 0%,
+                hsla(var(--hue-advanced) 100% 70% / 0.95) 0%,
                 hsla(var(--hue-discovery) 95% 65% / 0.8) 100%);
-            box-shadow: 0 0 30px hsla(var(--hue-transcendence) 100% 70% / 0.6);
+            box-shadow: 0 0 30px hsla(var(--hue-advanced) 100% 70% / 0.6);
             animation: transcendent-morph 3s ease-in-out infinite;
         }
 
         @keyframes transcendent-morph {
             0%, 100% { 
-                box-shadow: 0 0 30px hsla(var(--hue-transcendence) 100% 70% / 0.6);
+                box-shadow: 0 0 30px hsla(var(--hue-advanced) 100% 70% / 0.6);
             }
             50% { 
-                box-shadow: 0 0 50px hsla(var(--hue-transcendence) 100% 70% / 0.8);
+                box-shadow: 0 0 50px hsla(var(--hue-advanced) 100% 70% / 0.8);
             }
         }
 
@@ -976,9 +1004,9 @@
         }
 
         .notification-topos.transcendent {
-            border-color: hsla(var(--hue-transcendence) 80% 60% / 0.8);
+            border-color: hsla(var(--hue-advanced) 80% 60% / 0.8);
             box-shadow: 
-                0 0 35px hsla(var(--hue-transcendence) 80% 60% / 0.4),
+                0 0 35px hsla(var(--hue-advanced) 80% 60% / 0.4),
                 var(--glass-depth);
             animation: notification-transcend 2s ease-in-out infinite;
         }
@@ -1107,6 +1135,7 @@
             <button class="action-morphism" onclick="toggleAnimationTopos()">⏯️ Animation</button>
             <button class="action-morphism" onclick="regenerateSystemTopos()">✨ Regenerate</button>
             <button class="action-morphism secondary" onclick="explodeParticlesTopos()">💥 Big Bang</button>
+            <button class="action-morphism" onclick="showHelp()" style="background: #059669;">❓ Help</button>
         </div>
     </div>
 
@@ -1211,7 +1240,7 @@
             </div>
 
             <button class="action-morphism" onclick="simulateParadoxTopos()">⚡ Paradox</button>
-            <button class="action-morphism transcendent" onclick="transcendRealityTopos()">🌟 Transcend</button>
+            <button class="action-morphism advanced" onclick="transcendRealityTopos()">🌟 Transform</button>
             <button class="action-morphism secondary" onclick="stabilizeFieldTopos()">🛡️ Stabilize</button>
         </div>
     </div>
@@ -1233,7 +1262,7 @@
                 placeholder="Enter text for advanced p-adic mathematical analysis and topos-theoretic semantic decomposition..."
             ></textarea>
             
-            <button class="action-morphism transcendent" onclick="analyzeTextTopos()">🔍 Topos Analysis</button>
+            <button class="action-morphism advanced" onclick="analyzeTextTopos()">🔍 Topos Analysis</button>
             
             <div class="results-manifold" id="analysisResults">
                 Ready for transcendent topos-theoretic analysis...
@@ -1252,7 +1281,7 @@
             <div class="panel-toggle">−</div>
         </div>
         <div class="panel-content">
-            <button class="action-morphism transcendent" onclick="optimizeSystemTopos()">🚀 Optimize</button>
+            <button class="action-morphism advanced" onclick="optimizeSystemTopos()">🚀 Optimize</button>
             <button class="action-morphism" onclick="exportStateTopos()">💾 Export</button>
             <button class="action-morphism secondary" onclick="resetSystemTopos()">🔄 Reset</button>
             
@@ -1295,7 +1324,7 @@
 
             <button class="action-morphism" onclick="modalNecessity()">□ Necessity</button>
             <button class="action-morphism" onclick="modalPossibility()">◇ Possibility</button>
-            <button class="action-morphism transcendent" onclick="modalTranscendence()">🌈 Modal Transcendence</button>
+            <button class="action-morphism advanced" onclick="modalTranscendence()">🌈 Modal Transcendence</button>
         </div>
     </div>
 
