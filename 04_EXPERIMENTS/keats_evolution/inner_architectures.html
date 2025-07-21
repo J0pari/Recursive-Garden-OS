@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inner Architectures - From Atoms to Neptune</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 300px;
+            z-index: 100;
+        }
+        
+        #scale-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            z-index: 100;
+        }
+        
+        .transition-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 1s;
+            text-align: center;
+            pointer-events: none;
+            z-index: 200;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h3>Inner Architectures</h3>
+        <p>Scroll to journey through scales</p>
+        <p>From quantum foam to cosmic storms</p>
+        <p id="current-realm">Current: Quantum Void</p>
+    </div>
+    
+    <div id="scale-indicator">10^-35 meters - Planck Scale</div>
+    
+    <div class="transition-text" id="transition-text"></div>
+    
+    <canvas id="canvas"></canvas>
+    
+    <script type="module">
+        // INNER ARCHITECTURES: The Real Visuals of Reality's Interior
+        
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // Scale tracking
+        let currentScale = -35; // Start at Planck scale (10^-35 meters)
+        let targetScale = currentScale;
+        let scaleVelocity = 0;
+        
+        // Realm definitions
+        const realms = [
+            {
+                scale: -35,
+                name: "Quantum Foam",
+                description: "The bubbling void where space-time itself fluctuates",
+                render: renderQuantumFoam
+            },
+            {
+                scale: -15,
+                name: "Inside the Quark",
+                description: "Color charge exchanges, gluon flux tubes dancing",
+                render: renderQuarkInterior
+            },
+            {
+                scale: -10,
+                name: "Atomic Interior",
+                description: "Electron probability clouds, not orbits but standing waves",
+                render: renderAtomicInterior
+            },
+            {
+                scale: -9,
+                name: "Molecular Bonds",
+                description: "Electron density bridges, covalent sharing",
+                render: renderMolecularBonds
+            },
+            {
+                scale: -7,
+                name: "Protein Folding",
+                description: "Amino acid chains finding their lowest energy dance",
+                render: renderProteinFolding
+            },
+            {
+                scale: -6,
+                name: "Cell Interior",
+                description: "Organelles floating in cytoplasm streams",
+                render: renderCellInterior
+            },
+            {
+                scale: -5,
+                name: "Mitochondrial Matrix",
+                description: "ATP synthase turbines spinning with proton flow",
+                render: renderMitochondria
+            },
+            {
+                scale: -4,
+                name: "Lymphatic Vessels",
+                description: "Immune cells surfing through valve-controlled currents",
+                render: renderLymphaticSystem
+            },
+            {
+                scale: -3,
+                name: "Capillary Bed",
+                description: "Red blood cells squeezing through single file",
+                render: renderCapillaries
+            },
+            {
+                scale: 0,
+                name: "River Delta",
+                description: "The Nile's fractal branches carrying life to the sea",
+                render: renderNileDelta
+            },
+            {
+                scale: 3,
+                name: "Atmospheric Vortex",
+                description: "Hurricane's eye wall, pressure gradients visible",
+                render: renderHurricaneInterior
+            },
+            {
+                scale: 6,
+                name: "Ocean Thermal Layers",
+                description: "Thermocline boundaries where different worlds meet",
+                render: renderOceanLayers
+            },
+            {
+                scale: 8,
+                name: "Neptune's Storms",
+                description: "Methane clouds at supersonic speeds, dark spots larger than Earth",
+                render: renderNeptuneStorms
+            },
+            {
+                scale: 12,
+                name: "Solar Corona",
+                description: "Magnetic field lines twisting, plasma following invisible paths",
+                render: renderSolarCorona
+            },
+            {
+                scale: 20,
+                name: "Galactic Halo",
+                description: "Dark matter's invisible architecture made visible through gravitational lensing",
+                render: renderGalacticHalo
+            },
+            {
+                scale: 3,
+                name: "Sierra Lake - Fish Rain",
+                description: "That glorious lake where fish fall from metal whirlybirds",
+                render: renderSierraLake
+            },
+            {
+                scale: 4,
+                name: "Fracking Operation Interior",
+                description: "Industrial violence to Earth's deep structures",
+                render: renderFrackingOperation
+            },
+            {
+                scale: -1,
+                name: "Murakami Novel Interior",
+                description: "The dreamlike architecture of narrative consciousness",
+                render: renderMurakamiInterior
+            },
+            {
+                scale: 0,
+                name: "Love",
+                description: "The quantum entanglement of hearts across spacetime",
+                render: renderLove
+            }
+        ];
+        
+        // Find current realm based on scale
+        function getCurrentRealm() {
+            let closest = realms[0];
+            let minDiff = Math.abs(currentScale - realms[0].scale);
+            
+            for (const realm of realms) {
+                const diff = Math.abs(currentScale - realm.scale);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closest = realm;
+                }
+            }
+            
+            return closest;
+        }
+        
+        // Rendering functions for each realm
+        function renderQuantumFoam(ctx, time) {
+            // Quantum foam - virtual particles popping in and out
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < 100; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const lifetime = Math.random() * 0.1;
+                const age = (time * 0.001) % lifetime;
+                
+                if (age < lifetime * 0.5) {
+                    const radius = Math.sin(age / lifetime * Math.PI) * 20;
+                    const hue = Math.random() * 360;
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                    gradient.addColorStop(0, `hsla(${hue}, 100%, 70%, 0.8)`);
+                    gradient.addColorStop(1, `hsla(${hue}, 100%, 50%, 0)`);
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                }
+            }
+        }
+        
+        function renderQuarkInterior(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Color charges - red, green, blue
+            const colors = [
+                { r: 255, g: 0, b: 0 },
+                { r: 0, g: 255, b: 0 },
+                { r: 0, g: 0, b: 255 }
+            ];
+            
+            // Gluon flux tubes
+            for (let i = 0; i < 3; i++) {
+                for (let j = i + 1; j < 3; j++) {
+                    const x1 = canvas.width/2 + Math.cos(time * 0.001 + i * Math.PI * 2/3) * 150;
+                    const y1 = canvas.height/2 + Math.sin(time * 0.001 + i * Math.PI * 2/3) * 150;
+                    const x2 = canvas.width/2 + Math.cos(time * 0.001 + j * Math.PI * 2/3) * 150;
+                    const y2 = canvas.height/2 + Math.sin(time * 0.001 + j * Math.PI * 2/3) * 150;
+                    
+                    // Draw flux tube
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.strokeStyle = `rgba(${colors[i].r}, ${colors[i].g}, ${colors[i].b}, 0.5)`;
+                    ctx.lineWidth = 20;
+                    ctx.stroke();
+                    
+                    // Draw gluons along tube
+                    for (let k = 0; k < 5; k++) {
+                        const t = (k / 4 + time * 0.002) % 1;
+                        const gx = x1 + (x2 - x1) * t;
+                        const gy = y1 + (y2 - y1) * t;
+                        
+                        ctx.beginPath();
+                        ctx.arc(gx, gy, 10, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 255, 0, ${0.8 - t * 0.5})`;
+                        ctx.fill();
+                    }
+                }
+            }
+        }
+        
+        function renderAtomicInterior(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.02)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Nucleus
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 200, 0, 0.9)';
+            ctx.fill();
+            
+            // Electron probability clouds - s, p, d orbitals
+            // S orbital - spherical
+            for (let r = 20; r < 100; r += 20) {
+                const prob = Math.exp(-r / 50);
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(100, 200, 255, ${prob * 0.3})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            // P orbitals - dumbbell shaped
+            for (let angle = 0; angle < Math.PI; angle += Math.PI / 2) {
+                const phase = Math.sin(time * 0.001 + angle);
+                
+                for (let i = 0; i < 100; i++) {
+                    const t = i / 100;
+                    const r = 80 * Math.sin(t * Math.PI) * Math.abs(phase);
+                    const x = centerX + r * Math.cos(angle + t * Math.PI);
+                    const y = centerY + r * Math.sin(angle + t * Math.PI);
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 100, 100, ${0.1 * (1 - t)})`;
+                    ctx.fill();
+                }
+            }
+        }
+        
+        function renderMolecularBonds(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Water molecules with hydrogen bonds
+            const molecules = [];
+            for (let i = 0; i < 5; i++) {
+                molecules.push({
+                    x: canvas.width * (0.2 + i * 0.15),
+                    y: canvas.height/2 + Math.sin(time * 0.001 + i) * 50,
+                    angle: time * 0.0005 + i * 0.5
+                });
+            }
+            
+            molecules.forEach((mol, i) => {
+                // Oxygen
+                ctx.beginPath();
+                ctx.arc(mol.x, mol.y, 20, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+                ctx.fill();
+                
+                // Hydrogens
+                for (let j = 0; j < 2; j++) {
+                    const hAngle = mol.angle + (j - 0.5) * 1.91; // 104.5 degrees
+                    const hx = mol.x + Math.cos(hAngle) * 40;
+                    const hy = mol.y + Math.sin(hAngle) * 40;
+                    
+                    // Covalent bond
+                    ctx.beginPath();
+                    ctx.moveTo(mol.x, mol.y);
+                    ctx.lineTo(hx, hy);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                    
+                    ctx.beginPath();
+                    ctx.arc(hx, hy, 10, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.fill();
+                }
+                
+                // Hydrogen bonds to neighbors
+                if (i < molecules.length - 1) {
+                    const next = molecules[i + 1];
+                    ctx.beginPath();
+                    ctx.moveTo(mol.x, mol.y);
+                    ctx.lineTo(next.x, next.y);
+                    ctx.strokeStyle = 'rgba(100, 200, 255, 0.3)';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([5, 5]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            });
+        }
+        
+        function renderProteinFolding(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 0, 10, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Amino acid chain folding into secondary structures
+            const points = [];
+            const segments = 50;
+            
+            for (let i = 0; i < segments; i++) {
+                const t = i / segments;
+                const baseX = canvas.width * 0.1 + t * canvas.width * 0.8;
+                const baseY = canvas.height / 2;
+                
+                // Alpha helix sections
+                if (i > 10 && i < 25) {
+                    const helixPhase = (i - 10) * 0.8;
+                    points.push({
+                        x: baseX,
+                        y: baseY + Math.sin(helixPhase) * 30,
+                        z: Math.cos(helixPhase) * 30,
+                        type: 'helix'
+                    });
+                }
+                // Beta sheet sections
+                else if (i > 30 && i < 40) {
+                    points.push({
+                        x: baseX,
+                        y: baseY + (i % 2) * 20 - 10,
+                        z: 0,
+                        type: 'sheet'
+                    });
+                }
+                // Random coil
+                else {
+                    points.push({
+                        x: baseX + Math.sin(time * 0.001 + i * 0.3) * 20,
+                        y: baseY + Math.cos(time * 0.001 + i * 0.4) * 30,
+                        z: Math.sin(time * 0.001 + i * 0.2) * 20,
+                        type: 'coil'
+                    });
+                }
+            }
+            
+            // Draw backbone
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            
+            for (let i = 1; i < points.length; i++) {
+                const p = points[i];
+                const size = 5 + p.z / 10; // Depth effect
+                
+                ctx.lineTo(p.x, p.y);
+                
+                // Draw amino acid
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+                
+                if (p.type === 'helix') {
+                    ctx.fillStyle = 'rgba(255, 100, 100, 0.8)';
+                } else if (p.type === 'sheet') {
+                    ctx.fillStyle = 'rgba(100, 255, 100, 0.8)';
+                } else {
+                    ctx.fillStyle = 'rgba(100, 100, 255, 0.8)';
+                }
+                
+                ctx.fill();
+                ctx.restore();
+            }
+            
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Disulfide bonds
+            for (let i = 0; i < points.length - 20; i += 15) {
+                if (Math.random() < 0.3) {
+                    const j = i + 15 + Math.floor(Math.random() * 5);
+                    if (j < points.length) {
+                        ctx.beginPath();
+                        ctx.moveTo(points[i].x, points[i].y);
+                        ctx.lineTo(points[j].x, points[j].y);
+                        ctx.strokeStyle = 'rgba(255, 255, 0, 0.4)';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        function renderCellInterior(ctx, time) {
+            ctx.fillStyle = 'rgba(20, 10, 30, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Cell membrane
+            ctx.beginPath();
+            ctx.ellipse(canvas.width/2, canvas.height/2, 300, 200, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(200, 150, 100, 0.5)';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            
+            // Nucleus
+            const nucleusX = canvas.width/2 - 50 + Math.sin(time * 0.0003) * 20;
+            const nucleusY = canvas.height/2 + Math.cos(time * 0.0003) * 10;
+            
+            ctx.beginPath();
+            ctx.arc(nucleusX, nucleusY, 80, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(100, 50, 150, 0.3)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(100, 50, 150, 0.6)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Nuclear pores
+            for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 6) {
+                const px = nucleusX + Math.cos(angle) * 80;
+                const py = nucleusY + Math.sin(angle) * 80;
+                ctx.beginPath();
+                ctx.arc(px, py, 5, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 200, 0, 0.8)';
+                ctx.fill();
+            }
+            
+            // Mitochondria
+            for (let i = 0; i < 8; i++) {
+                const mx = canvas.width/2 + Math.cos(time * 0.0005 + i * Math.PI/4) * 150;
+                const my = canvas.height/2 + Math.sin(time * 0.0005 + i * Math.PI/4) * 100;
+                const angle = time * 0.001 + i;
+                
+                ctx.save();
+                ctx.translate(mx, my);
+                ctx.rotate(angle);
+                
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 30, 15, 0, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 100, 0, 0.4)';
+                ctx.fill();
+                
+                // Cristae
+                for (let j = -20; j < 20; j += 8) {
+                    ctx.beginPath();
+                    ctx.moveTo(j, -10);
+                    ctx.lineTo(j + 4, 0);
+                    ctx.lineTo(j, 10);
+                    ctx.strokeStyle = 'rgba(255, 150, 0, 0.6)';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+                
+                ctx.restore();
+            }
+            
+            // Endoplasmic reticulum
+            ctx.beginPath();
+            for (let t = 0; t < Math.PI * 4; t += 0.1) {
+                const rx = nucleusX + (80 + t * 10) * Math.cos(t + time * 0.0002);
+                const ry = nucleusY + (80 + t * 10) * Math.sin(t + time * 0.0002) * 0.5;
+                
+                if (t === 0) {
+                    ctx.moveTo(rx, ry);
+                } else {
+                    ctx.lineTo(rx, ry);
+                }
+            }
+            ctx.strokeStyle = 'rgba(100, 200, 100, 0.3)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Ribosomes on ER
+            for (let t = 0; t < Math.PI * 4; t += 0.5) {
+                const rx = nucleusX + (80 + t * 10) * Math.cos(t + time * 0.0002);
+                const ry = nucleusY + (80 + t * 10) * Math.sin(t + time * 0.0002) * 0.5;
+                
+                ctx.beginPath();
+                ctx.arc(rx, ry, 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(200, 100, 200, 0.8)';
+                ctx.fill();
+            }
+            
+            // Cytoplasm streaming particles
+            for (let i = 0; i < 50; i++) {
+                const angle = (time * 0.001 + i * 0.3) % (Math.PI * 2);
+                const radius = 100 + Math.sin(i * 0.5) * 80;
+                const px = canvas.width/2 + Math.cos(angle) * radius;
+                const py = canvas.height/2 + Math.sin(angle) * radius * 0.7;
+                
+                ctx.beginPath();
+                ctx.arc(px, py, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(150, 200, 255, ${0.5 + Math.sin(time * 0.01 + i) * 0.3})`;
+                ctx.fill();
+            }
+        }
+        
+        function renderMitochondria(ctx, time) {
+            ctx.fillStyle = 'rgba(30, 10, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Outer membrane
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY, 250, 150, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(200, 100, 50, 0.5)';
+            ctx.lineWidth = 5;
+            ctx.stroke();
+            
+            // Inner membrane with cristae
+            ctx.beginPath();
+            let firstPoint = true;
+            for (let angle = 0; angle < Math.PI * 2; angle += 0.1) {
+                const baseRadius = 200;
+                const cristaDepth = Math.sin(angle * 8 + time * 0.001) * 30;
+                const r = baseRadius + cristaDepth;
+                const x = centerX + Math.cos(angle) * r;
+                const y = centerY + Math.sin(angle) * r * 0.6;
+                
+                if (firstPoint) {
+                    ctx.moveTo(x, y);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(255, 150, 50, 0.6)';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // ATP synthase complexes
+            const synthaseCount = 12;
+            for (let i = 0; i < synthaseCount; i++) {
+                const angle = (i / synthaseCount) * Math.PI * 2;
+                const r = 180 + Math.sin(angle * 8 + time * 0.001) * 25;
+                const x = centerX + Math.cos(angle) * r;
+                const y = centerY + Math.sin(angle) * r * 0.6;
+                
+                // F0 rotor
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(time * 0.005 + i);
+                
+                for (let j = 0; j < 12; j++) {
+                    const bladeAngle = (j / 12) * Math.PI * 2;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(Math.cos(bladeAngle) * 15, Math.sin(bladeAngle) * 15);
+                    ctx.strokeStyle = `rgba(255, 255, 0, ${0.6 + Math.sin(time * 0.01 + j) * 0.2})`;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+                
+                ctx.restore();
+                
+                // F1 head
+                ctx.beginPath();
+                ctx.arc(x, y - 20, 10, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(100, 255, 100, 0.8)';
+                ctx.fill();
+                
+                // ATP production
+                if (Math.random() < 0.02) {
+                    const atpX = x + (Math.random() - 0.5) * 40;
+                    const atpY = y - 30 - Math.random() * 20;
+                    
+                    ctx.beginPath();
+                    ctx.arc(atpX, atpY, 5, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 255, 255, 0.9)';
+                    ctx.fill();
+                    
+                    ctx.fillText('ATP', atpX + 10, atpY + 5);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.font = '10px Arial';
+                }
+            }
+            
+            // Matrix proteins
+            for (let i = 0; i < 30; i++) {
+                const x = centerX + (Math.random() - 0.5) * 300;
+                const y = centerY + (Math.random() - 0.5) * 180;
+                
+                // Check if inside mitochondria
+                const dx = (x - centerX) / 200;
+                const dy = (y - centerY) / 120;
+                if (dx * dx + dy * dy < 1) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3 + Math.random() * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(200, 150, 255, ${0.5 + Math.random() * 0.5})`;
+                    ctx.fill();
+                }
+            }
+            
+            // Proton gradient visualization
+            for (let i = 0; i < 100; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const innerR = 170 + Math.random() * 40;
+                const outerR = innerR + 20 + Math.random() * 20;
+                
+                const x1 = centerX + Math.cos(angle) * innerR;
+                const y1 = centerY + Math.sin(angle) * innerR * 0.6;
+                const x2 = centerX + Math.cos(angle) * outerR;
+                const y2 = centerY + Math.sin(angle) * outerR * 0.6;
+                
+                const t = (time * 0.002 + i * 0.1) % 1;
+                const px = x1 + (x2 - x1) * t;
+                const py = y1 + (y2 - y1) * t;
+                
+                ctx.beginPath();
+                ctx.arc(px, py, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 0, 255, ${0.8 - t * 0.5})`;
+                ctx.fill();
+            }
+        }
+        
+        function renderLymphaticSystem(ctx, time) {
+            ctx.fillStyle = 'rgba(10, 20, 30, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Lymphatic vessels with valves
+            const vessels = [
+                { x1: 100, y1: 100, x2: canvas.width - 100, y2: canvas.height - 100 },
+                { x1: 100, y1: canvas.height - 100, x2: canvas.width - 100, y2: 100 }
+            ];
+            
+            vessels.forEach((vessel, vi) => {
+                const dx = vessel.x2 - vessel.x1;
+                const dy = vessel.y2 - vessel.y1;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const segments = 10;
+                
+                // Draw vessel
+                ctx.beginPath();
+                ctx.moveTo(vessel.x1, vessel.y1);
+                
+                for (let i = 0; i <= segments; i++) {
+                    const t = i / segments;
+                    const x = vessel.x1 + dx * t;
+                    const y = vessel.y1 + dy * t;
+                    const width = 20 + Math.sin(t * Math.PI) * 10;
+                    
+                    if (i === 0) {
+                        ctx.moveTo(x - width, y);
+                    } else {
+                        ctx.lineTo(x - width, y);
+                    }
+                }
+                
+                for (let i = segments; i >= 0; i--) {
+                    const t = i / segments;
+                    const x = vessel.x1 + dx * t;
+                    const y = vessel.y1 + dy * t;
+                    const width = 20 + Math.sin(t * Math.PI) * 10;
+                    
+                    ctx.lineTo(x + width, y);
+                }
+                
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(150, 200, 255, 0.2)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(100, 150, 200, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw valves
+                for (let i = 2; i < segments; i += 3) {
+                    const t = i / segments;
+                    const x = vessel.x1 + dx * t;
+                    const y = vessel.y1 + dy * t;
+                    const width = 20 + Math.sin(t * Math.PI) * 10;
+                    
+                    // Valve leaflets
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(Math.atan2(dy, dx));
+                    
+                    const openAngle = Math.abs(Math.sin(time * 0.002 + i)) * 0.8;
+                    
+                    // Upper leaflet
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.quadraticCurveTo(15, -width * openAngle, 30, 0);
+                    ctx.strokeStyle = 'rgba(255, 200, 100, 0.8)';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                    
+                    // Lower leaflet
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.quadraticCurveTo(15, width * openAngle, 30, 0);
+                    ctx.stroke();
+                    
+                    ctx.restore();
+                }
+                
+                // Lymph flow
+                for (let i = 0; i < 20; i++) {
+                    const particleT = ((time * 0.0005 + i * 0.05 + vi * 0.5) % 1);
+                    const x = vessel.x1 + dx * particleT;
+                    const y = vessel.y1 + dy * particleT;
+                    
+                    // Check valve positions
+                    let canPass = true;
+                    for (let j = 2; j < segments; j += 3) {
+                        const valveT = j / segments;
+                        const valveOpen = Math.abs(Math.sin(time * 0.002 + j)) > 0.3;
+                        
+                        if (Math.abs(particleT - valveT) < 0.05 && !valveOpen) {
+                            canPass = false;
+                        }
+                    }
+                    
+                    if (canPass) {
+                        ctx.beginPath();
+                        ctx.arc(x, y, 3, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(200, 255, 200, 0.8)';
+                        ctx.fill();
+                    }
+                }
+            });
+            
+            // Lymph nodes
+            const nodes = [
+                { x: canvas.width/2, y: canvas.height/2 },
+                { x: canvas.width/3, y: canvas.height/3 },
+                { x: 2*canvas.width/3, y: 2*canvas.height/3 }
+            ];
+            
+            nodes.forEach(node => {
+                // Node structure
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 40, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(200, 150, 100, 0.3)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(200, 150, 100, 0.8)';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Immune cells inside
+                for (let i = 0; i < 15; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const r = Math.random() * 35;
+                    const cellX = node.x + Math.cos(angle) * r;
+                    const cellY = node.y + Math.sin(angle) * r;
+                    
+                    ctx.beginPath();
+                    ctx.arc(cellX, cellY, 4, 0, Math.PI * 2);
+                    
+                    // Different immune cell types
+                    const cellType = Math.floor(Math.random() * 3);
+                    if (cellType === 0) {
+                        ctx.fillStyle = 'rgba(255, 100, 100, 0.8)'; // T cells
+                    } else if (cellType === 1) {
+                        ctx.fillStyle = 'rgba(100, 100, 255, 0.8)'; // B cells
+                    } else {
+                        ctx.fillStyle = 'rgba(255, 255, 100, 0.8)'; // Macrophages
+                    }
+                    
+                    ctx.fill();
+                }
+            });
+        }
+        
+        function renderCapillaries(ctx, time) {
+            ctx.fillStyle = 'rgba(20, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Capillary network
+            const branches = 5;
+            const startX = 100;
+            const startY = canvas.height / 2;
+            
+            function drawCapillary(x1, y1, angle, depth, maxDepth) {
+                if (depth > maxDepth) return;
+                
+                const length = 100 / (depth + 1);
+                const x2 = x1 + Math.cos(angle) * length;
+                const y2 = y1 + Math.sin(angle) * length;
+                
+                // Vessel width decreases with depth
+                const width = 20 / (depth + 1);
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = `rgba(200, 50, 50, ${0.8 - depth * 0.15})`;
+                ctx.lineWidth = width;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+                
+                // Red blood cells
+                const cellCount = 3;
+                for (let i = 0; i < cellCount; i++) {
+                    const t = ((time * 0.0002 * (5 - depth) + i / cellCount + depth * 0.1) % 1);
+                    const cellX = x1 + (x2 - x1) * t;
+                    const cellY = y1 + (y2 - y1) * t;
+                    
+                    // RBC shape (biconcave disk viewed from side)
+                    ctx.save();
+                    ctx.translate(cellX, cellY);
+                    ctx.rotate(angle);
+                    
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, width * 0.4, width * 0.3, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 0, 0, 0.7)';
+                    ctx.fill();
+                    
+                    // Central pallor
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, width * 0.2, width * 0.15, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 100, 100, 0.5)';
+                    ctx.fill();
+                    
+                    ctx.restore();
+                }
+                
+                // Branch
+                if (depth < maxDepth) {
+                    const branchAngles = [-0.6, 0.6];
+                    branchAngles.forEach(dAngle => {
+                        drawCapillary(x2, y2, angle + dAngle, depth + 1, maxDepth);
+                    });
+                }
+            }
+            
+            // Draw main vessels branching into capillaries
+            for (let i = 0; i < branches; i++) {
+                const angle = -Math.PI/4 + (i / (branches - 1)) * Math.PI/2;
+                drawCapillary(startX, startY, angle, 0, 4);
+            }
+            
+            // Oxygen/CO2 exchange visualization
+            for (let i = 0; i < 50; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const isOxygen = Math.random() < 0.5;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 2, 0, Math.PI * 2);
+                
+                if (isOxygen) {
+                    ctx.fillStyle = `rgba(255, 100, 100, ${0.3 + Math.sin(time * 0.01 + i) * 0.2})`;
+                } else {
+                    ctx.fillStyle = `rgba(100, 100, 255, ${0.3 + Math.cos(time * 0.01 + i) * 0.2})`;
+                }
+                
+                ctx.fill();
+            }
+        }
+        
+        function renderNileDelta(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 20, 40, 0.02)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Main river channel
+            const mainChannel = {
+                x: canvas.width / 2,
+                y: 0,
+                width: 100,
+                depth: 1
+            };
+            
+            function drawChannel(channel, endY) {
+                const { x, y, width, depth } = channel;
+                
+                // Water flow
+                ctx.beginPath();
+                ctx.moveTo(x - width/2, y);
+                
+                // Meandering
+                const segments = 20;
+                for (let i = 0; i <= segments; i++) {
+                    const t = i / segments;
+                    const cy = y + (endY - y) * t;
+                    const meander = Math.sin(t * Math.PI * 3 + time * 0.0001 * depth) * 30 / depth;
+                    const cx = x + meander;
+                    const cw = width * (1 - t * 0.3); // Narrowing
+                    
+                    if (i === 0) {
+                        ctx.moveTo(cx - cw/2, cy);
+                    } else {
+                        ctx.lineTo(cx - cw/2, cy);
+                    }
+                }
+                
+                // Right bank
+                for (let i = segments; i >= 0; i--) {
+                    const t = i / segments;
+                    const cy = y + (endY - y) * t;
+                    const meander = Math.sin(t * Math.PI * 3 + time * 0.0001 * depth) * 30 / depth;
+                    const cx = x + meander;
+                    const cw = width * (1 - t * 0.3);
+                    
+                    ctx.lineTo(cx + cw/2, cy);
+                }
+                
+                ctx.closePath();
+                
+                // Gradient for depth
+                const gradient = ctx.createLinearGradient(x - width/2, y, x + width/2, y);
+                gradient.addColorStop(0, `rgba(20, 60, 120, ${0.6 / depth})`);
+                gradient.addColorStop(0.5, `rgba(10, 40, 100, ${0.8 / depth})`);
+                gradient.addColorStop(1, `rgba(20, 60, 120, ${0.6 / depth})`);
+                
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                
+                // Sediment particles
+                for (let i = 0; i < 20 / depth; i++) {
+                    const t = (time * 0.0003 * depth + i * 0.05) % 1;
+                    const cy = y + (endY - y) * t;
+                    const meander = Math.sin(t * Math.PI * 3 + time * 0.0001 * depth) * 30 / depth;
+                    const cx = x + meander + (Math.random() - 0.5) * width * (1 - t * 0.3);
+                    
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 2 / depth, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(180, 140, 100, ${0.6 - t * 0.3})`;
+                    ctx.fill();
+                }
+                
+                // Branching
+                if (depth < 4 && endY < canvas.height - 100) {
+                    const branches = 2 + Math.floor(Math.random() * 2);
+                    for (let i = 0; i < branches; i++) {
+                        const branchX = x + (i - (branches-1)/2) * 80 / depth;
+                        const branchChannel = {
+                            x: branchX,
+                            y: endY,
+                            width: width / 1.5,
+                            depth: depth + 1
+                        };
+                        drawChannel(branchChannel, endY + 150);
+                    }
+                }
+            }
+            
+            drawChannel(mainChannel, canvas.height / 3);
+            
+            // Nile green fertile regions
+            const gradient = ctx.createRadialGradient(
+                canvas.width/2, canvas.height/2, 50,
+                canvas.width/2, canvas.height/2, 300
+            );
+            gradient.addColorStop(0, 'rgba(50, 150, 50, 0.1)');
+            gradient.addColorStop(1, 'rgba(50, 150, 50, 0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Life emerging from water
+            for (let i = 0; i < 30; i++) {
+                const x = canvas.width/2 + (Math.random() - 0.5) * 400;
+                const y = canvas.height/2 + (Math.random() - 0.5) * 300;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(100, 200, 100, ${0.3 + Math.sin(time * 0.005 + i) * 0.2})`;
+                ctx.fill();
+            }
+        }
+        
+        function renderHurricaneInterior(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 0, 10, 0.02)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const maxRadius = Math.min(canvas.width, canvas.height) * 0.4;
+            
+            // Spiral bands
+            for (let band = 0; band < 5; band++) {
+                ctx.beginPath();
+                
+                for (let angle = 0; angle < Math.PI * 6; angle += 0.1) {
+                    const r = angle * maxRadius / (Math.PI * 6) + band * 20;
+                    const spiral = angle + time * 0.0005 + band * 0.5;
+                    const x = centerX + Math.cos(spiral) * r;
+                    const y = centerY + Math.sin(spiral) * r;
+                    
+                    if (angle === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                
+                ctx.strokeStyle = `rgba(150, 150, 200, ${0.3 - band * 0.05})`;
+                ctx.lineWidth = 10 - band;
+                ctx.stroke();
+            }
+            
+            // Eye wall
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 50, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255, 200, 200, 0.8)';
+            ctx.lineWidth = 20;
+            ctx.stroke();
+            
+            // Clear eye
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 50, 100, 0.5)';
+            ctx.fill();
+            
+            // Wind vectors
+            for (let r = 60; r < maxRadius; r += 40) {
+                for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 8) {
+                    const x = centerX + Math.cos(angle) * r;
+                    const y = centerY + Math.sin(angle) * r;
+                    
+                    // Tangential wind component
+                    const windAngle = angle + Math.PI/2 + 0.2; // Slight inward spiral
+                    const windSpeed = 50 / (1 + r / 100); // Decreases with radius
+                    
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(windAngle);
+                    
+                    // Wind arrow
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(windSpeed, 0);
+                    ctx.lineTo(windSpeed - 5, -5);
+                    ctx.moveTo(windSpeed, 0);
+                    ctx.lineTo(windSpeed - 5, 5);
+                    
+                    ctx.strokeStyle = `rgba(100, 200, 255, ${0.6 - r / maxRadius * 0.4})`;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    ctx.restore();
+                }
+            }
+            
+            // Pressure gradient visualization
+            for (let r = 0; r < maxRadius; r += 5) {
+                const pressure = 1013 - (maxRadius - r) * 0.1; // mb
+                const alpha = r / maxRadius * 0.2;
+                
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+            
+            // Rain bands
+            for (let i = 0; i < 200; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const r = 60 + Math.random() * (maxRadius - 60);
+                const x = centerX + Math.cos(angle + time * 0.001) * r;
+                const y = centerY + Math.sin(angle + time * 0.001) * r;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x - 5, y + 10);
+                ctx.strokeStyle = `rgba(150, 200, 255, ${0.3 - r / maxRadius * 0.2})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+        
+        function renderOceanLayers(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 5, 20, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Temperature layers
+            const layers = [
+                { depth: 0, temp: 25, color: 'rgba(255, 200, 100, 0.3)' },
+                { depth: 50, temp: 22, color: 'rgba(200, 180, 80, 0.3)' },
+                { depth: 100, temp: 18, color: 'rgba(150, 150, 100, 0.3)' },
+                { depth: 200, temp: 10, color: 'rgba(100, 120, 150, 0.3)' },
+                { depth: 500, temp: 5, color: 'rgba(50, 80, 180, 0.3)' },
+                { depth: 1000, temp: 2, color: 'rgba(20, 40, 120, 0.3)' }
+            ];
+            
+            // Draw layers
+            layers.forEach((layer, i) => {
+                const y = layer.depth * 0.5 + 50;
+                const nextY = i < layers.length - 1 ? layers[i + 1].depth * 0.5 + 50 : canvas.height;
+                
+                // Thermocline waviness
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                
+                for (let x = 0; x <= canvas.width; x += 10) {
+                    const wave = Math.sin(x * 0.01 + time * 0.0002 + layer.depth * 0.01) * 10;
+                    ctx.lineTo(x, y + wave);
+                }
+                
+                ctx.lineTo(canvas.width, nextY);
+                ctx.lineTo(0, nextY);
+                ctx.closePath();
+                
+                ctx.fillStyle = layer.color;
+                ctx.fill();
+                
+                // Temperature text
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.font = '14px Arial';
+                ctx.fillText(`${layer.temp}°C`, 20, y + 20);
+            });
+            
+            // Currents between layers
+            for (let i = 0; i < layers.length - 1; i++) {
+                const y = layers[i].depth * 0.5 + 50;
+                
+                // Horizontal current
+                for (let j = 0; j < 10; j++) {
+                    const x = ((time * 0.05 + j * 100) % (canvas.width + 100)) - 50;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + 30, y);
+                    ctx.lineTo(x + 25, y - 5);
+                    ctx.moveTo(x + 30, y);
+                    ctx.lineTo(x + 25, y + 5);
+                    
+                    ctx.strokeStyle = 'rgba(100, 200, 255, 0.5)';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+            
+            // Marine life at different depths
+            const marineLife = [
+                { depth: 20, size: 10, color: 'rgba(255, 200, 0, 0.8)' }, // Sunfish
+                { depth: 150, size: 8, color: 'rgba(200, 200, 200, 0.8)' }, // Tuna
+                { depth: 400, size: 6, color: 'rgba(150, 150, 255, 0.8)' }, // Squid
+                { depth: 800, size: 12, color: 'rgba(100, 255, 100, 0.8)' } // Bioluminescent
+            ];
+            
+            marineLife.forEach((creature, i) => {
+                const y = creature.depth * 0.5 + 50;
+                const x = (time * 0.02 * (i + 1) + i * 200) % (canvas.width + 100) - 50;
+                
+                ctx.beginPath();
+                ctx.ellipse(x, y, creature.size * 2, creature.size, 0, 0, Math.PI * 2);
+                ctx.fillStyle = creature.color;
+                ctx.fill();
+                
+                // Bioluminescence at depth
+                if (creature.depth > 600) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, creature.size * 3, 0, Math.PI * 2);
+                    const glow = ctx.createRadialGradient(x, y, 0, x, y, creature.size * 3);
+                    glow.addColorStop(0, 'rgba(100, 255, 200, 0.4)');
+                    glow.addColorStop(1, 'rgba(100, 255, 200, 0)');
+                    ctx.fillStyle = glow;
+                    ctx.fill();
+                }
+            });
+            
+            // Upwelling/downwelling
+            for (let i = 0; i < 5; i++) {
+                const x = (i + 1) * canvas.width / 6;
+                const isUpwelling = i % 2 === 0;
+                
+                for (let j = 0; j < 20; j++) {
+                    const y = j * 30 + (time * 0.05) % 30;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    if (isUpwelling) {
+                        ctx.lineTo(x, y - 20);
+                        ctx.lineTo(x - 5, y - 15);
+                        ctx.moveTo(x, y - 20);
+                        ctx.lineTo(x + 5, y - 15);
+                    } else {
+                        ctx.lineTo(x, y + 20);
+                        ctx.lineTo(x - 5, y + 15);
+                        ctx.moveTo(x, y + 20);
+                        ctx.lineTo(x + 5, y + 15);
+                    }
+                    
+                    ctx.strokeStyle = `rgba(200, 100, 100, ${0.3 - y / canvas.height * 0.2})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        function renderNeptuneStorms(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 0, 30, 0.02)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Great Dark Spot
+            const spotX = canvas.width / 2 + Math.sin(time * 0.0001) * 50;
+            const spotY = canvas.height / 2;
+            const spotRadiusX = 150;
+            const spotRadiusY = 100;
+            
+            // Vortex structure
+            for (let layer = 0; layer < 10; layer++) {
+                ctx.beginPath();
+                
+                for (let angle = 0; angle < Math.PI * 2; angle += 0.1) {
+                    const r = (spotRadiusX - layer * 10) * (1 + Math.sin(angle * 3 + time * 0.002 + layer) * 0.1);
+                    const x = spotX + Math.cos(angle + layer * 0.1) * r;
+                    const y = spotY + Math.sin(angle + layer * 0.1) * r * spotRadiusY / spotRadiusX;
+                    
+                    if (angle === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                
+                ctx.closePath();
+                const darkness = layer / 10;
+                ctx.fillStyle = `rgba(${50 - darkness * 50}, ${50 - darkness * 50}, ${100 - darkness * 50}, ${0.3})`;
+                ctx.fill();
+            }
+            
+            // Methane clouds at 1800 km/h
+            for (let i = 0; i < 100; i++) {
+                const angle = (time * 0.005 + i * 0.1) % (Math.PI * 2);
+                const r = 100 + Math.random() * 200;
+                const x = spotX + Math.cos(angle) * r;
+                const y = spotY + Math.sin(angle) * r * 0.7;
+                
+                // Cloud wisps
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle + Math.PI/2);
+                
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.quadraticCurveTo(20, -10, 40, 0);
+                ctx.strokeStyle = `rgba(150, 200, 255, ${0.3 - r / 300 * 0.2})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                ctx.restore();
+            }
+            
+            // Bright companion clouds
+            const companionX = spotX + 200;
+            const companionY = spotY - 50;
+            
+            ctx.beginPath();
+            ctx.ellipse(companionX, companionY, 60, 40, Math.PI / 6, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fill();
+            
+            // High altitude scooter clouds
+            for (let i = 0; i < 20; i++) {
+                const x = (time * 0.2 + i * 50) % (canvas.width + 100) - 50;
+                const y = 100 + Math.sin(x * 0.01) * 20;
+                
+                ctx.beginPath();
+                ctx.ellipse(x, y, 30, 10, 0, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(200, 220, 255, 0.4)';
+                ctx.fill();
+            }
+            
+            // Atmospheric layers with different wind speeds
+            for (let layer = 0; layer < 5; layer++) {
+                const y = layer * canvas.height / 5;
+                const speed = 300 + layer * 200; // km/h
+                
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                
+                for (let x = 0; x <= canvas.width; x += 20) {
+                    const wave = Math.sin(x * 0.01 + time * speed * 0.00001) * 10;
+                    ctx.lineTo(x, y + wave);
+                }
+                
+                ctx.strokeStyle = `rgba(100, 150, 200, ${0.1})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                // Wind speed indicator
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '12px Arial';
+                ctx.fillText(`${speed} km/h`, 20, y + 20);
+            }
+            
+            // Diamond rain in deep atmosphere
+            const deepY = canvas.height * 0.8;
+            for (let i = 0; i < 30; i++) {
+                const x = Math.random() * canvas.width;
+                const y = deepY + Math.random() * (canvas.height - deepY);
+                
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(Math.PI / 4);
+                
+                ctx.beginPath();
+                ctx.rect(-3, -3, 6, 6);
+                ctx.fillStyle = `rgba(255, 255, 255, ${0.8 - (y - deepY) / (canvas.height - deepY) * 0.5})`;
+                ctx.fill();
+                
+                ctx.restore();
+            }
+        }
+        
+        function renderSolarCorona(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const sunRadius = 50;
+            
+            // Sun's surface
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, sunRadius, 0, Math.PI * 2);
+            const sunGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, sunRadius);
+            sunGradient.addColorStop(0, 'rgba(255, 255, 200, 1)');
+            sunGradient.addColorStop(0.8, 'rgba(255, 200, 0, 1)');
+            sunGradient.addColorStop(1, 'rgba(255, 150, 0, 1)');
+            ctx.fillStyle = sunGradient;
+            ctx.fill();
+            
+            // Magnetic field lines
+            for (let i = 0; i < 12; i++) {
+                const angle = (i / 12) * Math.PI * 2;
+                const startX = centerX + Math.cos(angle) * sunRadius;
+                const startY = centerY + Math.sin(angle) * sunRadius;
+                
+                // Closed loop
+                if (i % 3 === 0) {
+                    const loopHeight = 100 + Math.sin(time * 0.001 + i) * 50;
+                    const endAngle = angle + Math.PI / 6;
+                    const endX = centerX + Math.cos(endAngle) * sunRadius;
+                    const endY = centerY + Math.sin(endAngle) * sunRadius;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.quadraticCurveTo(
+                        centerX + Math.cos((angle + endAngle) / 2) * (sunRadius + loopHeight),
+                        centerY + Math.sin((angle + endAngle) / 2) * (sunRadius + loopHeight),
+                        endX, endY
+                    );
+                    
+                    ctx.strokeStyle = 'rgba(255, 100, 255, 0.4)';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // Plasma flowing along field lines
+                    for (let j = 0; j < 5; j++) {
+                        const t = (time * 0.002 + j * 0.2) % 1;
+                        const px = startX + (endX - startX) * t + 
+                                  (centerX + Math.cos((angle + endAngle) / 2) * (sunRadius + loopHeight) - (startX + endX) / 2) * Math.sin(t * Math.PI) * 2;
+                        const py = startY + (endY - startY) * t + 
+                                  (centerY + Math.sin((angle + endAngle) / 2) * (sunRadius + loopHeight) - (startY + endY) / 2) * Math.sin(t * Math.PI) * 2;
+                        
+                        ctx.beginPath();
+                        ctx.arc(px, py, 3, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 200, 100, ${0.8 - t * 0.5})`;
+                        ctx.fill();
+                    }
+                } 
+                // Open field lines
+                else {
+                    const length = 300;
+                    const curve = Math.sin(time * 0.001 + i) * 0.5;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    
+                    for (let r = sunRadius; r < sunRadius + length; r += 10) {
+                        const t = (r - sunRadius) / length;
+                        const curveAngle = angle + curve * t;
+                        const x = centerX + Math.cos(curveAngle) * r;
+                        const y = centerY + Math.sin(curveAngle) * r;
+                        
+                        ctx.lineTo(x, y);
+                    }
+                    
+                    ctx.strokeStyle = `rgba(200, 150, 255, ${0.4})`;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+            
+            // Coronal streamers
+            for (let i = 0; i < 6; i++) {
+                const angle = (i / 6) * Math.PI * 2 + time * 0.0001;
+                
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(angle);
+                
+                ctx.beginPath();
+                ctx.moveTo(sunRadius, 0);
+                
+                for (let r = sunRadius; r < 300; r += 5) {
+                    const width = (r - sunRadius) * 0.3 * Math.sin((r - sunRadius) / 100 * Math.PI);
+                    ctx.lineTo(r, -width);
+                }
+                
+                for (let r = 300; r > sunRadius; r -= 5) {
+                    const width = (r - sunRadius) * 0.3 * Math.sin((r - sunRadius) / 100 * Math.PI);
+                    ctx.lineTo(r, width);
+                }
+                
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(255, 200, 150, 0.2)';
+                ctx.fill();
+                
+                ctx.restore();
+            }
+            
+            // Solar wind particles
+            for (let i = 0; i < 50; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const r = sunRadius + 20 + Math.random() * 250;
+                const speed = r / 100;
+                
+                const x = centerX + Math.cos(angle + time * 0.0001 * speed) * r;
+                const y = centerY + Math.sin(angle + time * 0.0001 * speed) * r;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 1, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 200, ${0.8 - r / 300 * 0.6})`;
+                ctx.fill();
+            }
+            
+            // Coronal mass ejection
+            if (Math.sin(time * 0.0003) > 0.8) {
+                const cmeAngle = time * 0.0001;
+                const cmeR = sunRadius + (time * 0.1) % 200;
+                
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(cmeAngle);
+                
+                ctx.beginPath();
+                ctx.arc(cmeR, 0, 30, 0, Math.PI * 2);
+                const cmeGradient = ctx.createRadialGradient(cmeR, 0, 0, cmeR, 0, 30);
+                cmeGradient.addColorStop(0, 'rgba(255, 100, 100, 0.8)');
+                cmeGradient.addColorStop(1, 'rgba(255, 100, 100, 0)');
+                ctx.fillStyle = cmeGradient;
+                ctx.fill();
+                
+                ctx.restore();
+            }
+        }
+        
+        function renderGalacticHalo(ctx, time) {
+            ctx.fillStyle = 'rgba(0, 0, 5, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Visible galaxy disk
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(Math.PI / 6); // Tilt
+            
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 200, 50, 0, 0, Math.PI * 2);
+            const diskGradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 200);
+            diskGradient.addColorStop(0, 'rgba(255, 200, 150, 0.8)');
+            diskGradient.addColorStop(0.3, 'rgba(200, 150, 100, 0.5)');
+            diskGradient.addColorStop(1, 'rgba(100, 50, 50, 0.2)');
+            ctx.fillStyle = diskGradient;
+            ctx.fill();
+            
+            // Spiral arms
+            for (let arm = 0; arm < 2; arm++) {
+                ctx.beginPath();
+                
+                for (let angle = 0; angle < Math.PI * 4; angle += 0.1) {
+                    const r = angle * 50 / Math.PI;
+                    const spiralAngle = angle + arm * Math.PI + time * 0.0001;
+                    const x = Math.cos(spiralAngle) * r;
+                    const y = Math.sin(spiralAngle) * r * 0.25; // Flattened
+                    
+                    if (angle === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                
+                ctx.strokeStyle = 'rgba(150, 200, 255, 0.3)';
+                ctx.lineWidth = 5;
+                ctx.stroke();
+            }
+            
+            ctx.restore();
+            
+            // Dark matter halo (invisible but revealed through lensing)
+            // Gravitational lensing effect
+            for (let i = 0; i < 20; i++) {
+                const angle = (i / 20) * Math.PI * 2;
+                const r = 300;
+                const x = centerX + Math.cos(angle) * r;
+                const y = centerY + Math.sin(angle) * r;
+                
+                // Background "galaxy" being lensed
+                ctx.save();
+                ctx.translate(x, y);
+                
+                // Calculate lensing distortion
+                const dx = x - centerX;
+                const dy = y - centerY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const lensStrength = 200 / dist;
+                
+                // Einstein ring segments
+                ctx.beginPath();
+                ctx.arc(0, 0, 10, angle - Math.PI/2 - lensStrength * 0.5, angle - Math.PI/2 + lensStrength * 0.5);
+                ctx.strokeStyle = `rgba(100, 150, 255, ${0.5 * lensStrength})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                ctx.restore();
+            }
+            
+            // Dark matter density visualization (through particle effects)
+            const haloRadius = 400;
+            for (let i = 0; i < 500; i++) {
+                const r = Math.random() * haloRadius;
+                const angle = Math.random() * Math.PI * 2;
+                const x = centerX + Math.cos(angle) * r;
+                const y = centerY + Math.sin(angle) * r;
+                
+                // Density falls off with radius (NFW profile)
+                const density = 1 / (1 + r / 100);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 1, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(100, 50, 200, ${density * 0.3})`;
+                ctx.fill();
+            }
+            
+            // Satellite galaxies orbiting in the halo
+            for (let i = 0; i < 5; i++) {
+                const orbitRadius = 200 + i * 50;
+                const orbitAngle = time * 0.0002 / (i + 1) + i * Math.PI / 2.5;
+                const x = centerX + Math.cos(orbitAngle) * orbitRadius;
+                const y = centerY + Math.sin(orbitAngle) * orbitRadius * 0.7; // Elliptical orbit
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 5 + i, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(200, 200, 255, ${0.8 - i * 0.1})`;
+                ctx.fill();
+                
+                // Tidal streams
+                for (let j = 0; j < 20; j++) {
+                    const streamAngle = orbitAngle - j * 0.05;
+                    const streamR = orbitRadius + j * 2;
+                    const sx = centerX + Math.cos(streamAngle) * streamR;
+                    const sy = centerY + Math.sin(streamAngle) * streamR * 0.7;
+                    
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, 1, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(150, 150, 200, ${0.3 - j * 0.01})`;
+                    ctx.fill();
+                }
+            }
+            
+            // Scale indicator update
+            const scaleText = document.getElementById('scale-indicator');
+            scaleText.textContent = `${Math.pow(10, currentScale).toExponential(1)} meters - ${getCurrentRealm().name}`;
+        }
+        
+        // Sierra Lake with Fish Rain
+        function renderSierraLake(ctx, time) {
+            // Clear sky gradient
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            skyGradient.addColorStop(0, '#4A90E2');
+            skyGradient.addColorStop(0.7, '#87CEEB');
+            skyGradient.addColorStop(1, '#B8D4E3');
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Sierra mountains
+            ctx.fillStyle = '#5D4E37';
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height * 0.3);
+            for (let x = 0; x <= canvas.width; x += 50) {
+                const y = canvas.height * 0.3 + Math.sin(x * 0.01) * 50 + Math.random() * 20;
+                ctx.lineTo(x, y);
+            }
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.lineTo(0, canvas.height);
+            ctx.fill();
+            
+            // Lake
+            const lakeY = canvas.height * 0.7;
+            ctx.fillStyle = 'rgba(30, 100, 200, 0.7)';
+            ctx.fillRect(0, lakeY, canvas.width, canvas.height - lakeY);
+            
+            // Lake ripples
+            for (let i = 0; i < 5; i++) {
+                const rippleX = (time * 0.1 + i * 100) % canvas.width;
+                const rippleY = lakeY + Math.sin(time * 0.003 + i) * 20;
+                
+                ctx.beginPath();
+                ctx.arc(rippleX, rippleY, 20 + i * 5, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 255, 255, ${0.3 - i * 0.05})`;
+                ctx.stroke();
+            }
+            
+            // Helicopter
+            const heliX = canvas.width * 0.3 + Math.sin(time * 0.001) * 100;
+            const heliY = canvas.height * 0.2;
+            
+            // Helicopter body
+            ctx.fillStyle = '#333';
+            ctx.fillRect(heliX - 30, heliY, 60, 20);
+            
+            // Rotor blades
+            ctx.save();
+            ctx.translate(heliX, heliY);
+            ctx.rotate(time * 0.05);
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(-50, 0);
+            ctx.lineTo(50, 0);
+            ctx.moveTo(0, -50);
+            ctx.lineTo(0, 50);
+            ctx.stroke();
+            ctx.restore();
+            
+            // Falling fish
+            for (let i = 0; i < 20; i++) {
+                const fishTime = (time * 0.001 + i * 0.5) % 3;
+                if (fishTime < 2) {
+                    const fishX = heliX + (Math.random() - 0.5) * 100;
+                    const fishY = heliY + 30 + fishTime * 200;
+                    
+                    // Fish body
+                    ctx.save();
+                    ctx.translate(fishX, fishY);
+                    ctx.rotate(Math.sin(time * 0.01 + i) * 0.3);
+                    
+                    ctx.fillStyle = 'silver';
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, 15, 6, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Fish tail
+                    ctx.beginPath();
+                    ctx.moveTo(10, 0);
+                    ctx.lineTo(18, -5);
+                    ctx.lineTo(18, 5);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.restore();
+                    
+                    // Splash if hitting water
+                    if (fishY > lakeY - 10 && fishY < lakeY + 10) {
+                        for (let j = 0; j < 10; j++) {
+                            const splashX = fishX + (Math.random() - 0.5) * 30;
+                            const splashY = lakeY - Math.random() * 20;
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                            ctx.fillRect(splashX, splashY, 2, 5);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Fracking Operation Interior
+        function renderFrackingOperation(ctx, time) {
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Underground layers
+            const layers = [
+                { y: 0.1, color: '#8B7355', name: 'Topsoil' },
+                { y: 0.2, color: '#5C4033', name: 'Sandstone' },
+                { y: 0.4, color: '#36454F', name: 'Shale' },
+                { y: 0.6, color: '#2F4F4F', name: 'Target Formation' },
+                { y: 0.8, color: '#1C1C1C', name: 'Basement Rock' }
+            ];
+            
+            layers.forEach((layer, i) => {
+                const gradient = ctx.createLinearGradient(0, canvas.height * layer.y, 0, canvas.height * (layer.y + 0.2));
+                gradient.addColorStop(0, layer.color);
+                gradient.addColorStop(1, i < layers.length - 1 ? layers[i + 1].color : layer.color);
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, canvas.height * layer.y, canvas.width, canvas.height * 0.2);
+                
+                // Rock texture
+                for (let j = 0; j < 50; j++) {
+                    ctx.fillStyle = `rgba(0, 0, 0, ${Math.random() * 0.2})`;
+                    ctx.fillRect(
+                        Math.random() * canvas.width,
+                        canvas.height * layer.y + Math.random() * canvas.height * 0.2,
+                        Math.random() * 50,
+                        Math.random() * 5
+                    );
+                }
+            });
+            
+            // Drill pipe
+            const drillX = canvas.width / 2;
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 20;
+            ctx.beginPath();
+            ctx.moveTo(drillX, 0);
+            ctx.lineTo(drillX, canvas.height * 0.6);
+            ctx.stroke();
+            
+            // Horizontal drilling
+            ctx.beginPath();
+            ctx.moveTo(drillX, canvas.height * 0.6);
+            ctx.quadraticCurveTo(
+                drillX + 100, canvas.height * 0.65,
+                drillX + 300, canvas.height * 0.6
+            );
+            ctx.stroke();
+            
+            // Fractures
+            for (let i = 0; i < 20; i++) {
+                const fractureStart = drillX + 50 + i * 10;
+                const fractureY = canvas.height * 0.6 + (Math.random() - 0.5) * 20;
+                
+                ctx.beginPath();
+                ctx.moveTo(fractureStart, fractureY);
+                
+                // Jagged fracture path
+                for (let j = 0; j < 5; j++) {
+                    const fx = fractureStart + j * 20 + Math.random() * 10;
+                    const fy = fractureY + (Math.random() - 0.5) * 40;
+                    ctx.lineTo(fx, fy);
+                }
+                
+                ctx.strokeStyle = 'rgba(255, 0, 0, 0.6)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            // Fracking fluid injection
+            for (let i = 0; i < 100; i++) {
+                const particleTime = (time * 0.002 + i * 0.1) % 2;
+                const px = drillX + particleTime * 300;
+                const py = canvas.height * 0.6 + Math.sin(particleTime * 10 + i) * 30;
+                
+                ctx.fillStyle = `rgba(0, 255, 0, ${1 - particleTime / 2})`;
+                ctx.fillRect(px, py, 3, 3);
+            }
+            
+            // Extracted gas/oil bubbles
+            for (let i = 0; i < 30; i++) {
+                const bubbleTime = (time * 0.001 + i * 0.3) % 3;
+                const bx = drillX + 100 + Math.random() * 200;
+                const by = canvas.height * 0.6 - bubbleTime * 100;
+                
+                if (by > 0) {
+                    ctx.beginPath();
+                    ctx.arc(bx, by, 5 + Math.random() * 5, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 200, 0, 0.6)';
+                    ctx.fill();
+                }
+            }
+            
+            // Environmental damage indicators
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.1)';
+            ctx.beginPath();
+            ctx.arc(drillX + 150, canvas.height * 0.6, 200, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Murakami Novel Interior
+        function renderMurakamiInterior(ctx, time) {
+            // Dreamlike gradient background
+            const bgGradient = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, 0,
+                canvas.width / 2, canvas.height / 2, canvas.width / 2
+            );
+            bgGradient.addColorStop(0, '#2C1810');
+            bgGradient.addColorStop(0.5, '#1a0e0a');
+            bgGradient.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Floating everyday objects
+            const objects = [
+                { x: 0.2, y: 0.3, size: 40, rotation: 0.001, symbol: '☎️', name: 'telephone' },
+                { x: 0.7, y: 0.2, size: 30, rotation: -0.002, symbol: '🐈', name: 'cat' },
+                { x: 0.5, y: 0.7, size: 35, rotation: 0.0015, symbol: '🍝', name: 'spaghetti' },
+                { x: 0.8, y: 0.5, size: 25, rotation: -0.001, symbol: '💿', name: 'record' },
+                { x: 0.3, y: 0.6, size: 45, rotation: 0.002, symbol: '🌙', name: 'moon' }
+            ];
+            
+            objects.forEach(obj => {
+                ctx.save();
+                const x = canvas.width * obj.x + Math.sin(time * 0.0005) * 50;
+                const y = canvas.height * obj.y + Math.cos(time * 0.0007) * 30;
+                
+                ctx.translate(x, y);
+                ctx.rotate(time * obj.rotation);
+                
+                ctx.font = `${obj.size}px Arial`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.textAlign = 'center';
+                ctx.fillText(obj.symbol, 0, 0);
+                
+                ctx.restore();
+            });
+            
+            // Parallel world portals
+            for (let i = 0; i < 3; i++) {
+                const portalX = canvas.width * (0.2 + i * 0.3);
+                const portalY = canvas.height / 2;
+                const portalRadius = 60 + Math.sin(time * 0.001 + i) * 10;
+                
+                // Portal spiral
+                ctx.beginPath();
+                for (let angle = 0; angle < Math.PI * 10; angle += 0.1) {
+                    const r = (angle / (Math.PI * 10)) * portalRadius;
+                    const x = portalX + Math.cos(angle + time * 0.002) * r;
+                    const y = portalY + Math.sin(angle + time * 0.002) * r;
+                    
+                    if (angle === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                
+                ctx.strokeStyle = `rgba(150, 100, 255, ${0.5 + Math.sin(time * 0.003 + i) * 0.3})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            // Jazz music visualization
+            const noteCount = 20;
+            for (let i = 0; i < noteCount; i++) {
+                const noteX = (i / noteCount) * canvas.width;
+                const noteY = canvas.height * 0.8 + Math.sin(time * 0.005 + i * 0.5) * 50;
+                
+                ctx.beginPath();
+                ctx.arc(noteX, noteY, 5, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 215, 0, ${0.6 + Math.sin(time * 0.01 + i) * 0.4})`;
+                ctx.fill();
+                
+                // Note stems
+                ctx.beginPath();
+                ctx.moveTo(noteX, noteY);
+                ctx.lineTo(noteX, noteY - 30);
+                ctx.strokeStyle = 'rgba(255, 215, 0, 0.5)';
+                ctx.stroke();
+            }
+            
+            // Mysterious text fragments
+            const fragments = [
+                "Norwegian Wood",
+                "Hard-Boiled Wonderland",
+                "Dance Dance Dance",
+                "The Wind-Up Bird",
+                "Kafka on the Shore"
+            ];
+            
+            fragments.forEach((text, i) => {
+                const textX = Math.random() * canvas.width;
+                const textY = Math.random() * canvas.height;
+                const opacity = 0.3 + Math.sin(time * 0.001 + i) * 0.2;
+                
+                ctx.font = '16px Georgia';
+                ctx.fillStyle = `rgba(200, 200, 200, ${opacity})`;
+                ctx.fillText(text, textX, textY);
+            });
+        }
+        
+        // Love visualization
+        function renderLove(ctx, time) {
+            // Soft pink-purple gradient
+            const bgGradient = ctx.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, 0,
+                canvas.width / 2, canvas.height / 2, canvas.width
+            );
+            bgGradient.addColorStop(0, '#4a0e4e');
+            bgGradient.addColorStop(0.5, '#81689d');
+            bgGradient.addColorStop(1, '#0f0c29');
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Quantum entangled hearts
+            const heart1X = canvas.width * 0.3 + Math.sin(time * 0.001) * 20;
+            const heart1Y = canvas.height * 0.5 + Math.cos(time * 0.001) * 20;
+            const heart2X = canvas.width * 0.7 - Math.sin(time * 0.001) * 20;
+            const heart2Y = canvas.height * 0.5 - Math.cos(time * 0.001) * 20;
+            
+            // Draw hearts
+            function drawHeart(x, y, size, color) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.scale(size, size);
+                
+                ctx.beginPath();
+                ctx.moveTo(0, -10);
+                ctx.bezierCurveTo(-10, -20, -20, -15, -20, -5);
+                ctx.bezierCurveTo(-20, 5, -10, 15, 0, 25);
+                ctx.bezierCurveTo(10, 15, 20, 5, 20, -5);
+                ctx.bezierCurveTo(20, -15, 10, -20, 0, -10);
+                
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.restore();
+            }
+            
+            drawHeart(heart1X, heart1Y, 2, 'rgba(255, 100, 150, 0.8)');
+            drawHeart(heart2X, heart2Y, 2, 'rgba(255, 150, 200, 0.8)');
+            
+            // Entanglement threads
+            for (let i = 0; i < 20; i++) {
+                const t = i / 20;
+                const cp1X = heart1X + (heart2X - heart1X) * 0.3 + Math.sin(time * 0.002 + i) * 50;
+                const cp1Y = heart1Y + (heart2Y - heart1Y) * 0.3 + Math.cos(time * 0.002 + i) * 50;
+                const cp2X = heart1X + (heart2X - heart1X) * 0.7 + Math.sin(time * 0.002 + i + 1) * 50;
+                const cp2Y = heart1Y + (heart2Y - heart1Y) * 0.7 + Math.cos(time * 0.002 + i + 1) * 50;
+                
+                ctx.beginPath();
+                ctx.moveTo(heart1X, heart1Y);
+                ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, heart2X, heart2Y);
+                
+                ctx.strokeStyle = `rgba(255, 200, 255, ${0.1 + Math.sin(time * 0.005 + i) * 0.1})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+            
+            // Love particles
+            for (let i = 0; i < 100; i++) {
+                const particleAngle = (time * 0.001 + i * 0.1) % (Math.PI * 2);
+                const radius = 100 + Math.sin(i * 0.5) * 50;
+                const px = canvas.width / 2 + Math.cos(particleAngle) * radius;
+                const py = canvas.height / 2 + Math.sin(particleAngle) * radius;
+                
+                ctx.beginPath();
+                ctx.arc(px, py, 2 + Math.random() * 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 150, 200, ${0.5 + Math.random() * 0.5})`;
+                ctx.fill();
+            }
+            
+            // Resonance waves
+            for (let wave = 0; wave < 5; wave++) {
+                const waveRadius = (time * 0.1 + wave * 50) % 400;
+                const waveOpacity = 1 - (waveRadius / 400);
+                
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, waveRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255, 200, 255, ${waveOpacity * 0.3})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+            
+            // Shared memories floating
+            for (let i = 0; i < 15; i++) {
+                const memX = Math.random() * canvas.width;
+                const memY = (canvas.height - time * 0.5 + i * 100) % canvas.height;
+                const size = 20 + Math.random() * 20;
+                
+                ctx.beginPath();
+                ctx.arc(memX, memY, size, 0, Math.PI * 2);
+                
+                const memGradient = ctx.createRadialGradient(memX, memY, 0, memX, memY, size);
+                memGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+                memGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                ctx.fillStyle = memGradient;
+                ctx.fill();
+            }
+        }
+        
+        // Animation loop
+        function animate(timestamp) {
+            const realm = getCurrentRealm();
+            
+            // Update info
+            document.getElementById('current-realm').textContent = `Current: ${realm.name}`;
+            
+            // Smooth scale transitions
+            const scaleDiff = targetScale - currentScale;
+            scaleVelocity = scaleVelocity * 0.9 + scaleDiff * 0.1;
+            currentScale += scaleVelocity * 0.1;
+            
+            // Render current realm
+            realm.render(ctx, timestamp);
+            
+            // Update scale indicator
+            const scaleText = document.getElementById('scale-indicator');
+            const scaleValue = Math.pow(10, currentScale);
+            let scaleString;
+            
+            if (Math.abs(currentScale) > 2) {
+                scaleString = `10^${Math.round(currentScale)} meters`;
+            } else {
+                scaleString = `${scaleValue.toFixed(2)} meters`;
+            }
+            
+            scaleText.textContent = `${scaleString} - ${realm.name}`;
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Handle scroll
+        let scrollTimeout;
+        window.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            targetScale += e.deltaY * 0.01;
+            targetScale = Math.max(-35, Math.min(25, targetScale));
+            
+            // Show transition text
+            const transitionText = document.getElementById('transition-text');
+            transitionText.textContent = `Zooming ${e.deltaY > 0 ? 'out' : 'in'}...`;
+            transitionText.style.opacity = '0.8';
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                transitionText.style.opacity = '0';
+            }, 1000);
+        });
+        
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Start animation
+        animate(0);
+    </script>
+</body>
+</html>
