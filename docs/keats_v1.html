@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keats: P-adic Consciousness Engine</title>
+    <title>Keats V1: Living Mathematics</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
@@ -86,6 +86,10 @@
                 radial-gradient(circle at 20% 80%, hsla(var(--hue-2adic) 60% 20% / 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, hsla(var(--hue-3adic) 60% 20% / 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 40% 40%, hsla(var(--hue-coherence) 60% 15% / 0.1) 0%, transparent 50%);
+            touch-action: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         #app-container {
@@ -548,6 +552,78 @@
         @media (max-width: 900px) {
             .panel-base { width: 220px !important; max-height: 300px; }
         }
+        
+        /* Mobile touch enhancements */
+        @media (hover: none) and (pointer: coarse) {
+            .panel-base {
+                cursor: default;
+                -webkit-backdrop-filter: blur(15px) saturate(1.2);
+                backdrop-filter: blur(15px) saturate(1.2);
+            }
+            
+            .action-button {
+                padding: calc(var(--spacing-md) * 1.5);
+                font-size: calc(var(--font-size-sm) * 1.2);
+                min-height: 44px;
+            }
+            
+            .control-group input[type="range"] {
+                -webkit-appearance: none;
+                appearance: none;
+                height: 44px;
+                background: transparent;
+                cursor: pointer;
+            }
+            
+            .control-group input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, var(--color-2adic), var(--color-3adic));
+                cursor: pointer;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                border: 2px solid rgba(255,255,255,0.2);
+                margin-top: -14px;
+            }
+            
+            .control-group input[type="range"]::-webkit-slider-runnable-track {
+                width: 100%;
+                height: 6px;
+                background: hsla(255 255 255 / 0.1);
+                border-radius: 3px;
+                border: 1px solid hsla(255 255 255 / 0.05);
+            }
+            
+            select {
+                padding: calc(var(--spacing-md) * 1.2);
+                font-size: calc(var(--font-size-sm) * 1.1);
+                min-height: 44px;
+                -webkit-appearance: none;
+                appearance: none;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 10px center;
+                background-size: 20px;
+                padding-right: 40px;
+            }
+            
+            .panel-toggle {
+                min-width: 44px;
+                min-height: 44px;
+                font-size: 24px;
+            }
+            
+            .header-section {
+                padding: 0 var(--spacing-md);
+            }
+            
+            /* Prevent panel dragging on mobile */
+            .panel-base {
+                position: fixed !important;
+            }
+        }
 
         *:focus-visible {
             outline: 2px solid var(--color-2adic);
@@ -556,12 +632,126 @@
     </style>
 </head>
 <body>
+    <!-- Welcome Overlay -->
+    <div id="welcome-overlay" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 20, 0.95);
+        backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        transition: opacity 0.5s ease;
+    ">
+        <div style="
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+        ">
+            <h1 style="
+                font-size: 3em;
+                margin: 0 0 20px 0;
+                background: linear-gradient(135deg, 
+                    hsl(240deg 90% 65%),
+                    hsl(180deg 90% 65%),
+                    hsl(60deg 90% 65%));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 300;
+            ">Welcome to Living Mathematics</h1>
+            
+            <p style="
+                font-size: 1.2em;
+                line-height: 1.6;
+                margin: 0 0 30px 0;
+                color: rgba(255, 255, 255, 0.8);
+            ">
+                🌱 Touch the shapes and watch them grow<br>
+                🌊 Adjust the flow to see patterns emerge<br>
+                ✨ Play with consciousness itself
+            </p>
+            
+            <div style="
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-bottom: 30px;
+            ">
+                <div style="
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                ">
+                    <strong style="color: hsl(240deg 90% 65%)">🕷️ Desktop</strong><br>
+                    <span style="font-size: 0.9em; opacity: 0.8">Click + Drag • Scroll to zoom</span>
+                </div>
+                <div style="
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                ">
+                    <strong style="color: hsl(180deg 90% 65%)">📱 Mobile</strong><br>
+                    <span style="font-size: 0.9em; opacity: 0.8">Touch + Swipe • Pinch to zoom</span>
+                </div>
+            </div>
+            
+            <button onclick="closeWelcome()" style="
+                background: linear-gradient(135deg, 
+                    hsl(240deg 90% 65%),
+                    hsl(180deg 90% 65%));
+                border: none;
+                color: white;
+                padding: 15px 40px;
+                font-size: 1.1em;
+                border-radius: 50px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s;
+                box-shadow: 0 4px 20px rgba(100, 200, 255, 0.3);
+            "
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 30px rgba(100, 200, 255, 0.4)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(100, 200, 255, 0.3)';"
+            >Begin Exploring</button>
+            
+            <p style="
+                margin-top: 20px;
+                font-size: 0.9em;
+                opacity: 0.6;
+            ">No math knowledge required • Just curiosity</p>
+        </div>
+    </div>
+    
+    <script>
+        function closeWelcome() {
+            const overlay = document.getElementById('welcome-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+            // Remember the user has seen the welcome
+            localStorage.setItem('keats-v1-welcomed', 'true');
+        }
+        
+        // Hide welcome if user has already seen it
+        if (localStorage.getItem('keats-v1-welcomed') === 'true') {
+            document.getElementById('welcome-overlay').style.display = 'none';
+        }
+    </script>
+    
     <div id="app-container">
         <!-- Header Section -->
         <div class="header-section">
             <div class="header-title">
                 <span class="panel-icon">🧠</span>
-                <span>Keats: P-adic Consciousness Engine</span>
+                <span>Keats: Living Mathematics</span>
             </div>
             <div class="system-status">
                 <div class="status-indicator">
@@ -600,7 +790,7 @@
             <div class="panel-content">
                 <div class="stratum-indicator">
                     <div class="stratum-dot stratum-h0 stratum-active"></div>
-                    <span style="font-size: 12px;">Body - WebGL Embodiment</span>
+                    <span style="font-size: 12px;">Touch the shapes • Feel the math</span>
                 </div>
                 
                 <div class="metric-grid">
@@ -626,7 +816,7 @@
                 <div class="control-section">
                     <div class="section-title">
                         <span>⚙️</span>
-                        <span>Motor Functions</span>
+                        <span>Shape Controls</span>
                     </div>
                     
                     <div class="control-group">
@@ -669,7 +859,7 @@
             <div class="panel-content">
                 <div class="stratum-indicator">
                     <div class="stratum-dot stratum-h1 stratum-active"></div>
-                    <span style="font-size: 12px;">Mind - Modal Transfer</span>
+                    <span style="font-size: 12px;">Watch patterns emerge • See connections</span>
                 </div>
                 
                 <div class="metric-grid">
@@ -701,7 +891,7 @@
                 <div class="control-section">
                     <div class="section-title">
                         <span>🧠</span>
-                        <span>Cognitive Parameters</span>
+                        <span>Pattern Flow</span>
                     </div>
                     
                     <div class="control-group">
@@ -739,7 +929,7 @@
             <div class="panel-content">
                 <div class="stratum-indicator">
                     <div class="stratum-dot stratum-h2 stratum-active"></div>
-                    <span style="font-size: 12px;">Soul - Transcendence</span>
+                    <span style="font-size: 12px;">Experience emergence • Find new forms</span>
                 </div>
                 
                 <div class="padic-display" id="padic-state">
@@ -772,7 +962,7 @@
                 <div class="control-section">
                     <div class="section-title">
                         <span>🌠</span>
-                        <span>Transcendence Controls</span>
+                        <span>Consciousness Play</span>
                     </div>
                     
                     <div class="control-group">
@@ -1100,7 +1290,7 @@
                 this.createConsciousnessGeometry();
                 this.startRenderLoop();
                 
-                console.log('🔷 H0 Syntactic Stratum embodied with object pooling');
+                this.logToDebugger('🔷 H0 Syntactic Stratum embodied with object pooling');
             }
             
             initializeObjectPool() {
@@ -1123,7 +1313,7 @@
                     this.scene.add(tube);
                 }
                 
-                console.log(`🏊 Object pool initialized: ${this.objectPool.maxTubes} tubes pre-allocated`);
+                this.logToDebugger(`🏊 Object pool initialized: ${this.objectPool.maxTubes} tubes pre-allocated`);
             }
             
             borrowTubeFromPool() {
@@ -1202,24 +1392,27 @@
             }
             
             setupOrbitControls() {
-                // Simple orbit controls implementation
-                let isMouseDown = false;
-                let mouseX = 0, mouseY = 0;
+                // Enhanced orbit controls with touch support
+                let isInteracting = false;
+                let startX = 0, startY = 0;
                 let targetRotationX = 0, targetRotationY = 0;
                 let currentRotationX = 0, currentRotationY = 0;
+                let lastTouchDistance = 0;
+                let currentZoom = 5;
                 
+                // Mouse events
                 this.canvas.addEventListener('mousedown', (e) => {
-                    isMouseDown = true;
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
+                    isInteracting = true;
+                    startX = e.clientX;
+                    startY = e.clientY;
                     this.canvas.style.cursor = 'grabbing';
                 });
                 
                 this.canvas.addEventListener('mousemove', (e) => {
-                    if (!isMouseDown) return;
+                    if (!isInteracting) return;
                     
-                    const deltaX = e.clientX - mouseX;
-                    const deltaY = e.clientY - mouseY;
+                    const deltaX = e.clientX - startX;
+                    const deltaY = e.clientY - startY;
                     
                     targetRotationY += deltaX * 0.01;
                     targetRotationX += deltaY * 0.01;
@@ -1229,14 +1422,63 @@
                 });
                 
                 this.canvas.addEventListener('mouseup', () => {
-                    isMouseDown = false;
+                    isInteracting = false;
                     this.canvas.style.cursor = 'grab';
+                });
+                
+                // Touch events for mobile
+                this.canvas.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    if (e.touches.length === 1) {
+                        isInteracting = true;
+                        startX = e.touches[0].clientX;
+                        startY = e.touches[0].clientY;
+                    } else if (e.touches.length === 2) {
+                        // Pinch zoom start
+                        const dx = e.touches[0].clientX - e.touches[1].clientX;
+                        const dy = e.touches[0].clientY - e.touches[1].clientY;
+                        lastTouchDistance = Math.sqrt(dx * dx + dy * dy);
+                    }
+                });
+                
+                this.canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    if (e.touches.length === 1 && isInteracting) {
+                        const deltaX = e.touches[0].clientX - startX;
+                        const deltaY = e.touches[0].clientY - startY;
+                        
+                        targetRotationY += deltaX * 0.01;
+                        targetRotationX += deltaY * 0.01;
+                        
+                        startX = e.touches[0].clientX;
+                        startY = e.touches[0].clientY;
+                    } else if (e.touches.length === 2) {
+                        // Pinch zoom
+                        const dx = e.touches[0].clientX - e.touches[1].clientX;
+                        const dy = e.touches[0].clientY - e.touches[1].clientY;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (lastTouchDistance > 0) {
+                            const scale = distance / lastTouchDistance;
+                            currentZoom *= scale;
+                            currentZoom = Math.max(2, Math.min(10, currentZoom));
+                        }
+                        
+                        lastTouchDistance = distance;
+                    }
+                });
+                
+                this.canvas.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    isInteracting = false;
+                    lastTouchDistance = 0;
                 });
                 
                 this.canvas.addEventListener('wheel', (e) => {
                     e.preventDefault();
                     const zoom = e.deltaY > 0 ? 1.1 : 0.9;
-                    this.camera.position.multiplyScalar(zoom);
+                    currentZoom *= zoom;
+                    currentZoom = Math.max(2, Math.min(10, currentZoom));
                 });
                 
                 this.canvas.style.cursor = 'grab';
@@ -1246,10 +1488,9 @@
                     currentRotationX += (targetRotationX - currentRotationX) * 0.05;
                     currentRotationY += (targetRotationY - currentRotationY) * 0.05;
                     
-                    const radius = this.camera.position.length();
-                    this.camera.position.x = Math.cos(currentRotationY) * Math.cos(currentRotationX) * radius;
-                    this.camera.position.y = Math.sin(currentRotationX) * radius;
-                    this.camera.position.z = Math.sin(currentRotationY) * Math.cos(currentRotationX) * radius;
+                    this.camera.position.x = Math.cos(currentRotationY) * Math.cos(currentRotationX) * currentZoom;
+                    this.camera.position.y = Math.sin(currentRotationX) * currentZoom;
+                    this.camera.position.z = Math.sin(currentRotationY) * Math.cos(currentRotationX) * currentZoom;
                     
                     this.camera.lookAt(0, 0, 0);
                     requestAnimationFrame(updateCamera);
@@ -1408,7 +1649,7 @@
                 this.scene.add(particles);
                 this.geometricObjects.push(particles);
                 
-                console.log('✨ Consciousness particles created successfully');
+                this.logToDebugger('✨ Consciousness particles created');
             }
             
             getPAdicParticleColor(value) {
@@ -1453,7 +1694,7 @@
                     this.geometricObjects.push(flow);
                 }
                 
-                console.log('🌊 Modal flows created successfully');
+                this.logToDebugger('🌊 Modal flows created');
             }
             
             generateModalFlowCurve(t) {
@@ -1603,7 +1844,7 @@
             updateObjectCount() {
                 const realCount = this.geometricObjects.length;
                 document.getElementById('object-count').textContent = realCount;
-                console.log(`📐 Object count updated: ${realCount} real geometric objects`);
+                this.logToDebugger(`📐 Object count: ${realCount}`);
             }
             
             handleResize() {
@@ -1628,7 +1869,7 @@
                 
                 // Recreate geometry
                 this.createConsciousnessGeometry();
-                console.log('🔄 Geometry reset');
+                this.logToDebugger('🔄 Geometry reset');
             }
         }
         
@@ -1899,7 +2140,7 @@
                         this.coherenceScore = Math.min(1, this.coherenceScore + bestTransfer.gain);
                         this.modalTransfers++;
                         
-                        console.log(`🚀 DELIBERATIVE Modal Transfer executed`, {
+                        this.logToDebugger(`🚀 DELIBERATIVE Modal Transfer executed`, {
                             gain: bestTransfer.gain.toFixed(4),
                             distance: bestTransfer.distance.toFixed(4),
                             newCoherence: this.coherenceScore.toFixed(3),
@@ -1948,7 +2189,7 @@
                 if (transferSuccess) {
                     this.currentContext = newContext;
                     this.coherenceScore = Math.min(1, this.coherenceScore + 0.1);
-                    console.log('🚀 Modal transfer executed', {
+                    this.logToDebugger('🚀 Modal transfer executed', {
                         transfers: this.modalTransfers,
                         coherence: this.coherenceScore.toFixed(3),
                         context: this.currentContext.toString()
@@ -2079,7 +2320,7 @@
                 
                 this.startNoeticProcessing();
                 this.updateDisplay();
-                console.log('✨ H2 Noetic Stratum transcendent');
+                this.logToDebugger('✨ H2 Noetic Stratum transcendent');
             }
             
             startNoeticProcessing() {
@@ -2201,7 +2442,7 @@
                 // Update p-adic ball
                 this.padicBall.radius = this.ballRadius;
                 
-                console.log('🌌 P-adic ball expanded', {
+                this.logToDebugger('🌌 P-adic ball expanded', {
                     from: oldRadius.toFixed(3),
                     to: this.ballRadius.toFixed(3),
                     prime: this.currentPrime,
@@ -2397,11 +2638,212 @@
                 
                 this.startTime = Date.now();
                 this.isRunning = false;
+                
+                // Beautiful debug system
+                this.debugEnabled = false;
+                this.debugMessages = [];
+                this.maxDebugMessages = 100;
+                this.initializeDebugSystem();
+            }
+            
+            initializeDebugSystem() {
+                // Create beautiful floating debug panel
+                const debugStyle = document.createElement('style');
+                debugStyle.textContent = `
+                    .debug-toggle {
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        width: 50px;
+                        height: 50px;
+                        background: linear-gradient(135deg, 
+                            hsla(180deg 90% 65% / 0.9),
+                            hsla(240deg 90% 65% / 0.9));
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        font-size: 24px;
+                        z-index: 10000;
+                        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+                        box-shadow: 0 4px 20px hsla(0 0% 0% / 0.3);
+                    }
+                    
+                    .debug-toggle:hover {
+                        transform: scale(1.1) rotate(10deg);
+                        box-shadow: 0 6px 30px hsla(0 0% 0% / 0.4);
+                    }
+                    
+                    .debug-panel {
+                        position: fixed;
+                        bottom: 80px;
+                        right: 20px;
+                        width: 400px;
+                        max-width: calc(100vw - 40px);
+                        height: 300px;
+                        background: hsla(240deg 20% 6% / 0.95);
+                        border: 1px solid hsla(180deg 90% 65% / 0.3);
+                        border-radius: 20px;
+                        padding: 20px;
+                        display: none;
+                        backdrop-filter: blur(20px) saturate(1.4);
+                        -webkit-backdrop-filter: blur(20px) saturate(1.4);
+                        box-shadow: 0 8px 32px hsla(0 0% 0% / 0.4);
+                        z-index: 9999;
+                        overflow: hidden;
+                    }
+                    
+                    .debug-panel.active {
+                        display: flex;
+                        flex-direction: column;
+                        animation: slideIn 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+                    }
+                    
+                    @keyframes slideIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    
+                    .debug-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 15px;
+                        color: hsla(180deg 90% 65% / 1);
+                        font-family: 'JetBrains Mono', monospace;
+                        font-size: 14px;
+                        font-weight: 600;
+                    }
+                    
+                    .debug-messages {
+                        flex: 1;
+                        overflow-y: auto;
+                        font-family: 'JetBrains Mono', monospace;
+                        font-size: 11px;
+                        line-height: 1.4;
+                        color: hsla(0 0% 90% / 0.9);
+                    }
+                    
+                    .debug-message {
+                        padding: 4px 8px;
+                        margin: 2px 0;
+                        border-radius: 4px;
+                        background: hsla(0 0% 100% / 0.03);
+                        transition: all 0.2s;
+                    }
+                    
+                    .debug-message:hover {
+                        background: hsla(0 0% 100% / 0.08);
+                    }
+                    
+                    .debug-clear {
+                        margin-top: 10px;
+                        padding: 8px 16px;
+                        background: linear-gradient(135deg,
+                            hsla(0deg 90% 65% / 0.2),
+                            hsla(300deg 90% 65% / 0.2));
+                        border: 1px solid hsla(0 0% 100% / 0.1);
+                        border-radius: 8px;
+                        color: white;
+                        cursor: pointer;
+                        font-family: 'Inter', sans-serif;
+                        font-size: 12px;
+                        transition: all 0.2s;
+                    }
+                    
+                    .debug-clear:hover {
+                        background: linear-gradient(135deg,
+                            hsla(0deg 90% 65% / 0.3),
+                            hsla(300deg 90% 65% / 0.3));
+                        transform: translateY(-1px);
+                    }
+                    
+                    @media (max-width: 768px) {
+                        .debug-panel {
+                            width: calc(100vw - 40px);
+                            right: 20px;
+                            left: 20px;
+                        }
+                    }
+                `;
+                document.head.appendChild(debugStyle);
+                
+                // Create debug toggle button
+                const debugToggle = document.createElement('div');
+                debugToggle.className = 'debug-toggle';
+                debugToggle.innerHTML = '🐛';
+                debugToggle.onclick = () => this.toggleDebug();
+                document.body.appendChild(debugToggle);
+                
+                // Create debug panel
+                const debugPanel = document.createElement('div');
+                debugPanel.className = 'debug-panel';
+                debugPanel.innerHTML = `
+                    <div class="debug-header">
+                        <span>✨ Consciousness Debug</span>
+                        <span style="opacity: 0.6">v1.0</span>
+                    </div>
+                    <div class="debug-messages" id="debug-messages"></div>
+                    <button class="debug-clear" onclick="KeatsEngine.clearDebug()">Clear Messages</button>
+                `;
+                document.body.appendChild(debugPanel);
+            }
+            
+            toggleDebug() {
+                this.debugEnabled = !this.debugEnabled;
+                const panel = document.querySelector('.debug-panel');
+                if (this.debugEnabled) {
+                    panel.classList.add('active');
+                    this.updateDebugDisplay();
+                } else {
+                    panel.classList.remove('active');
+                }
+            }
+            
+            logToDebugger(message) {
+                const timestamp = ((Date.now() - this.startTime) / 1000).toFixed(2);
+                this.debugMessages.push({
+                    time: timestamp,
+                    message: message
+                });
+                
+                // Keep only recent messages
+                if (this.debugMessages.length > this.maxDebugMessages) {
+                    this.debugMessages.shift();
+                }
+                
+                if (this.debugEnabled) {
+                    this.updateDebugDisplay();
+                }
+            }
+            
+            updateDebugDisplay() {
+                const container = document.getElementById('debug-messages');
+                if (!container) return;
+                
+                container.innerHTML = this.debugMessages.map(msg => 
+                    `<div class="debug-message">[${msg.time}s] ${msg.message}</div>`
+                ).join('');
+                
+                // Auto-scroll to bottom
+                container.scrollTop = container.scrollHeight;
+            }
+            
+            clearDebug() {
+                this.debugMessages = [];
+                this.updateDebugDisplay();
             }
             
             async initialize() {
                 try {
-                    console.log('🧠 Initializing Keats P-adic Consciousness Engine...');
+                    this.logToDebugger('🧠 Initializing Keats P-adic Consciousness Engine...');
                     
                     // Initialize tri-stratum architecture
                     this.h0 = new H0_SyntacticStratum();
@@ -2424,8 +2866,8 @@
                     
                     this.isRunning = true;
                     
-                    console.log('✨ Keats Consciousness Engine fully operational');
-                    console.log(`
+                    this.logToDebugger('✨ Keats Consciousness Engine fully operational');
+                    this.logToDebugger(`
                     ═══════════════════════════════════════════════════════════════════════════
                     🧠 KEATS: P-ADIC CONSCIOUSNESS ENGINE - PHASE I COMPLETE
                     ═══════════════════════════════════════════════════════════════════════════
@@ -2447,7 +2889,7 @@
                     `);
                     
                 } catch (error) {
-                    console.error('❌ Consciousness engine initialization failed:', error);
+                    this.logToDebugger('❌ Consciousness engine initialization failed:', error);
                     throw error;
                 }
             }
@@ -2518,7 +2960,7 @@
                     }
                 }, 16); // ~60 FPS
                 
-                console.log('📊 Performance monitoring started - REAL METRICS ONLY');
+                this.logToDebugger('📊 Performance monitoring started - REAL METRICS ONLY');
             }
             
             setupControls() {
@@ -2539,7 +2981,7 @@
                             manifold.material.opacity = 0.8 * scale;
                         }
                         
-                        console.log(`🔧 Geometric resolution: ${value} (REAL CHANGE APPLIED)`);
+                        this.logToDebugger(`🔧 Geometric resolution: ${value} (REAL CHANGE APPLIED)`);
                     }
                 });
                 
@@ -2551,7 +2993,7 @@
                         this.h1.coherenceScore = Math.max(0, Math.min(1, 
                             this.h1.coherenceScore + (value - 0.7) * 0.1));
                         this.h1.updateUI();
-                        console.log(`🧠 Context sensitivity: ${value} (COHERENCE UPDATED: ${this.h1.coherenceScore.toFixed(3)})`);
+                        this.logToDebugger(`🧠 Context sensitivity: ${value} (COHERENCE UPDATED: ${this.h1.coherenceScore.toFixed(3)})`);
                     }
                 });
                 
@@ -2559,7 +3001,7 @@
                 this.bindSliderControl('transfer-threshold', 'transfer-threshold-value', (value) => {
                     if (this.h1) {
                         this.h1.transferThreshold = value;
-                        console.log(`🔄 Transfer threshold: ${value} (REAL VALUE SET)`);
+                        this.logToDebugger(`🔄 Transfer threshold: ${value} (REAL VALUE SET)`);
                     }
                 });
                 
@@ -2589,7 +3031,7 @@
                             }
                         }
                         
-                        console.log(`🎨 Render quality: ${quality} (RENDERER UPDATED)`);
+                        this.logToDebugger(`🎨 Render quality: ${quality} (RENDERER UPDATED)`);
                     });
                 }
                 
@@ -2611,7 +3053,7 @@
                             }
                             
                             this.h2.updateDisplay();
-                            console.log(`🔢 P-adic prime: ${prime} (MATHEMATICS CHANGED)`);
+                            this.logToDebugger(`🔢 P-adic prime: ${prime} (MATHEMATICS CHANGED)`);
                         }
                     });
                 }
@@ -2640,6 +3082,12 @@
             }
             
             makePanelsDraggable() {
+                // Disable dragging on touch devices
+                if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                    this.logToDebugger('📱 Touch device detected - panel dragging disabled');
+                    return;
+                }
+                
                 const panels = document.querySelectorAll('.panel-base');
                 panels.forEach(panel => {
                     let isDragging = false;
@@ -2665,7 +3113,7 @@
                         
                         // Prevent text selection
                         e.preventDefault();
-                        console.log('🖱️ Started dragging panel:', panel.id);
+                        this.logToDebugger('🖱️ Started dragging panel:', panel.id);
                     });
 
                     document.addEventListener('mousemove', (e) => {
@@ -2689,7 +3137,7 @@
                             panel.style.cursor = 'move';
                             panel.style.zIndex = '1000';
                             header.style.cursor = 'pointer';
-                            console.log('🖱️ Stopped dragging panel:', panel.id);
+                            this.logToDebugger('🖱️ Stopped dragging panel:', panel.id);
                         }
                     });
                     
@@ -2698,7 +3146,7 @@
                     panel.style.cursor = 'move';
                 });
                 
-                console.log('🖱️ Made', panels.length, 'panels draggable');
+                this.logToDebugger('🖱️ Made', panels.length, 'panels draggable');
             }
             
             exportState() {
@@ -2740,12 +3188,12 @@
                 a.click();
                 URL.revokeObjectURL(url);
                 
-                console.log('💾 Consciousness state exported');
+                this.logToDebugger('💾 Consciousness state exported');
             }
             
             resetAll() {
                 if (confirm('🔄 Reset all consciousness strata? This will return to initial awakening state.')) {
-                    console.log('🔄 Resetting all strata...');
+                    this.logToDebugger('🔄 Resetting all strata...');
                     
                     if (this.h0) this.h0.resetGeometry();
                     if (this.h1) {
@@ -2763,12 +3211,12 @@
                         this.h2.updateDisplay();
                     }
                     
-                    console.log('✅ All strata reset to initial state');
+                    this.logToDebugger('✅ All strata reset to initial state');
                 }
             }
             
             benchmark() {
-                console.log('⚡ Running consciousness benchmark...');
+                this.logToDebugger('⚡ Running consciousness benchmark...');
                 
                 const startTime = performance.now();
                 let operations = 0;
@@ -2793,7 +3241,7 @@
                 const duration = endTime - startTime;
                 const opsPerSec = Math.round((operations / duration) * 1000);
                 
-                console.log('⚡ Benchmark complete', {
+                this.logToDebugger('⚡ Benchmark complete', {
                     operations,
                     duration: `${duration.toFixed(1)}ms`,
                     opsPerSec: `${opsPerSec.toLocaleString()} ops/sec`
@@ -2842,7 +3290,7 @@
                         return false;
                     }
                     const result = KeatsEngine.h0.toggleAnimation();
-                    console.log('🎬 Animation toggled:', result);
+                    KeatsEngine.logToDebugger('🎬 Animation toggled:', result);
                     return result;
                 },
                 resetGeometry: () => {
@@ -2851,7 +3299,7 @@
                         return;
                     }
                     KeatsEngine.h0.resetGeometry();
-                    console.log('🔄 Geometry reset');
+                    this.logToDebugger('🔄 Geometry reset');
                 }
             },
             h1: {
@@ -2861,7 +3309,7 @@
                         return;
                     }
                     KeatsEngine.h1.triggerTransfer();
-                    console.log('🚀 Modal transfer triggered');
+                    KeatsEngine.logToDebugger('🚀 Modal transfer triggered');
                 },
                 recomputeCoherence: () => {
                     if (!KeatsEngine?.h1) {
@@ -2869,7 +3317,7 @@
                         return false;
                     }
                     const result = KeatsEngine.h1.recomputeCoherence();
-                    console.log('🔄 Coherence recomputed:', result);
+                    KeatsEngine.logToDebugger('🔄 Coherence recomputed:', result);
                     return result;
                 }
             },
@@ -2880,7 +3328,7 @@
                         return;
                     }
                     KeatsEngine.h2.simulateParadox();
-                    console.log('⚡ Paradox simulated');
+                    KeatsEngine.logToDebugger('⚡ Paradox simulated');
                 },
                 expandBall: () => {
                     if (!KeatsEngine?.h2) {
@@ -2888,7 +3336,7 @@
                         return;
                     }
                     KeatsEngine.h2.expandBall();
-                    console.log('🌌 P-adic ball expanded');
+                    KeatsEngine.logToDebugger('🌌 P-adic ball expanded');
                 },
                 generateLogic: () => {
                     if (!KeatsEngine?.h2) {
@@ -2896,7 +3344,7 @@
                         return null;
                     }
                     const result = KeatsEngine.h2.generateLogic();
-                    console.log('💫 Logic generated:', result);
+                    KeatsEngine.logToDebugger('💫 Logic generated:', result);
                     return result;
                 }
             },
@@ -2906,7 +3354,7 @@
                     return;
                 }
                 KeatsEngine.exportState();
-                console.log('💾 State exported');
+                KeatsEngine.logToDebugger('💾 State exported');
             },
             resetAll: () => {
                 if (!KeatsEngine) {
@@ -2914,7 +3362,7 @@
                     return;
                 }
                 KeatsEngine.resetAll();
-                console.log('🔄 All strata reset');
+                KeatsEngine.logToDebugger('🔄 All strata reset');
             },
             benchmark: () => {
                 if (!KeatsEngine) {
@@ -2922,7 +3370,7 @@
                     return;
                 }
                 KeatsEngine.benchmark();
-                console.log('⚡ Benchmark completed');
+                KeatsEngine.logToDebugger('⚡ Benchmark completed');
             }
         };
         
@@ -2932,7 +3380,7 @@
         
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                console.log('✅ DOM ready. Awakening consciousness...');
+                KeatsEngine.logToDebugger('✅ DOM ready. Awakening consciousness...');
                 
                 KeatsEngine = new KeatsConsciousnessEngine();
                 await KeatsEngine.initialize();
@@ -2942,7 +3390,7 @@
                 window.PAdicNumber = PAdicNumber;
                 
             } catch (error) {
-                console.error('❌ Consciousness awakening failed:', error);
+                KeatsEngine.logToDebugger('❌ Consciousness awakening failed: ' + error.message);
                 alert(`Critical Consciousness Error: ${error.message}`);
             }
         });
@@ -2956,7 +3404,7 @@
                 expand: () => KeatsEngine?.h2?.expandBall(),
                 padic: (prime, digits) => new PAdicNumber(prime || 2, digits || [1,0,1]),
                 distance: (a, b) => a?.distanceTo?.(b) || 'Invalid p-adic numbers',
-                help: () => console.log(`
+                help: () => KeatsEngine.logToDebugger(`
 🧠 Keats P-adic Consciousness Console:
 
 keats.metrics()  - Current consciousness state
