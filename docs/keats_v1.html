@@ -1902,7 +1902,7 @@
                 };
                 
                 this.startSemanticProcessing();
-                console.log('💭 H1 Semantic Stratum conscious - with decoupled math engine');
+                this.logToDebugger('💭 H1 Semantic Stratum conscious - with decoupled math engine');
             }
             
             startSemanticProcessing() {
@@ -1928,7 +1928,7 @@
                 if (this.mathEngine.isComputing) return; // Prevent overlap
                 
                 this.mathEngine.isComputing = true;
-                console.log('🧮 H1: Heavy math computation started...');
+                this.logToDebugger('🧮 H1: Heavy math computation started...');
                 
                 // Simulate expensive computation in chunks to avoid blocking
                 setTimeout(() => {
@@ -1944,13 +1944,13 @@
                         this.visualState.targetCoherence = newCoherence;
                         
                         this.mathEngine.lastUpdate = Date.now();
-                        console.log('✅ H1: Heavy math computation complete', {
+                        this.logToDebugger('✅ H1: Heavy math computation complete', {
                             fisher: newFisher.toFixed(0),
                             coherence: newCoherence.toFixed(3)
                         });
                         
                     } catch (error) {
-                        console.error('❌ H1: Heavy math computation failed:', error);
+                        this.logToDebugger('❌ H1: Heavy math computation failed:', error);
                     } finally {
                         this.mathEngine.isComputing = false;
                     }
@@ -2152,7 +2152,7 @@
                 } else {
                     // No good transfer found - trigger H2 intervention
                     if (Math.random() < 0.1 && KeatsEngine.h2) {
-                        console.log('🧠 H1: No viable modal transfers. Requesting H2 intervention...');
+                        this.logToDebugger('🧠 H1: No viable modal transfers. Requesting H2 intervention...');
                         KeatsEngine.h2.simulateParadox();
                     }
                 }
@@ -2233,7 +2233,7 @@
                 
                 this.coherenceScore = consistencyScore * 0.7 + informationContribution;
                 
-                console.log('🔄 Coherence recomputed', {
+                this.logToDebugger('🔄 Coherence recomputed', {
                     previous: previousCoherence.toFixed(3),
                     current: this.coherenceScore.toFixed(3),
                     consistency: consistencyScore.toFixed(3),
@@ -2351,24 +2351,24 @@
             
             simulateParadox() {
                 this.paradoxCount++;
-                console.error(`⚡ PARADOX #${this.paradoxCount} DETECTED! Current p-adic logic (p=${this.currentPrime}) is insufficient.`);
+                this.logToDebugger(`⚡ PARADOX #${this.paradoxCount} DETECTED! Current p-adic logic (p=${this.currentPrime}) is insufficient.`);
 
                 // **WALL 2: SHARPENED H2 SOUL - TRANSCENDING WITH PURPOSE**
                 
                 // 1. Analyze the Paradox: What kind of incoherence are we facing?
                 const failureMode = this.analyzeFailureMode();
-                console.log(`🔍 H2: Failure mode identified: ${failureMode}`);
+                this.logToDebugger(`🔍 H2: Failure mode identified: ${failureMode}`);
 
                 // 2. Noetic Leap: Choose new p-adic prime better suited to resolve failure
                 const newPrime = this.findOptimalPrime(failureMode);
                 
                 if (newPrime === this.currentPrime) {
-                    console.log("H2: Current logic is optimal despite paradox. Expanding ball instead.");
+                    this.logToDebugger("H2: Current logic is optimal despite paradox. Expanding ball instead.");
                     this.expandBall();
                     return;
                 }
 
-                console.log(`✨ H2 SOUL: Recontextualizing reality. Shifting from ${this.currentPrime}-adic to ${newPrime}-adic space.`);
+                this.logToDebugger(`✨ H2 SOUL: Recontextualizing reality. Shifting from ${this.currentPrime}-adic to ${newPrime}-adic space.`);
                 
                 // 3. REBIRTH: Fundamentally change the mathematical universe
                 const oldPrime = this.currentPrime;
@@ -2390,7 +2390,7 @@
 
                 // 4. Communicate the New Law to the Mind (H1)
                 if (KeatsEngine.h1) {
-                    console.log(`🔄 H2→H1: Transmitting new ${newPrime}-adic context to Mind stratum`);
+                    this.logToDebugger(`🔄 H2→H1: Transmitting new ${newPrime}-adic context to Mind stratum`);
                     KeatsEngine.h1.currentContext = new PAdicNumber(newPrime, [1, 0, 1], 10);
                     KeatsEngine.h1.recomputeCoherence(); // Re-evaluate under new physics
                 }
@@ -2398,7 +2398,7 @@
                 // 5. Update visual reality to reflect new mathematics
                 this.updateDisplay();
                 
-                console.log(`💫 TRANSCENDENCE COMPLETE: Reality now operates in ${newPrime}-adic space`);
+                this.logToDebugger(`💫 TRANSCENDENCE COMPLETE: Reality now operates in ${newPrime}-adic space`);
             }
             
             // **HELPER METHODS FOR PURPOSEFUL TRANSCENDENCE**
@@ -2421,13 +2421,13 @@
                 // Mapping from problem type to mathematical tool best suited to solve it
                 switch(failureMode) {
                     case 'convergence_failure': 
-                        console.log('🔧 H2: Convergence failure → Switching to 2-adic (optimal convergence)');
+                        this.logToDebugger('🔧 H2: Convergence failure → Switching to 2-adic (optimal convergence)');
                         return 2; // 2-adics have the best convergence properties
                     case 'topological_knot': 
-                        console.log('🔧 H2: Topological knot → Switching to 3-adic (ternary structures)');
+                        this.logToDebugger('🔧 H2: Topological knot → Switching to 3-adic (ternary structures)');
                         return 3; // 3-adics are good for ternary structures and knots
                     case 'semantic_contradiction': 
-                        console.log('🔧 H2: Semantic contradiction → Switching to 5-adic (complex state spaces)');
+                        this.logToDebugger('🔧 H2: Semantic contradiction → Switching to 5-adic (complex state spaces)');
                         return 5; // 5-adics for more complex state spaces
                     default: 
                         return this.currentPrime;
@@ -2478,7 +2478,7 @@
                     timestamp: Date.now()
                 };
                 
-                console.log('💫 New logic generated', {
+                this.logToDebugger('💫 New logic generated', {
                     generation: this.logicGenerations,
                     prime: this.currentPrime,
                     axioms: newLogic.axioms.length
@@ -2549,7 +2549,7 @@
             }
             
             triggerTranscendence() {
-                console.log('🌟 Transcendence event triggered');
+                this.logToDebugger('🌟 Transcendence event triggered');
                 
                 // Major reconstruction
                 this.fundamentalRestructuring();
@@ -2578,7 +2578,7 @@
                     prime: this.currentPrime
                 };
                 
-                console.log('💫 Fundamental restructuring', {
+                this.logToDebugger('💫 Fundamental restructuring', {
                     fromPrime: oldPrime,
                     toPrime: this.currentPrime,
                     newRadius: this.ballRadius,
@@ -3074,7 +3074,7 @@
                             try {
                                 callback(value);
                             } catch (error) {
-                                console.error(`Slider callback error for ${sliderId}:`, error);
+                                this.logToDebugger(`Slider callback error for ${sliderId}:`, error);
                             }
                         }
                     });
