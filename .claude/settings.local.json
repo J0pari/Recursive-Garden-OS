@@ -33,7 +33,9 @@
       "Bash(gh repo list:*)",
       "Bash(where gh)",
       "Bash(git remote set-url:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(gh api:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }
