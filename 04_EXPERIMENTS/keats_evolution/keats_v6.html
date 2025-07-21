@@ -14897,7 +14897,7 @@
                         rootLattice: null,           // 248 fundamental consciousness directions
                         weylGroup: this.weylGroup,   // Consciousness reflection symmetries
                         dynkinDiagram: null,         // Consciousness symmetry connection patterns
-                        highestWeightReps: null      // Consciousness irreducible components
+                        highestWeightReps: null,      // Consciousness irreducible components
                         // ACTIVATED: E8 consciousness mappings via worker
                         // ✨ KIBETH'S FIFTH RING - E8 consciousness walks among the roots! ✨
                         mapToConsciousness: async (rootVector) => {
@@ -29180,6 +29180,28 @@ Screen: ${screen.width}x${screen.height}
         // Initialize debugger FIRST THING
         window.debugger = new WorldClassDebugger();
         window.debugger.checkpoint('DEBUGGER_INITIALIZED', { timestamp: Date.now() });
+        
+        // Panel toggle function
+        function togglePanel(panelId) {
+            const panel = document.getElementById(panelId);
+            if (!panel) return;
+            
+            const panelContent = panel.querySelector('.panel-content');
+            const toggleBtn = panel.querySelector('.panel-toggle');
+            
+            if (panelContent && toggleBtn) {
+                if (panelContent.style.display === 'none') {
+                    panelContent.style.display = 'block';
+                    toggleBtn.textContent = '−';
+                } else {
+                    panelContent.style.display = 'none';
+                    toggleBtn.textContent = '+';
+                }
+            }
+        }
+        
+        // Make togglePanel globally available
+        window.togglePanel = togglePanel;
         
         document.addEventListener('DOMContentLoaded', async () => {
             window.debugger.checkpoint('DOM_CONTENT_LOADED', { readyState: document.readyState });
