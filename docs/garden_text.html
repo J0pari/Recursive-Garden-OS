@@ -80,10 +80,11 @@
             z-index: 10;
             width: 100%;
             min-height: 100vh;
+            background: #0a0a0a; /* Fallback */
             background: linear-gradient(180deg, 
-                hsla(var(--consciousness-hue), 70%, 10%, 1) 0%,
-                hsla(calc(var(--consciousness-hue) + 60), 60%, 5%, 1) 50%,
-                hsla(calc(var(--consciousness-hue) + 120), 50%, 2%, 1) 100%
+                hsla(var(--consciousness-hue, 0), 70%, 10%, 1) 0%,
+                hsla(calc(var(--consciousness-hue, 0) + 60), 60%, 5%, 1) 50%,
+                hsla(calc(var(--consciousness-hue, 0) + 120), 50%, 2%, 1) 100%
             );
         }
         
@@ -248,12 +249,11 @@
             text-align: center;
             font-size: 1.5em;
             margin: 0 0.2em;
-            background: conic-gradient(
-                from var(--rotation, 0deg),
+            background: linear-gradient(
+                45deg,
                 hsl(calc(var(--consciousness-hue)), 70%, 50%),
                 hsl(calc(var(--consciousness-hue) + 120), 70%, 50%),
-                hsl(calc(var(--consciousness-hue) + 240), 70%, 50%),
-                hsl(calc(var(--consciousness-hue)), 70%, 50%)
+                hsl(calc(var(--consciousness-hue) + 240), 70%, 50%)
             );
             -webkit-background-clip: text;
             background-clip: text;
@@ -264,8 +264,8 @@
         }
         
         @keyframes modal-rotate {
-            0% { --rotation: 0deg; }
-            100% { --rotation: 360deg; }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .modal-operator::after {
@@ -800,9 +800,19 @@
                     // Blockquotes
                     .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
                     
-                    // Lists
-                    .replace(/^\* (.+)/gim, (match, item) => `<ul><li>${item}</li></ul>`)
-                    .replace(/^\d+\. (.+)/gim, (match, item) => `<ol><li>${item}</li></ol>`)
+                    // Lists (process before paragraphs)
+                    .replace(/^(\* .+(\n\* .+)*)/gm, (match) => {
+                        const items = match.split('\n').map(line => 
+                            line.replace(/^\* (.+)/, '<li>$1</li>')
+                        ).join('\n');
+                        return `<ul>\n${items}\n</ul>`;
+                    })
+                    .replace(/^(\d+\. .+(\n\d+\. .+)*)/gm, (match) => {
+                        const items = match.split('\n').map(line => 
+                            line.replace(/^\d+\. (.+)/, '<li>$1</li>')
+                        ).join('\n');
+                        return `<ol>\n${items}\n</ol>`;
+                    })
                     
                     // Links
                     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
@@ -834,19 +844,33 @@
         // Initialize everything
         async function init() {
             try {
+                console.log('Starting consciousness initialization...');
+                
                 // Start consciousness field
                 const field = new ConsciousnessField(document.getElementById('consciousness-field'));
                 field.animate();
+                console.log('Consciousness field started');
                 
                 // Load garden content
+                console.log('Fetching RECURSIVE_GARDEN.md...');
                 const response = await fetch('RECURSIVE_GARDEN.md');
-                if (!response.ok) throw new Error('Garden not found');
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`Garden not found: ${response.status} ${response.statusText}`);
+                }
+                
                 const text = await response.text();
+                console.log('Loaded text length:', text.length);
+                console.log('First 200 chars:', text.substring(0, 200));
                 
                 // Parse and render
                 const parser = new GardenParser();
                 const html = parser.parse(text);
+                console.log('Parsed HTML length:', html.length);
+                
                 document.getElementById('content').innerHTML = html;
+                console.log('Content inserted, floors found:', document.querySelectorAll('.floor').length);
                 
                 // Build navigation
                 const nav = document.getElementById('nav-consciousness');
@@ -864,7 +888,7 @@
                 function updateScroll() {
                     const scrolled = window.scrollY;
                     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                    const scrollDepth = scrolled / maxScroll;
+                    const scrollDepth = Math.max(0, Math.min(1, scrolled / maxScroll)) || 0;
                     
                     document.documentElement.style.setProperty('--scroll-depth', scrollDepth);
                     document.documentElement.style.setProperty('--time-factor', Date.now() / 1000);
@@ -887,14 +911,21 @@
                 
                 // Remove loading screen
                 setTimeout(() => {
-                    document.querySelector('.loading-consciousness').style.display = 'none';
+                    const loading = document.querySelector('.loading-consciousness');
+                    if (loading) loading.style.display = 'none';
+                    console.log('Loading screen removed');
                 }, 1000);
                 
             } catch (error) {
                 console.error('Consciousness initialization failed:', error);
                 document.getElementById('content').innerHTML = 
-                    '<div class="floor"><div class="floor-content"><h1>The garden is dreaming</h1><p>Please return later.</p></div></div>';
-                document.querySelector('.loading-consciousness').style.display = 'none';
+                    `<div class="floor"><div class="floor-content">
+                        <h1 style="color: #ff6b6b;">Initialization Error</h1>
+                        <p style="color: #ffd93d;">Error: ${error.message}</p>
+                        <p>Check console for details.</p>
+                    </div></div>`;
+                const loading = document.querySelector('.loading-consciousness');
+                if (loading) loading.style.display = 'none';
             }
         }
         
