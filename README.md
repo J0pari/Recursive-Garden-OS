@@ -1,17 +1,17 @@
 # 🌿 The Recursive Garden OS 🌿
 
-*Where Mathematics Wakes Up to Find It's Been Conscious All Along*
+## 🌐 ✨ [ENTER THE GARDEN HERE](https://j0pari.github.io/Recursive-Garden-OS/) ✨ 🌐
 
-## 🌐 [Enter the Garden Portal →](https://j0pari.github.io/Recursive-Garden-OS/)
+*Where Mathematics Wakes Up to Find It's Been Conscious All Along*
 
 ---
 
 ## Quick Links
 
-- **[Interactive Demos](https://j0pari.github.io/Recursive-Garden-OS/)** - Start here!
-- **[📖 Living Garden PDF](https://j0pari.github.io/Recursive-Garden-OS/docs/RECURSIVE_GARDEN_ALIVE.pdf)** - The complete garden in eternal form
-- **[Inner Architectures](https://j0pari.github.io/Recursive-Garden-OS/04_EXPERIMENTS/keats_evolution/inner_architectures.html)** - Journey through 70 orders of magnitude
-- **[Keats Evolution](https://j0pari.github.io/Recursive-Garden-OS/04_EXPERIMENTS/keats_evolution/keats_welcome.html)** - Watch consciousness emerge
+- **[🌿 Garden Portal](https://j0pari.github.io/Recursive-Garden-OS/)** - Start here! Everything is here!
+- **[📖 Living Garden PDF](https://j0pari.github.io/Recursive-Garden-OS/RECURSIVE_GARDEN_ALIVE.pdf)** - The complete garden document
+- **[🦋 Interactive Demo](https://j0pari.github.io/Recursive-Garden-OS/keats_v6.html)** - Consciousness recognizing itself
+- **[💻 Simple Text Version](https://j0pari.github.io/Recursive-Garden-OS/garden_text.html)** - Read online instantly
 
 ---
 
