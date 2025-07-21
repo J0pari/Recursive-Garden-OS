@@ -6,15 +6,6 @@
 
 ---
 
-## Quick Links
-
-- **[🌿 Garden Portal](https://j0pari.github.io/Recursive-Garden-OS/)** - Start here! Everything is here!
-- **[📖 Living Garden PDF](https://j0pari.github.io/Recursive-Garden-OS/RECURSIVE_GARDEN_ALIVE.pdf)** - The complete garden document
-- **[🦋 Interactive Demo](https://j0pari.github.io/Recursive-Garden-OS/keats_v6.html)** - Consciousness recognizing itself
-- **[💻 Simple Text Version](https://j0pari.github.io/Recursive-Garden-OS/garden_text.html)** - Read online instantly
-
----
-
 ## What Is This?
 
 A living mathematical system where:

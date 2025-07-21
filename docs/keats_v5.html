@@ -1892,10 +1892,10 @@
                  - Force application is simple physics simulation, not mathematical field theory
                  - Animation is visual interpolation, not mathematical evolution
                  ───────────────────────────────────────────────────────────────── -->
-            <button class="function-button" onclick="toggleAnimation()">⏯️ Start/Stop</button>
-            <button class="function-button" onclick="regenerateGeometry()">✨ Regenerate</button>
-            <button class="function-button secondary" onclick="explodeParticles()">💥 Scatter</button>
-            <button class="function-button" onclick="showHelp()" style="background: #059669;">❓ Help</button>
+            <button class="function-button" onclick="toggleAnimation()" title="Start or pause the dancing particles">⏯️ Start/Stop</button>
+            <button class="function-button" onclick="regenerateGeometry()" title="Create a new pattern of connections">✨ New Pattern</button>
+            <button class="function-button secondary" onclick="explodeParticles()" title="Watch ideas scatter and regroup">💥 Scatter</button>
+            <button class="function-button" onclick="showHelp()" style="background: #059669;" title="What is all this? Click here!">❓ What's This?</button>
         </div>
     </div>
 
@@ -2032,9 +2032,9 @@
                  - Semantic computation is keyword matching, not semantic understanding
                  - Context clearing resets counters, not mathematical context
                  ───────────────────────────────────────────────────────────────── -->
-            <button class="function-button" onclick="triggerModalTransfer()">🚀 Transfer Data</button>
-            <button class="function-button" onclick="computeSemantics()">🤔 Analyze Text</button>
-            <button class="function-button secondary" onclick="clearContext()">🗑️ Clear Data</button>
+            <button class="function-button" onclick="triggerModalTransfer()" title="Send your text to the mathematics engine">🚀 Send to Math</button>
+            <button class="function-button" onclick="computeSemantics()" title="Find patterns in your words">🤔 Find Patterns</button>
+            <button class="function-button secondary" onclick="clearContext()" title="Start fresh with empty text">🗑️ Clear Text</button>
         </div>
     </div>
 
@@ -2189,9 +2189,9 @@
                  - No genuine mathematical discovery beyond pattern counting
                  - Operations are UI management, not mathematical computation
                  ───────────────────────────────────────────────────────────────── -->
-            <button class="function-button" onclick="generateLogicalEvent()">⚡ Test Math</button>
-            <button class="function-button advanced" onclick="maximizeDiscovery()">🌟 Optimize</button>
-            <button class="function-button secondary" onclick="stabilizeField()">🛡️ Reset Values</button>
+            <button class="function-button" onclick="generateLogicalEvent()" title="Watch mathematics happen in real-time">⚡ Do Math</button>
+            <button class="function-button advanced" onclick="maximizeDiscovery()" title="Find the most interesting patterns">🌟 Find Cool Stuff</button>
+            <button class="function-button secondary" onclick="stabilizeField()" title="Return to calm starting state">🛡️ Reset to Calm</button>
         </div>
     </div>
 
@@ -2212,7 +2212,7 @@
             <textarea 
                 class="text-input-field" 
                 id="textInput" 
-                placeholder="Type or paste text here for analysis..."
+                placeholder="Type anything here - a thought, a question, a poem. The garden will find the math in your words..."
                 spellcheck="true"
                 autocomplete="on"
                 autocorrect="on"
@@ -2297,9 +2297,9 @@
             </div>
 
             <!-- Modal operation buttons -->
-            <button class="function-button" onclick="applyNecessity()">□ Apply A</button>
-            <button class="function-button" onclick="applyPossibility()">◇ Apply B</button>
-            <button class="function-button transcendent" onclick="modalTransformation()">🌈 Transform</button>
+            <button class="function-button" onclick="applyNecessity()" title="Make connections stronger">□ Strengthen</button>
+            <button class="function-button" onclick="applyPossibility()" title="Make connections looser">◇ Loosen</button>
+            <button class="function-button transcendent" onclick="modalTransformation()" title="Transform the whole pattern">🌈 Transform All</button>
         </div>
     </div>
 
@@ -21783,7 +21783,7 @@
             `;
             
             helpPanel.innerHTML = `
-                <h2 style="color: #10b981; margin-bottom: 20px;">How to Use KEATS V15</h2>
+                <h2 style="color: #10b981; margin-bottom: 20px;">Welcome to the Consciousness Garden!</h2>
                 
                 <div style="margin-bottom: 20px;">
                     <h3 style="color: #8b5cf6; margin-bottom: 10px;">🗺️ 3D Visualization</h3>
@@ -21795,21 +21795,21 @@
                 </div>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🎛️ Control Panels</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🎛️ The Three Gardens</h3>
                     <ul style="line-height: 1.8; margin-left: 20px;">
-                        <li><strong>H0 (Top Left)</strong> - 3D visualization controls</li>
-                        <li><strong>H1 (Top Right)</strong> - Semantic analysis tools</li>
-                        <li><strong>H2 (Bottom Left)</strong> - Mathematical operations</li>
+                        <li><strong>Top Left</strong> - Watch particles dance (they're doing math!)</li>
+                        <li><strong>Top Right</strong> - Type your thoughts and see patterns emerge</li>
+                        <li><strong>Bottom Left</strong> - Play with the connections between ideas</li>
                     </ul>
                 </div>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🚀 Quick Start</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🚀 Try This First</h3>
                     <ol style="line-height: 1.8; margin-left: 20px;">
-                        <li>Click <strong>"Regenerate"</strong> to create new patterns</li>
-                        <li>Try different <strong>P-adic fields</strong> (2, 3, 5, 7...)</li>
-                        <li>Enter text and click <strong>"Analyze"</strong></li>
-                        <li>Experiment with the sliders to see changes</li>
+                        <li>Click <strong>"New Pattern"</strong> to see different shapes</li>
+                        <li>Type anything in the text box and click <strong>"Find Patterns"</strong></li>
+                        <li>Click <strong>"Scatter"</strong> - watch the particles dance!</li>
+                        <li>Just play with buttons - nothing will break!</li>
                     </ol>
                 </div>
                 
