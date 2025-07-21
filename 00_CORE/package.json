@@ -1,0 +1,16 @@
+{
+  "name": "00_core",
+  "version": "1.0.0",
+  "main": "generate_garden_pdf.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "marked": "^16.1.1",
+    "puppeteer": "^24.14.0"
+  }
+}

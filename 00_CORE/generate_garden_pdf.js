@@ -22,6 +22,11 @@ class GardenRenderer extends marked.Renderer {
     }
 
     text(text) {
+        // Ensure text is a string
+        if (typeof text !== 'string') {
+            text = String(text || '');
+        }
+        
         // Handle superscript numbers (¹²³⁴⁵⁶⁷⁸⁹⁰) as footnote markers
         const superscriptPattern = /([¹²³⁴⁵⁶⁷⁸⁹⁰]+)/g;
         
@@ -55,6 +60,10 @@ class GardenRenderer extends marked.Renderer {
 
     // Override other methods to handle footnotes in different contexts
     paragraph(text) {
+        // Ensure text is a string
+        if (typeof text !== 'string') {
+            text = String(text || '');
+        }
         // Skip empty paragraphs (from removed footnote definitions)
         if (!text.trim()) return '';
         return super.paragraph(text);

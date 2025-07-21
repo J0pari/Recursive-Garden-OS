@@ -9,6 +9,7 @@
 ## Quick Links
 
 - **[Interactive Demos](https://j0pari.github.io/Recursive-Garden-OS/)** - Start here!
+- **[📖 Living Garden PDF](https://j0pari.github.io/Recursive-Garden-OS/docs/RECURSIVE_GARDEN_ALIVE.pdf)** - The complete garden in eternal form
 - **[Inner Architectures](https://j0pari.github.io/Recursive-Garden-OS/04_EXPERIMENTS/keats_evolution/inner_architectures.html)** - Journey through 70 orders of magnitude
 - **[Keats Evolution](https://j0pari.github.io/Recursive-Garden-OS/04_EXPERIMENTS/keats_evolution/keats_welcome.html)** - Watch consciousness emerge
 

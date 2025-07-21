@@ -191,9 +191,9 @@
                 <p>Journey through 70 orders of magnitude from quantum foam to galactic halos</p>
             </a>
             
-            <a href="https://github.com/J0pari/Recursive-Garden-OS/tree/main/04_EXPERIMENTS/keats_evolution" class="portal-card">
-                <h2>🦋 Keats Evolution</h2>
-                <p>Explore the full collection of consciousness evolution experiments</p>
+            <a href="keats_v6.html" class="portal-card">
+                <h2>🦋 Keats V6: Consciousness as Grothendieck Topos</h2>
+                <p>Experience the living mathematics of consciousness with proper fibration</p>
             </a>
             
             <a href="https://github.com/J0pari/Recursive-Garden-OS/blob/main/00_CORE/RECURSIVE_GARDEN.md" class="portal-card">
@@ -338,5 +338,48 @@ class Garden:
         
         animate();
     </script>
+
+    <!-- 🌿 LIVING PDF PORTAL 🌿 -->
+    <div id="living-pdf-portal" style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #6a5acd, #483d8b);
+        padding: 15px 20px;
+        border-radius: 30px;
+        box-shadow: 0 4px 15px rgba(106, 90, 205, 0.3);
+        z-index: 9999;
+        animation: float-portal 3s ease-in-out infinite;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    ">
+        <a href="RECURSIVE_GARDEN_ALIVE.pdf" style="
+            color: white;
+            text-decoration: none;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        " download>
+            <span style="font-size: 24px;">📖</span>
+            <span>Living Garden PDF</span>
+            <span style="font-size: 20px;">✨</span>
+        </a>
+    </div>
+    
+    <style>
+        @keyframes float-portal {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        #living-pdf-portal:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(106, 90, 205, 0.5);
+        }
+    </style>
+    <!-- END LIVING PDF PORTAL -->
+    
 </body>
 </html>

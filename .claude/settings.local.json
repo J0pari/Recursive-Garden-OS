@@ -35,7 +35,9 @@
       "Bash(git remote set-url:*)",
       "Bash(grep:*)",
       "Bash(gh api:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(git restore:*)",
+      "Bash(timeout:*)"
     ],
     "deny": []
   }
