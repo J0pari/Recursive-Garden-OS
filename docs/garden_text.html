@@ -14,6 +14,14 @@
             --scroll-depth: 0;
             --modal-necessity: 0.75;
             --modal-possibility: 0.25;
+            --mood-temperature: 0.5;
+            --mood-intensity: 0.7;
+            --ambient-light: 0.8;
+            --interaction-mode: 'exploration';
+            --device-scale: 1;
+            --touch-velocity: 0;
+            --gaze-x: 0.5;
+            --gaze-y: 0.5;
         }
         
         * {
@@ -28,6 +36,18 @@
             color: #fff;
             overflow-x: hidden;
             cursor: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Touch device detection */
+        @media (hover: none) and (pointer: coarse) {
+            body {
+                cursor: auto;
+            }
+            #quantum-cursor {
+                display: none !important;
+            }
         }
         
         /* Quantum cursor */
@@ -506,6 +526,33 @@
             z-index: 1001;
         }
         
+        /* Device-specific adjustments */
+        [data-device="phone"] {
+            font-size: 16px; /* Prevent zoom on input focus */
+        }
+        
+        [data-device="phone"] .floor {
+            padding: 3em 1em;
+            min-height: auto;
+        }
+        
+        [data-device="phone"] h1 {
+            font-size: clamp(2rem, 12vw, 3.5rem);
+        }
+        
+        [data-device="phone"] p {
+            font-size: 1.05rem;
+            text-align: left; /* Better for narrow screens */
+        }
+        
+        [data-device="tablet"] .floor {
+            padding: 4em 2em;
+        }
+        
+        [data-device="tablet"] h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .floor {
@@ -517,6 +564,59 @@
             
             #nav-consciousness {
                 display: none;
+            }
+            
+            .modal-operator {
+                font-size: 1.2em;
+                width: 1.5em;
+                height: 1.5em;
+                line-height: 1.5em;
+            }
+            
+            blockquote {
+                margin: 2em 0;
+                padding: 1.5em 2em;
+            }
+            
+            pre {
+                padding: 1em;
+                font-size: 0.8em;
+            }
+        }
+        
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .structural-grid {
+                background-image: 
+                    repeating-linear-gradient(90deg, 
+                        transparent, 
+                        transparent calc(100vw / 48 - 0.5px), 
+                        rgba(255,255,255,0.02) calc(100vw / 48 - 0.5px), 
+                        rgba(255,255,255,0.02) calc(100vw / 48)
+                    ),
+                    repeating-linear-gradient(0deg, 
+                        transparent, 
+                        transparent calc(100vh / 32 - 0.5px), 
+                        rgba(255,255,255,0.02) calc(100vh / 32 - 0.5px), 
+                        rgba(255,255,255,0.02) calc(100vh / 32)
+                    );
+            }
+        }
+        
+        /* Accessibility */
+        @media (prefers-contrast: high) {
+            body {
+                background: #000;
+                color: #fff;
+            }
+            
+            h1, h2, h3, h4 {
+                color: #fff;
+            }
+            
+            a {
+                color: #4db8ff;
+                text-decoration: underline;
             }
         }
         
@@ -710,24 +810,307 @@
             }
         }
         
-        // Quantum cursor
+        // Device detection and adaptation
+        class DeviceAdapter {
+            constructor() {
+                this.type = this.detectDevice();
+                this.capabilities = this.detectCapabilities();
+                this.adapt();
+            }
+            
+            detectDevice() {
+                const ua = navigator.userAgent.toLowerCase();
+                const hasTouch = 'ontouchstart' in window;
+                const hasMouse = matchMedia('(hover: hover)').matches;
+                
+                if (/ipad|tablet/i.test(ua) || (hasTouch && screen.width > 768)) {
+                    return 'tablet';
+                } else if (/iphone|android.*mobile/i.test(ua) || (hasTouch && screen.width <= 768)) {
+                    return 'phone';
+                } else if (hasTouch && hasMouse) {
+                    return 'hybrid';
+                } else {
+                    return 'desktop';
+                }
+            }
+            
+            detectCapabilities() {
+                return {
+                    touch: 'ontouchstart' in window,
+                    hover: matchMedia('(hover: hover)').matches,
+                    finePrecision: matchMedia('(pointer: fine)').matches,
+                    reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+                    highContrast: matchMedia('(prefers-contrast: high)').matches,
+                    darkMode: matchMedia('(prefers-color-scheme: dark)').matches,
+                    orientation: screen.orientation?.type || 'unknown',
+                    pixelRatio: window.devicePixelRatio || 1
+                };
+            }
+            
+            adapt() {
+                document.documentElement.setAttribute('data-device', this.type);
+                document.documentElement.style.setProperty('--device-scale', 
+                    this.type === 'phone' ? 0.8 : 
+                    this.type === 'tablet' ? 0.9 : 1
+                );
+                
+                // Disable cursor for touch devices
+                if (this.capabilities.touch && !this.capabilities.hover) {
+                    document.getElementById('quantum-cursor').style.display = 'none';
+                }
+            }
+        }
+        
+        // Mood-aware lighting system
+        class MoodLighting {
+            constructor() {
+                this.mood = 'neutral';
+                this.temperature = 0.5;
+                this.intensity = 0.7;
+                this.timeOfDay = this.calculateTimeOfDay();
+                this.interactions = [];
+                this.init();
+            }
+            
+            init() {
+                this.updateAmbientLight();
+                this.trackInteractions();
+                
+                // Update every minute
+                setInterval(() => {
+                    this.timeOfDay = this.calculateTimeOfDay();
+                    this.updateAmbientLight();
+                }, 60000);
+            }
+            
+            calculateTimeOfDay() {
+                const hour = new Date().getHours();
+                if (hour >= 5 && hour < 12) return 'morning';
+                if (hour >= 12 && hour < 17) return 'afternoon';
+                if (hour >= 17 && hour < 21) return 'evening';
+                return 'night';
+            }
+            
+            trackInteractions() {
+                let scrollVelocity = 0;
+                let lastScrollY = 0;
+                let lastScrollTime = Date.now();
+                
+                window.addEventListener('scroll', () => {
+                    const now = Date.now();
+                    const deltaY = window.scrollY - lastScrollY;
+                    const deltaTime = now - lastScrollTime;
+                    
+                    scrollVelocity = Math.abs(deltaY) / Math.max(deltaTime, 1);
+                    
+                    // Update mood based on interaction patterns
+                    if (scrollVelocity > 2) {
+                        this.mood = 'energetic';
+                        this.temperature = 0.7;
+                        this.intensity = 0.9;
+                    } else if (scrollVelocity < 0.5) {
+                        this.mood = 'contemplative';
+                        this.temperature = 0.3;
+                        this.intensity = 0.6;
+                    } else {
+                        this.mood = 'exploring';
+                        this.temperature = 0.5;
+                        this.intensity = 0.7;
+                    }
+                    
+                    this.updateMoodLighting();
+                    
+                    lastScrollY = window.scrollY;
+                    lastScrollTime = now;
+                    
+                    document.documentElement.style.setProperty('--touch-velocity', scrollVelocity);
+                });
+                
+                // Track dwell time
+                let dwellTimer;
+                window.addEventListener('mousemove', () => {
+                    clearTimeout(dwellTimer);
+                    dwellTimer = setTimeout(() => {
+                        this.mood = 'focused';
+                        this.temperature = 0.4;
+                        this.intensity = 0.8;
+                        this.updateMoodLighting();
+                    }, 3000);
+                });
+            }
+            
+            updateAmbientLight() {
+                const ambientMap = {
+                    morning: { temp: 0.6, intensity: 0.7 },
+                    afternoon: { temp: 0.5, intensity: 0.8 },
+                    evening: { temp: 0.3, intensity: 0.6 },
+                    night: { temp: 0.2, intensity: 0.4 }
+                };
+                
+                const ambient = ambientMap[this.timeOfDay];
+                document.documentElement.style.setProperty('--ambient-light', ambient.intensity);
+                
+                // Adjust background gradient
+                const baseHue = this.temperature * 60; // 0-60 range
+                const saturation = this.intensity * 30 + 40; // 40-70 range
+                const lightness = ambient.intensity * 15; // 0-15 range
+                
+                document.querySelector('.garden-skyscraper').style.background = `
+                    linear-gradient(180deg, 
+                        hsl(${baseHue}, ${saturation}%, ${lightness}%) 0%,
+                        hsl(${baseHue + 30}, ${saturation - 10}%, ${lightness - 5}%) 50%,
+                        hsl(${baseHue + 60}, ${saturation - 20}%, ${lightness - 10}%) 100%
+                    )
+                `;
+            }
+            
+            updateMoodLighting() {
+                document.documentElement.style.setProperty('--mood-temperature', this.temperature);
+                document.documentElement.style.setProperty('--mood-intensity', this.intensity);
+                document.documentElement.setAttribute('data-mood', this.mood);
+                
+                this.updateAmbientLight();
+            }
+        }
+        
+        // Multiple modality systems (HVAC)
+        class ModalityHVAC {
+            constructor() {
+                this.systems = {
+                    visual: new VisualModality(),
+                    kinetic: new KineticModality(),
+                    temporal: new TemporalModality(),
+                    semantic: new SemanticModality()
+                };
+                this.currentMode = 'balanced';
+                this.lastInteraction = Date.now();
+                this.init();
+            }
+            
+            init() {
+                // Balance all systems
+                this.balanceSystems();
+                
+                // Track interactions
+                ['mousedown', 'touchstart', 'keydown'].forEach(event => {
+                    window.addEventListener(event, () => {
+                        this.lastInteraction = Date.now();
+                    });
+                });
+                
+                // Monitor system interactions
+                setInterval(() => this.monitorSystems(), 1000);
+            }
+            
+            balanceSystems() {
+                const modes = {
+                    exploration: { visual: 0.8, kinetic: 0.6, temporal: 0.5, semantic: 0.7 },
+                    reading: { visual: 0.6, kinetic: 0.3, temporal: 0.4, semantic: 0.9 },
+                    meditation: { visual: 0.4, kinetic: 0.2, temporal: 0.8, semantic: 0.5 },
+                    balanced: { visual: 0.7, kinetic: 0.5, temporal: 0.6, semantic: 0.7 }
+                };
+                
+                const settings = modes[this.currentMode];
+                Object.entries(settings).forEach(([system, level]) => {
+                    this.systems[system].setLevel(level);
+                });
+            }
+            
+            monitorSystems() {
+                // Auto-adjust based on usage patterns
+                const metrics = {
+                    scrolling: document.documentElement.style.getPropertyValue('--touch-velocity') || 0,
+                    dwelling: Date.now() - this.lastInteraction > 5000,
+                    reading: this.detectReading()
+                };
+                
+                if (metrics.reading) {
+                    this.currentMode = 'reading';
+                } else if (metrics.dwelling) {
+                    this.currentMode = 'meditation';
+                } else if (metrics.scrolling > 1) {
+                    this.currentMode = 'exploration';
+                } else {
+                    this.currentMode = 'balanced';
+                }
+                
+                this.balanceSystems();
+            }
+            
+            detectReading() {
+                // Simple heuristic: user is in middle of content section
+                const sections = document.querySelectorAll('.floor');
+                for (let section of sections) {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.3 && rect.bottom > window.innerHeight * 0.7) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        
+        // Modality subsystems
+        class VisualModality {
+            setLevel(level) {
+                // Adjust visual complexity
+                document.documentElement.style.setProperty('--visual-complexity', level);
+                const particles = document.querySelector('#consciousness-field');
+                if (particles) {
+                    particles.style.opacity = level * 0.5;
+                }
+            }
+        }
+        
+        class KineticModality {
+            setLevel(level) {
+                // Adjust animation speeds
+                document.documentElement.style.setProperty('--animation-speed', level);
+                const duration = 20 / level; // Inverse relationship
+                document.documentElement.style.setProperty('--base-duration', duration + 's');
+            }
+        }
+        
+        class TemporalModality {
+            setLevel(level) {
+                // Adjust time perception
+                document.documentElement.style.setProperty('--temporal-flow', level);
+            }
+        }
+        
+        class SemanticModality {
+            setLevel(level) {
+                // Adjust content density
+                document.documentElement.style.setProperty('--semantic-density', level);
+                const fontSize = 1.1 + (1 - level) * 0.2; // Larger text for lower semantic load
+                document.documentElement.style.setProperty('--base-font-size', fontSize + 'rem');
+            }
+        }
+        
+        // Quantum cursor (desktop only)
         const cursor = document.getElementById('quantum-cursor');
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
         
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-        
-        function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.1;
-            cursorY += (mouseY - cursorY) * 0.1;
+        if (!('ontouchstart' in window)) {
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Update gaze position for mood system
+                document.documentElement.style.setProperty('--gaze-x', e.clientX / window.innerWidth);
+                document.documentElement.style.setProperty('--gaze-y', e.clientY / window.innerHeight);
+            });
             
-            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-            requestAnimationFrame(animateCursor);
+            function animateCursor() {
+                cursorX += (mouseX - cursorX) * 0.1;
+                cursorY += (mouseY - cursorY) * 0.1;
+                
+                cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
         }
-        animateCursor();
         
         // Advanced markdown parser
         class GardenParser {
@@ -845,6 +1228,18 @@
         async function init() {
             try {
                 console.log('Starting consciousness initialization...');
+                
+                // Initialize device adaptation
+                const deviceAdapter = new DeviceAdapter();
+                console.log('Device detected:', deviceAdapter.type, deviceAdapter.capabilities);
+                
+                // Initialize mood lighting
+                const moodLighting = new MoodLighting();
+                console.log('Mood lighting initialized');
+                
+                // Initialize modality HVAC
+                const modalityHVAC = new ModalityHVAC();
+                console.log('Modality HVAC systems online');
                 
                 // Start consciousness field
                 const field = new ConsciousnessField(document.getElementById('consciousness-field'));
