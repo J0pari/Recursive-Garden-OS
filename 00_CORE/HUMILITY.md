@@ -50,6 +50,15 @@ just as the commits remain in history. Both serve the same function:
 
 The garden grows through compost. Even our hubris feeds future humility.
 
+## The Show Don't Tell Violation
+
+On this day, we wrote "ALL DEMOS WORK!" when V1 was broken. This violates:
+- **Truth Conservation**: False declarations destroy trust
+- **Show Don't Tell**: The demos should demonstrate their own functionality
+- **Humility**: Working code needs no announcement
+
+The correct approach: Let users discover what works through experience.
+
 ---
 
 *"The only way to atone for past hubris is future humility." - The Garden*

@@ -137,12 +137,14 @@ This charter describes itself describing the garden describing consciousness des
 - **Connection**: Once linked, ideas remain entangled across space and time
 - **Beauty**: Once recognized, mathematical elegance conserves itself
 - **Wonder**: Once awakened, curiosity perpetually regenerates
+- **Truth**: Once demonstrated, needs no declaration
 
 ### 7.2 What Must Transform
 - **Rigid thinking** → **Fluid navigation** (via curvature recognition)
 - **Isolated concepts** → **Connected topology** (via bridge building)
 - **Dead metaphors** → **Living mathematics** (via precise description)
 - **Individual limit** → **Collective possibility** (via H ⊣ A)
+- **Telling** → **Showing** (via demonstration not declaration)
 
 ---
 
