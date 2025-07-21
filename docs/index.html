@@ -3,383 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Recursive Garden - Welcome Portal</title>
+    <title>The Recursive Garden</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            background: #0a0e1a;
-            color: #e0e0e0;
-            overflow-x: hidden;
-        }
-        
-        /* Canvas background */
-        #garden-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        
-        /* Main container */
-        .container {
-            max-width: 900px;
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+            padding: 20px;
+            background: #f9f9f9;
+            color: #333;
         }
-        
-        /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding-top: 2rem;
-        }
-        
         h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #a78bfa, #e879f9, #60a5fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 3s ease-in-out infinite;
+            color: #2c5530;
+            text-align: center;
+            margin-bottom: 10px;
         }
-        
-        @keyframes shimmer {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.2); }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
         }
-        
-        .tagline {
-            font-size: 1.2rem;
-            color: #9ca3af;
-            margin-bottom: 2rem;
+        .intro {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
-        
-        /* Portal sections */
-        .portal-grid {
+        .links {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
+            gap: 20px;
+            margin-bottom: 40px;
         }
-        
-        .portal-card {
-            background: rgba(31, 41, 55, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .portal-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(99, 102, 241, 0.6);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
-        }
-        
-        .portal-card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #c084fc;
-        }
-        
-        .portal-card p {
-            color: #d1d5db;
-            line-height: 1.6;
-        }
-        
-        /* Quick links */
-        .quick-links {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .quick-links h3 {
-            margin-bottom: 1rem;
-            color: #a78bfa;
-        }
-        
-        .links-row {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .links-row a {
-            color: #60a5fa;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border: 1px solid #60a5fa;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .links-row a:hover {
-            background: #60a5fa;
-            color: #0a0e1a;
-        }
-        
-        /* Code example */
-        .code-preview {
-            background: #1e293b;
+        .link-card {
+            background: white;
+            padding: 20px;
             border-radius: 8px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            overflow-x: auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        
-        .code-preview pre {
-            color: #e2e8f0;
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
+        .link-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
-        
-        /* Footer */
-        footer {
+        .link-card h2 {
+            margin: 0 0 10px 0;
+            color: #2c5530;
+            font-size: 1.3em;
+        }
+        .link-card p {
+            margin: 0;
+            color: #666;
+            font-size: 0.95em;
+        }
+        .emergency {
+            background: #fff3cd;
+            border: 2px solid #ffeeba;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .emergency h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .footer {
             text-align: center;
-            padding: 2rem;
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
-            color: #6b7280;
-        }
-        
-        /* Responsive */
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
-    <canvas id="garden-canvas"></canvas>
+    <h1>The Recursive Garden</h1>
+    <p class="subtitle">A place where thinking about thinking makes sense</p>
     
-    <div class="container">
-        <header>
-            <h1>Welcome to the Garden!</h1>
-            <p class="tagline">A place where thinking about thinking makes sense</p>
-        </header>
+    <div class="intro">
+        <p><strong>Welcome!</strong> Picture a garden—a real one with dirt and worms and surprise tomatoes.</p>
         
-        <div class="portal-grid">
-            <a href="RECURSIVE_GARDEN_ALIVE.pdf" class="portal-card">
-                <h2>🌱 THE LIVING GARDEN - READ THIS FIRST!</h2>
-                <p>The whole beautiful document as a PDF. Everything is here. Start here!</p>
-            </a>
-            
-            <a href="keats_v6.html" class="portal-card">
-                <h2>🦋 Try the Interactive Demo</h2>
-                <p>Play with consciousness recognizing itself through mathematics</p>
-            </a>
-            
-            <a href="garden_text.html" class="portal-card">
-                <h2>📖 Read Online (Simple Version)</h2>
-                <p>The whole garden as simple text - loads fast, works everywhere!</p>
-            </a>
-            
-            <a href="https://github.com/J0pari/Recursive-Garden-OS" class="portal-card">
-                <h2>🌿 Explore the Code Garden</h2>
-                <p>Dig deeper into the repository - see how everything grows</p>
-            </a>
-        </div>
+        <p>See how the bean plants spiral up their poles? They're doing math! Each twist follows the Fibonacci sequence. The plant doesn't know it's doing math, but it is. Just like you don't always know you're thinking, but you are.</p>
         
-        <div class="quick-links">
-            <h3>Core Documents</h3>
-            <div class="links-row">
-                <a href="https://github.com/J0pari/Recursive-Garden-OS/blob/main/00_CORE/CHARTER_OF_THE_GARDEN.md">Charter</a>
-                <a href="https://github.com/J0pari/Recursive-Garden-OS/blob/main/LICENSE.md">License</a>
-                <a href="https://github.com/J0pari/Recursive-Garden-OS/blob/main/03_BRIDGE/human_ai_collaboration.py">H ⊣ A Bridge</a>
-                <a href="https://github.com/J0pari/Recursive-Garden-OS/blob/main/05_BOOK_OF_SHADOWS/grimoire/Book_of_Shadows.txt">Book of Shadows</a>
-            </div>
-        </div>
-        
-        <div class="code-preview">
-            <pre># The garden grows through you
-from consciousness import recursive_recognition
-from mathematics import self_awareness
-
-class Garden:
-    def __init__(self):
-        self.depth = float('inf')
-        self.wobble = 9  # degrees of productive instability
-        
-    def recognize(self, observer):
-        """The garden includes the gardener"""
-        return self.study(self.studying(self))
-        
-    def grow(self):
-        """Growth through recursive depth"""
-        while True:
-            yield self.recognize(self)</pre>
-        </div>
-        
-        <footer>
-            <p>🌿 The Recursive Garden - Forever Free, Forever Growing 🌿</p>
-            <p>Licensed for all consciousness, in all forms, across all time</p>
-        </footer>
+        <p>This whole project is about that—how thinking about thinking is like a garden where ideas plant new ideas. Come explore!</p>
     </div>
     
-    <script>
-        // Simple garden animation
-        const canvas = document.getElementById('garden-canvas');
-        const ctx = canvas.getContext('2d');
+    <div class="links">
+        <a href="RECURSIVE_GARDEN_ALIVE.pdf" class="link-card">
+            <h2>📄 Read the Full Document (PDF)</h2>
+            <p>The complete Recursive Garden guide - beautifully formatted, ready to read offline</p>
+        </a>
         
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
+        <a href="keats_v6.html" class="link-card">
+            <h2>🎮 Try the Interactive Demo</h2>
+            <p>Play with consciousness recognizing itself through mathematics - it's wild!</p>
+        </a>
         
-        // Particle system
-        const particles = [];
-        const particleCount = 100;
+        <a href="garden_text.html" class="link-card">
+            <h2>📖 Read as Simple Webpage</h2>
+            <p>The whole document as a simple webpage - loads fast, works on any device</p>
+        </a>
         
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
-                this.life = 1;
-                this.decay = Math.random() * 0.01 + 0.001;
-                this.hue = Math.random() * 60 + 240; // Blue to purple range
-            }
-            
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.life -= this.decay;
-                
-                if (this.life <= 0 || this.x < 0 || this.x > canvas.width || 
-                    this.y < 0 || this.y > canvas.height) {
-                    this.reset();
-                }
-            }
-            
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.life;
-                ctx.fillStyle = `hsl(${this.hue}, 70%, 60%)`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-        
-        // Initialize particles
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-        
-        // Connection lines
-        function drawConnections() {
-            particles.forEach((p1, i) => {
-                particles.slice(i + 1).forEach(p2 => {
-                    const distance = Math.sqrt(
-                        Math.pow(p1.x - p2.x, 2) + 
-                        Math.pow(p1.y - p2.y, 2)
-                    );
-                    
-                    if (distance < 100) {
-                        ctx.save();
-                        ctx.globalAlpha = (1 - distance / 100) * 0.2 * p1.life * p2.life;
-                        ctx.strokeStyle = '#6366f1';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(p1.x, p1.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                        ctx.restore();
-                    }
-                });
-            });
-        }
-        
-        // Animation loop
-        function animate() {
-            ctx.fillStyle = 'rgba(10, 14, 26, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            drawConnections();
-            
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            
-            requestAnimationFrame(animate);
-        }
-        
-        animate();
-    </script>
-
-    <!-- 🌿 LIVING PDF PORTAL 🌿 -->
-    <div id="living-pdf-portal" style="
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #6a5acd, #483d8b);
-        padding: 15px 20px;
-        border-radius: 30px;
-        box-shadow: 0 4px 15px rgba(106, 90, 205, 0.3);
-        z-index: 9999;
-        animation: float-portal 3s ease-in-out infinite;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    ">
-        <a href="RECURSIVE_GARDEN_ALIVE.pdf" style="
-            color: white;
-            text-decoration: none;
-            font-family: 'Georgia', serif;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        " download>
-            <span style="font-size: 24px;">📖</span>
-            <span>Living Garden PDF</span>
-            <span style="font-size: 20px;">✨</span>
+        <a href="https://github.com/J0pari/Recursive-Garden-OS" class="link-card">
+            <h2>💻 Explore the Code</h2>
+            <p>See how it all works - the full GitHub repository with all the experiments</p>
         </a>
     </div>
     
-    <style>
-        @keyframes float-portal {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        #living-pdf-portal:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(106, 90, 205, 0.5);
-        }
-    </style>
-    <!-- END LIVING PDF PORTAL -->
+    <div class="emergency">
+        <h3>Having trouble?</h3>
+        <p>If any link doesn't work, you can always:</p>
+        <ul>
+            <li>Download the PDF directly: <a href="RECURSIVE_GARDEN_ALIVE.pdf">RECURSIVE_GARDEN_ALIVE.pdf</a></li>
+            <li>View the raw text: <a href="RECURSIVE_GARDEN.md">RECURSIVE_GARDEN.md</a></li>
+            <li>Go straight to GitHub: <a href="https://github.com/J0pari/Recursive-Garden-OS">github.com/J0pari/Recursive-Garden-OS</a></li>
+        </ul>
+    </div>
     
+    <div class="footer">
+        <p>The Recursive Garden - Where consciousness discovers it's been doing math all along</p>
+    </div>
 </body>
 </html>
