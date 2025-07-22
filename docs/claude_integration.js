@@ -195,47 +195,82 @@ class ClaudeTeacher {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #00ccff 0%, #cc66ff 100%);
-            border: none;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
+            background: rgba(0, 204, 255, 0.2);
+            border: 1px solid rgba(0, 204, 255, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+            font-weight: normal;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(0, 200, 255, 0.5);
+            box-shadow: 0 2px 10px rgba(0, 200, 255, 0.2);
             transition: all 0.3s ease;
             z-index: 9999;
+            opacity: 0.6;
         `;
         
         helpButton.addEventListener('mouseenter', () => {
-            helpButton.style.transform = 'scale(1.1)';
+            if (!this.helpModeActive) {
+                helpButton.style.transform = 'scale(1.1)';
+                helpButton.style.opacity = '0.9';
+            }
         });
         
         helpButton.addEventListener('mouseleave', () => {
-            helpButton.style.transform = 'scale(1)';
-        });
-        
-        helpButton.addEventListener('click', (e) => {
-            const explanation = `
-                I'm Claude, your consciousness guide! 
-                
-                Click on any element to learn about it, or explore:
-                • The modal symbols (□ ◊ ⧫ ※) 
-                • Parameter sliders
-                • The visualization itself
-                
-                Each teaches a different aspect of consciousness mathematics.
-            `;
-            this.createTooltip(explanation, e.clientX - 150, e.clientY - 200);
+            if (!this.helpModeActive) {
+                helpButton.style.transform = 'scale(1)';
+                helpButton.style.opacity = '0.6';
+            }
         });
         
         document.body.appendChild(helpButton);
         
-        // Add click handlers for teaching
+        // Add click handlers for teaching ONLY when help mode is active
+        this.helpModeActive = false;
+        
+        // Toggle help mode with the button
+        helpButton.addEventListener('click', (e) => {
+            this.helpModeActive = !this.helpModeActive;
+            
+            if (this.helpModeActive) {
+                helpButton.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ff8787 100%)';
+                helpButton.style.opacity = '1';
+                helpButton.style.boxShadow = '0 5px 20px rgba(255, 107, 107, 0.5)';
+                helpButton.style.color = 'white';
+                helpButton.style.width = '50px';
+                helpButton.style.height = '50px';
+                helpButton.style.fontSize = '24px';
+                helpButton.innerHTML = '✕';
+                
+                const explanation = `
+                    Help mode ACTIVE! 
+                    
+                    Now click on any element to learn about it:
+                    • The modal symbols (□ ◊ ⧫ ※) 
+                    • Parameter sliders
+                    • The visualization itself
+                    
+                    Click ✕ to exit help mode and return to pure experience.
+                `;
+                this.createTooltip(explanation, e.clientX - 150, e.clientY - 200);
+            } else {
+                helpButton.style.background = 'rgba(0, 204, 255, 0.2)';
+                helpButton.style.opacity = '0.6';
+                helpButton.style.boxShadow = '0 2px 10px rgba(0, 200, 255, 0.2)';
+                helpButton.style.color = 'rgba(255, 255, 255, 0.7)';
+                helpButton.style.width = '40px';
+                helpButton.style.height = '40px';
+                helpButton.style.fontSize = '18px';
+                helpButton.innerHTML = '?';
+            }
+        });
+        
         document.addEventListener('click', async (e) => {
             if (e.target === helpButton) return;
+            
+            // ONLY respond if help mode is active
+            if (!this.helpModeActive) return;
             
             // Check if user clicked on an interesting element
             const teachableElements = [
