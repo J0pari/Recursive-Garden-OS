@@ -47,7 +47,8 @@
       "Bash(do echo \"=== Comparing keats_v$i.html ===\")",
       "Bash(done)",
       "Bash(do echo \"=== keats_v$i.html ===\")",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(awk:*)"
     ],
     "deny": []
   }

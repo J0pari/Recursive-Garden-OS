@@ -93,7 +93,10 @@ class GPUDetector {
 class EnhancedWorkerPool {
     constructor(gpuCapabilities) {
         this.gpuCapabilities = gpuCapabilities;
-        this.optimalSettings = gpuCapabilities.getOptimalSettings();
+        // Get optimal settings from the detector's method
+        const detector = new GPUDetector();
+        detector.capabilities = gpuCapabilities;
+        this.optimalSettings = detector.getOptimalSettings();
         this.workers = [];
         this.taskQueue = [];
         this.busyWorkers = new Set();
@@ -451,7 +454,7 @@ function initializeV5PerformanceFixes() {
         const settings = gpuCapabilities.getOptimalSettings();
         
         // Update renderer settings
-        if (window.renderer.renderer) {
+        if (window.renderer && window.renderer.renderer) {
             window.renderer.renderer.setPixelRatio(settings.renderScale * window.devicePixelRatio);
             window.renderer.renderer.shadowMap.enabled = settings.shadowsEnabled;
             window.renderer.renderer.antialias = settings.antialiasing;

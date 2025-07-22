@@ -18301,6 +18301,8 @@
                 this.ballExpansions++;
                 this.ballExpansionEvents++;
                 
+                // Log expansion event
+                debug.log('P-adic ball expanded', {
                     from: oldRadius.toFixed(3),
                     to: this.padicBall.radius.toFixed(3),
                     prime: this.currentPrime,
