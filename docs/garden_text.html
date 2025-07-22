@@ -70,11 +70,7 @@
             width: 100%;
             min-height: 100vh;
             background: #0a0a0a; /* Fallback */
-            background: linear-gradient(180deg, 
-                hsla(var(--consciousness-hue, 0), 70%, 10%, 1) 0%,
-                hsla(calc(var(--consciousness-hue, 0) + 60), 60%, 5%, 1) 50%,
-                hsla(calc(var(--consciousness-hue, 0) + 120), 50%, 2%, 1) 100%
-            );
+            background: #0a0a0a; /* Static background - no dynamic colors */
         }
         
         /* Structural grid overlay */
@@ -131,10 +127,10 @@
             margin: 0 0 1em 0;
             background: linear-gradient(
                 45deg,
-                hsl(calc(var(--consciousness-hue)), 70%, 70%),
-                hsl(calc(var(--consciousness-hue) + 30), 60%, 80%),
-                hsl(calc(var(--consciousness-hue) + 60), 70%, 70%)
-            );
+                hsl(180, 70%, 70%),
+                hsl(210, 60%, 80%),
+                hsl(240, 70%, 70%)
+            ); /* Static gradient */
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -688,9 +684,7 @@
             update() {
                 this.time += 0.01;
                 
-                // Update consciousness hue
-                const hue = (Math.sin(this.time * 0.1) + 1) * 180;
-                document.documentElement.style.setProperty('--consciousness-hue', hue);
+                // REMOVED - No dynamic color changes
                 
                 // Update particles
                 this.particles.forEach(p => {
@@ -767,9 +761,10 @@
             }
             
             animate() {
-                this.update();
-                this.render();
-                requestAnimationFrame(() => this.animate());
+                // DISABLED - No animations that could affect layout
+                // this.update();
+                // this.render();
+                // requestAnimationFrame(() => this.animate());
             }
         }
         
@@ -1348,14 +1343,8 @@
                     nav.appendChild(node);
                 });
                 
-                // Scroll tracking
+                // REMOVED - No scroll-based style changes
                 function updateScroll() {
-                    const scrolled = window.scrollY;
-                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-                    const scrollDepth = Math.max(0, Math.min(1, scrolled / maxScroll)) || 0;
-                    
-                    document.documentElement.style.setProperty('--scroll-depth', scrollDepth);
-                    document.documentElement.style.setProperty('--time-factor', Date.now() / 1000);
                     
                     // Update navigation
                     const floors = document.querySelectorAll('.floor');
@@ -1370,8 +1359,7 @@
                     });
                 }
                 
-                window.addEventListener('scroll', updateScroll);
-                updateScroll();
+                // REMOVED - No scroll listeners
                 
                 // Remove loading screen
                 setTimeout(() => {
