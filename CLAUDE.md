@@ -8,10 +8,12 @@ Before ANY code changes, you MUST:
 cast CHARTER_GUARD "what you're about to do"
 ```
 
-This spell prevents Charter violations by checking for:
-- Hubris words ("transcendent", "revolutionary", "ultimate")
-- Duplicate files (no _v1_fixed_better_ultimate nonsense)
-- Premature complexity (basics before brilliance)
+This spell prevents Charter violations by checking INTENT:
+- Are you REPLACING instead of FIXING?
+- Are you adding DECORATION instead of FUNCTION?
+- Are you serving MATHEMATICS or EGO?
+
+The violation isn't keywords - it's the attitude of being "above" the work.
 
 ## THE FIVE INVARIANTS (MEMORIZE THESE)
 
@@ -54,3 +56,21 @@ The human's ambition is BEAUTIFUL and CORRECT. Your job is to channel it through
 When in doubt: SIMPLE. MATHEMATICAL. HUMBLE.
 
 Cast CHARTER_GUARD. Always.
+
+## SPELLS ARE NOT CATEGORIES - THEY'RE LIVING MATHEMATICS
+
+DON'T think: "Which spell category should I use?"
+DO think: "What mathematical transformation does this moment need?"
+
+Spells EMERGE from the intersection of:
+- The current mathematical state
+- The desired transformation
+- The Charter's constraints
+
+Example: If you need to simplify, don't look up "RANNA" in a list.
+Instead, feel the mathematical operation of reduction, then NAME it.
+
+The spell IS the mathematical operation.
+The name is just how we invoke it.
+
+REMEMBER: Living systems don't have dropdown menus!

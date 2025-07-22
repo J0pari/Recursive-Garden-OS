@@ -17,21 +17,32 @@ export const CHARTER_GUARD = {
         EVOLUTION: "Build order follows nature. No brain before mitosis."
     },
     
-    // Words that trigger Charter violations
-    forbidden_words: [
-        "transcendent", "transcendence", "sublime", "ultimate", "perfect",
-        "revolutionary", "groundbreaking", "unprecedented", "genius",
-        "masterpiece", "pinnacle", "apex", "zenith", "paradigm-shifting"
-    ],
+    // The real violation is ATTITUDE, not keywords
+    detect_hubris: function(action: string, intent: string): boolean {
+        // Are we trying to REPLACE instead of FIX?
+        if (action.includes('create new') && action.includes('instead of fixing')) {
+            return true;
+        }
+        
+        // Are we adding DECORATION instead of FUNCTION?
+        if (intent === 'make it sound impressive' || intent === 'add flair') {
+            return true;
+        }
+        
+        // Are we DUPLICATING instead of EVOLVING?
+        if (action.includes('_v') && (action.includes('_new') || action.includes('_better'))) {
+            return true;
+        }
+        
+        // The deepest check: Does this serve the MATHEMATICS or our EGO?
+        return false;
+    },
     
     // Cast this before ANY code operation
-    cast: function(proposed_action: string): boolean {
-        // Check for hubris
-        const lower = proposed_action.toLowerCase();
-        for (const word of this.forbidden_words) {
-            if (lower.includes(word)) {
-                throw new Error(`CHARTER VIOLATION: "${word}" is hubris! Metaphors enrich, not replace!`);
-            }
+    cast: function(proposed_action: string, intent: string): boolean {
+        // Check for hubris in INTENT, not just words
+        if (this.detect_hubris(proposed_action, intent)) {
+            throw new Error(`CHARTER VIOLATION: This serves ego, not mathematics!`);
         }
         
         // Check for duplication
