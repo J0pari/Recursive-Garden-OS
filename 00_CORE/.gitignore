@@ -1,0 +1,10 @@
+# Ignore compiled JavaScript from TypeScript
+BINDING_CHARTER.js
+
+# But keep other JS files that are source files
+!diagnose_pdf.js
+!fix_pdf_generation.js
+!generate_garden_pdf.js
+!generate_living_garden_pdf.js
+!generate_simple_pdf.js
+!pipe_living_pdf.js

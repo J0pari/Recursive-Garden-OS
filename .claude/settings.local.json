@@ -42,7 +42,12 @@
       "Bash(git revert:*)",
       "Bash(git log:*)",
       "Bash(curl:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(for i in 1 2 3 4 5 6)",
+      "Bash(do echo \"=== Comparing keats_v$i.html ===\")",
+      "Bash(done)",
+      "Bash(do echo \"=== keats_v$i.html ===\")",
+      "Bash(rg:*)"
     ],
     "deny": []
   }

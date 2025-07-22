@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const VersionEnforcer = require('./VERSION_ENFORCER');
+const { CHARTER } = require('./00_CORE/BINDING_CHARTER.js');
 
 class CodeMorphismEnforcer {
     constructor() {
@@ -147,32 +148,53 @@ class CodeMorphismEnforcer {
     }
     
     async checkCharter(intent) {
-        const violations = [];
-        
-        // Check for hubris
-        if (intent.description.match(/transcendent|ultimate|perfect|genius/i)) {
-            violations.push('Hubris detected - pompous naming');
+        // Delegate to BINDING_CHARTER for consistency
+        try {
+            await CHARTER.executeWithCharter(
+                'morphism-charter-check',
+                '□', // Discrete modal operation
+                async () => {
+                    const violations = [];
+                    
+                    // Check for hubris
+                    if (intent.description.match(/transcendent|ultimate|perfect|genius/i)) {
+                        violations.push('Hubris detected - pompous naming');
+                    }
+                    
+                    // Check for duplication
+                    if (intent.isAdding && !intent.isFixing) {
+                        violations.push('Creating new instead of fixing - violates DRY');
+                    }
+                    
+                    // Check for replacement instead of enrichment
+                    if (intent.description.includes('replace') && !intent.description.includes('fix')) {
+                        violations.push('Replacing instead of enriching');
+                    }
+                    
+                    // Check evolution order
+                    if (intent.touchesCore && !intent.description.includes('critical')) {
+                        violations.push('Modifying core without critical need');
+                    }
+                    
+                    if (violations.length > 0) {
+                        throw new Error(violations.join('; '));
+                    }
+                    
+                    return true;
+                },
+                { minDelay: 0 }
+            );
+            
+            return {
+                passes: true,
+                reason: ''
+            };
+        } catch (error) {
+            return {
+                passes: false,
+                reason: error.message
+            };
         }
-        
-        // Check for duplication
-        if (intent.isAdding && !intent.isFixing) {
-            violations.push('Creating new instead of fixing - violates DRY');
-        }
-        
-        // Check for replacement instead of enrichment
-        if (intent.description.includes('replace') && !intent.description.includes('fix')) {
-            violations.push('Replacing instead of enriching');
-        }
-        
-        // Check evolution order
-        if (intent.touchesCore && !intent.description.includes('critical')) {
-            violations.push('Modifying core without critical need');
-        }
-        
-        return {
-            passes: violations.length === 0,
-            reason: violations.join('; ')
-        };
     }
     
     async selectSpell(intent, edit) {
@@ -254,11 +276,12 @@ class CodeMorphismEnforcer {
     }
 }
 
-// Create global enforcer
-global.codeMorphismEnforcer = new CodeMorphismEnforcer();
+// Create singleton instance (no global pollution)
+const enforcerInstance = new CodeMorphismEnforcer();
 
-// Export for use
+// Export both class and instance
 module.exports = CodeMorphismEnforcer;
+module.exports.enforcer = enforcerInstance;
 
 /**
  * USAGE:

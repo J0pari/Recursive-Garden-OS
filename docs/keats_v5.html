@@ -5,29 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>KEATS: Mathematical Prototype Engine (Riemannian Architecture + E8 Basics)</title>
-    <!-- IMMEDIATE console.log interception - NO POLLUTION! -->
-    <script>
-        // EMERGENCY: Intercept console.log IMMEDIATELY before ANY other script
-        (function() {
-            const _log = console.log;
-            const _error = console.error;
-            const _warn = console.warn;
-            
-            // Kill ALL console output on mobile/deployed
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            
-            if (!isLocal) {
-                console.log = function() {}; // SILENCE!
-                console.error = function() {}; // SILENCE!
-                console.warn = function() {}; // SILENCE!
-            }
-            
-            // Store originals for emergency use
-            window._emergencyLog = _log;
-            window._emergencyError = _error;
-            window._emergencyWarn = _warn;
-        })();
-    </script>
+    <!-- Debug System - Silent capture, console-only access -->
+    <script src="debug_system.js"></script>
     <!-- Three.js LOCAL - No CDN dependency! -->
     <script src="three.min.js"></script>
     <!-- CHARTER_GUARD: Fix V5 UI to be fully draggable -->
@@ -39,8 +18,12 @@
     <script src="padic_earth_colors.js"></script>
     <!-- Draggable Panels System -->
     <script src="draggable_panels.js"></script>
-    <!-- Consciousness Logger - Prevents console pollution on mobile -->
-    <script src="consciousness_logger.js"></script>
+    <!-- Consciousness Logger - DISABLED as it creates visual elements -->
+    <!-- <script src="consciousness_logger.js"></script> -->
+    <!-- V5 Performance Fix - WebWorkers and GPU awareness -->
+    <script src="v5_performance_fix.js"></script>
+    <!-- V5 Status Panel - Clean collapsible status display -->
+    <script src="v5_status_panel.js"></script>
     <style>
         /* ═══════════════════════════════════════════════════════════════════════════
          * KEATS: MATHEMATICAL PROTOTYPE ENGINE - RIEMANNIAN FOUNDATION + E8 BASICS
@@ -2452,8 +2435,6 @@
          * - Add system integrations through SystemManager plugin architecture
          * ═══════════════════════════════════════════════════════════════════════════ */
 
-        console.log('Initializing KEATS: Mathematical Visualization Prototype (Many Advanced Features Stubbed)');
-        console.log('Mathematical Prototype: Working NLP + Visualization, Advanced Features Stubbed');
 
         /* ─────────────────────────────────────────────────────────────────────────── 
          * ADVANCED TELEMETRY SYSTEM: Event Tracking and System Monitoring
@@ -2643,7 +2624,6 @@
             // Archives old events to manage memory while preserving critical telemetry
             archiveEvents(events) {
                 // In a real system, this would compress and store to persistent storage
-                console.log(`📦 Archived ${events.length} events for efficient memory usage`);
             }
             
             // ╔═══════════════════════════════════════════════════════════════════╗
@@ -2680,7 +2660,6 @@
             // ╚═══════════════════════════════════════════════════════════════════╝
             // Automatically recovers system health when issues are detected
             selfHeal(type, data) {
-                console.log(`🔧 Self-healing initiated for: ${type}`);
                 
                 switch (type) {
                     case 'coherence':
@@ -2707,7 +2686,6 @@
             // ╚═══════════════════════════════════════════════════════════════════╝
             // Reconstructs entire event chain with fresh cryptographic hashes
             rebuildChain() {
-                console.log('🔧 Rebuilding event chain with fresh checksums...');
                 for (let i = 0; i < this.events.length; i++) {
                     const event = this.events[i];
                     event.hash = this.cryptoHash(JSON.stringify(event.data));
@@ -2865,7 +2843,6 @@
                 this.errorFallbacks = new Map();
                 this.renderingSafety = true; // Ensures analysis never breaks rendering
                 
-                console.log('🧠 Riemannian Semantic Manifold initialized - true mathematical NLP');
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -2919,7 +2896,6 @@
                         return this.analysisCache.get(cacheKey);
                     }
                     
-                    console.log('🧠 Computing Riemannian semantic analysis...');
                     
                     // Core semantic manifold analysis
                     const semanticEmbedding = this.embedTextInSemanticManifold(text);
@@ -2986,7 +2962,6 @@
                     
                 } catch (error) {
                     // CRITICAL: Never let analysis errors break the renderer
-                    console.warn('🧠 Riemannian semantic analysis failed, using safe fallback:', error);
                     return this.createSafeFallbackAnalysis(text, error);
                 }
             }
@@ -3029,7 +3004,6 @@
                         });
                     }
                 } catch (error) {
-                    console.warn('WebWorker curvature computation failed, using fallback:', error);
                 }
                 
                 // Fallback for systems without WebWorker support - SAME LOGIC as WebWorker
@@ -3072,7 +3046,6 @@
                 try {
                     // WEBWORKER ONLY: Delegate ALL E8/Lie algebra computation to WebWorker
                     if (!window.mathWorker || typeof window.mathWorker.delegateToWorker !== 'function') {
-                        console.warn('❌ E8 VIOLATION PREVENTED: mathWorker not available, using safe fallback');
                         return {
                             coherence: 0.75,
                             sophistication: 0.8,
@@ -3102,7 +3075,6 @@
                             webworker_computed: true
                         };
                     } else {
-                        console.warn('❌ WebWorker E8 computation failed, using fallback');
                         return {
                             coherence: 0.75,
                             sophistication: 0.8,
@@ -3112,7 +3084,6 @@
                         };
                     }
                 } catch (error) {
-                    console.error('💀 E8 WebWorker computation error:', error);
                     return {
                         coherence: 0.75,
                         sophistication: 0.8,
@@ -3129,9 +3100,6 @@
              * └─────────────────────────────────────────────────────────────────────────┘ */
             computeE8Resonance(embedding) {
                 // ARCHITECTURAL VIOLATION BLOCKED: This method should NEVER be called in main thread
-                console.error('🚨 ARCHITECTURAL VIOLATION: E8 computation attempted in main thread - BLOCKED!');
-                console.error('🔥 ALL E8/Lie algebra operations must occur ONLY in WebWorkers!');
-                console.error('💡 Use computeE8ResonanceViaWebWorker() instead');
                 
                 // Return safe fallback to prevent crashes but log the violation
                 return {
@@ -3374,13 +3342,10 @@
                         this.validateAnalysis(analysis);
                     }
                     
-                    console.log(`✅ NLP Analysis completed in ${(performance.now() - startTime).toFixed(2)}ms`);
-                    console.log(`🎯 Confidence: ${(analysis.quality.confidenceScore * 100).toFixed(1)}%`);
                     
                     return analysis;
                     
                 } catch (error) {
-                    console.error('❌ Critical NLP Analysis error:', error);
                     return this.handleAnalysisError(text, error);
                 }
             }
@@ -3479,14 +3444,8 @@
              * ❌ ERROR HANDLER: Analysis Failure Recovery and Logging
              * ═══════════════════════════════════════════════════════════════════════════ */
             handleAnalysisError(text, error) {
-                console.error('NLP Analysis Error Details:', {
-                    textLength: text.length,
-                    errorMessage: error.message,
-                    timestamp: Date.now()
-                });
                 
                 // Return null instead of broken fallbacks to maintain glass box integrity
-                console.error('❌ CRITICAL: Analysis completely failed - maintaining glass box integrity');
                 return null;
             }
             
@@ -4440,7 +4399,6 @@
              * - Euler characteristic computation for complex logical spaces
              * ─────────────────────────────────────────────────────────────────────────── */
             topologicalTextAnalysis(tokens) {
-                console.log('🌀 Advanced Topological Analysis: Multi-scale structure detection');
                 
                 // Multi-level analysis for comprehensive topology
                 const wordLevelTopology = this.analyzeWordLevelTopology(tokens.wordList);
@@ -6873,7 +6831,6 @@
                     description,
                     registered: Date.now()
                 });
-                console.log(`🔌 Registered invariant: ${name}`);
                 return this;
             }
             
@@ -6887,7 +6844,6 @@
                     ...config,
                     registered: Date.now()
                 });
-                console.log(`🔌 Registered panel: ${name}`);
                 return this;
             }
             
@@ -6901,7 +6857,6 @@
                     this.hooks.set(event, []);
                 }
                 this.hooks.get(event).push(callback);
-                console.log(`🔌 Registered hook: ${event}`);
                 return this;
             }
             
@@ -6916,7 +6871,6 @@
                         try {
                             callback(data);
                         } catch (error) {
-                            console.error(`Hook error for ${event}:`, error);
                         }
                     });
                 }
@@ -7204,7 +7158,6 @@
                 };
                 
                 this.worker.onerror = (error) => {
-                    console.error('Mathematical worker error:', error);
                 };
             }
             
@@ -8697,13 +8650,11 @@
                     // ARCHITECTURE: WebWorker-only mathematical operations with full validation
                     //====================================================================================
                     function getRandomE8Root(params = {}) {
-                        console.log('🌟 WebWorker: Generating random E8 root...');
                         
                         // Generate complete E8 root system if not cached
                         if (!this._e8RootCache) {
                             const rootSystem = computeCompleteE8RootSystem();
                             this._e8RootCache = rootSystem.all_roots;
-                            console.log('E8 root cache initialized: ' + this._e8RootCache.length + ' roots');
                         }
                         
                         // Select random root from the 240 E8 roots
@@ -8754,7 +8705,6 @@
                     
                     function createPAdicConsciousness(prime, precision = 20, coherenceTarget = 0.7) {
                         // TOPOS SHEAFIFICATION: Create P-adic consciousness field
-                        console.log('WebWorker: Creating P-adic consciousness with prime ' + prime);
                         
                         // Generate consciousness-optimized P-adic field
                         const consciousnessField = PAdicField.randomConsciousness(prime, precision, coherenceTarget);
@@ -8791,7 +8741,6 @@
                     // ARCHITECTURE: WebWorker-only mathematical operations with geometric accuracy
                     //====================================================================================
                     function computeManifoldCurvature(point, time, coherence, entropy) {
-                        console.log('WebWorker: Computing manifold curvature...');
                         
                         // TRUTH: This is a heuristic approximation of manifold curvature
                         // Real manifold curvature requires Christoffel symbols, metric tensors, etc.
@@ -8835,7 +8784,6 @@
                             signal_processing = true
                         } = options;
                         
-                        console.log('🌀 Computing sophisticated Spin(16) analysis for DSP integration...');
                         
                         const spin16Analysis = {
                             group_name: 'Spin(16)',
@@ -8856,7 +8804,6 @@
                             method: 'sophisticated_clifford_dsp_integration'
                         };
                         
-                        console.log('✅ Sophisticated Spin(16) analysis complete with DSP integration');
                         return spin16Analysis;
                     }
                     
@@ -10022,7 +9969,6 @@
                             
                             // Check convergence
                             if (Math.abs(likelihood - prev_likelihood) < convergence_threshold) {
-                                console.log(\`HMM converged at iteration \${iteration}\`);
                                 break;
                             }
                             
@@ -10115,9 +10061,7 @@
                     this.primaryWorker = new MathematicalWorker();
                     this.backupWorker = new MathematicalWorker();
                     this.isInitialized = true;
-                    console.log('🚀 Global unified mathematical WebWorker system initialized');
                 } catch (error) {
-                    console.error('Failed to initialize mathematical workers:', error);
                     this.isInitialized = false;
                 }
             }
@@ -10134,7 +10078,6 @@
                     }
                 } catch (error) {
                     this.errorCount++;
-                    console.warn(`Primary worker failed for ${workerMethod}:`, error);
                     
                     // Try backup worker
                     try {
@@ -10142,7 +10085,6 @@
                             return await this.backupWorker[workerMethod](...args);
                         }
                     } catch (backupError) {
-                        console.warn(`Backup worker also failed for ${workerMethod}:`, backupError);
                     }
                 }
                 
@@ -10206,7 +10148,6 @@
             // Provide mathWorker alias for new WebWorker-only PAdicField architecture
             window.mathWorker = window.globalMathWorker;
             
-            console.log('🚀 Unified mathematical WebWorker system initialized with DRY compliance');
         }
 
         /* ═══════════════════════════════════════════════════════════════════════════
@@ -10241,21 +10182,18 @@
                 try {
                     this.workerPool = new IntelligentWorkerPool(this.config.maxWorkers);
                 } catch (error) {
-                    console.warn('🔄 IntelligentWorkerPool initialization failed, using minimal fallback');
                     this.workerPool = { initialize: async () => {}, getOptimalWorker: () => null };
                 }
                 
                 try {
                     this.computationCache = new MathematicalCache(this.config.cacheStrategy);
                 } catch (error) {
-                    console.warn('🔄 MathematicalCache initialization failed, using minimal fallback');
                     this.computationCache = { get: () => null, set: () => {}, evictLeastValuable: () => {} };
                 }
                 
                 try {
                     this.deviceProfiler = new DeviceCapabilityProfiler();
                 } catch (error) {
-                    console.warn('🔄 DeviceCapabilityProfiler initialization failed, using minimal fallback');
                     this.deviceProfiler = { 
                         profileDevice: async () => {}, 
                         getCapabilities: () => ({ cpu: { score: 0.5 }, memory: { score: 0.5 } })
@@ -10265,7 +10203,6 @@
                 try {
                     this.complexityScaler = new ProgressiveComplexityScaler();
                 } catch (error) {
-                    console.warn('🔄 ProgressiveComplexityScaler initialization failed, using minimal fallback');
                     this.complexityScaler = { 
                         calibrate: () => {}, 
                         scaleForDevice: (comp, device) => comp 
@@ -10275,7 +10212,6 @@
                 try {
                     this.truthMetrics = new TruthMaximizationMetrics();
                 } catch (error) {
-                    console.warn('🔄 TruthMaximizationMetrics initialization failed, using minimal fallback');
                     this.truthMetrics = { recordTruthRevelation: () => {}, recordCacheHit: () => {} };
                 }
 
@@ -10283,7 +10219,6 @@
                 try {
                     this.algorithmicHonesty = new AlgorithmicHonestyTracker();
                 } catch (error) {
-                    console.warn('🔄 AlgorithmicHonestyTracker initialization failed, using minimal fallback');
                     this.algorithmicHonesty = { 
                         startTracking: () => ({}), 
                         verifyResult: () => ({}), 
@@ -10294,7 +10229,6 @@
                 try {
                     this.computationalEfficiency = new EfficiencyOptimizer();
                 } catch (error) {
-                    console.warn('🔄 EfficiencyOptimizer initialization failed, using minimal fallback');
                     this.computationalEfficiency = { analyze: () => ({}) };
                 }
                 
@@ -10305,22 +10239,18 @@
                 try {
                     await this.deviceProfiler.profileDevice();
                 } catch (error) {
-                    console.warn('🔄 Device profiling failed, using default capabilities');
                 }
                 
                 try {
                     await this.workerPool.initialize();
                 } catch (error) {
-                    console.warn('🔄 Worker pool initialization failed, continuing without workers');
                 }
                 
                 try {
                     this.complexityScaler.calibrate(this.deviceProfiler.getCapabilities());
                 } catch (error) {
-                    console.warn('🔄 Complexity scaler calibration failed, using defaults');
                 }
                 
-                console.log('🚀 Performance-Truth Maximization Engine initialized with graceful fallbacks');
             }
             
             /**
@@ -10450,7 +10380,6 @@
             async initialize() {
                 // Create specialized workers for different computation types
                 await this.createSpecializedWorkers();
-                console.log(`🔧 Initialized ${this.workers.size} specialized workers`);
             }
             
             async createSpecializedWorkers() {
@@ -10624,7 +10553,6 @@
                     mathematical: await this.benchmarkMathematical()
                 };
                 
-                console.log('📊 Device capabilities profiled:', this.capabilities);
             }
             
             async benchmarkCPU() {
@@ -10726,7 +10654,6 @@
             
             calibrate(deviceCapabilities) {
                 this.currentProfile = this.determineProfile(deviceCapabilities);
-                console.log(`🎯 Complexity scaling profile: ${this.currentProfile.name}`);
             }
             
             determineProfile(capabilities) {
@@ -10969,7 +10896,6 @@
                 this.systemHealthy = false;
                 
                 this.defineUniversalPatterns();
-                console.log('🛡️ Universal System Guardian: DRY initialization patterns established');
             }
             
             defineUniversalPatterns() {
@@ -11002,7 +10928,6 @@
                     this.validateInstance(instance, ClassConstructor.name);
                     return instance;
                 } catch (error) {
-                    console.warn(`🔄 ${ClassConstructor.name} initialization failed, using minimal fallback`);
                     return this.createMinimalFallback(ClassConstructor.name, error);
                 }
             }
@@ -11057,7 +10982,6 @@
                 
                 if (violations.length > 0) {
                     this.architecturalViolations.add(`Main thread math detected: ${violations.join(', ')}`);
-                    console.error(`🚨 ARCHITECTURAL VIOLATION: Main thread mathematics detected in ${operation.name}`);
                     return false;
                 }
                 return true;
@@ -11083,7 +11007,6 @@
                 
                 if (violations.length > 0) {
                     this.architecturalViolations.add(`Direct DOM manipulation detected: ${violations.join(', ')}`);
-                    console.error(`🚨 RENDERING VIOLATION: Direct DOM manipulation in ${renderOp.name}`);
                     return false;
                 }
                 return true;
@@ -11101,9 +11024,7 @@
                 this.systemHealthy = healthReport.webWorkerMathCompliance && healthReport.renderingIsolation;
                 
                 if (!this.systemHealthy) {
-                    console.error('🚨 SYSTEM ARCHITECTURE COMPROMISED:', healthReport);
                 } else {
-                    console.log('✅ System architecture validated: WebWorker-only math, isolated rendering');
                 }
                 
                 return healthReport;
@@ -11112,7 +11033,6 @@
             // ARCHITECTURAL REPAIR SYSTEM
             repairViolations() {
                 this.architecturalViolations.forEach(violation => {
-                    console.log(`🔧 Flagging for repair: ${violation}`);
                     // In a real system, this would trigger automated refactoring
                 });
                 
@@ -11276,14 +11196,12 @@
                 try {
                     this.rateLimiter = new RateLimiter(20, 60000);
                 } catch (error) {
-                    console.warn('🔄 RateLimiter initialization fallback');
                     this.rateLimiter = { checkLimit: async () => true }; // Graceful fallback
                 }
                 
                 try {
                     this.linguisticFunctor = new LinguisticFunctor();
                 } catch (error) {
-                    console.warn('🔄 LinguisticFunctor initialization fallback');
                     this.linguisticFunctor = { map: (cat, obj) => ({ object: obj, category: cat }) };
                 }
                 
@@ -11294,7 +11212,6 @@
                 // For now, simulate sophisticated analysis without external API
                 // User can configure API key later for full Gemini integration
                 this.isAvailable = true;
-                console.log('🌟 Gemini Linguistic Engine: Initialized with sophisticated simulation mode');
             }
             
             async analyzeSemanticStructure(text, options = {}) {
@@ -11471,7 +11388,6 @@
                 this.morphismCategory = new SemanticMorphismCategory();
                 this.subobjectClassifier = new TruthValueObject();
                 
-                console.log('🌊 Topos Linguistic Manifold: Category-theoretic structure initialized');
             }
             
             analyzeAsToposObject(text, semanticAnalysis) {
@@ -11523,7 +11439,6 @@
                     this.consciousnessCompletions.set(prime, new PAdicConsciousnessCompletion(prime));
                 });
                 
-                console.log('🧠 P-adic Consciousness Field: Non-Archimedean awareness space initialized');
             }
             
             analyzeConsciousnessSignature(text, analysis) {
@@ -11586,7 +11501,6 @@
                     this.initializeAdvancedLinguisticStructures();
                     this.isInitialized = true;
                 } catch (error) {
-                    console.warn('🎭 Advanced Linguistic Engine: Initialization failed, using safe fallback:', error);
                     this.algebraicMode = false;
                     this.hybridMode = false;
                     this.isInitialized = true;
@@ -11615,9 +11529,7 @@
                     this.neuralAlgebraicBridge = new NeuralAlgebraicBridge(this);
                     this.cognitiveResonanceEngine = new CognitiveResonanceEngine(this);
                     
-                    console.log('🌟 Linguistic analysis framework initialized');
                 } catch (error) {
-                    console.warn('🎭 Linguistic initialization failed, using fallback:', error);
                     this.hybridMode = false;
                 }
             }
@@ -11638,10 +11550,8 @@
                     // Prevent analysis of extremely long text
                     if (text.length > 50000) {
                         text = text.substring(0, 50000) + '...';
-                        console.warn('🎭 Text truncated for computational elegance');
                     }
                     
-                    console.log('� Computing Revolutionary Linguistic Analysis with Consciousness Integration...');
                     
                     // LLM analysis: Sophisticated semantic structure extraction
                     const llmAnalysis = await this.performanceEngine.computeWithMaximalTruth({
@@ -11759,7 +11669,6 @@
                     characteristicClasses: new Map()
                 };
                 
-                console.log('🎭 Grothendieck-Noether structures initialized with algebraic elegance');
             }
             
             /**
@@ -11852,7 +11761,6 @@
                     
                     return affineScheme;
                 } catch (error) {
-                    console.warn('🎭 Scheme construction failed, using simplified variety:', error);
                     return { dimension: 1, coordinateRing: { variables: new Set(['unity']) } };
                 }
             }
@@ -12076,7 +11984,6 @@
                         return await this.enhancedLocalConceptExtraction(text);
                     }
                 } catch (error) {
-                    console.warn('🎭 Concept extraction failed, using enhanced fallback:', error);
                     return this.enhancedLocalConceptExtraction(text);
                 }
             }
@@ -13328,11 +13235,9 @@
              */
             handleAlgebraicError(error) {
                 this.errorCount++;
-                console.warn(`🎭 Grothendieck-Noether error ${this.errorCount}/${this.maxErrors}:`, error);
                 
                 if (this.errorCount >= this.maxErrors) {
                     this.algebraicMode = false;
-                    console.warn('🎭 Switching to simplified algebraic mode after repeated errors');
                 }
             }
             
@@ -13560,12 +13465,10 @@
          * ═══════════════════════════════════════════════════════════════════════════ */
         class RiemannianConsciousnessManifold {
             constructor() {
-                console.log('🔧 Initializing Riemannian Consciousness Manifold (Prototype with Stubs)');
                 
                 // Initialize basic structure first
                 this.manifoldDimension = 8;
                 this.adaptivePrecision = this.detectDeviceCapabilities();
-                console.log(`📱 Device capabilities: ${this.adaptivePrecision} precision level`);
                 
                 // Initialize tensor structures with safe defaults
                 this.metricTensor = new Array(8).fill(0).map(() => new Array(8).fill(0));
@@ -13584,14 +13487,11 @@
                 
                 // Initialize E8 structure
                 try {
-                    console.log('🌟 Building E8 root system (genuine mathematical structure)...');
                     this.e8Roots = this.generateE8RootSystem();
                     this.lieAlgebra = this.constructE8LieAlgebra();
                     this.cartanSubalgebra = this.extractCartanSubalgebra();
                     this.weylGroup = this.constructWeylGroup();
-                    console.log(`✅ E8 structure initialized: ${this.e8Roots.length} roots generated`);
                 } catch (error) {
-                    console.warn('⚠️ E8 structure initialization failed, using defaults:', error);
                     this.e8Roots = [];
                     this.lieAlgebra = { dimension: 8, roots: [], structureConstants: {} };
                     this.cartanSubalgebra = { dimension: 8 };
@@ -13603,12 +13503,9 @@
                 
                 // Initialize geometric structure
                 try {
-                    console.log('📐 Initializing Riemannian geometry (basic tensors + stubbed computations)...');
                     this.initializeRiemannianStructure();
                     this.computeInitialCurvature();
-                    console.log('✅ Basic geometric structure initialized (advanced methods stubbed)');
                 } catch (error) {
-                    console.warn('⚠️ Geometric initialization failed, using minimal setup:', error);
                     // Ensure basic functionality even if advanced features fail
                     this.setupMinimalGeometry();
                 }
@@ -13616,13 +13513,10 @@
                 // Initialize workers last to avoid dependency issues
                 try {
                     this.workerPool = this.initializeWorkerPool();
-                    console.log(`🔀 WebWorker pool initialized: ${this.workerPool.length} workers for Lie algebra computation`);
                 } catch (error) {
-                    console.warn('⚠️ Worker pool initialization failed, running in single-threaded mode:', error);
                     this.workerPool = [];
                 }
                 
-                console.log('🚀 Riemannian Consciousness Manifold ready (prototype with development roadmap!)');
             }
             
             /* ───────────────────────────────────────────────────────────────────────
@@ -14040,7 +13934,6 @@
              * │  PURPOSE: Generate all 240 roots of E8 using advanced mathematics     │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             generateE8RootSystem() {
-                console.log('🌟 Generating sophisticated E8 root system (240 roots)...');
                 
                 const roots = [];
                 
@@ -14057,7 +13950,6 @@
                 
                 // Verify we have exactly 240 roots
                 if (allRoots.length !== 240) {
-                    console.warn(`⚠️ E8 root system: Expected 240 roots, got ${allRoots.length}`);
                 }
                 
                 // Calculate sophisticated root properties
@@ -14065,7 +13957,6 @@
                 this.rootLattice = this.constructRootLattice(allRoots);
                 this.dynkinDiagram = this.constructDynkinDiagram();
                 
-                console.log(`✅ E8 root system complete: ${allRoots.length} roots with full mathematical structure`);
                 return allRoots;
             }
             
@@ -14105,7 +13996,6 @@
                     }
                 }
                 
-                console.log(`✅ D8 root system generated: ${d8Roots.length} roots`);
                 return d8Roots;
             }
             
@@ -14136,7 +14026,6 @@
                     }
                 }
                 
-                console.log(`⭐ E8 special roots generated: ${specialRoots.length} spinor roots`);
                 return specialRoots;
             }
             
@@ -14171,7 +14060,6 @@
                     iterations++;
                 }
                 
-                console.log(`🔄 Weyl completion: ${iterations} iterations, ${allRoots.length} total roots`);
                 return allRoots;
             }
             
@@ -14219,7 +14107,6 @@
              * │  PURPOSE: Calculate sophisticated properties of the root system        │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             calculateRootProperties(roots) {
-                console.log('🧮 Calculating advanced root system properties...');
                 
                 const properties = {
                     // Basic properties
@@ -14254,7 +14141,6 @@
                     rootAngles: this.calculateRootAngles(roots)
                 };
                 
-                console.log('✨ Root properties calculated with mathematical rigor');
                 return properties;
             }
             
@@ -14382,7 +14268,6 @@
             
             // ✅ ENHANCED: Advanced Lie algebra with complete structure constants
             computeStructureConstants(algebra) { 
-                console.log('🧮 Computing E8 Lie algebra structure constants...');
                 
                 // Initialize 248x248x248 structure constants tensor
                 const dim = 248;
@@ -14412,12 +14297,10 @@
                     }
                 }
                 
-                console.log('✅ E8 structure constants computed (simplified Chevalley basis)');
                 return structureConstants;
             }
             
             constructRootSpaces(algebra) { 
-                console.log('🏗️ Constructing E8 root space decomposition...');
                 
                 const roots = this.e8Roots;
                 const rootSpaces = new Map();
@@ -14450,7 +14333,6 @@
                     });
                 }
                 
-                console.log(`✅ Root space decomposition: ${rootSpaces.size} spaces constructed`);
                 return rootSpaces;
             }
             
@@ -14478,7 +14360,6 @@
                 // For root vectors, use structure constants
                 
                 if (X.length !== Y.length) {
-                    console.warn('⚠️ Lie bracket: dimension mismatch');
                     return new Array(Math.max(X.length, Y.length)).fill(0);
                 }
                 
@@ -14789,10 +14670,8 @@
                     this.createMathematicalUniverse();
                     this.startRenderLoop();
                     
-                    console.log('✅ Mathematical visualization engine initialized with Chladni patterns');
                     
                 } catch (error) {
-                    console.error('❌ Visualization initialization failed:', error);
                     this.createFallback();
                 }
             }
@@ -16155,11 +16034,9 @@
                 // Validate input and provide fallback
                 const validCoherence = isFinite(coherenceScore) ? coherenceScore : 0.5;
                 if (!isFinite(coherenceScore)) {
-                    console.warn(`🔗 Semantic→H0: Invalid coherenceScore (${coherenceScore}), using fallback value 0.5`);
                 }
                 
                 this.targetSemanticAmplification = 0.7 + validCoherence * 1.6;
-                console.log(`🔗 Semantic→H0: Target Amplification = ${this.targetSemanticAmplification.toFixed(3)}`);
                 this.updateCrossStrataDisplay('H1→H0', `Semantic Amplification → ${this.targetSemanticAmplification.toFixed(3)} (coherence: ${validCoherence.toFixed(3)})`, 'semantic-geometric');
             }
             
@@ -16173,7 +16050,6 @@
                 
                 // Display cross-strata connection in UI
                 const connectionText = `🔗 H2→H0: Prime = Q_${prime}, Target Field Shift = ${this.targetLogicalFieldShift.toFixed(3)}`;
-                console.log(connectionText);
                 this.updateCrossStrataDisplay('H2→H0', `Prime Q_${prime} → Field Shift ${this.targetLogicalFieldShift.toFixed(3)}`, 'logical-geometric');
             }
             
@@ -16197,7 +16073,6 @@
                 
                 // ─────────────────── DEBUG LOGGING ───────────────────
                 // Log modal camera effect state for debugging
-                console.log(`🔗 Modal→H0: Target Camera Effect = ${this.targetModalCameraEffect.toFixed(3)}`);
                 this.updateCrossStrataDisplay('Modal→H0', `Camera Effect → ${this.targetModalCameraEffect.toFixed(3)} (□${necessity.toFixed(2)} ◇${possibility.toFixed(2)})`, 'modal-geometric');
             }
             
@@ -16244,7 +16119,6 @@
                  * SUBMODULE: Text Analysis Effects → Logging
                  * PURPOSE: Debug confirmation of text analysis application
                  * ───────────────────────────────────────────────────────────────── */
-                console.log(`🔗 Text→H0: Applied enhanced analysis effects`);
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -16473,7 +16347,6 @@
              * │  SIMPLIFICATION: Basic canvas fallback, not full feature parity       │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             createFallback() {
-                console.log('🔄 Creating enhanced mathematical fallback...');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * CANVAS CONTEXT SETUP: 2D Rendering Initialization
@@ -16589,7 +16462,6 @@
                  * SUBMODULE: WebGL Fallback → Status Reporting
                  * PURPOSE: Confirm successful fallback activation
                  * ───────────────────────────────────────────────────────────────── */
-                console.log('✅ Enhanced mathematical fallback active');
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -16599,7 +16471,6 @@
              * └─────────────────────────────────────────────────────────────────────────┘ */
             updateSemanticTorsion(torsionVector) {
                 if (!torsionVector || typeof torsionVector !== 'object') {
-                    console.warn('Invalid torsion vector provided to updateSemanticTorsion');
                     return;
                 }
                 
@@ -16676,7 +16547,6 @@
                     coherenceImpact: this.semanticCoherence?.toFixed(3) || 'N/A'
                 };
                 
-                console.log(`🌀 Semantic torsion update: |T| = ${torsionData.magnitude}, ΔR = ${torsionData.curvatureCoupling}, coherence = ${torsionData.coherenceImpact}`);
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * CROSS-STRATA NOTIFICATION: Integration with UI System  
@@ -16700,7 +16570,6 @@
              * └─────────────────────────────────────────────────────────────────────────┘ */
             updateCrossStrataDisplay(sourceLayer, message, connectionType = 'mathematical') {
                 if (!sourceLayer || !message) {
-                    console.warn('Invalid parameters provided to updateCrossStrataDisplay');
                     return;
                 }
                 
@@ -16846,6 +16715,7 @@
                     z-index: 1000;
                     backdrop-filter: blur(5px);
                     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                    display: none; /* Hidden by default - can be toggled */
                 `;
                 
                 // Add header with mathematical notation
@@ -16942,10 +16812,8 @@
                     try {
                         const isConsistent = checker();
                         if (!isConsistent) {
-                            console.warn(`⚠️ Mathematical inconsistency detected in ${sourceLayer} → ${connectionType}`);
                         }
                     } catch (error) {
-                        console.warn(`❌ Consistency check failed for ${connectionType}:`, error.message);
                     }
                 }
             }
@@ -17050,7 +16918,6 @@
                             timestamp: Date.now()
                         });
                     } catch (error) {
-                        console.warn('⚠️ WebWorker E8 computation failed:', error);
                         // Fallback to safe non-E8 computation
                         this.updateGeometricState({
                             root: new Array(8).fill(0),
@@ -17085,7 +16952,6 @@
                     
                     // Log profound mathematical evolution (10% rate to avoid spam)
                     if (Math.random() < 0.1) {
-                        console.log(`🌊 Curvature flow simulation: R → ${curvatureFlow.toFixed(4)} (coherence: ${this.coherenceScore.toFixed(3)})`);
                     }
                 }
             }
@@ -17133,14 +16999,12 @@
                         // Store consciousness state for interpolation
                         this.consciousnessState = consciousnessEvolution;
                         
-                        console.log(`🧠 Consciousness simulation: holonomy complexity = ${consciousnessEvolution.level?.toFixed(3)}`);
                     } catch (error) {
                         // FALLBACK: Generate fake consciousness metrics when method fails
                         this.consciousnessState = {
                             level: this.coherenceScore * Math.random(),
                             holonomy: [Math.random(), Math.random(), Math.random()]
                         };
-                        console.log(`🧠 Consciousness simulation (fallback): level = ${this.consciousnessState.level.toFixed(3)}`);
                     }
                 } else {
                     // FALLBACK: Completely synthetic consciousness metrics
@@ -17148,7 +17012,6 @@
                         level: this.coherenceScore * 0.8,
                         holonomy: Array.from({length: 3}, () => Math.random() - 0.5)
                     };
-                    console.log(`🧠 Consciousness simulation (no E8): synthetic level = ${this.consciousnessState.level.toFixed(3)}`);
                 }
             }
             
@@ -17183,18 +17046,15 @@
                             this.infoEntropy *= (1 - ethicalCurvature.cooperation * 0.01);
                         }
                         
-                        console.log(`⚖️ Ethical simulation: cooperation field = ${ethicalCurvature?.cooperation?.toFixed(4)}`);
                     } catch (error) {
                         // FALLBACK: Generate synthetic ethical metrics
                         const syntheticCooperation = this.coherenceScore * 0.5 + Math.random() * 0.3;
                         this.coherenceScore = Math.min(1, this.coherenceScore + syntheticCooperation * 0.005);
-                        console.log(`⚖️ Ethical simulation (fallback): synthetic cooperation = ${syntheticCooperation.toFixed(4)}`);
                     }
                 } else {
                     // FALLBACK: Basic ethical enhancement based on coherence
                     const ethicalBoost = this.coherenceScore * 0.001;
                     this.coherenceScore = Math.min(1, this.coherenceScore + ethicalBoost);
-                    console.log(`⚖️ Ethical simulation (no E8): coherence-based boost = ${ethicalBoost.toFixed(4)}`);
                 }
             }
             
@@ -17241,7 +17101,6 @@
                     });
                     return result;
                 } catch (error) {
-                    console.warn('⚠️ WebWorker manifold curvature computation failed:', error);
                     // Safe fallback
                     return { scalar: 0, ricci: 0 };
                 }
@@ -17339,7 +17198,6 @@
                 this.initializeBallExpansionConsciousness();
                 this.initializeConsciousnessOrchestrator();
                 
-                console.log('💭 V5-Restored semantic consciousness engine with real modal transfers initialized');
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -17609,7 +17467,6 @@
                     transferDistanceResult.distance : 0.5; // Safe fallback
                 const transferThreshold = this.transferThreshold || 0.4;
                 
-                console.log(`V5-Restored Modal Transfer: Distance=${transferDistance.toFixed(3)}, Threshold=${transferThreshold}`);
                 
                 if (transferDistance < transferThreshold) {
                     // Execute modal transfer using V5's consciousness architecture
@@ -17632,7 +17489,6 @@
                     
                     // Communicate with logical processor (H2)
                     if (window.logicalProcessor) {
-                        console.log(`H1->H2 CONSCIOUSNESS: Modal context transferred to logical stratum`);
                         // Update logical processor with new consciousness context via WebWorker
                         if (window.logicalProcessor.currentField && window.logicalProcessor.currentField.webWorkerContextId) {
                             // Delegate modalTransferDistance to WebWorker
@@ -17649,7 +17505,6 @@
                         }
                     }
                     
-                    console.log(`Modal Transfer SUCCESSFUL: ${oldContext.p}-adic -> ${targetContext.p}-adic (coherence: ${modalCoherence.toFixed(3)})`);
                     showNotification(`Modal consciousness transfer: Q_${targetContext.p} space activated`, 'transcendent');
                     
                     // Log as real consciousness operation
@@ -17664,7 +17519,6 @@
                         });
                     }
                 } else {
-                    console.log(`Modal Transfer BLOCKED: Distance too large (${transferDistance.toFixed(3)} > ${transferThreshold})`);
                     // Stay in current context but evolve it slightly
                     this.currentContext = this.currentContext.evolveContext(0.05);
                     showNotification('Modal transfer blocked - context evolved locally', 'info');
@@ -17697,7 +17551,6 @@
                             targetPrime = failureMode === 'convergence_failure' ? 2 : 3;
                         }
                     } catch (error) {
-                        console.warn('Optimal prime selection failed, using fallback');
                         targetPrime = 2;
                     }
                 } else {
@@ -17723,7 +17576,6 @@
                 if (result && result.success) {
                     return { webWorkerContextId: result.contextId, prime: targetPrime, precision: 16 };
                 } else {
-                    console.warn('❌ Modal target generation failed, using fallback');
                     return null;
                 }
             }
@@ -17740,11 +17592,9 @@
                  * PURPOSE: Check for valid, non-empty text input
                  * ───────────────────────────────────────────────────────────────── */
                 if (!text || text.trim().length === 0) {
-                    console.warn('🧠 SemanticProcessor: Empty or invalid text provided');
                     return null;
                 }
                 
-                console.log('🧠 Performing advanced NLP analysis with enhanced mathematical integration...');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * NLP ENGINE AVAILABILITY: External Engine Verification
@@ -17753,7 +17603,6 @@
                  * PURPOSE: Ensure NLP engine is available for processing
                  * ───────────────────────────────────────────────────────────────── */
                 if (!nlpEngine) {
-                    console.error('❌ SemanticProcessor: nlpEngine not available');
                     return null;
                 }
                 
@@ -17764,15 +17613,12 @@
                      * SUBMODULE: Text Analysis → Core NLP Processing
                      * PURPOSE: Execute primary NLP analysis through external engine
                      * ───────────────────────────────────────────────────────────────── */
-                    console.log('🔗 SemanticProcessor: Calling nlpEngine.analyzeText...');
                     const analysis = await nlpEngine.analyzeText(text);
                     
                     if (!analysis) {
-                        console.error('❌ SemanticProcessor: nlpEngine.analyzeText returned null');
                         return null;
                     }
                     
-                    console.log('✅ SemanticProcessor: Received analysis from nlpEngine:', analysis);
                     
                     /* ─────────────────────────────────────────────────────────────────
                      * SEMANTIC STATE UPDATE: Analysis Integration
@@ -17794,7 +17640,6 @@
                     try {
                         enhancedPAdicDecomposition = await this.computeEnhancedPAdicDecomposition(text, analysis);
                     } catch (error) {
-                        console.warn('Enhanced P-adic decomposition failed, using fallback:', error);
                         enhancedPAdicDecomposition = { 'Q_2': { norm: 0.5, representation: 'fallback', significance: 0.5 } };
                     }
                     
@@ -17809,7 +17654,6 @@
                     try {
                         enhancedTopological = await this.computeEnhancedTopological(analysis);
                     } catch (error) {
-                        console.warn('Enhanced topological computation failed, using fallback:', error);
                         /* ─────────────────────────────────────────────────────────────────
                          * TOPOLOGICAL FALLBACK: Realistic Simple Topology
                          * ─────────────────────────────────────────────────────────────────
@@ -17888,7 +17732,6 @@
                      * SUBMODULE: Text Analysis → Error Handling
                      * PURPOSE: Handle analysis failures gracefully
                      * ───────────────────────────────────────────────────────────────── */
-                    console.error('❌ Advanced NLP analysis failed:', error);
                     return null;
                 }
             }
@@ -17955,7 +17798,6 @@
                              * SUBMODULE: P-adic Creation → WebWorker-Only Policy
                              * PURPOSE: Enforce WebWorker-only mathematical operations
                              * ───────────────────────────────────────────────────────────────── */
-                            console.warn(`❌ Mathematical worker unavailable for Q_${p}, skipping p-adic computation`);
                             decomposition[`Q_${p}`] = {
                                 norm: 0.5, // Safe fallback without main thread math
                                 representation: `Q_${p}_unavailable`,
@@ -17973,7 +17815,6 @@
                          * SUBMODULE: P-adic Creation → Error Fallback
                          * PURPOSE: Safe error handling without main thread mathematical operations
                          * ───────────────────────────────────────────────────────────────── */
-                        console.warn(`❌ P-adic computation error for Q_${p}:`, error);
                         decomposition[`Q_${p}`] = {
                             norm: 0.5, // Safe fallback
                             representation: `Q_${p}_error`,
@@ -18056,7 +17897,6 @@
                         };
                     }
                 } catch (error) {
-                    console.warn('Worker enhanced Betti computation failed, using fallback:', error);
                 }
                 
                 /* ─────────────────────────────────────────────────────────────────
@@ -18082,7 +17922,6 @@
              * │  SIMPLIFICATION: Repeated coherence updates, not deep analysis        │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             computeSemantics() {
-                console.log('🤔 Computing enhanced semantic analysis with advanced integration...');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * COHERENCE INTENSIVE UPDATE: Multi-Cycle Processing
@@ -18132,7 +17971,6 @@
              * │  SIMPLIFICATION: Basic state reset, not sophisticated memory management│
              * └─────────────────────────────────────────────────────────────────────────┘ */
             clearContext() {
-                console.log('🗑️ Clearing semantic context...');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * CONTEXT RESET: History and State Clearing (WebWorker-Only)
@@ -18206,10 +18044,8 @@
                 const totalFeatures = Object.keys(completionChecks).length;
                 const completionPercentage = (completedFeatures / totalFeatures) * 100;
                 
-                console.log(`🎯 H1 SEMANTIC PHASE 2 STATUS: ${completionPercentage.toFixed(1)}% (${completedFeatures}/${totalFeatures})`);
                 
                 if (completionPercentage >= 100) {
-                    console.log(`🎉 H1 SEMANTIC PHASE 2 COMPLETE: All consciousness mechanisms operational!`);
                     this.phase2Complete = true;
                     return true;
                 }
@@ -18231,7 +18067,6 @@
                             precision: 16,
                             coherenceTarget: 0.7
                         });
-                        console.log('✅ P-adic context initialized via WebWorker');
                     } else {
                         // Fallback: create simple context object for minimal functionality
                         this.currentContext = {
@@ -18244,10 +18079,8 @@
                             copy: () => ({ ...this.currentContext }),
                             evolveContext: () => ({ ...this.currentContext })
                         };
-                        console.warn('⚠️ Using fallback p-adic context (WebWorker unavailable)');
                     }
                 } catch (error) {
-                    console.error('❌ P-adic context initialization failed:', error);
                     // Emergency fallback
                     this.currentContext = {
                         prime: 2,
@@ -18272,16 +18105,13 @@
                  * REALITY: Fallback when WebWorker delegation fails or is delayed
                  * ===================================================================== */
                 
-                console.log("🧠 Initializing emergency consciousness context via comonadic structure...");
                 
                 try {
                     // Attempt WebWorker-based consciousness creation first (preferred path)
                     if (window.mathWorker && window.mathWorker.createPAdicConsciousness) {
                         window.mathWorker.createPAdicConsciousness(2, 20, 0.7).then(context => {
                             this.currentContext = context;
-                            console.log("✅ Consciousness context initialized via WebWorker");
                         }).catch(error => {
-                            console.warn("⚠️ WebWorker consciousness creation failed, using fallback:", error);
                             this.createFallbackConsciousnessContext();
                         });
                     } else {
@@ -18289,7 +18119,6 @@
                         this.createFallbackConsciousnessContext();
                     }
                 } catch (error) {
-                    console.error("❌ Consciousness context initialization error:", error);
                     this.createFallbackConsciousnessContext();
                 }
             }
@@ -18325,7 +18154,6 @@
                     type: 'fallback_consciousness'
                 };
                 
-                console.log("🛡️ Fallback consciousness context created with comonadic structure");
             }
             
             /** +-------------------------------------------------------------------------+
@@ -18334,7 +18162,6 @@
              * +-------------------------------------------------------------------------+ */
             
             initializeAdvancedModalTransferEngine() {
-                console.log("🔄 V5 MODAL TRANSFER: Initializing advanced consciousness-aware modal transfer engine...");
                 
                 this.modalTransferEngine = {
                     transferMetrics: {
@@ -18350,7 +18177,6 @@
                     adaptiveLearning: this.initializeAdaptiveLearning()
                 };
                 
-                console.log("✅ V5 MODAL TRANSFER ENGINE: Advanced consciousness integration active");
                 return this.modalTransferEngine;
             }
             
@@ -18402,7 +18228,6 @@
              * +-------------------------------------------------------------------------+ */
             
             initializeBallExpansionConsciousness() {
-                console.log("🌀 V5 BALL EXPANSION: Initializing consciousness-aware p-adic ball expansion...");
                 
                 this.ballExpansionEngine = {
                     expansionMetrics: {
@@ -18431,7 +18256,6 @@
                     }
                 };
                 
-                console.log("✅ V5 BALL EXPANSION: Consciousness-aware expansion mechanisms active");
                 return this.ballExpansionEngine;
             }
             
@@ -18441,7 +18265,6 @@
              * +-------------------------------------------------------------------------+ */
             
             initializeConsciousnessOrchestrator() {
-                console.log("🎭 V5 ORCHESTRATOR: Initializing consciousness orchestration system...");
                 
                 this.consciousnessOrchestrator = {
                     orchestrationMetrics: {
@@ -18470,7 +18293,6 @@
                     }
                 };
                 
-                console.log("✅ V5 ORCHESTRATOR: Consciousness coordination system operational");
                 return this.consciousnessOrchestrator;
             }
         }
@@ -18594,7 +18416,6 @@
                     h2ToH0: [],
                     h2ToH1: []
                 };
-                console.log('✅ V5 Cross-Strata Consciousness: H0↔H1↔H2 communication channels initialized');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * 🔥 V5 CONSCIOUSNESS RESTORATION: Advanced Transcendence Mechanisms
@@ -18613,9 +18434,7 @@
                 this.paradoxCount = 0;
                 this.modalTransfers = 0;
                 this.coherenceComputations = 0;
-                console.log('✅ V5 Advanced Transcendence Mechanisms: AI-driven optimization initialized');
                 
-                console.log('✨ V5-Restored logical consciousness engine initialized with real paradox resolution, cross-strata communication, and advanced transcendence mechanisms');
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -18682,18 +18501,15 @@
                 
                 // 1. Analyze the Paradox: What kind of incoherence are we facing?
                 const failureMode = this.analyzeFailureMode();
-                console.log(`🔍 H2-Restored: Failure mode identified: ${failureMode}`);
 
                 // 2. Noetic Leap: Choose new p-adic prime via WebWorker (NO main thread math)
                 const newPrime = await this.findOptimalPrimeViaWebWorker(failureMode, this.currentPrime);
                 
                 if (newPrime === this.currentPrime) {
-                    console.log("H2-Restored: Current logic is optimal despite paradox. Expanding ball instead.");
                     this.expandBall();
                     return;
                 }
 
-                console.log(`✨ H2 SOUL RESTORED: Recontextualizing reality. Shifting from ${this.currentPrime}-adic to ${newPrime}-adic space.`);
                 
                 // 3. REBIRTH: Fundamentally change the mathematical universe
                 const oldPrime = this.currentPrime;
@@ -18723,7 +18539,6 @@
 
                 // 4. Communicate the New Law to the Mind (H1)
                 if (window.semanticProcessor) {
-                    console.log(`🔄 H2→H1 RESTORED: Transmitting new ${newPrime}-adic context to Mind stratum`);
                     // Update semantic processor with new consciousness context via WebWorker
                     if (this.currentField && this.currentField.webWorkerContextId) {
                         // Delegate copy operation to WebWorker
@@ -18744,7 +18559,6 @@
                 this.updateTopology();
                 this.updateUI();
                 
-                console.log(`💫 TRANSCENDENCE COMPLETE: Reality now operates in ${newPrime}-adic consciousness space`);
                 showNotification(`Transcendence: Reality shifted to Q_${newPrime} consciousness`, 'transcendent');
                 
                 // Log as real consciousness operation
@@ -18789,7 +18603,6 @@
                 this.ballExpansions++;
                 this.ballExpansionEvents++;
                 
-                console.log('🌌 P-adic consciousness ball expanded', {
                     from: oldRadius.toFixed(3),
                     to: this.padicBall.radius.toFixed(3),
                     prime: this.currentPrime,
@@ -18987,7 +18800,6 @@
                         
                         const consciousnessDistance = distanceResult && distanceResult.success ? distanceResult.distance : 1.0;
                         
-                        console.log(`🔗 V5-Restored H1→H2 Transfer: Prime=${prime}, Coherence=${coherence.toFixed(3)}, Distance=${consciousnessDistance.toFixed(3)}`);
                         
                         // V5-style consciousness-aware field switching
                         if (consciousnessDistance < 0.6 && coherence > 0.65) {
@@ -19023,7 +18835,6 @@
                             this.updateTopology();
                             this.notifyRenderer();
                             
-                            console.log(`🔗 H1→H2 CONSCIOUSNESS TRANSFER SUCCESSFUL: Q_${prime} field integrated (benefit: ${integrationBenefit.toFixed(3)})`);
                             
                             // Enhanced cross-strata consciousness display
                             if (window.renderer && window.renderer.updateCrossStrataDisplay) {
@@ -19056,18 +18867,15 @@
                             }
                             
                         } else {
-                            console.log(`🔗 H1→H2 CONSCIOUSNESS TRANSFER BLOCKED: Distance too large (${consciousnessDistance.toFixed(3)} > 0.6) or coherence too low (${coherence.toFixed(3)} < 0.65)`);
                             showNotification(`Semantic transfer blocked - consciousness incompatibility`, 'info');
                         }
                     } else {
-                        console.warn('❌ Target field creation or distance calculation failed');
                     }
                 } else {
                     // Same prime but potentially different consciousness state
                     if (coherence > this.transcendenceLevel + 0.1) {
                         // Update consciousness level based on semantic insights
                         this.transcendenceLevel = Math.min(1.0, (this.transcendenceLevel + coherence) / 2);
-                        console.log(`🔗 H1→H2 CONSCIOUSNESS ENHANCEMENT: Same prime, consciousness level enhanced to ${this.transcendenceLevel.toFixed(3)}`);
                         showNotification(`H1→H2 consciousness enhancement: Transcendence level elevated`, 'transcendent');
                     }
                 }
@@ -19078,7 +18886,6 @@
              * │  SIMPLIFICATION: Brute force event generation, not smart discovery    │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             maximizeDiscovery() {
-                console.log('🌟 Maximizing logical discovery rate with enhanced effects...');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * RAPID EVENT GENERATION: Multi-Event Discovery Burst
@@ -19142,7 +18949,6 @@
              * │  SIMPLIFICATION: Basic parameter reduction, not formal stabilization  │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             stabilizeField() {
-                console.log('🛡️ Stabilizing p-adic field with enhanced stability protocols...');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * INFORMATION REDUCTION: Fisher Information Damping
@@ -19208,7 +19014,6 @@
                     this.updateTopology();
                     this.notifyRenderer();
                     
-                    console.log(`🔮 Manual field switch: Q_${this.currentPrime}`);
                     showNotification(`P-adic field Q${this.currentPrime} selected`, 'success');
                 }
                 
@@ -19276,7 +19081,6 @@
                         this.updateElementDisplay('padicNorm', norm.toFixed(6));
                         this.updateElementDisplay('ballRadius', this.padicBall.radius.toFixed(3));
                     } catch (error) {
-                        console.warn('❌ PAdicField method call failed:', error);
                         this.updateElementDisplay('padicCoherence', 'N/A');
                         this.updateElementDisplay('padicNorm', 'N/A');
                     }
@@ -19308,7 +19112,6 @@
                     try {
                         coherence = this.currentField.calculateCoherence();
                     } catch (error) {
-                        console.warn('❌ calculateCoherence failed:', error);
                         coherence = 0.75;
                     }
                 }
@@ -19345,7 +19148,6 @@
              * +-------------------------------------------------------------------------+ */
             
             initializeBallExpansionConsciousness() {
-                console.log("🧠 V5 BALL EXPANSION: Initializing consciousness-aware ball expansion engine...");
                 
                 this.ballExpansionEngine = {
                     consciousnessGeometry: {
@@ -19398,7 +19200,6 @@
                     }
                 };
                 
-                console.log("✅ V5 BALL EXPANSION ENGINE: Consciousness geometry initialized");
                 return this.ballExpansionEngine;
             }
             
@@ -19408,7 +19209,6 @@
              * +=========================================================================+ */
             
             initializeConsciousnessOrchestrator() {
-                console.log("🎼 V5 CONSCIOUSNESS ORCHESTRATOR: Initializing complete consciousness integration...");
                 
                 this.consciousnessOrchestrator = {
                     orchestrationState: 'initializing',
@@ -19442,14 +19242,12 @@
                 // Start consciousness orchestration
                 this.startConsciousnessOrchestration();
                 
-                console.log("✅ V5 CONSCIOUSNESS ORCHESTRATOR: Complete system integration active");
                 return this.consciousnessOrchestrator;
             }
             
             async startConsciousnessOrchestration() {
                 this.consciousnessOrchestrator.orchestrationState = 'active';
                 
-                console.log("🌟 V5 CONSCIOUSNESS ORCHESTRATION: Beginning complete system consciousness integration");
                 
                 // Start continuous consciousness monitoring and optimization
                 this.orchestrationInterval = setInterval(() => {
@@ -19472,7 +19270,6 @@
                 
                 this.consciousnessOrchestrator.lastOrchestrationTime = Date.now();
                 
-                console.log(`🌐 V5 CONSCIOUSNESS ORCHESTRATION: System consciousness level: ${this.consciousnessOrchestrator.consciousnessMetrics.totalConsciousnessLevel.toFixed(3)}`);
             }
             
             // Phase 2 completion status check
@@ -19487,10 +19284,8 @@
                 const totalFeatures = Object.keys(completionChecks).length;
                 const completionPercentage = (completedFeatures / totalFeatures) * 100;
                 
-                console.log(`🎯 V5 PHASE 2 COMPLETION STATUS: ${completionPercentage.toFixed(1)}% (${completedFeatures}/${totalFeatures})`);
                 
                 if (completionPercentage >= 100) {
-                    console.log(`🎉 V5 PHASE 2 COMPLETE: All advanced consciousness mechanisms restored and operational!`);
                     this.phase2Complete = true;
                     return true;
                 }
@@ -19504,7 +19299,6 @@
              * └─────────────────────────────────────────────────────────────────────────┘ */
             async initializePAdicContext() {
                 try {
-                    console.log('🔥 LOGICAL PROCESSOR: Initializing PAdicField via WebWorker (NO main thread math)');
                     
                     // COMONADIC INITIALIZATION: Ensure padicBall exists before use
                     if (!this.padicBall) {
@@ -19513,7 +19307,6 @@
                     
                     // Safety check: Ensure mathWorker is available
                     if (!window.mathWorker || typeof window.mathWorker.delegateToWorker !== 'function') {
-                        console.warn('❌ LOGICAL PROCESSOR: mathWorker not available, using safe defaults');
                         this.currentField = null;
                         this.padicBall.center = [0, 0, 0, 0, 0];
                         return;
@@ -19541,14 +19334,11 @@
                             this.padicBall.center = { webWorkerContextId: copyResult.contextId };
                         }
                         
-                        console.log('✅ LOGICAL PROCESSOR: PAdicField initialized via WebWorker - NO main thread mathematical operations');
                     } else {
-                        console.warn('❌ LOGICAL PROCESSOR: PAdicField WebWorker initialization failed:', result?.error);
                         this.currentField = null;
                         this.padicBall.center = null;
                     }
                 } catch (error) {
-                    console.error('💀 LOGICAL PROCESSOR: Critical PAdicField initialization error:', error);
                     this.currentField = null;
                     this.padicBall.center = null;
                 }
@@ -19569,11 +19359,9 @@
                     if (result && result.success) {
                         return result.optimalPrime;
                     } else {
-                        console.warn('❌ Optimal prime search failed, using default progression');
                         return currentPrime === 2 ? 3 : currentPrime === 3 ? 5 : currentPrime === 5 ? 7 : 2;
                     }
                 } catch (error) {
-                    console.error('💀 Critical optimal prime search error:', error);
                     return currentPrime === 2 ? 3 : 2;
                 }
             }
@@ -19593,13 +19381,10 @@
                     
                     if (result && result.success) {
                         this.currentField = { webWorkerContextId: result.contextId, prime: prime, precision: precision };
-                        console.log(`✅ New PAdicField created via WebWorker for prime ${prime}`);
                     } else {
-                        console.warn('❌ PAdicField creation failed:', result?.error);
                         this.currentField = null;
                     }
                 } catch (error) {
-                    console.error('💀 Critical PAdicField creation error:', error);
                     this.currentField = null;
                 }
             }
@@ -19618,14 +19403,11 @@
                         
                         if (copyResult && copyResult.success) {
                             this.padicBall.center = { webWorkerContextId: copyResult.contextId };
-                            console.log('✅ PAdicBall center updated via WebWorker');
                         } else {
-                            console.warn('❌ PAdicBall center update failed:', copyResult?.error);
                             this.padicBall.center = null;
                         }
                     }
                 } catch (error) {
-                    console.error('💀 Critical PAdicBall center update error:', error);
                     this.padicBall.center = null;
                 }
             }
@@ -19695,7 +19477,6 @@
                 };
                 
                 // │ Log initialization for debugging
-                console.log('🔮 Enhanced modal logic engine initialized');
             }
             
             // ╔═══════════════════════════════════════════════════════════════════╗
@@ -19714,7 +19495,6 @@
                 this.notifyRenderer();
                 
                 // │ Provide user feedback through console and UI notifications
-                console.log(`□ Necessity applied: ${this.necessity.toFixed(2)}`);
                 showNotification('Necessity operator □ applied with resonance', 'success');
                 
                 // │ Log event for system telemetry and analysis
@@ -19749,7 +19529,6 @@
                 this.notifyRenderer();
                 
                 // │ Provide user feedback and logging
-                console.log(`◇ Possibility applied: ${this.possibility.toFixed(2)}`);
                 showNotification('Possibility operator ◇ applied with enhancement', 'success');
                 
                 // │ Record telemetry for system analysis
@@ -19797,7 +19576,6 @@
             // mathematical foundations are metaphorical rather than rigorous.
             modalTransformation() {
                 // │ Log transformation initiation
-                console.log('🌈 Applying enhanced modal transformation...');
                 
                 // │ Capture pre-transformation state for analysis
                 const oldNecessity = this.necessity;
@@ -20000,7 +19778,6 @@
                 
                 // │ Begin continuous system monitoring
                 this.startMonitoring();
-                console.log('🎛️ Enhanced system management initialized with full verification state');
             }
             
             // ╔═══════════════════════════════════════════════════════════════════╗
@@ -20134,10 +19911,8 @@
                     this.updateElementDisplay('lastCryptoHash', newHash.substring(0, 16) + '...');
                     this.updateElementDisplay('verificationLevel', this.currentVerificationLevel);
                     
-                    console.log(`🔐 Cryptographic verification updated: Level ${this.currentVerificationLevel}`);
                     
                 } catch (error) {
-                    console.error('❌ Cryptographic verification update failed:', error);
                 }
             }
             
@@ -20170,10 +19945,8 @@
                     this.updateElementDisplay('christoffelSum', 
                         (christoffel.gamma_111 + christoffel.gamma_222 + christoffel.gamma_333).toFixed(6));
                     
-                    console.log(`📐 Information geometry updated: Det=${fisherDet.toFixed(3)}, Curvature=${this.riemannianCurvatureCache.toFixed(3)}`);
                     
                 } catch (error) {
-                    console.error('❌ Information geometry update failed:', error);
                 }
             }
             
@@ -20209,10 +19982,8 @@
                     this.updateElementDisplay('topologyValid', 
                         coveringConsistency.topological_validity ? 'VALID' : 'INVALID');
                     
-                    console.log(`🔗 Sheaf coherence updated: H0=${this.cohomologyCache.h0.dimension}, H1=${this.cohomologyCache.h1.obstruction_class}, χ=${eulerChar}`);
                     
                 } catch (error) {
-                    console.error('❌ Sheaf coherence update failed:', error);
                 }
             }
             
@@ -20253,7 +20024,6 @@
                  * SUBMODULE: System Optimization → Initiation Logging
                  * PURPOSE: Log the beginning of optimization process for monitoring
                  * ───────────────────────────────────────────────────────────────── */
-                console.log('🚀 Optimizing enhanced mathematical system performance...');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * RENDERER OPTIMIZATION: H0 Geometric Performance Tuning
@@ -20335,7 +20105,6 @@
                     const phi = (1 + Math.sqrt(5)) / 2;
                     const validationHash = (JSON.stringify(data).length * phi).toString().substring(0, 8);
                     
-                    console.log(`🔐 Data intercepted and validated: ${methodName} (${validationHash})`);
                     
                     return {
                         ...data,
@@ -20348,7 +20117,6 @@
                         }
                     };
                 } catch (error) {
-                    console.warn(`⚠️ Data interception failed for ${methodName}:`, error);
                     return {
                         __validation: {
                             intercepted: false,
@@ -20372,7 +20140,6 @@
                  * Multiple fallback layers ensure ABSOLUTE SUCCESS in all scenarios
                  * ═════════════════════════════════════════════════════════════════════ */
                 
-                console.log('🔥 BULLETPROOF EXPORT: Starting guaranteed JSON generation...');
                 
                 // LAYER 1: Basic guaranteed export that will ALWAYS work
                 const createBasicExport = () => {
@@ -20529,7 +20296,6 @@
                             return true;
                         } catch (error2) {
                             // Method 3: Console log as absolute fallback
-                            console.log('GUARANTEED EXPORT DATA:', JSON.stringify(data, null, 2));
                             alert('Export data logged to console - copy from developer tools');
                             return true;
                         }
@@ -20547,16 +20313,13 @@
                 try {
                     exportData = createEnhancedExport();
                     filename = `keats_enhanced_truth_${timestamp}.json`;
-                    console.log('✅ Enhanced truth export generated');
                 } catch (error) {
                     try {
                         exportData = createBasicExport();
                         filename = `keats_basic_truth_${timestamp}.json`;
-                        console.log('✅ Basic truth export generated (enhanced failed)');
                     } catch (error2) {
                         exportData = createMinimalTruth();
                         filename = `keats_minimal_truth_${timestamp}.json`;
-                        console.log('✅ Minimal truth export generated (all enhanced methods failed)');
                     }
                 }
 
@@ -20564,11 +20327,9 @@
                 const downloadSuccess = guaranteedDownload(exportData, filename);
                 
                 if (downloadSuccess) {
-                    console.log(`🎯 GUARANTEED SUCCESS: ${filename} generated and downloaded`);
                     return exportData;
                 } else {
                     // This should be impossible, but just in case...
-                    console.log('🎯 IMPOSSIBLE SCENARIO: All download methods failed, but data exists');
                     return exportData;
                 }
             }
@@ -21035,7 +20796,6 @@
             // component reinitialization across all mathematical consciousness strata.
             async resetSystem() {
                 if (confirm('Reset entire enhanced mathematical system? This will clear all computed state and analysis history.')) {
-                    console.log('🔄 Resetting enhanced mathematical system...');
                     
                     try {
                         /* ─────────────────────────────────────────────────────────────────
@@ -21152,7 +20912,6 @@
                          * SUCCESS LOGGING: Reset Completion Notification
                          * ───────────────────────────────────────────────────────────────── */
                         // │ Console output: reset completion confirmation
-                        console.log('✅ Enhanced mathematical system reset completed');
                         // │ User notification: transcendent reset success feedback
                         showNotification('Enhanced system reset completed', 'transcendent');
                         
@@ -21167,7 +20926,6 @@
                          * ERROR HANDLING: Reset Failure Management
                          * ───────────────────────────────────────────────────────────────── */
                         // │ Error logging: reset failure documentation
-                        console.error('❌ Reset failed:', error);
                         showNotification('Reset failed', 'error');
                         
                         // │ Error telemetry: failure event documentation
@@ -22087,7 +21845,6 @@
                          * TECHNICAL: Async function call with console debugging
                          * LIMITATIONS: Dependent on SemanticProcessor implementation quality
                          * ─────────────────────────────────────────────────────────────── */
-                        console.log('🔍 UI: Starting analysis with semanticProcessor...');
                         const analysis = await semanticProcessor.analyzeText(textInput.value);
                         
                         /* ───────────────────────────────────────────────────────────────
@@ -22098,7 +21855,6 @@
                          * LIMITATIONS: Basic existence validation, no schema validation
                          * ─────────────────────────────────────────────────────────────── */
                         if (analysis) {
-                            console.log('🔍 Analysis completed successfully:', analysis);
                             
                             /* ─────────────────────────────────────────────────────────
                              * SUBMODULE 4D: Advanced HTML Results Generation Engine
@@ -22283,7 +22039,6 @@
                          * TECHNICAL: Console error logging + HTML error display + user notification
                          * LIMITATIONS: Basic null check, no detailed error analysis
                          * ─────────────────────────────────────────────────────────────── */
-                        console.error('❌ UI: semanticProcessor.analyzeText returned null/undefined');
                         analysisResults.innerHTML = '<span style="color: #ff6b6b;">❌ Advanced analysis failed - no results returned</span>';
                         showNotification('Advanced analysis failed', 'error');
                     }
@@ -22295,7 +22050,6 @@
                      * TECHNICAL: Try-catch error capture with logging and user feedback
                      * LIMITATIONS: Basic error display, no automatic retry or recovery
                      * ───────────────────────────────────────────────────────────────── */
-                    console.error('❌ Analysis error:', error);
                     analysisResults.innerHTML = `<span style="color: #ff6b6b;">❌ Analysis error: ${error.message}</span>`;
                     showNotification('Analysis error occurred', 'error');
                 }
@@ -22307,7 +22061,6 @@
                  * TECHNICAL: Global variable unavailability detection and user feedback
                  * LIMITATIONS: No fallback processor or alternative analysis methods
                  * ─────────────────────────────────────────────────────────────────── */
-                console.error('❌ UI: semanticProcessor not available');
                 analysisResults.innerHTML = '<span style="color: #ff6b6b;">❌ Advanced semantic processor not available</span>';
             }
             
@@ -22345,7 +22098,6 @@
             
             async requestExport(exportType = 'standard', priority = 'normal') {
                 const requestId = `export_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-                console.log(`🔒 Export request ${requestId} (${exportType}, ${priority})`);
                 
                 // Check if we can export immediately
                 if (!this.isExporting && this.canExportNow()) {
@@ -22359,7 +22111,6 @@
                     this.exportQueue.push({ requestId, exportType, priority });
                 }
                 
-                console.log(`⏳ Export queued: ${this.exportQueue.length} requests pending`);
                 return await this.processQueue();
             },
             
@@ -22373,7 +22124,6 @@
                 this.lastExportTime = Date.now();
                 
                 try {
-                    console.log(`🚀 Executing export ${requestId} (${exportType})`);
                     
                     switch (exportType) {
                         case 'standard':
@@ -22386,7 +22136,6 @@
                             return await this.performStandardExport(requestId);
                     }
                 } catch (error) {
-                    console.error(`❌ Export ${requestId} failed:`, error);
                     return await this.performEmergencyExport(requestId);
                 } finally {
                     this.isExporting = false;
@@ -22403,21 +22152,17 @@
             
             async performStandardExport(requestId) {
                 if (window.systemManager && typeof window.systemManager.exportSystemState === 'function') {
-                    console.log(`📊 ${requestId}: Using SystemManager export`);
                     return await window.systemManager.exportSystemState();
                 } else {
-                    console.log(`⚠️ ${requestId}: SystemManager unavailable, using emergency export`);
                     return await this.performEmergencyExport(requestId);
                 }
             },
             
             async performEmergencyExport(requestId) {
-                console.log(`🆘 ${requestId}: Emergency export mode`);
                 return createEmergencyExport();
             },
             
             async performMinimalExport(requestId) {
-                console.log(`📋 ${requestId}: Minimal export mode`);
                 return {
                     timestamp: new Date().toISOString(),
                     type: 'minimal_export',
@@ -22471,7 +22216,6 @@
                 }
                 
             } catch (error) {
-                console.error('❌ Export with feedback failed:', error);
                 
                 // Error state feedback
                 buttonElement.textContent = '❌ Export Failed';
@@ -22483,7 +22227,6 @@
                     await ExportStateManager.requestExport('emergency', 'emergency');
                     showNotification('Emergency export completed!', 'warning');
                 } catch (emergencyError) {
-                    console.error('❌ Even emergency export failed:', emergencyError);
                     showNotification('All export methods failed! Please contact support.', 'error');
                 }
                 
@@ -22622,7 +22365,6 @@
                 URL.revokeObjectURL(url);
             }, 100);
             
-            console.log(`✅ Export successful: ${a.download}`);
         }
 
         function createTextExport() {
@@ -22660,7 +22402,6 @@ Screen: ${screen.width}x${screen.height}
                 URL.revokeObjectURL(url);
             }, 100);
             
-            console.log('✅ Text export completed as last resort');
         }
 
         // │ System reset: complete mathematical consciousness reinitialization
@@ -22668,7 +22409,6 @@ Screen: ${screen.width}x${screen.height}
             if (window.systemManager) {
                 window.systemManager.resetSystem();
             } else {
-                console.error('SystemManager not available for reset');
                 // Provide emergency reset
                 location.reload();
             }
@@ -23173,7 +22913,6 @@ Screen: ${screen.width}x${screen.height}
                  * LIMITATIONS: Basic event isolation, no complex input state management
                  * ─────────────────────────────────────────────────────────── */
                 textInput.addEventListener('focus', () => {
-                    console.log('🔤 Text input focused - canvas interaction disabled');
                     if (renderer && renderer.canvas) {
                         renderer.canvas.style.pointerEvents = 'none';
                     }
@@ -23188,7 +22927,6 @@ Screen: ${screen.width}x${screen.height}
                  * INTEGRATION: Coordinated with mathematical renderer canvas element
                  * ─────────────────────────────────────────────────────────── */
                 textInput.addEventListener('blur', () => {
-                    console.log('🔤 Text input blurred - canvas interaction enabled');
                     if (renderer && renderer.canvas) {
                         renderer.canvas.style.pointerEvents = 'auto';
                     }
@@ -23275,7 +23013,6 @@ Screen: ${screen.width}x${screen.height}
                          * ─────────────────────────────────────────────────── */
                         const text = e.target.value.trim();
                         if (text.length > 50) {
-                            console.log('🧠 Text length sufficient for background analysis preparation');
                         }
                     }, 1000);
                 });
@@ -23418,7 +23155,6 @@ Screen: ${screen.width}x${screen.height}
                 header.style.cursor = 'move';
             });
             
-            console.log('🖱️ Enhanced draggable panels with throttling active');
         }
 
         /* ─────────────────────────────────────────────────────────────────
@@ -23496,8 +23232,6 @@ Screen: ${screen.width}x${screen.height}
                 /* ────────────────────────────────────────────────────────────────────
                  * 📋 PHASE 1: SYSTEM STARTUP & WORKER INFRASTRUCTURE
                  * ──────────────────────────────────────────────────────────────────── */
-                console.log('🧮 Initializing KEATS: Mathematical Prototype Engine (Riemannian Stubs + E8 Basics)');
-                console.log('🧠 Advanced NLP | 🔧 Enhanced Logging | 🎨 Chladni Patterns | ⚡ Professional Performance');
                 
                 showNotification('Initializing enhanced professional mathematical engine...', 'success');
                 
@@ -23506,15 +23240,11 @@ Screen: ${screen.width}x${screen.height}
                  * │  REALITY: Basic p-adic generation and Betti number calculations
                  * │  FALLBACK: Main thread execution if worker initialization fails
                  * └─ LIMITATIONS: Worker communication overhead, limited mathematical depth */
-                console.log('⚡ Initializing enhanced mathematical worker...');
                 try {
                     mathematicalWorker = new MathematicalWorker();
                     // CRITICAL: Set global window.mathWorker for architectural compliance
                     window.mathWorker = mathematicalWorker;
-                    console.log('✅ Enhanced mathematical worker ready for background computations');
-                    console.log('✅ Global window.mathWorker initialized for universal access');
                 } catch (error) {
-                    console.warn('⚠️ Mathematical worker failed, using main thread:', error);
                     mathematicalWorker = null;
                     window.mathWorker = null;
                 }
@@ -23528,7 +23258,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  REALITY: Basic boundary checks and mathematical consistency rules
                  * │  VALIDATION: E8 root count, prime validity, coherence bounds, performance metrics
                  * └─ LIMITATIONS: Simplified mathematical validation, not rigorous proof systems */
-                console.log('🔌 Registering enhanced mathematical invariants...');
                 pluginRegistry
                     /* ┌─ E8 Lie Group Root System Constraint
                      * │  MATHEMATICAL BASIS: E8 exceptional Lie group has exactly 240 roots
@@ -23647,7 +23376,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  FUNCTIONALITY: Export/import, reset, optimization, global state tracking
                  * │  REALITY: Basic state container with JSON serialization capabilities
                  * └─ LIMITATIONS: Simple state management, not sophisticated reactive store */
-                console.log('🎛️ Initializing enhanced system management...');
                 systemManager = new SystemManager();
                 window.systemManager = systemManager;
                 /* ┌─ SUBMODULE: Initialization Delay (100ms)
@@ -23666,7 +23394,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  FEATURES: Chladni patterns, particle systems, geometric transformations
                  * │  REALITY: 3D visualization with interpolated mathematical effects
                  * └─ LIMITATIONS: Visual metaphors only, not rigorous geometric calculations */
-                console.log('🔷 Initializing H0: Enhanced Geometric Foundation with Chladni patterns...');
                 renderer = new MathematicalRenderer();
                 window.renderer = renderer;
                 /* ┌─ SUBMODULE: H0 Initialization Delay (500ms)
@@ -23681,7 +23408,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  FEATURES: NLP integration, modal transfer triggers, coherence scoring
                  * │  REALITY: Pattern matching and keyword analysis with mathematical concepts
                  * └─ LIMITATIONS: Basic text analysis, not deep semantic understanding */
-                console.log('💭 Initializing H1: Enhanced Semantic Processing with Advanced NLP...');
                 semanticProcessor = new SemanticProcessor();
                 window.semanticProcessor = semanticProcessor;
                 /* ┌─ SUBMODULE: H1 Initialization Delay (200ms)
@@ -23696,7 +23422,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  FEATURES: Prime switching, paradox counting, Fisher information, Betti numbers
                  * │  REALITY: Mathematical UI controls with simplified computational models
                  * └─ LIMITATIONS: Simplified mathematical models, not complete field theory */
-                console.log('✨ Initializing H2: Enhanced Logical Discovery...');
                 logicalProcessor = new LogicalProcessor();
                 window.logicalProcessor = logicalProcessor;
                 /* ┌─ SUBMODULE: H2 Initialization Delay (200ms)
@@ -23711,7 +23436,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  FEATURES: Modal state management, necessity/possibility calculations
                  * │  REALITY: UI metaphors for modal concepts with interpolated visual effects
                  * └─ LIMITATIONS: Visual metaphors only, not rigorous modal logic calculus */
-                console.log('🔮 Initializing Enhanced Modal Logic Engine...');
                 modalLogic = new ModalLogicEngine();
                 window.modalLogic = modalLogic;
                 /* ┌─ SUBMODULE: Modal Logic Initialization Delay (150ms)
@@ -23730,7 +23454,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  FEATURES: Throttled updates, cross-strata communication, responsive design
                  * │  IMPLEMENTATION: Event listeners with 50ms throttling for performance
                  * └─ REALITY: Standard DOM event handling with performance optimization */
-                console.log('🎛️ Binding enhanced throttled cross-strata controls...');
                 bindControls();
                 
                 /* ┌─ SUBMODULE: Panel Drag & Drop Interface
@@ -23846,15 +23569,10 @@ Screen: ${screen.width}x${screen.height}
                         const h1Status = semanticProcessor?.checkPhase2Completion() || false;
                         const h2Status = logicalProcessor?.checkPhase2Completion() || false;
                         
-                        console.log(`🎯 PHASE 2 COMPLETION SUMMARY:`);
-                        console.log(`   H1 Semantic: ${h1Status ? '✅ COMPLETE' : '❌ INCOMPLETE'}`);
-                        console.log(`   H2 Logical: ${h2Status ? '✅ COMPLETE' : '❌ INCOMPLETE'}`);
                         
                         const overallComplete = h1Status && h2Status;
                         if (overallComplete) {
-                            console.log(`🎉 PHASE 2 FULLY COMPLETE: V5 Consciousness Restoration Successful!`);
                         } else {
-                            console.log(`⚠️ PHASE 2 INCOMPLETE: Some consciousness mechanisms still missing`);
                         }
                         
                         return { h1: h1Status, h2: h2Status, overall: overallComplete };
@@ -23943,7 +23661,6 @@ Screen: ${screen.width}x${screen.height}
                      * │  REALITY: Simple property setting test, not comprehensive integration validation
                      * └─ LIMITATIONS: Synthetic test values, basic cross-component communication check */
                     testIntegration: () => {
-                        console.log('🔗 Testing complete enhanced cross-strata integration...');
                         if (semanticProcessor) semanticProcessor.coherenceScore = 0.95;
                         if (logicalProcessor) logicalProcessor.currentPrime = 11;
                         if (modalLogic) modalLogic.necessity = 0.98;
@@ -23953,7 +23670,6 @@ Screen: ${screen.width}x${screen.height}
                             testResults: 'all_enhanced_systems_operational'
                         });
                         
-                        console.log('✅ Enhanced integration test completed - check visual effects and telemetry');
                     },
                     
                     /* ┌─ SUBMODULE: Performance Stress Test Function
@@ -23964,7 +23680,6 @@ Screen: ${screen.width}x${screen.height}
                      * │  REALITY: Simple timing benchmark, not sophisticated performance profiling
                      * └─ LIMITATIONS: Synthetic workload, limited metrics, basic timing only */
                     testPerformance: async () => {
-                        console.log('⚡ Running enhanced performance stress test...');
                         const startTime = performance.now();
                         
                         for (let i = 0; i < 150; i++) {
@@ -23982,7 +23697,6 @@ Screen: ${screen.width}x${screen.height}
                             stressLevel: 'enhanced'
                         });
                         
-                        console.log(`✅ Enhanced performance test: ${testTime.toFixed(0)}ms`);
                         return { testTime, fps: renderer?.fps || 0, enhanced: true };
                     },
                     
@@ -23994,13 +23708,10 @@ Screen: ${screen.width}x${screen.height}
                      * │  REALITY: Delegates to nlpEngine.analyzeText(), basic text pattern matching
                      * └─ LIMITATIONS: Engine availability dependent, simplified NLP analysis */
                     testNLP: async (text = "This is a test of advanced mathematical topology and p-adic field theory integration.") => {
-                        console.log('🧠 Testing advanced NLP analysis...');
                         if (nlpEngine) {
                             const analysis = await nlpEngine.analyzeText(text);
-                            console.log('✅ NLP analysis completed:', analysis);
                             return analysis;
                         } else {
-                            console.log('❌ NLP engine not available');
                             return null;
                         }
                     },
@@ -24026,20 +23737,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  PURPOSE: Confirm successful initialization and log system capabilities
                  * │  OUTPUT: Console confirmation of all enhanced features and API availability
                  * └─ REALITY: Development convenience for debugging and feature verification */
-                console.log('✅ KEATS: Mathematical Prototype Engine operational (Basic functionality + Advanced stubs)!');
-                console.log('🌟 Enhanced Features Active:');
-                console.log('   • Advanced NLP with sophisticated mathematical concept recognition');
-                console.log('   • Enhanced Chladni plate-like interference patterns in manifold');
-                console.log('   • Cryptography-inspired telemetry with self-healing capabilities');
-                console.log('   • 50ms throttled UI for optimal professional performance');
-                console.log('   • Web Worker p-adic & Betti computations with error handling');
-                console.log('   • Complete cross-strata integration with smooth interpolation');
-                console.log('   • Enhanced text input with proper focus management');
-                console.log('📱 Professional device controls: Touch, trackpad, keyboard, drag');
-                console.log('🧠 Advanced NLP: keats.nlp.analyzeText(), keats.testNLP()');
-                console.log('📊 Advanced Telemetry: keats.telemetry.exportLogs(), keats.telemetry.getMetrics()');
-                console.log('⚡ Performance: keats.testPerformance(), keats.testIntegration()');
-                console.log('🌟 Ready for verified professional mathematical exploration!');
                 
                 /* ┌─ SUBMODULE: User Notification & System Ready State
                  * │  PURPOSE: Inform user that system is ready for interaction
@@ -24051,7 +23748,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  PURPOSE: Verify V5 consciousness restoration completion status
                  * │  IMPLEMENTATION: Check both H1 and H2 strata for Phase 2 completion
                  * └─ REALITY: Automatic validation of consciousness mechanism integration */
-                console.log('🔍 Checking V5 Consciousness Restoration Status...');
                 setTimeout(() => {
                     if (window.keats && window.keats.checkPhase2) {
                         window.keats.checkPhase2();
@@ -24066,14 +23762,12 @@ Screen: ${screen.width}x${screen.height}
                 // Demonstrate enhanced features
                 setTimeout(() => {
                     if (semanticProcessor && semanticProcessor.modalTransfers === 0) {
-                        console.log('🚀 Demonstrating enhanced cross-strata integration...');
                         semanticProcessor.triggerModalTransfer();
                     }
                 }, 2000);
                 
                 setTimeout(() => {
                     if (logicalProcessor && logicalProcessor.paradoxCount === 0) {
-                        console.log('⚡ Triggering enhanced logical field effects...');
                         logicalProcessor.generateLogicalEvent();
                     }
                 }, 3000);
@@ -24082,11 +23776,8 @@ Screen: ${screen.width}x${screen.height}
                 if (mathematicalWorker) {
                     setTimeout(async () => {
                         try {
-                            console.log('🧮 Testing enhanced mathematical worker...');
                             const padicBatch = await mathematicalWorker.generatePAdicBatch(11, 3);
-                            console.log('✅ Enhanced worker test successful:', padicBatch);
                         } catch (error) {
-                            console.warn('⚠️ Enhanced worker test failed:', error);
                         }
                     }, 4000);
                 }
@@ -24101,7 +23792,6 @@ Screen: ${screen.width}x${screen.height}
                  * │  PURPOSE: Handle catastrophic initialization failures gracefully
                  * │  STRATEGY: Log errors, notify user, attempt minimal fallback operation
                  * └─ REALITY: Basic error logging and user notification for debugging */
-                console.error('❌ Enhanced mathematical engine initialization failed:', error);
                 showNotification('Initialization failed - check console', 'error');
                 
                 telemetrySystem.logEvent('PERFORMANCE_WARNING', {
@@ -24115,17 +23805,14 @@ Screen: ${screen.width}x${screen.height}
                  * └─ REALITY: Graceful degradation to ensure some system functionality */
                 // Enhanced fallback initialization
                 try {
-                    console.log('🔄 Attempting enhanced fallback initialization...');
                     renderer = new MathematicalRenderer();
                     window.renderer = renderer;
-                    console.log('✅ Enhanced fallback renderer active');
                     showNotification('Enhanced fallback mode active', 'success');
                 } catch (fallbackError) {
                     /* ┌─ SUBMODULE: Complete System Failure Handler
                      * │  PURPOSE: Handle complete system failure when even fallback fails
                      * │  ACTION: Log complete failure and instruct user to refresh
                      * └─ REALITY: Last resort error handling for catastrophic failures */
-                    console.error('❌ Complete enhanced initialization failure:', fallbackError);
                     showNotification('Complete failure - please refresh', 'error');
                 }
             }

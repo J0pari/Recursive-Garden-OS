@@ -10,9 +10,6 @@ const isDeployed = window.location.hostname !== 'localhost' &&
                    window.location.hostname !== '127.0.0.1' &&
                    !window.location.hostname.includes('192.168');
 
-// Log deployment status
-console.log(`🌐 Portal Morphisms: ${isDeployed ? 'ONLINE TOPOS' : 'Local Development'}`);
-
 // Fix console.log pollution in all demos
 if (isDeployed) {
     // Store original console.log for debugging

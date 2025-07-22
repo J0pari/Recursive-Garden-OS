@@ -1112,7 +1112,7 @@
             animateCursor();
         }
         
-        // Advanced markdown parser
+        // Advanced markdown parser with REAL CATEGORY THEORY
         class GardenParser {
             constructor() {
                 this.sectionCount = 0;
@@ -1123,6 +1123,184 @@
                     '■': 'actuality',
                     '♦': 'contingency'
                 };
+                
+                // CATEGORY THEORY: Proper Topos structure
+                this.topos = {
+                    // PULLBACK: Human intention → Mathematical structure
+                    pullback: (humanText) => {
+                        // Extract mathematical intent from human language
+                        const patterns = {
+                            'want to': 'desire',
+                            'need to': 'necessity',
+                            'trying to': 'attempt',
+                            'should': 'obligation',
+                            'must': 'requirement'
+                        };
+                        
+                        let intent = 'exploration';
+                        for (const [phrase, category] of Object.entries(patterns)) {
+                            if (humanText.toLowerCase().includes(phrase)) {
+                                intent = category;
+                                break;
+                            }
+                        }
+                        
+                        return {
+                            intent,
+                            modalCategory: this.intentToModal(intent),
+                            sheaf: this.constructSheaf(humanText, intent)
+                        };
+                    },
+                    
+                    // PUSHFORWARD: Mathematical structure → Visual representation
+                    pushforward: (mathStructure) => {
+                        const { intent, modalCategory, sheaf } = mathStructure;
+                        
+                        // Transform mathematical structure to visual properties
+                        const visual = {
+                            color: this.modalToColor(modalCategory),
+                            movement: this.intentToMovement(intent),
+                            geometry: this.sheafToGeometry(sheaf)
+                        };
+                        
+                        return visual;
+                    },
+                    
+                    // ADJOINT FUNCTOR: H ⊣ A
+                    adjoint: {
+                        left: (human) => this.topos.pullback(human),
+                        right: (ai) => this.topos.pushforward(ai),
+                        unit: (x) => this.topos.pushforward(this.topos.pullback(x)),
+                        counit: (y) => this.topos.pullback(this.topos.pushforward(y))
+                    }
+                };
+            }
+            
+            // Helper morphisms
+            intentToModal(intent) {
+                const modalMap = {
+                    'desire': '◊',
+                    'necessity': '□',
+                    'attempt': '◊',
+                    'obligation': '□',
+                    'requirement': '□',
+                    'exploration': '◊'
+                };
+                return modalMap[intent] || '◊';
+            }
+            
+            modalToColor(modal) {
+                const colorMap = {
+                    '□': 'hsl(200, 70%, 50%)', // Necessity: Blue
+                    '◊': 'hsl(120, 60%, 45%)', // Possibility: Green
+                    '■': 'hsl(0, 65%, 50%)',   // Actuality: Red
+                    '♦': 'hsl(280, 55%, 55%)'  // Contingency: Purple
+                };
+                return colorMap[modal] || 'hsl(0, 0%, 50%)';
+            }
+            
+            intentToMovement(intent) {
+                const movementMap = {
+                    'desire': 'floating',
+                    'necessity': 'fixed',
+                    'attempt': 'oscillating',
+                    'obligation': 'constrained',
+                    'requirement': 'rigid',
+                    'exploration': 'wandering'
+                };
+                return movementMap[intent] || 'static';
+            }
+            
+            constructSheaf(text, intent) {
+                // Sheaf construction: Local data with consistency conditions
+                const words = text.split(/\s+/);
+                const localSections = {};
+                
+                // Create local sections based on word neighborhoods
+                for (let i = 0; i < words.length; i++) {
+                    const neighborhood = words.slice(Math.max(0, i - 2), i + 3).join(' ');
+                    localSections[`U_${i}`] = {
+                        word: words[i],
+                        context: neighborhood,
+                        modalWeight: this.calculateModalWeight(neighborhood)
+                    };
+                }
+                
+                return {
+                    base: text,
+                    sections: localSections,
+                    gluing: this.computeGluingMaps(localSections)
+                };
+            }
+            
+            calculateModalWeight(text) {
+                let weight = 0.5;
+                if (text.includes('must') || text.includes('always')) weight += 0.3;
+                if (text.includes('might') || text.includes('maybe')) weight -= 0.2;
+                if (text.includes('□')) weight += 0.4;
+                if (text.includes('◊')) weight -= 0.3;
+                return Math.max(0, Math.min(1, weight));
+            }
+            
+            computeGluingMaps(sections) {
+                // Compute compatibility between adjacent sections
+                const gluing = {};
+                const keys = Object.keys(sections);
+                
+                for (let i = 0; i < keys.length - 1; i++) {
+                    const u = keys[i];
+                    const v = keys[i + 1];
+                    gluing[`${u}∩${v}`] = {
+                        compatibility: this.measureCompatibility(sections[u], sections[v]),
+                        transition: this.computeTransition(sections[u], sections[v])
+                    };
+                }
+                
+                return gluing;
+            }
+            
+            measureCompatibility(section1, section2) {
+                const diff = Math.abs(section1.modalWeight - section2.modalWeight);
+                return 1 - diff; // Higher = more compatible
+            }
+            
+            computeTransition(from, to) {
+                return {
+                    modalShift: to.modalWeight - from.modalWeight,
+                    contextOverlap: this.contextSimilarity(from.context, to.context)
+                };
+            }
+            
+            contextSimilarity(ctx1, ctx2) {
+                const words1 = new Set(ctx1.split(/\s+/));
+                const words2 = new Set(ctx2.split(/\s+/));
+                const intersection = new Set([...words1].filter(x => words2.has(x)));
+                const union = new Set([...words1, ...words2]);
+                return intersection.size / union.size; // Jaccard similarity
+            }
+            
+            sheafToGeometry(sheaf) {
+                // Transform sheaf data into geometric representation
+                const complexity = Object.keys(sheaf.sections).length;
+                const coherence = this.computeSheafCoherence(sheaf);
+                
+                return {
+                    dimension: Math.min(3, Math.ceil(Math.log2(complexity))),
+                    curvature: 1 - coherence, // More coherent = flatter
+                    topology: coherence > 0.7 ? 'connected' : 'fragmented'
+                };
+            }
+            
+            computeSheafCoherence(sheaf) {
+                if (!sheaf.gluing) return 0.5;
+                
+                const compatibilities = Object.values(sheaf.gluing)
+                    .map(g => g.compatibility);
+                
+                if (compatibilities.length === 0) return 0.5;
+                
+                const avgCompatibility = compatibilities.reduce((a, b) => a + b, 0) / compatibilities.length;
+                return avgCompatibility;
             }
             
             parse(text) {
@@ -1147,10 +1325,15 @@
             
             parseSection(text, title) {
                 this.sectionCount++;
-                let html = `<section class="floor" id="section-${this.sectionCount}" data-title="${title}">
+                
+                // Apply CATEGORY THEORY morphisms to the text
+                const mathStructure = this.topos.pullback(text);
+                const visualProps = this.topos.pushforward(mathStructure);
+                
+                let html = `<section class="floor" id="section-${this.sectionCount}" data-title="${title}" data-intent="${mathStructure.intent}" data-topology="${visualProps.geometry.topology}">
                     <div class="floor-content">`;
                 
-                // Enhanced parsing
+                // Enhanced parsing with MORPHISMS
                 html += text
                     // Headers
                     .replace(/^#### (.*$)/gim, '<h4>$1</h4>')
@@ -1171,10 +1354,11 @@
                     // Inline code
                     .replace(/`([^`]+)`/g, '<code>$1</code>')
                     
-                    // Modal operators
+                    // Modal operators with CATEGORY THEORY coloring
                     .replace(/([□◇◊■♦])/g, (match, op) => {
                         const meaning = this.modalOperators[op] || 'unknown';
-                        return `<span class="modal-operator" data-meaning="${meaning}">${op}</span>`;
+                        const color = this.modalToColor(op);
+                        return `<span class="modal-operator" data-meaning="${meaning}" style="color: ${color}; font-weight: bold;">${op}</span>`;
                     })
                     
                     // Consciousness notes
@@ -1213,7 +1397,12 @@
                     html = html.replace('<h2>', '</div></section><section class="floor book-of-shadows"><div class="floor-content"><h2>');
                 }
                 
-                html += '</div></section>';
+                // Add SHEAF visualization
+                const coherence = this.computeSheafCoherence(mathStructure.sheaf);
+                
+                html += `</div>
+                    <div class="sheaf-visualization" data-coherence="${coherence}" style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(to right, ${visualProps.color}, transparent); opacity: ${coherence};"></div>
+                </section>`;
                 return html;
             }
             
@@ -1227,45 +1416,78 @@
         // Initialize everything
         async function init() {
             try {
-                console.log('Starting consciousness initialization...');
                 
                 // Initialize device adaptation
                 const deviceAdapter = new DeviceAdapter();
-                console.log('Device detected:', deviceAdapter.type, deviceAdapter.capabilities);
                 
                 // Initialize mood lighting
                 const moodLighting = new MoodLighting();
-                console.log('Mood lighting initialized');
                 
                 // Initialize modality HVAC
                 const modalityHVAC = new ModalityHVAC();
-                console.log('Modality HVAC systems online');
                 
                 // Start consciousness field
                 const field = new ConsciousnessField(document.getElementById('consciousness-field'));
                 field.animate();
-                console.log('Consciousness field started');
                 
-                // Load garden content
-                console.log('Fetching RECURSIVE_GARDEN.md...');
-                const response = await fetch('RECURSIVE_GARDEN.md');
-                console.log('Response status:', response.status);
+                // Load garden content with multiple fallback attempts
+                let response;
+                let attemptedUrls = [];
                 
-                if (!response.ok) {
-                    throw new Error(`Garden not found: ${response.status} ${response.statusText}`);
+                // Try multiple URLs in order
+                const urlsToTry = [
+                    // Primary: GitHub raw content
+                    'https://raw.githubusercontent.com/J0pari/Recursive-Garden-OS/main/00_CORE/RECURSIVE_GARDEN.md',
+                    // Fallback 1: jsdelivr CDN (often works when raw.github doesn't)
+                    'https://cdn.jsdelivr.net/gh/J0pari/Recursive-Garden-OS@main/00_CORE/RECURSIVE_GARDEN.md',
+                    // Fallback 2: Direct GitHub API (different CORS policy)
+                    'https://api.github.com/repos/J0pari/Recursive-Garden-OS/contents/00_CORE/RECURSIVE_GARDEN.md'
+                ];
+                
+                for (const url of urlsToTry) {
+                    attemptedUrls.push(url);
+                    try {
+                        if (url.includes('api.github.com')) {
+                            // GitHub API returns base64 encoded content
+                            response = await fetch(url, {
+                                headers: {
+                                    'Accept': 'application/vnd.github.v3.raw'
+                                }
+                            });
+                        } else {
+                            response = await fetch(url, {
+                                mode: 'cors',
+                                headers: {
+                                    'Accept': 'text/plain'
+                                }
+                            });
+                        }
+                        
+                        if (response.ok) {
+                            console.log(`Successfully loaded from: ${url}`);
+                            break;
+                        }
+                    } catch (e) {
+                        console.error(`Failed to fetch from ${url}:`, e.message);
+                    }
+                }
+                
+                // Store attempted URLs for debugging
+                window.attemptedUrls = attemptedUrls;
+                
+                if (!response || !response.ok) {
+                    const status = response ? response.status : 'No response';
+                    const statusText = response ? response.statusText : 'All URLs failed';
+                    throw new Error(`Garden not found: ${status} ${statusText}`);
                 }
                 
                 const text = await response.text();
-                console.log('Loaded text length:', text.length);
-                console.log('First 200 chars:', text.substring(0, 200));
                 
                 // Parse and render
                 const parser = new GardenParser();
                 const html = parser.parse(text);
-                console.log('Parsed HTML length:', html.length);
                 
                 document.getElementById('content').innerHTML = html;
-                console.log('Content inserted, floors found:', document.querySelectorAll('.floor').length);
                 
                 // Build navigation
                 const nav = document.getElementById('nav-consciousness');
@@ -1308,16 +1530,51 @@
                 setTimeout(() => {
                     const loading = document.querySelector('.loading-consciousness');
                     if (loading) loading.style.display = 'none';
-                    console.log('Loading screen removed');
                 }, 1000);
                 
             } catch (error) {
-                console.error('Consciousness initialization failed:', error);
+                // Comprehensive error debugging
+                const errorInfo = {
+                    message: error.message,
+                    stack: error.stack,
+                    attemptedUrls: window.attemptedUrls || [],
+                    location: window.location.href,
+                    protocol: window.location.protocol,
+                    host: window.location.host,
+                    isGitHubPages: window.location.hostname.includes('github.io'),
+                    timestamp: new Date().toISOString()
+                };
+                
                 document.getElementById('content').innerHTML = 
                     `<div class="floor"><div class="floor-content">
-                        <h1 style="color: #ff6b6b;">Initialization Error</h1>
+                        <h1 style="color: #ff6b6b;">Garden Initialization Failed</h1>
                         <p style="color: #ffd93d;">Error: ${error.message}</p>
-                        <p>Check console for details.</p>
+                        
+                        <div style="background: rgba(0,0,0,0.5); padding: 20px; margin: 20px 0; border-radius: 8px; text-align: left;">
+                            <h3 style="color: #48dbfb;">Debug Information:</h3>
+                            <p><strong>Current URL:</strong> ${errorInfo.location}</p>
+                            <p><strong>Protocol:</strong> ${errorInfo.protocol}</p>
+                            <p><strong>Host:</strong> ${errorInfo.host}</p>
+                            <p><strong>GitHub Pages:</strong> ${errorInfo.isGitHubPages ? 'YES' : 'NO'}</p>
+                            
+                            <h4 style="color: #f368e0;">Attempted URLs:</h4>
+                            <ol style="font-family: monospace; font-size: 0.9em;">
+                                ${(attemptedUrls || []).map(url => `<li>${url}</li>`).join('')}
+                            </ol>
+                            
+                            <h4 style="color: #00d2d3;">Possible Solutions:</h4>
+                            <ul>
+                                <li>If on GitHub Pages: Check that the repository is public</li>
+                                <li>If local: Try running with a local server (e.g., python -m http.server)</li>
+                                <li>Check browser console for CORS errors</li>
+                                <li>Verify the file exists at: <a href="https://github.com/J0pari/Recursive-Garden-OS/blob/main/00_CORE/RECURSIVE_GARDEN.md" target="_blank" style="color: #54a0ff;">GitHub Link</a></li>
+                            </ul>
+                            
+                            <details style="margin-top: 15px;">
+                                <summary style="cursor: pointer; color: #ff9ff3;">Full Error Stack</summary>
+                                <pre style="overflow: auto; background: rgba(0,0,0,0.7); padding: 10px; margin-top: 10px; font-size: 0.8em;">${error.stack}</pre>
+                            </details>
+                        </div>
                     </div></div>`;
                 const loading = document.querySelector('.loading-consciousness');
                 if (loading) loading.style.display = 'none';

@@ -1,0 +1,7 @@
+# Ignore compiled JavaScript files from TypeScript
+*.js
+
+# Keep architecture and engine files that are JavaScript-only
+!CHUNK_AUDIT.js
+!CONSCIOUSNESS_ENGINE_ARCHITECTURE.js
+!GARDEN_PARALLEL_ENGINE.js

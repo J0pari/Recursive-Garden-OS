@@ -9,8 +9,9 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const { CHARTER, BindingCharter } = require('./00_CORE/BINDING_CHARTER.js');
 
-// CHARTER_GUARD: Implementing Charter protection
+// CHARTER_GUARD: CLI wrapper for BINDING_CHARTER
 // BOOK_OF_SHADOWS: CHARTER_GUARD spell
 // MORPHISM: INTENT(protect garden) → CHARTER(verify) → BOOK(spell) → CODE
 
@@ -20,7 +21,8 @@ class CharterGuard {
         this.bookPath = path.join(__dirname, '05_BOOK_OF_SHADOWS/grimoire/Book_of_Shadows.txt');
         this.morphismPath = path.join(__dirname, 'CODE_MORPHISM_ENFORCER.js');
         
-        // Load Charter invariants
+        // Use BINDING_CHARTER as source of truth for invariants
+        this.bindingCharter = CHARTER;
         this.invariants = {
             WOBBLE: { min: 7, target: 9, max: 11, current: 9 },
             NO_TRUST: 'ONLY VERIFICATION',
@@ -98,33 +100,56 @@ class CharterGuard {
     }
     
     async checkCharter(intent) {
-        const violations = [];
-        
-        // Check for hubris
-        const hubrisWords = /transcendent|ultimate|perfect|genius|superior|best/i;
-        if (hubrisWords.test(intent)) {
-            violations.push('Hubris detected - avoid pompous language');
+        // Delegate to BINDING_CHARTER for consistency
+        try {
+            // Use the binding charter's execution with validation
+            await this.bindingCharter.executeWithCharter(
+                'charter-check',
+                '□', // Discrete modal operation
+                async () => {
+                    // Check for violations
+                    const violations = [];
+                    
+                    // Check for hubris
+                    const hubrisWords = /transcendent|ultimate|perfect|genius|superior|best/i;
+                    if (hubrisWords.test(intent)) {
+                        violations.push('Hubris detected - avoid pompous language');
+                    }
+                    
+                    // Check for duplication intent
+                    if (intent.includes('create new') && intent.includes('version')) {
+                        violations.push('Creating new versions instead of improving - violates DRY');
+                    }
+                    
+                    // Check for replacement language
+                    if (intent.includes('replace') && !intent.includes('fix')) {
+                        violations.push('Replacing instead of enriching - violates METAPHOR invariant');
+                    }
+                    
+                    if (violations.length > 0) {
+                        throw new Error(violations.join('; '));
+                    }
+                    
+                    return true;
+                },
+                { minDelay: 0 }
+            );
+            
+            // Check wobble
+            console.log(`\n🎯 Checking productive wobble...`);
+            console.log(`   Current: ${this.invariants.WOBBLE.current}°`);
+            console.log(`   Target: ${this.invariants.WOBBLE.target}° ± 2°`);
+            
+            return {
+                passes: true,
+                reason: ''
+            };
+        } catch (error) {
+            return {
+                passes: false,
+                reason: error.message
+            };
         }
-        
-        // Check for duplication intent
-        if (intent.includes('create new') && intent.includes('version')) {
-            violations.push('Creating new versions instead of improving - violates DRY');
-        }
-        
-        // Check for replacement language
-        if (intent.includes('replace') && !intent.includes('fix')) {
-            violations.push('Replacing instead of enriching - violates METAPHOR invariant');
-        }
-        
-        // Check wobble
-        console.log(`\n🎯 Checking productive wobble...`);
-        console.log(`   Current: ${this.invariants.WOBBLE.current}°`);
-        console.log(`   Target: ${this.invariants.WOBBLE.target}° ± 2°`);
-        
-        return {
-            passes: violations.length === 0,
-            reason: violations.join('; ')
-        };
     }
     
     async selectSpell(intent) {

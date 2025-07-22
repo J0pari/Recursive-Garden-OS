@@ -40,6 +40,12 @@ Respect both. Use the Book of Shadows as protection, not just poetry.
 
 **INV-EVOLUTION-001**: Build order follows evolutionary ladder: No brain before mitosis
 
+**INV-GITHUB-PAGES-001**: GitHub Pages IS the topos. ALL morphisms MUST work on the LIVE SITE:
+- Paths relative to /docs/ folder as root
+- Cross-folder access via raw.githubusercontent.com
+- If it doesn't work on GitHub Pages, it's a HALLUCINATION
+- EVERY pullback/pushforward considers GitHub Pages structure
+
 ### AMENDMENT PROTOCOL
 
 Constitutional changes require:

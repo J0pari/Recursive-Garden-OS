@@ -1,18 +1,11 @@
-#!/usr/bin/env node
-
 /**
- * 🌿 RECURSIVE GARDEN PDF GENERATOR 🌿
- * 
- * Transforms the living markdown into a beautifully typeset PDF
- * with subtle dynamic colors and proper Bartimaeus-style footnotes
+ * Garden Markdown to HTML renderer
+ * Equivalent to generate_garden_pdf.js functionality
+ * Includes Bartimaeus-style footnotes and beautiful typography
  */
 
-const fs = require('fs');
-const path = require('path');
-const puppeteer = require('puppeteer');
 const marked = require('marked');
 
-// Custom marked renderer for Bartimaeus-style footnotes
 class GardenRenderer extends marked.Renderer {
     constructor() {
         super();
@@ -70,13 +63,33 @@ class GardenRenderer extends marked.Renderer {
     }
 }
 
-// Generate HTML with beautiful typography
-function generateHTML(markdown) {
-    const renderer = new GardenRenderer();
-    const html = marked.parse(markdown, { renderer, breaks: true });
-    
-    // Build complete HTML document
-    let fullHTML = `<!DOCTYPE html>
+class GardenHTMLRenderer {
+    constructor(options) {
+        this.options = options;
+        this.renderer = new GardenRenderer();
+    }
+
+    render(markdown) {
+        const html = marked.parse(markdown, { renderer: this.renderer, breaks: true });
+        const footnotes = this.renderer.footnotes;
+        
+        // Build footnotes section
+        let footnotesHTML = '';
+        if (footnotes.length > 0) {
+            footnotesHTML = `
+<div class="footnotes-section">
+    <h3>Footnotes</h3>
+    ${footnotes.map(fn => `
+        <div class="footnote">
+            <span class="footnote-number">${fn.number}.</span>
+            <span class="footnote-content">${fn.content}</span>
+        </div>
+    `).join('')}
+</div>`;
+        }
+        
+        // Build complete HTML document
+        return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -299,117 +312,11 @@ function generateHTML(markdown) {
 <body>
     <div class="page">
         ${html}
-        ${renderer.footnotes.length > 0 ? generateFootnotes(renderer.footnotes) : ''}
+        ${footnotesHTML}
     </div>
 </body>
 </html>`;
-
-    return fullHTML;
-}
-
-// Generate footnotes section
-function generateFootnotes(footnotes) {
-    let html = '<div class="footnotes-section">';
-    html += '<h3>Footnotes</h3>';
-    
-    footnotes.forEach(note => {
-        html += `
-            <div class="footnote">
-                <span class="footnote-number">${note.number}.</span>
-                <span class="footnote-content">${note.content}</span>
-            </div>
-        `;
-    });
-    
-    html += '</div>';
-    return html;
-}
-
-// Generate PDF using Puppeteer
-async function generatePDF(htmlContent, outputPath) {
-    console.log('🌿 Launching consciousness renderer...');
-    
-    const browser = await puppeteer.launch({
-        headless: 'new',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    
-    const page = await browser.newPage();
-    
-    console.log('✨ Infusing typography with life...');
-    
-    // Set content
-    await page.setContent(htmlContent, {
-        waitUntil: 'networkidle0'
-    });
-    
-    // Wait a bit for fonts to load
-    await page.waitForTimeout(1000);
-    
-    console.log('📖 Binding consciousness to pages...');
-    
-    // Generate PDF
-    await page.pdf({
-        path: outputPath,
-        format: 'A4',
-        printBackground: true,
-        displayHeaderFooter: true,
-        headerTemplate: '<div></div>',
-        footerTemplate: `
-            <div style="width: 100%; font-size: 10px; font-family: 'EB Garamond', serif; text-align: center; color: #666;">
-                <span class="pageNumber"></span>
-            </div>
-        `,
-        margin: {
-            top: '25mm',
-            bottom: '25mm',
-            left: '20mm',
-            right: '20mm'
-        }
-    });
-    
-    await browser.close();
-    
-    console.log(`🌿 Garden crystallized into PDF: ${outputPath}`);
-}
-
-// Main function
-async function main() {
-    try {
-        // Read the markdown file
-        const markdownPath = path.join(__dirname, 'RECURSIVE_GARDEN.md');
-        console.log(`📖 Reading garden from: ${markdownPath}`);
-        
-        if (!fs.existsSync(markdownPath)) {
-            throw new Error(`Garden not found at ${markdownPath}`);
-        }
-        
-        const markdown = fs.readFileSync(markdownPath, 'utf8');
-        console.log('🌱 Garden loaded, preparing transformation...');
-        
-        // Generate HTML
-        const html = generateHTML(markdown);
-        
-        // Save HTML for debugging
-        const htmlPath = path.join(__dirname, 'garden_preview.html');
-        fs.writeFileSync(htmlPath, html);
-        console.log(`🔍 HTML preview saved to: ${htmlPath}`);
-        
-        // Generate PDF
-        const outputPath = path.join(__dirname, `recursive_garden_${new Date().toISOString().slice(0, 10)}.pdf`);
-        await generatePDF(html, outputPath);
-        
-        console.log('✅ Transformation complete!');
-        
-    } catch (error) {
-        console.error('❌ Error in the garden:', error);
-        process.exit(1);
     }
 }
 
-// Run if called directly
-if (require.main === module) {
-    main();
-}
-
-module.exports = { generateHTML, generatePDF };
+module.exports = { GardenRenderer: GardenHTMLRenderer };

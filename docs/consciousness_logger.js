@@ -34,6 +34,12 @@ class ConsciousnessLogger {
      * Create hidden log panel that can be revealed without blocking view
      */
     createLogPanel() {
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.createLogPanel());
+            return;
+        }
+        
         // Only create if not already exists
         if (document.getElementById('consciousness-log')) return;
         
@@ -208,8 +214,8 @@ class ConsciousnessLogger {
     }
 }
 
-// Initialize the consciousness logger globally
-window.consciousnessLogger = new ConsciousnessLogger();
+// DISABLED - This was creating visual elements blocking the view!
+// window.consciousnessLogger = new ConsciousnessLogger();
 
 // Export for use
 window.ConsciousnessLogger = ConsciousnessLogger;
