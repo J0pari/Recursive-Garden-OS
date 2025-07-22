@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>KEATS: Mathematical Prototype Engine (Riemannian Architecture + E8 Basics)</title>
+    <title>KEATS V5: Mathematical Visualization</title>
     <!-- Debug System - Silent capture, console-only access -->
     <script src="debug_system.js"></script>
     <!-- Three.js LOCAL - No CDN dependency! -->
@@ -631,6 +631,7 @@
 
         /* H2 Stratum: Logical Discovery - Advanced position */
         .panel-h2 {
+            display: none; /* Hidden - consolidated to 3 panels */
             bottom: 20px;
             left: 20px;
             width: 320px;
@@ -640,13 +641,15 @@
         /* Analysis Engine: Text processing interface */
         .panel-analysis {
             bottom: 20px;
-            right: 20px;
-            width: 380px;
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally */
+            width: 500px; /* Wider for centered layout */
             border-color: hsla(var(--field-7adic) 95% 75% / 0.35); /* Septenary field coloring */
         }
 
         /* System Management: Central control interface */
         .panel-system {
+            display: none; /* Hidden - consolidated to 3 panels */
             top: 20px;
             left: 50%;
             transform: translateX(-50%);              /* Perfect horizontal centering */
@@ -656,6 +659,7 @@
 
         /* Modal Logic Engine: Auxiliary processing panel */
         .panel-modal {
+            display: none; /* Hidden - consolidated to 3 panels */
             top: 50%;
             right: 20px;
             transform: translateY(-50%);              /* Perfect vertical centering */
@@ -665,6 +669,7 @@
 
         /* Legend Panel: Cross-strata connections and UI guide */
         .panel-legend {
+            display: none; /* Hidden - consolidated to 3 panels */
             top: 25%;
             right: 15px;
             width: 280px;
@@ -675,6 +680,7 @@
         /* Responsive legend positioning */
         @media (max-width: 1200px) {
             .panel-legend {
+                display: none; /* Hidden - consolidated to 3 panels */
                 width: 260px;
                 right: 10px;
             }
@@ -1579,6 +1585,7 @@
                 width: auto; 
             }
             .panel-h2 { 
+                display: none;                          /* Hidden - consolidated to 3 panels */
                 bottom: calc(45vh + 30px);            /* Above analysis panel */
                 left: 15px; 
                 right: 15px; 
@@ -1589,6 +1596,7 @@
                 left: 15px; 
                 right: 15px; 
                 width: auto; 
+                transform: none;                      /* Remove centering on mobile */
             }
             
             /* Hide auxiliary panels on mobile for space optimization */
@@ -2088,6 +2096,7 @@
          - Logical Event Generation: Create analysis events for system monitoring
          - Discovery Maximization: Optimization routine for analysis parameters
          ─────────────────────────────────────────────────────────────────────────── -->
+    <!-- HIDDEN: H2 Panel (consolidated to 3 panels)
     <div class="stratum-panel panel-h2" id="panelH2">
         <div class="panel-header" onclick="togglePanel('panelH2')">
             <div class="panel-title">
@@ -2220,6 +2229,7 @@
             <button class="function-button secondary" onclick="stabilizeField()">🛡️ Reset Values</button>
         </div>
     </div>
+    -->
 
     <!-- ─────────────────────────────────────────────────────────────────────────── 
          MATHEMATICAL ANALYSIS ENGINE: Advanced NLP Text Processing Interface
@@ -2259,6 +2269,7 @@
          SYSTEM MANAGEMENT INTERFACE: Global Controls and System Monitoring
          Centralized control panel for performance, state management, and system integrity
          ─────────────────────────────────────────────────────────────────────────── -->
+    <!-- HIDDEN: System Panel (consolidated to 3 panels)
     <div class="stratum-panel panel-system" id="panelSystem">
         <div class="panel-header" onclick="togglePanel('panelSystem')">
             <div class="panel-title">
@@ -2291,11 +2302,13 @@
             </div>
         </div>
     </div>
+    -->
 
     <!-- ─────────────────────────────────────────────────────────────────────────── 
          MODAL LOGIC ENGINE: Advanced Logical Operations Interface
          Modal operators (necessity □, possibility ◇) and logical transformations
          ─────────────────────────────────────────────────────────────────────────── -->
+    <!-- HIDDEN: Modal Panel (consolidated to 3 panels)
     <div class="stratum-panel panel-modal" id="panelModal">
         <div class="panel-header" onclick="togglePanel('panelModal')">
             <div class="panel-title">
@@ -2328,11 +2341,13 @@
             <button class="function-button transcendent" onclick="modalTransformation()">🌈 Transform</button>
         </div>
     </div>
+    -->
 
     <!-- ─────────────────────────────────────────────────────────────────────────── 
          CROSS-STRATA CONNECTIONS & LEGEND: System Integration Visualization
          Real-time display of mathematical consciousness layer interactions and UI guide
          ─────────────────────────────────────────────────────────────────────────── -->
+    <!-- HIDDEN: Legend Panel (consolidated to 3 panels)
     <div class="stratum-panel panel-legend" id="panelLegend">
         <div class="panel-header" onclick="togglePanel('panelLegend')">
             <div class="panel-title">
@@ -2393,6 +2408,7 @@
             </div>
         </div>
     </div>
+    -->
 
     <!-- ─────────────────────────────────────────────────────────────────────────── 
          NOTIFICATION SYSTEM: Real-time User Feedback Interface
