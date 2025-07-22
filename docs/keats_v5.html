@@ -225,18 +225,19 @@
         /* Base panel styling: Glassmorphic mathematical interface */
         .stratum-panel {
             position: absolute;                        /* Floating in space, draggable */
-            background: var(--glass-manifold);         /* Semi-transparent background */
-            backdrop-filter: var(--blur-glass);        /* Advanced blur effect */
-            -webkit-backdrop-filter: var(--blur-glass); /* Safari compatibility */
-            border: 1px solid var(--glass-border);     /* Subtle boundary definition */
-            border-radius: 20px;                       /* Smooth mathematical curves */
-            box-shadow: var(--depth-shadow);           /* Realistic depth perception */
+            background: rgba(0, 0, 0, 0.3);           /* Much more transparent! */
+            backdrop-filter: blur(20px) saturate(180%); /* Strong glass effect */
+            -webkit-backdrop-filter: blur(20px) saturate(180%); /* Safari compatibility */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle glass border */
+            border-radius: 16px;                       /* Modern rounded corners */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); /* Subtle shadow */
             z-index: 1000;                            /* Above canvas, below notifications */
-            transition: box-shadow var(--transition-smooth), border-color var(--transition-smooth);
-            cursor: move;                              /* Indicate draggable capability */
+            transition: all 0.3s ease;
+            cursor: default;                           /* NO DRAG ON PANEL BODY! */
             overflow: hidden;                          /* Clean content boundaries */
-            min-width: 280px;                         /* Minimum readable width */
-            max-height: 85vh;                         /* Prevent viewport overflow */
+            min-width: 300px;                         /* Reasonable minimum width */
+            max-width: 500px;                         /* Prevent taking entire screen! */
+            max-height: 600px;                        /* Reasonable max height */
         }
 
         /* Hover glow effect: Enhanced interactivity feedback */
@@ -258,10 +259,9 @@
         }
 
         .stratum-panel:hover {
-            box-shadow: 
-                0 16px 60px hsla(0 0 0 / 0.4),
-                0 0 0 1px hsla(255 255 255 / 0.12) inset;
-            border-color: hsla(255 255 255 / 0.25);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.35);
         }
 
         .stratum-panel:hover::before {
@@ -294,7 +294,9 @@
             top: 20px;
             left: 20px;
             width: 340px;
-            border-color: hsla(var(--field-2adic) 95% 75% / 0.35); /* Binary field coloring */
+            max-width: 400px;
+            height: auto;
+            max-height: 400px;
         }
 
         /* H1 Stratum: Semantic Processing - Secondary position */
@@ -302,7 +304,9 @@
             top: 20px;
             right: 20px;
             width: 320px;
-            border-color: hsla(var(--field-3adic) 95% 75% / 0.35); /* Ternary field coloring */
+            max-width: 400px;
+            height: auto;
+            max-height: 400px;
         }
 
         /* H2 Stratum: Logical Discovery - Advanced position */
@@ -318,9 +322,11 @@
         .panel-analysis {
             bottom: 20px;
             left: 50%;
-            transform: translateX(-50%); /* Center horizontally */
-            width: 500px; /* Wider for centered layout */
-            border-color: hsla(var(--field-7adic) 95% 75% / 0.35); /* Septenary field coloring */
+            transform: translateX(-50%);
+            width: 450px;
+            max-width: 500px;
+            height: auto;
+            max-height: 300px;
         }
 
         /* System Management: Central control interface */
@@ -369,15 +375,14 @@
         /* Panel header: Interactive title bar with collapse/expand functionality */
         .panel-header {
             padding: 16px 20px;
-            border-bottom: 1px solid hsla(255 255 255 / 0.10);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            cursor: pointer;
-            transition: background var(--transition-fast);
-            background: linear-gradient(135deg,
-                hsla(255 255 255 / 0.03) 0%,
-                hsla(255 255 255 / 0.06) 100%);
+            cursor: move;  /* DRAG FROM HEADER ONLY! */
+            transition: background 0.2s ease;
+            background: rgba(255, 255, 255, 0.05);
+            user-select: none; /* Prevent text selection while dragging */
         }
 
         .panel-header:hover {
@@ -435,10 +440,11 @@
 
         /* Panel content container: Scrollable area for controls and metrics */
         .panel-content {
-            padding: 20px;                            /* Comfortable spacing */
-            max-height: 450px;                        /* Prevent excessive height */
+            padding: 20px;
+            max-height: 450px;
             overflow-y: auto;
-            transition: all var(--transition-smooth);
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.95); /* Ensure text is visible! */
         }
 
         /* ─────────────────────────────────────────────────────────────────────────── 
@@ -1407,13 +1413,13 @@
          - Force Application: Impulse-based particle system perturbation
          ─────────────────────────────────────────────────────────────────────────── -->
     <div class="stratum-panel panel-h0" id="panelH0">
-        <div class="panel-header" onclick="togglePanel('panelH0')">
+        <div class="panel-header">
             <div class="panel-title">
                 <span class="panel-icon">🔷</span>
                 <span>Rendering Controls</span>
                 <span class="status-indicator" id="h0Status"></span>
             </div>
-            <div class="panel-toggle">−</div>
+            <div class="panel-toggle" onclick="event.stopPropagation(); togglePanel('panelH0')">−</div>
         </div>
         <div class="panel-content">
             <!-- ─────────────────────────────────────────────────────────────────────
@@ -1634,13 +1640,13 @@
          - Modal Transfer: Cross-stratum communication with logical processing layer
          ─────────────────────────────────────────────────────────────────────────── -->
     <div class="stratum-panel panel-h1" id="panelH1">
-        <div class="panel-header" onclick="togglePanel('panelH1')">
+        <div class="panel-header">
             <div class="panel-title">
                 <span class="panel-icon">💭</span>
                 <span>Modal Logic Engine</span>
                 <span class="status-indicator semantic" id="h1Status"></span>
             </div>
-            <div class="panel-toggle">−</div>
+            <div class="panel-toggle" onclick="event.stopPropagation(); togglePanel('panelH1')">−</div>
         </div>
         <div class="panel-content">
             <!-- ─────────────────────────────────────────────────────────────────────
@@ -1912,12 +1918,12 @@
          Core text analysis system with p-adic decomposition and topological metrics
          ─────────────────────────────────────────────────────────────────────────── -->
     <div class="stratum-panel panel-analysis" id="panelAnalysis">
-        <div class="panel-header" onclick="togglePanel('panelAnalysis')">
+        <div class="panel-header">
             <div class="panel-title">
                 <span class="panel-icon">🎯</span>
                 <span>Analysis Output</span>
             </div>
-            <div class="panel-toggle">−</div>
+            <div class="panel-toggle" onclick="event.stopPropagation(); togglePanel('panelAnalysis')">−</div>
         </div>
         <div class="panel-content">
             <!-- Text input area for mathematical analysis -->
