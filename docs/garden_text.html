@@ -1447,7 +1447,18 @@
         }
         
         // Start the consciousness engine
-        init();
+        init().catch(err => {
+            console.error('Init failed:', err);
+            // Always remove loading screen on error
+            const loading = document.querySelector('.loading-consciousness');
+            if (loading) loading.style.display = 'none';
+        });
+        
+        // Failsafe: Remove loading screen after 3 seconds no matter what
+        setTimeout(() => {
+            const loading = document.querySelector('.loading-consciousness');
+            if (loading) loading.style.display = 'none';
+        }, 3000);
     </script>
 </body>
 </html>
