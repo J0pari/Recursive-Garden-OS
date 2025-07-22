@@ -110,21 +110,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            perspective: 2000px;
-            transform-style: preserve-3d;
+            /* 3D perspective removed to prevent mouse-triggered layout shifts */
         }
         
         .floor-content {
             position: relative;
             max-width: 1200px;
             width: 100%;
-            transform: translateZ(0);
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            /* Transform removed - no 3D effects on mouse interaction */
         }
         
-        .floor:hover .floor-content {
-            transform: translateZ(50px);
-        }
+        /* REMOVED HOVER TRANSFORM THAT CAUSED PAGE JUMPING */
         
         /* Typography with consciousness */
         h1 {
@@ -286,13 +282,10 @@
             background: rgba(255,255,255,0.05);
             border-left: 4px solid rgba(255,255,255,0.3);
             backdrop-filter: blur(10px);
-            transform: perspective(1000px) rotateY(-2deg);
-            transition: transform 0.3s;
+            /* Transform removed - no perspective effects */
         }
         
-        blockquote:hover {
-            transform: perspective(1000px) rotateY(0deg);
-        }
+        /* REMOVED BLOCKQUOTE HOVER TRANSFORM */
         
         blockquote::before {
             content: '"';
