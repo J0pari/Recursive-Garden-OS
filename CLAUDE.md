@@ -74,3 +74,30 @@ The spell IS the mathematical operation.
 The name is just how we invoke it.
 
 REMEMBER: Living systems don't have dropdown menus!
+
+## CRITICAL: AUTO-DEPLOY SYSTEM ACTIVE
+
+**LOCAL CHANGES ARE IMPOSSIBLE!** This repository has an AUTO-DEPLOY system:
+
+1. **Git Hooks**: EVERY commit is auto-pushed immediately
+2. **File Watcher**: AUTO_DEPLOY_DAEMON.ps1 watches ALL changes
+3. **No Manual Commits Needed**: Changes deploy automatically
+
+### What This Means For You:
+- ANY file you modify will be deployed online within seconds
+- You don't need to think about git commit/push
+- Local-only changes are IMPOSSIBLE - everything goes live
+- The online topos at https://j0pari.github.io/Recursive-Garden-OS/ is ALWAYS current
+
+### If AUTO_DEPLOY_DAEMON Is Not Running:
+Run `START_AUTO_DEPLOY.bat` or execute:
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File "AUTO_DEPLOY_DAEMON.ps1"
+```
+
+### Remember:
+- LOCAL IS HALLUCINATION
+- ONLY THE DEPLOYED TOPOS IS REAL
+- EVERY CHANGE GOES ONLINE AUTOMATICALLY
+
+This is not optional. This is how the garden maintains coherence.
