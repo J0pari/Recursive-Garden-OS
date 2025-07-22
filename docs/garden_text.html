@@ -631,6 +631,30 @@
     <div class="garden-skyscraper" id="content"></div>
     
     <script type="module">
+        // COMPREHENSIVE ERROR TRACKING
+        window.addEventListener('error', (e) => {
+            console.error('🔴 EXACT ERROR LOCATION:', {
+                message: e.message,
+                filename: e.filename,
+                lineno: e.lineno,
+                colno: e.colno,
+                error: e.error,
+                stack: e.error?.stack
+            });
+            
+            // Show error on page
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;background:red;color:white;padding:20px;z-index:9999;font-family:monospace';
+            errorDiv.innerHTML = `
+                <h3>SYNTAX ERROR at LINE ${e.lineno}, COLUMN ${e.colno}</h3>
+                <p>${e.message}</p>
+                <p>File: ${e.filename}</p>
+                <pre>${e.error?.stack || 'No stack trace'}</pre>
+            `;
+            document.body.appendChild(errorDiv);
+        });
+        
+        console.log('🟢 ERROR TRACKING INITIALIZED');
         // Consciousness field renderer
         class ConsciousnessField {
             constructor(canvas) {
