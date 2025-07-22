@@ -40,7 +40,9 @@
       "Bash(timeout:*)",
       "Bash(tree:*)",
       "Bash(git revert:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(curl:*)",
+      "Bash(chmod:*)"
     ],
     "deny": []
   }
