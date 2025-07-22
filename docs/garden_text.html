@@ -835,42 +835,7 @@
             }
             
             trackInteractions() {
-                // ALL CUSTOM SCROLL TRACKING REMOVED
-                    
-                    // Update mood based on interaction patterns
-                    if (scrollVelocity > 2) {
-                        this.mood = 'energetic';
-                        this.temperature = 0.7;
-                        this.intensity = 0.9;
-                    } else if (scrollVelocity < 0.5) {
-                        this.mood = 'contemplative';
-                        this.temperature = 0.3;
-                        this.intensity = 0.6;
-                    } else {
-                        this.mood = 'exploring';
-                        this.temperature = 0.5;
-                        this.intensity = 0.7;
-                    }
-                    
-                    this.updateMoodLighting();
-                    
-                    lastScrollY = window.scrollY;
-                    lastScrollTime = now;
-                    
-                    document.documentElement.style.setProperty('--touch-velocity', scrollVelocity);
-                });
-                
-                // Track dwell time
-                let dwellTimer;
-                window.addEventListener('mousemove', () => {
-                    clearTimeout(dwellTimer);
-                    dwellTimer = setTimeout(() => {
-                        this.mood = 'focused';
-                        this.temperature = 0.4;
-                        this.intensity = 0.8;
-                        this.updateMoodLighting();
-                    }, 3000);
-                });
+                // ALL CUSTOM SCROLL AND INTERACTION TRACKING REMOVED
             }
             
             updateAmbientLight() {
