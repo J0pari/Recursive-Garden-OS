@@ -2397,8 +2397,7 @@
          * - Add system integrations through SystemManager plugin architecture
          * ═══════════════════════════════════════════════════════════════════════════ */
 
-        console.log('Initializing KEATS: Mathematical Visualization Prototype (Many Advanced Features Stubbed)');
-        console.log('Mathematical Prototype: Working NLP + Visualization, Advanced Features Stubbed');
+        // Initialize KEATS silently - no console pollution
 
         /* ─────────────────────────────────────────────────────────────────────────── 
          * ADVANCED TELEMETRY SYSTEM: Event Tracking and System Monitoring
@@ -2588,7 +2587,7 @@
             // Archives old events to manage memory while preserving critical telemetry
             archiveEvents(events) {
                 // In a real system, this would compress and store to persistent storage
-                console.log(`📦 Archived ${events.length} events for efficient memory usage`);
+                // Archived events for efficient memory usage
             }
             
             // ╔═══════════════════════════════════════════════════════════════════╗
@@ -2625,7 +2624,7 @@
             // ╚═══════════════════════════════════════════════════════════════════╝
             // Automatically recovers system health when issues are detected
             selfHeal(type, data) {
-                console.log(`🔧 Self-healing initiated for: ${type}`);
+                // Self-healing initiated
                 
                 switch (type) {
                     case 'coherence':
@@ -2652,7 +2651,7 @@
             // ╚═══════════════════════════════════════════════════════════════════╝
             // Reconstructs entire event chain with fresh cryptographic hashes
             rebuildChain() {
-                console.log('🔧 Rebuilding event chain with fresh checksums...');
+                // Rebuilding event chain with fresh checksums
                 for (let i = 0; i < this.events.length; i++) {
                     const event = this.events[i];
                     event.hash = this.cryptoHash(JSON.stringify(event.data));
@@ -2810,7 +2809,7 @@
                 this.errorFallbacks = new Map();
                 this.renderingSafety = true; // Ensures analysis never breaks rendering
                 
-                console.log('🧠 Riemannian Semantic Manifold initialized - true mathematical NLP');
+                // Riemannian Semantic Manifold initialized
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -2864,7 +2863,7 @@
                         return this.analysisCache.get(cacheKey);
                     }
                     
-                    console.log('🧠 Computing Riemannian semantic analysis...');
+                    // Computing Riemannian semantic analysis
                     
                     // Core semantic manifold analysis
                     const semanticEmbedding = this.embedTextInSemanticManifold(text);
@@ -2931,7 +2930,7 @@
                     
                 } catch (error) {
                     // CRITICAL: Never let analysis errors break the renderer
-                    console.warn('🧠 Riemannian semantic analysis failed, using safe fallback:', error);
+                    // Riemannian semantic analysis failed, using safe fallback
                     return this.createSafeFallbackAnalysis(text, error);
                 }
             }
@@ -2974,7 +2973,7 @@
                         });
                     }
                 } catch (error) {
-                    console.warn('WebWorker curvature computation failed, using fallback:', error);
+                    // WebWorker curvature computation failed, using fallback
                 }
                 
                 // Fallback for systems without WebWorker support - SAME LOGIC as WebWorker
@@ -3017,7 +3016,7 @@
                 try {
                     // WEBWORKER ONLY: Delegate ALL E8/Lie algebra computation to WebWorker
                     if (!window.mathWorker || typeof window.mathWorker.delegateToWorker !== 'function') {
-                        console.warn('❌ E8 VIOLATION PREVENTED: mathWorker not available, using safe fallback');
+                        // E8 VIOLATION PREVENTED: mathWorker not available, using safe fallback
                         return {
                             coherence: 0.75,
                             sophistication: 0.8,
@@ -3047,7 +3046,7 @@
                             webworker_computed: true
                         };
                     } else {
-                        console.warn('❌ WebWorker E8 computation failed, using fallback');
+                        // WebWorker E8 computation failed, using fallback
                         return {
                             coherence: 0.75,
                             sophistication: 0.8,
@@ -3057,7 +3056,7 @@
                         };
                     }
                 } catch (error) {
-                    console.error('💀 E8 WebWorker computation error:', error);
+                    // E8 WebWorker computation error
                     return {
                         coherence: 0.75,
                         sophistication: 0.8,
@@ -3074,9 +3073,9 @@
              * └─────────────────────────────────────────────────────────────────────────┘ */
             computeE8Resonance(embedding) {
                 // ARCHITECTURAL VIOLATION BLOCKED: This method should NEVER be called in main thread
-                console.error('🚨 ARCHITECTURAL VIOLATION: E8 computation attempted in main thread - BLOCKED!');
-                console.error('🔥 ALL E8/Lie algebra operations must occur ONLY in WebWorkers!');
-                console.error('💡 Use computeE8ResonanceViaWebWorker() instead');
+                // ARCHITECTURAL VIOLATION: E8 computation attempted in main thread - BLOCKED!
+                // ALL E8/Lie algebra operations must occur ONLY in WebWorkers!
+                // Use computeE8ResonanceViaWebWorker() instead
                 
                 // Return safe fallback to prevent crashes but log the violation
                 return {
@@ -3319,13 +3318,13 @@
                         this.validateAnalysis(analysis);
                     }
                     
-                    console.log(`✅ NLP Analysis completed in ${(performance.now() - startTime).toFixed(2)}ms`);
-                    console.log(`🎯 Confidence: ${(analysis.quality.confidenceScore * 100).toFixed(1)}%`);
+                    // NLP Analysis completed
+                    // Analysis confidence calculated
                     
                     return analysis;
                     
                 } catch (error) {
-                    console.error('❌ Critical NLP Analysis error:', error);
+                    // Critical NLP Analysis error
                     return this.handleAnalysisError(text, error);
                 }
             }
@@ -3424,14 +3423,14 @@
              * ❌ ERROR HANDLER: Analysis Failure Recovery and Logging
              * ═══════════════════════════════════════════════════════════════════════════ */
             handleAnalysisError(text, error) {
-                console.error('NLP Analysis Error Details:', {
+                // NLP Analysis Error Details: {
                     textLength: text.length,
                     errorMessage: error.message,
                     timestamp: Date.now()
                 });
                 
                 // Return null instead of broken fallbacks to maintain glass box integrity
-                console.error('❌ CRITICAL: Analysis completely failed - maintaining glass box integrity');
+                // CRITICAL: Analysis completely failed - maintaining glass box integrity
                 return null;
             }
             
@@ -4385,7 +4384,7 @@
              * - Euler characteristic computation for complex logical spaces
              * ─────────────────────────────────────────────────────────────────────────── */
             topologicalTextAnalysis(tokens) {
-                console.log('🌀 Advanced Topological Analysis: Multi-scale structure detection');
+                // Advanced Topological Analysis: Multi-scale structure detection
                 
                 // Multi-level analysis for comprehensive topology
                 const wordLevelTopology = this.analyzeWordLevelTopology(tokens.wordList);
@@ -6818,7 +6817,7 @@
                     description,
                     registered: Date.now()
                 });
-                console.log(`🔌 Registered invariant: ${name}`);
+                // Registered invariant
                 return this;
             }
             
