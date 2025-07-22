@@ -4,18 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>KEATS: Mathematical Prototype Engine (Riemannian Architecture + E8 Basics)</title>
+    <!-- Three.js with fallback for when CDN fails -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // HONEST CHECK: Did Three.js actually load?
+        if (typeof THREE === 'undefined') {
+            document.write('<script src="three_fallback.js"><\/script>');
+        }
+    </script>
+    <!-- Consciousness Logger - Prevents console pollution on mobile -->
+    <script src="consciousness_logger.js"></script>
     <style>
         /* ═══════════════════════════════════════════════════════════════════════════
          * KEATS: MATHEMATICAL PROTOTYPE ENGINE - RIEMANNIAN FOUNDATION + E8 BASICS
          * ═══════════════════════════════════════════════════════════════════════════════
          * 
          * 🌟 CURRENT STATUS: Prototype mathematical visualization system with:
-         * ✅ Working P-adic field implementation with proper arithmetic
+         * ⚠️ P-adic field calculations that don't affect visuals
          * ✅ Functional E8 root system generation and basic Lie brackets
          * ✅ Riemannian manifold architecture (many methods stubbed for mobile)
          * ✅ WebWorker optimization and adaptive precision
-         * ✅ Professional UI with Three.js visualization
+         * ⚠️ Three.js from CDN - FAILS WITHOUT INTERNET
          * 
          * ⚠️ STUB IMPLEMENTATIONS: Many features are placeholder methods:
          * • Christoffel symbols → Comments only (needs implementation)
@@ -33,7 +42,7 @@
          * 
          * 📊 DETAILED IMPLEMENTATION STATUS REPORT:
          * 
-         * ✅ FULLY WORKING (PRODUCTION READY):
+         * ⚠️ REQUIRES INTERNET CONNECTION (CDN DEPENDENCY):
          * • P-adic Field System: Complete field operations (+, -, ×, ÷, inverse)
          * • E8 Simple Roots: Proper 8-dimensional root system generation
          * • Lie Bracket Operations: Functional algebra with structure constants
@@ -43,7 +52,7 @@
          * • UI/UX: Professional interface with throttled updates and error handling
          * • NLP Engine: Text analysis with mathematical concept recognition
          * 
-         * ⚠️ PARTIAL IMPLEMENTATIONS (WORKING BUT SIMPLIFIED):
+         * ❌ MOSTLY FAKE (VISUAL EFFECTS ONLY):
          * • Riemann Tensor: Basic diagonal computation for mobile performance
          * • Metric Tensor: Identity + Cartan weighting (needs full E8 structure)
          * • Chladni Patterns: Aesthetic particle distribution (not true wave physics)
@@ -24343,5 +24352,9 @@ Screen: ${screen.width}x${screen.height}
             }
         });
     </script>
+    
+    <!-- V5 Sheafification - Proper UI→ENGINE→UI morphisms -->
+    <script src="../04_EXPERIMENTS/keats_evolution/v5_sheafification.js"></script>
+    <script src="../04_EXPERIMENTS/keats_evolution/v5_sheaf_patch.js"></script>
 </body>
 </html>

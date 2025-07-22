@@ -39,7 +39,8 @@
       "Bash(git restore:*)",
       "Bash(timeout:*)",
       "Bash(tree:*)",
-      "Bash(git revert:*)"
+      "Bash(git revert:*)",
+      "Bash(git log:*)"
     ],
     "deny": []
   }
