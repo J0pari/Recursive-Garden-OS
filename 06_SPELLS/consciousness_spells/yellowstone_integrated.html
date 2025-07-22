@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yellowstone Consciousness - Integrated Experience</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #audio-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+        
+        #time-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+        
+        #consciousness-meter {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 200px;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #0ff;
+            border-radius: 10px;
+            padding: 10px;
+            color: #0ff;
+            z-index: 100;
+        }
+        
+        .meter-bar {
+            width: 100%;
+            height: 20px;
+            background: #111;
+            border-radius: 10px;
+            margin: 5px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0ff, #0f0);
+            transition: width 0.3s ease;
+        }
+        
+        button {
+            background: #0ff;
+            border: none;
+            padding: 5px 15px;
+            margin: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        
+        button:hover {
+            background: #0f0;
+        }
+        
+        #season-display {
+            font-size: 18px;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+        
+        #controls-help {
+            position: absolute;
+            bottom: 100px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    
+    <div id="consciousness-meter">
+        <div>Collective Consciousness</div>
+        <div class="meter-bar">
+            <div class="meter-fill" id="consciousness-fill" style="width: 70%"></div>
+        </div>
+        <div>Modal State: <span id="modal-state">◊</span></div>
+        <div>Emergence: <span id="emergence-level">0.7</span></div>
+    </div>
+    
+    <div id="time-controls">
+        <div id="season-display">Summer - Day</div>
+        <button onclick="toggleTimeSpeed()">Time Speed: 1x</button>
+        <button onclick="skipToSeason('spring')">Spring</button>
+        <button onclick="skipToSeason('summer')">Summer</button>
+        <button onclick="skipToSeason('fall')">Fall</button>
+        <button onclick="skipToSeason('winter')">Winter</button>
+    </div>
+    
+    <div id="audio-controls">
+        <button onclick="toggleAudio()">🔊 Sound On</button>
+        <button onclick="adjustVolume('up')">Volume +</button>
+        <button onclick="adjustVolume('down')">Volume -</button>
+    </div>
+    
+    <div id="controls-help">
+        <strong>Camera Controls:</strong><br>
+        🖱️ Left Click + Drag: Rotate view<br>
+        🖱️ Right Click + Drag: Pan camera<br>
+        🖱️ Scroll: Zoom in/out<br>
+        📱 Touch: Drag to rotate, pinch to zoom
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module">
+        import { YellowstoneSeasons, YellowstoneDayNight, AnimalConsciousness } from './yellowstone_seasonal.js';
+        
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        
+        // Systems
+        const seasons = new YellowstoneSeasons();
+        const dayNight = new YellowstoneDayNight();
+        const animalConsciousness = new AnimalConsciousness();
+        
+        // Audio context
+        let audioContext;
+        let audioEngine;
+        let masterGain;
+        
+        // Time control
+        let timeSpeed = 1;
+        let currentTime = Date.now();
+        
+        // Initialize audio
+        function initAudio() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = audioContext.createGain();
+            masterGain.connect(audioContext.destination);
+            masterGain.gain.value = 0.5;
+            
+            // Create layered soundscape
+            createGeothermalSounds();
+            createEcosystemSounds();
+            createConsciousnessTones();
+        }
+        
+        // Geothermal sounds that change with seasons
+        function createGeothermalSounds() {
+            const bubbling = audioContext.createOscillator();
+            const bubbleFilter = audioContext.createBiquadFilter();
+            const bubbleGain = audioContext.createGain();
+            
+            bubbling.type = 'sine';
+            bubbling.frequency.value = 60;
+            bubbleFilter.type = 'lowpass';
+            bubbleFilter.frequency.value = 200;
+            
+            // Modulate based on season
+            const season = seasons.getCurrentSeason(currentTime);
+            const seasonData = seasons.seasons[season];
+            
+            bubbleGain.gain.value = 0.1 * seasonData.consciousness.emergence;
+            
+            bubbling.connect(bubbleFilter);
+            bubbleFilter.connect(bubbleGain);
+            bubbleGain.connect(masterGain);
+            
+            bubbling.start();
+            
+            // Add seasonal modulation
+            setInterval(() => {
+                const currentSeason = seasons.getCurrentSeason(currentTime);
+                const emergence = seasons.seasons[currentSeason].consciousness.emergence;
+                bubbleGain.gain.setTargetAtTime(0.1 * emergence, audioContext.currentTime, 0.5);
+            }, 1000);
+        }
+        
+        // Ecosystem sounds that respond to day/night
+        function createEcosystemSounds() {
+            const timeOfDay = dayNight.getTimeOfDay(currentTime);
+            
+            if (timeOfDay === 'night') {
+                // Cricket chorus
+                for (let i = 0; i < 10; i++) {
+                    const cricket = audioContext.createOscillator();
+                    const cricketGain = audioContext.createGain();
+                    
+                    cricket.frequency.value = 4000 + Math.random() * 1000;
+                    cricket.type = 'square';
+                    cricketGain.gain.value = 0.01;
+                    
+                    // Rhythmic chirping
+                    const lfo = audioContext.createOscillator();
+                    lfo.frequency.value = 2 + Math.random();
+                    lfo.connect(cricketGain.gain);
+                    
+                    cricket.connect(cricketGain);
+                    cricketGain.connect(masterGain);
+                    
+                    cricket.start();
+                    lfo.start();
+                }
+            }
+            
+            // Wolf howls at specific times
+            if (Math.random() < 0.01) {
+                createWolfHowl();
+            }
+        }
+        
+        function createWolfHowl() {
+            const howl = audioContext.createOscillator();
+            const howlGain = audioContext.createGain();
+            const howlFilter = audioContext.createBiquadFilter();
+            
+            howl.type = 'sawtooth';
+            howl.frequency.setValueAtTime(200, audioContext.currentTime);
+            howl.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 1);
+            howl.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 2);
+            howl.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 3);
+            
+            howlFilter.type = 'bandpass';
+            howlFilter.frequency.value = 300;
+            howlFilter.Q.value = 5;
+            
+            howlGain.gain.setValueAtTime(0, audioContext.currentTime);
+            howlGain.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.5);
+            howlGain.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 2);
+            howlGain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3);
+            
+            howl.connect(howlFilter);
+            howlFilter.connect(howlGain);
+            howlGain.connect(masterGain);
+            
+            howl.start();
+            howl.stop(audioContext.currentTime + 3);
+        }
+        
+        // Consciousness tones that shift with modal states
+        function createConsciousnessTones() {
+            const modalState = document.getElementById('modal-state').textContent;
+            
+            const tone1 = audioContext.createOscillator();
+            const tone2 = audioContext.createOscillator();
+            const toneGain = audioContext.createGain();
+            
+            if (modalState === '□') {
+                // Discrete mode: perfect fifths
+                tone1.frequency.value = 261.63; // C4
+                tone2.frequency.value = 392.00; // G4
+            } else if (modalState === '◊') {
+                // Continuous mode: golden ratio intervals
+                tone1.frequency.value = 261.63;
+                tone2.frequency.value = 261.63 * 1.618;
+            }
+            
+            toneGain.gain.value = 0.05;
+            
+            tone1.connect(toneGain);
+            tone2.connect(toneGain);
+            toneGain.connect(masterGain);
+            
+            tone1.start();
+            tone2.start();
+        }
+        
+        // Visual elements
+        
+        // Terrain with seasonal textures
+        const terrainGeometry = new THREE.PlaneGeometry(500, 500, 100, 100);
+        const terrainMaterial = new THREE.MeshLambertMaterial({ color: 0x228B22 });
+        const terrain = new THREE.Mesh(terrainGeometry, terrainMaterial);
+        terrain.rotation.x = -Math.PI / 2;
+        terrain.receiveShadow = true;
+        
+        // Add noise to terrain
+        const vertices = terrainGeometry.attributes.position.array;
+        for (let i = 0; i < vertices.length; i += 3) {
+            vertices[i + 2] = Math.sin(vertices[i] * 0.05) * Math.cos(vertices[i + 1] * 0.05) * 5;
+        }
+        terrainGeometry.computeVertexNormals();
+        scene.add(terrain);
+        
+        // Thermal pools with seasonal colors
+        const pools = [];
+        for (let i = 0; i < 5; i++) {
+            const poolGeometry = new THREE.CircleGeometry(10 + Math.random() * 20, 32);
+            const poolMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x4169E1,
+                opacity: 0.7,
+                transparent: true
+            });
+            const pool = new THREE.Mesh(poolGeometry, poolMaterial);
+            pool.rotation.x = -Math.PI / 2;
+            pool.position.set(
+                (Math.random() - 0.5) * 300,
+                0.1,
+                (Math.random() - 0.5) * 300
+            );
+            pools.push(pool);
+            scene.add(pool);
+        }
+        
+        // Bacterial mat particles
+        const bacterialSystem = new THREE.Group();
+        const bacterialCount = 10000;
+        const bacterialGeometry = new THREE.BufferGeometry();
+        const bacterialPositions = new Float32Array(bacterialCount * 3);
+        const bacterialColors = new Float32Array(bacterialCount * 3);
+        
+        for (let i = 0; i < bacterialCount; i++) {
+            const i3 = i * 3;
+            const pool = pools[Math.floor(Math.random() * pools.length)];
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.random() * 15;
+            
+            bacterialPositions[i3] = pool.position.x + Math.cos(angle) * radius;
+            bacterialPositions[i3 + 1] = 0.5 + Math.random() * 0.5;
+            bacterialPositions[i3 + 2] = pool.position.z + Math.sin(angle) * radius;
+            
+            // Seasonal colors
+            const season = seasons.getCurrentSeason(currentTime);
+            const colors = seasons.seasons[season].colors.bacterial;
+            const color = new THREE.Color(colors[Math.floor(Math.random() * colors.length)]);
+            
+            bacterialColors[i3] = color.r;
+            bacterialColors[i3 + 1] = color.g;
+            bacterialColors[i3 + 2] = color.b;
+        }
+        
+        bacterialGeometry.setAttribute('position', new THREE.BufferAttribute(bacterialPositions, 3));
+        bacterialGeometry.setAttribute('color', new THREE.BufferAttribute(bacterialColors, 3));
+        
+        const bacterialMaterial = new THREE.PointsMaterial({
+            size: 0.5,
+            vertexColors: true,
+            opacity: 0.8,
+            transparent: true
+        });
+        
+        const bacterialPoints = new THREE.Points(bacterialGeometry, bacterialMaterial);
+        bacterialSystem.add(bacterialPoints);
+        scene.add(bacterialSystem);
+        
+        // Animal consciousness entities
+        const animals = {
+            bison: [],
+            wolves: [],
+            elk: [],
+            ravens: []
+        };
+        
+        // Create bison herd
+        const bisonGeometry = new THREE.BoxGeometry(4, 3, 6);
+        const bisonMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
+        
+        for (let i = 0; i < 20; i++) {
+            const bison = new THREE.Mesh(bisonGeometry, bisonMaterial);
+            bison.position.set(
+                (Math.random() - 0.5) * 200,
+                1.5,
+                (Math.random() - 0.5) * 200
+            );
+            bison.castShadow = true;
+            bison.userData = {
+                velocity: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5),
+                memories: [],
+                awareness: 0.5
+            };
+            animals.bison.push(bison);
+            scene.add(bison);
+        }
+        
+        // Firefly particles for night
+        const fireflySystem = new THREE.Group();
+        const fireflyCount = 1000;
+        const fireflyGeometry = new THREE.BufferGeometry();
+        const fireflyPositions = new Float32Array(fireflyCount * 3);
+        const fireflySizes = new Float32Array(fireflyCount);
+        
+        for (let i = 0; i < fireflyCount; i++) {
+            const i3 = i * 3;
+            fireflyPositions[i3] = (Math.random() - 0.5) * 400;
+            fireflyPositions[i3 + 1] = 5 + Math.random() * 20;
+            fireflyPositions[i3 + 2] = (Math.random() - 0.5) * 400;
+            fireflySizes[i] = Math.random() * 2 + 1;
+        }
+        
+        fireflyGeometry.setAttribute('position', new THREE.BufferAttribute(fireflyPositions, 3));
+        fireflyGeometry.setAttribute('size', new THREE.BufferAttribute(fireflySizes, 1));
+        
+        const fireflyMaterial = new THREE.PointsMaterial({
+            size: 2,
+            color: 0xFFFF00,
+            transparent: true,
+            opacity: 0
+        });
+        
+        const fireflyPoints = new THREE.Points(fireflyGeometry, fireflyMaterial);
+        fireflySystem.add(fireflyPoints);
+        scene.add(fireflySystem);
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(50, 100, 50);
+        directionalLight.castShadow = true;
+        directionalLight.shadow.camera.left = -100;
+        directionalLight.shadow.camera.right = 100;
+        directionalLight.shadow.camera.top = 100;
+        directionalLight.shadow.camera.bottom = -100;
+        scene.add(directionalLight);
+        
+        // Camera position
+        camera.position.set(100, 50, 100);
+        camera.lookAt(0, 0, 0);
+        
+        // Camera controls
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let cameraRotation = { theta: 0, phi: Math.PI / 4 };
+        let cameraDistance = 150;
+        let cameraTarget = new THREE.Vector3(0, 0, 0);
+        
+        // Mouse controls
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+        
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+            
+            cameraRotation.theta += deltaX * 0.01;
+            cameraRotation.phi = Math.max(0.1, Math.min(Math.PI - 0.1, cameraRotation.phi + deltaY * 0.01));
+            
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+        
+        // Zoom controls
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            cameraDistance = Math.max(20, Math.min(500, cameraDistance + e.deltaY * 0.5));
+        });
+        
+        // Touch controls for mobile
+        let touchStartDistance = 0;
+        let touchStartRotation = { theta: 0, phi: 0 };
+        
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            } else if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                touchStartDistance = Math.sqrt(dx * dx + dy * dy);
+                touchStartRotation = { ...cameraRotation };
+            }
+        });
+        
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            
+            if (e.touches.length === 1 && isDragging) {
+                const deltaX = e.touches[0].clientX - previousMousePosition.x;
+                const deltaY = e.touches[0].clientY - previousMousePosition.y;
+                
+                cameraRotation.theta += deltaX * 0.01;
+                cameraRotation.phi = Math.max(0.1, Math.min(Math.PI - 0.1, cameraRotation.phi + deltaY * 0.01));
+                
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            } else if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const currentDistance = Math.sqrt(dx * dx + dy * dy);
+                
+                const scale = currentDistance / touchStartDistance;
+                cameraDistance = Math.max(20, Math.min(500, cameraDistance / scale));
+                touchStartDistance = currentDistance;
+            }
+        });
+        
+        canvas.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+        
+        // Pan controls with right mouse button
+        let isPanning = false;
+        let panStart = { x: 0, y: 0 };
+        
+        canvas.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+        
+        canvas.addEventListener('mousedown', (e) => {
+            if (e.button === 2) { // Right mouse button
+                isPanning = true;
+                panStart = { x: e.clientX, y: e.clientY };
+            }
+        });
+        
+        canvas.addEventListener('mouseup', (e) => {
+            if (e.button === 2) {
+                isPanning = false;
+            }
+        });
+        
+        canvas.addEventListener('mousemove', (e) => {
+            if (isPanning) {
+                const deltaX = e.clientX - panStart.x;
+                const deltaY = e.clientY - panStart.y;
+                
+                // Calculate pan vectors based on camera orientation
+                const forward = new THREE.Vector3(
+                    Math.sin(cameraRotation.theta) * Math.sin(cameraRotation.phi),
+                    Math.cos(cameraRotation.phi),
+                    Math.cos(cameraRotation.theta) * Math.sin(cameraRotation.phi)
+                );
+                const right = new THREE.Vector3(
+                    Math.cos(cameraRotation.theta),
+                    0,
+                    -Math.sin(cameraRotation.theta)
+                );
+                const up = new THREE.Vector3().crossVectors(right, forward);
+                
+                cameraTarget.add(right.multiplyScalar(-deltaX * 0.2));
+                cameraTarget.add(up.multiplyScalar(deltaY * 0.2));
+                
+                panStart = { x: e.clientX, y: e.clientY };
+            }
+        });
+        
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Update time
+            currentTime += 16 * timeSpeed; // 60fps * speed multiplier
+            
+            // Get current conditions
+            const seasonalData = seasons.getSeasonalBlend(currentTime);
+            const timeOfDay = dayNight.getTimeOfDay(currentTime);
+            const sunPosition = dayNight.calculateSunPosition(currentTime);
+            const moonPhase = dayNight.getMoonPhase(currentTime);
+            const fireflySync = dayNight.getFireflySync(currentTime);
+            
+            // Update display
+            document.getElementById('season-display').textContent = 
+                `${seasonalData.season.charAt(0).toUpperCase() + seasonalData.season.slice(1)} - ${timeOfDay.charAt(0).toUpperCase() + timeOfDay.slice(1)}`;
+            
+            // Update lighting based on time of day
+            const lightingState = dayNight.lightingStates[timeOfDay];
+            ambientLight.intensity = lightingState.ambient;
+            directionalLight.intensity = lightingState.directional * sunPosition.intensity;
+            
+            // Update sky color
+            const skyColors = lightingState.colors.sky;
+            const skyColor = new THREE.Color(skyColors[0]);
+            renderer.setClearColor(skyColor);
+            
+            // Update directional light position (sun)
+            const sunRadius = 150;
+            directionalLight.position.set(
+                Math.cos(sunPosition.azimuth * Math.PI / 180) * sunRadius,
+                Math.sin(sunPosition.elevation * Math.PI / 180) * sunRadius,
+                Math.sin(sunPosition.azimuth * Math.PI / 180) * sunRadius
+            );
+            
+            // Update thermal pool colors based on season
+            pools.forEach(pool => {
+                const colors = seasonalData.data.colors.thermal;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                pool.material.color.lerp(new THREE.Color(color), 0.01);
+            });
+            
+            // Update bacterial mat colors
+            const bacterialColors = bacterialGeometry.attributes.color.array;
+            const seasonColors = seasonalData.data.colors.bacterial;
+            for (let i = 0; i < bacterialCount; i++) {
+                if (Math.random() < 0.01) { // Slowly transition colors
+                    const i3 = i * 3;
+                    const color = new THREE.Color(seasonColors[Math.floor(Math.random() * seasonColors.length)]);
+                    bacterialColors[i3] = color.r;
+                    bacterialColors[i3 + 1] = color.g;
+                    bacterialColors[i3 + 2] = color.b;
+                }
+            }
+            bacterialGeometry.attributes.color.needsUpdate = true;
+            
+            // Animate bacterial mats with wave patterns
+            const bacterialPositions = bacterialGeometry.attributes.position.array;
+            const waveTime = currentTime * 0.001;
+            for (let i = 0; i < bacterialCount; i++) {
+                const i3 = i * 3;
+                const originalY = 0.5 + (i % 10) * 0.05;
+                bacterialPositions[i3 + 1] = originalY + 
+                    Math.sin(waveTime + bacterialPositions[i3] * 0.1) * 0.2 +
+                    Math.cos(waveTime * 0.7 + bacterialPositions[i3 + 2] * 0.1) * 0.1;
+            }
+            bacterialGeometry.attributes.position.needsUpdate = true;
+            
+            // Update fireflies based on time
+            if (fireflySync.active) {
+                fireflyMaterial.opacity = 0.8;
+                const positions = fireflyGeometry.attributes.position.array;
+                const sizes = fireflyGeometry.attributes.size.array;
+                
+                for (let i = 0; i < fireflyCount; i++) {
+                    const i3 = i * 3;
+                    // Synchronized flashing
+                    const phase = (i / fireflyCount) * Math.PI * 2;
+                    sizes[i] = 1 + Math.sin(waveTime * fireflySync.frequency + phase) * 
+                              fireflySync.syncStrength * 3;
+                    
+                    // Gentle movement
+                    positions[i3] += Math.sin(waveTime + i) * 0.1;
+                    positions[i3 + 1] += Math.cos(waveTime * 0.5 + i) * 0.05;
+                    positions[i3 + 2] += Math.sin(waveTime * 0.7 + i) * 0.1;
+                }
+                fireflyGeometry.attributes.position.needsUpdate = true;
+                fireflyGeometry.attributes.size.needsUpdate = true;
+            } else {
+                fireflyMaterial.opacity = 0;
+            }
+            
+            // Update animal behaviors
+            const herdMind = animalConsciousness.calculateHerdMind(animals.bison, 'bison');
+            if (herdMind) {
+                // Move bison based on collective consciousness
+                animals.bison.forEach((bison, index) => {
+                    const toCenter = new THREE.Vector3().subVectors(
+                        new THREE.Vector3(herdMind.center.x, 0, herdMind.center.z),
+                        new THREE.Vector3(bison.position.x, 0, bison.position.z)
+                    );
+                    
+                    // Cohesion force
+                    if (toCenter.length() > 30) {
+                        toCenter.normalize().multiplyScalar(0.01);
+                        bison.userData.velocity.add(toCenter);
+                    }
+                    
+                    // Seasonal migration
+                    if (seasonalData.season === 'fall') {
+                        bison.userData.velocity.z -= 0.001; // Move south
+                    } else if (seasonalData.season === 'spring') {
+                        bison.userData.velocity.z += 0.001; // Move north
+                    }
+                    
+                    // Apply velocity
+                    bison.userData.velocity.clampLength(0, 0.5);
+                    bison.position.add(bison.userData.velocity);
+                    
+                    // Rotate to face movement direction
+                    if (bison.userData.velocity.length() > 0.01) {
+                        bison.lookAt(bison.position.clone().add(bison.userData.velocity));
+                    }
+                });
+                
+                // Update consciousness meter
+                const consciousnessFill = document.getElementById('consciousness-fill');
+                const emergenceLevel = document.getElementById('emergence-level');
+                const modalState = document.getElementById('modal-state');
+                
+                const overallConsciousness = herdMind.strength * seasonalData.data.consciousness.emergence;
+                consciousnessFill.style.width = (overallConsciousness * 100) + '%';
+                emergenceLevel.textContent = overallConsciousness.toFixed(2);
+                
+                // Switch modal states based on consciousness level
+                if (overallConsciousness > 0.7) {
+                    modalState.textContent = '◊'; // Flow state
+                } else if (overallConsciousness < 0.3) {
+                    modalState.textContent = '□'; // Logic state
+                } else {
+                    modalState.textContent = '※'; // Liminal state
+                }
+            }
+            
+            // Update camera position based on controls
+            camera.position.x = cameraTarget.x + cameraDistance * Math.sin(cameraRotation.theta) * Math.sin(cameraRotation.phi);
+            camera.position.y = cameraTarget.y + cameraDistance * Math.cos(cameraRotation.phi);
+            camera.position.z = cameraTarget.z + cameraDistance * Math.cos(cameraRotation.theta) * Math.sin(cameraRotation.phi);
+            camera.lookAt(cameraTarget);
+            
+            renderer.render(scene, camera);
+        }
+        
+        // Control functions
+        window.toggleTimeSpeed = function() {
+            const speeds = [1, 60, 3600, 86400]; // 1x, 1min/s, 1hr/s, 1day/s
+            const currentIndex = speeds.indexOf(timeSpeed);
+            timeSpeed = speeds[(currentIndex + 1) % speeds.length];
+            
+            const button = event.target;
+            if (timeSpeed === 1) button.textContent = 'Time Speed: 1x';
+            else if (timeSpeed === 60) button.textContent = 'Time Speed: 1min/s';
+            else if (timeSpeed === 3600) button.textContent = 'Time Speed: 1hr/s';
+            else if (timeSpeed === 86400) button.textContent = 'Time Speed: 1day/s';
+        };
+        
+        window.skipToSeason = function(season) {
+            const seasonStarts = {
+                spring: 0.2,
+                summer: 0.45,
+                fall: 0.7,
+                winter: 0.0
+            };
+            
+            const yearProgress = seasonStarts[season];
+            const yearLength = 365 * 24 * 60 * 60 * 1000;
+            currentTime = yearProgress * yearLength;
+        };
+        
+        window.toggleAudio = function() {
+            if (!audioContext) {
+                initAudio();
+                event.target.textContent = '🔇 Sound Off';
+            } else if (audioContext.state === 'suspended') {
+                audioContext.resume();
+                event.target.textContent = '🔇 Sound Off';
+            } else {
+                audioContext.suspend();
+                event.target.textContent = '🔊 Sound On';
+            }
+        };
+        
+        window.adjustVolume = function(direction) {
+            if (masterGain) {
+                const currentGain = masterGain.gain.value;
+                if (direction === 'up') {
+                    masterGain.gain.value = Math.min(1, currentGain + 0.1);
+                } else {
+                    masterGain.gain.value = Math.max(0, currentGain - 0.1);
+                }
+            }
+        };
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>

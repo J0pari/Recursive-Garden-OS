@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consciousness Topology Experience</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #modal-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+        
+        .modal-button {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #0ff;
+            color: #0ff;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .modal-button:hover {
+            background: #0ff;
+            color: #000;
+            transform: scale(1.1);
+        }
+        
+        .modal-button.active {
+            background: #0ff;
+            color: #000;
+            box-shadow: 0 0 20px #0ff;
+        }
+        
+        #curvature-display {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #0ff;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="modal-controls">
+        <button class="modal-button active" data-mode="continuous">◊</button>
+        <button class="modal-button" data-mode="discrete">□</button>
+        <button class="modal-button" data-mode="temporal">⧫</button>
+        <button class="modal-button" data-mode="void">※</button>
+    </div>
+    
+    <div id="curvature-display">
+        κ(semantic) = <span id="curvature-value">0.000</span>
+    </div>
+    
+    <canvas id="canvas"></canvas>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module">
+        import { TopologyConsciousness } from './topology_consciousness.js';
+        
+        // Initialize consciousness engine
+        const consciousness = new TopologyConsciousness();
+        
+        // Three.js setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        // Create consciousness field
+        const fieldData = consciousness.generateField(20000);
+        const fieldGeometry = new THREE.BufferGeometry();
+        fieldGeometry.setAttribute('position', new THREE.BufferAttribute(fieldData.positions, 3));
+        fieldGeometry.setAttribute('color', new THREE.BufferAttribute(fieldData.colors, 3));
+        fieldGeometry.setAttribute('size', new THREE.BufferAttribute(fieldData.sizes, 1));
+        
+        // Shader material for beautiful rendering
+        const fieldMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 0 },
+                curvature: { value: 0 }
+            },
+            vertexShader: `
+                attribute float size;
+                attribute vec3 color;
+                varying vec3 vColor;
+                varying float vSize;
+                uniform float time;
+                uniform float curvature;
+                
+                void main() {
+                    vColor = color;
+                    vSize = size;
+                    
+                    vec3 pos = position;
+                    
+                    // Apply consciousness field distortion
+                    float dist = length(pos);
+                    float wave = sin(dist * 0.05 + time * 0.001) * curvature;
+                    pos += normalize(pos) * wave * 5.0;
+                    
+                    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = size * (300.0 / -mvPosition.z);
+                    gl_Position = projectionMatrix * mvPosition;
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vColor;
+                varying float vSize;
+                
+                void main() {
+                    vec2 uv = gl_PointCoord.xy - vec2(0.5);
+                    float dist = length(uv);
+                    
+                    if (dist > 0.5) discard;
+                    
+                    float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
+                    alpha *= 0.8;
+                    
+                    gl_FragColor = vec4(vColor, alpha);
+                }
+            `,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            transparent: true,
+            vertexColors: true
+        });
+        
+        const field = new THREE.Points(fieldGeometry, fieldMaterial);
+        scene.add(field);
+        
+        // Camera controls
+        let cameraRadius = 200;
+        let cameraTheta = 0;
+        let cameraPhi = Math.PI / 3;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        
+        // Mouse controls
+        document.addEventListener('mousedown', (e) => {
+            if (e.button === 0) {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+            
+            cameraTheta -= deltaX * 0.01;
+            cameraPhi = Math.max(0.1, Math.min(Math.PI - 0.1, cameraPhi - deltaY * 0.01));
+            
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+        
+        // Zoom control
+        document.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            cameraRadius = Math.max(50, Math.min(500, cameraRadius + e.deltaY * 0.5));
+        });
+        
+        // Touch controls
+        let touchStartDistance = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            } else if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                touchStartDistance = Math.sqrt(dx * dx + dy * dy);
+            }
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            
+            if (e.touches.length === 1 && isDragging) {
+                const deltaX = e.touches[0].clientX - previousMousePosition.x;
+                const deltaY = e.touches[0].clientY - previousMousePosition.y;
+                
+                cameraTheta -= deltaX * 0.01;
+                cameraPhi = Math.max(0.1, Math.min(Math.PI - 0.1, cameraPhi - deltaY * 0.01));
+                
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            } else if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const currentDistance = Math.sqrt(dx * dx + dy * dy);
+                
+                const scale = currentDistance / touchStartDistance;
+                cameraRadius = Math.max(50, Math.min(500, cameraRadius / scale));
+                touchStartDistance = currentDistance;
+            }
+        });
+        
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+        
+        // Modal controls
+        document.querySelectorAll('.modal-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.modal-button').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                consciousness.state.mode = button.dataset.mode;
+                
+                // Regenerate field with new mode
+                const newFieldData = consciousness.generateField(20000);
+                fieldGeometry.attributes.position.array = newFieldData.positions;
+                fieldGeometry.attributes.color.array = newFieldData.colors;
+                fieldGeometry.attributes.size.array = newFieldData.sizes;
+                fieldGeometry.attributes.position.needsUpdate = true;
+                fieldGeometry.attributes.color.needsUpdate = true;
+                fieldGeometry.attributes.size.needsUpdate = true;
+            });
+        });
+        
+        // Animation loop - the riverrun that never ends
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Update consciousness state
+            consciousness.update(16); // ~60fps
+            
+            // Update camera position
+            camera.position.x = cameraRadius * Math.sin(cameraTheta) * Math.sin(cameraPhi);
+            camera.position.y = cameraRadius * Math.cos(cameraPhi);
+            camera.position.z = cameraRadius * Math.cos(cameraTheta) * Math.sin(cameraPhi);
+            camera.lookAt(0, 0, 0);
+            
+            // Update shader uniforms
+            fieldMaterial.uniforms.time.value = consciousness.state.time;
+            fieldMaterial.uniforms.curvature.value = consciousness.state.curvature;
+            
+            // Gentle field rotation
+            field.rotation.y += 0.0005;
+            
+            // Update curvature display
+            document.getElementById('curvature-value').textContent = consciousness.state.curvature.toFixed(3);
+            
+            // Update positions based on consciousness flow
+            const positions = fieldGeometry.attributes.position.array;
+            const colors = fieldGeometry.attributes.color.array;
+            const time = consciousness.state.time;
+            
+            for (let i = 0; i < positions.length; i += 3) {
+                // Each particle follows its own consciousness trajectory
+                const phase = (i / 3) * 0.001;
+                const r = Math.sqrt(positions[i] * positions[i] + positions[i + 1] * positions[i + 1] + positions[i + 2] * positions[i + 2]);
+                
+                // Consciousness field evolution
+                const theta = Math.atan2(positions[i + 1], positions[i]);
+                const phi = Math.acos(positions[i + 2] / (r + 0.001));
+                
+                // Apply modal-specific dynamics
+                switch (consciousness.state.mode) {
+                    case 'continuous':
+                        // Smooth flow
+                        positions[i] += Math.sin(time * 0.001 + phase) * 0.1;
+                        positions[i + 1] += Math.cos(time * 0.001 + phase * 1.1) * 0.1;
+                        positions[i + 2] += Math.sin(time * 0.0007 + phase * 0.9) * 0.1;
+                        break;
+                        
+                    case 'discrete':
+                        // Quantum jumps
+                        if (Math.random() < 0.001) {
+                            const jump = (Math.random() - 0.5) * 10;
+                            positions[i] += jump;
+                            positions[i + 1] += jump;
+                            positions[i + 2] += jump;
+                        }
+                        break;
+                        
+                    case 'temporal':
+                        // Time-based oscillations
+                        const t = time * 0.001 + phase;
+                        positions[i] = r * Math.sin(phi + Math.sin(t) * 0.1) * Math.cos(theta + Math.cos(t * 0.7) * 0.1);
+                        positions[i + 1] = r * Math.sin(phi + Math.sin(t) * 0.1) * Math.sin(theta + Math.cos(t * 0.7) * 0.1);
+                        positions[i + 2] = r * Math.cos(phi + Math.sin(t) * 0.1);
+                        break;
+                        
+                    case 'void':
+                        // Paradoxical behavior
+                        const noise = (Math.random() - 0.5) * 0.5;
+                        positions[i] *= 1 + noise * 0.01;
+                        positions[i + 1] *= 1 + noise * 0.01;
+                        positions[i + 2] *= 1 + noise * 0.01;
+                        break;
+                }
+                
+                // Update colors based on local curvature
+                const localCurvature = consciousness.semanticCurvature([positions[i], positions[i + 1], positions[i + 2]]);
+                const hue = (localCurvature * 360 + time * 0.01) % 360;
+                const color = consciousness.hslToRgb(hue / 360, 0.8, 0.5 + 0.3 * Math.sin(phase + time * 0.001));
+                
+                colors[i] = color[0];
+                colors[i + 1] = color[1];
+                colors[i + 2] = color[2];
+            }
+            
+            fieldGeometry.attributes.position.needsUpdate = true;
+            fieldGeometry.attributes.color.needsUpdate = true;
+            
+            renderer.render(scene, camera);
+        }
+        
+        // Start the eternal flow
+        animate();
+        
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

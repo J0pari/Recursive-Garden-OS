@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Consciousness Navigator - Unique Paths Through Mathematics</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            /* Natural consciousness colors */
+            --ocean-depth: hsl(220, 95%, 8%);
+            --ocean-glow: hsl(180, 100%, 50%);
+            --ocean-pulse: hsl(200, 80%, 60%);
+            --crystal-core: hsl(280, 70%, 30%);
+            --crystal-edge: hsl(300, 60%, 70%);
+            --fire-dance: hsl(40, 100%, 60%);
+            --forest-shadow: hsl(140, 60%, 15%);
+            --dawn-horizon: hsl(16, 90%, 65%);
+            --void-depth: hsl(240, 80%, 10%);
+            
+            /* Golden ratio */
+            --φ: 1.618033988749;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--ocean-depth);
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 2s ease;
+        }
+        
+        /* Dynamic background based on navigation state */
+        body[data-navigation-mode="exploring"] {
+            background: radial-gradient(
+                circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                var(--crystal-edge) 0%,
+                var(--ocean-depth) 50%
+            );
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 3em;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            background: linear-gradient(
+                90deg,
+                var(--ocean-glow) 0%,
+                var(--crystal-edge) 50%,
+                var(--fire-dance) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            animation: consciousness-flow 10s ease-in-out infinite;
+        }
+        
+        @keyframes consciousness-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            color: var(--ocean-pulse);
+            font-size: 1.2em;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        
+        .charter-bound {
+            font-size: 0.9em;
+            color: var(--crystal-edge);
+            opacity: 0.7;
+        }
+        
+        /* Input Section */
+        .input-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .input-group {
+            background: linear-gradient(
+                135deg,
+                hsla(220, 95%, 8%, 0.6) 0%,
+                hsla(200, 80%, 15%, 0.4) 100%
+            );
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--ocean-pulse);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 200, 255, 0.2);
+            border-color: var(--ocean-glow);
+        }
+        
+        .input-group h3 {
+            font-size: 1.1em;
+            margin-bottom: 16px;
+            color: var(--crystal-edge);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Sliders with visual feedback */
+        .slider-container {
+            margin: 20px 0;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .slider-value {
+            color: var(--ocean-glow);
+            font-weight: 600;
+            min-width: 60px;
+            text-align: right;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(
+                90deg,
+                var(--ocean-depth) 0%,
+                var(--ocean-glow) var(--value, 50%),
+                var(--ocean-depth) 100%
+            );
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(
+                circle,
+                var(--crystal-edge) 0%,
+                var(--ocean-glow) 100%
+            );
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--ocean-glow);
+            transition: all 0.2s;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 30px var(--ocean-glow);
+        }
+        
+        /* Keywords input with suggestion system */
+        .keyword-input-container {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .keyword-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--ocean-pulse);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .keyword-input:focus {
+            outline: none;
+            border-color: var(--ocean-glow);
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+        }
+        
+        .keyword-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .keyword-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: var(--crystal-core);
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .keyword-chip:hover {
+            background: var(--crystal-edge);
+            transform: scale(1.05);
+        }
+        
+        .keyword-chip.active {
+            background: var(--ocean-glow);
+            color: var(--ocean-depth);
+            font-weight: 600;
+        }
+        
+        /* Document source selector */
+        .source-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .source-checkbox {
+            position: relative;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--ocean-pulse);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        .source-checkbox input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .source-checkbox:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--ocean-glow);
+        }
+        
+        .source-checkbox input:checked + .source-label {
+            color: var(--ocean-glow);
+            font-weight: 600;
+        }
+        
+        .source-checkbox input:checked ~ .source-glow {
+            opacity: 1;
+        }
+        
+        .source-glow {
+            position: absolute;
+            inset: -1px;
+            border-radius: 8px;
+            background: linear-gradient(
+                45deg,
+                var(--ocean-glow),
+                var(--crystal-edge)
+            );
+            opacity: 0;
+            z-index: -1;
+            filter: blur(10px);
+            transition: opacity 0.3s;
+        }
+        
+        /* Generate button */
+        .generate-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .generate-btn {
+            padding: 16px 48px;
+            background: linear-gradient(
+                135deg,
+                var(--ocean-glow) 0%,
+                var(--crystal-edge) 100%
+            );
+            border: none;
+            border-radius: 30px;
+            color: var(--ocean-depth);
+            font-size: 1.2em;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 200, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 200, 255, 0.5);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        /* Navigation output */
+        .navigation-output {
+            background: linear-gradient(
+                135deg,
+                hsla(220, 95%, 8%, 0.8) 0%,
+                hsla(200, 80%, 15%, 0.6) 100%
+            );
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--ocean-pulse);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            min-height: 400px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .navigation-output.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .path-visualization {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .consciousness-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(
+                circle,
+                var(--node-color, var(--ocean-glow)) 0%,
+                transparent 70%
+            );
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+        
+        .consciousness-node:hover {
+            transform: scale(1.2);
+            z-index: 10;
+        }
+        
+        .path-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--ocean-glow),
+                transparent
+            );
+            transform-origin: left center;
+            animation: path-flow 2s linear infinite;
+        }
+        
+        @keyframes path-flow {
+            0% { background-position: -100% 0; }
+            100% { background-position: 100% 0; }
+        }
+        
+        .navigation-text {
+            margin-top: 30px;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+        
+        .consciousness-link {
+            color: var(--ocean-glow);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .consciousness-link:hover {
+            border-bottom-color: var(--ocean-glow);
+            text-shadow: 0 0 20px var(--ocean-glow);
+        }
+        
+        /* Cache status */
+        .cache-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--ocean-pulse);
+            border-radius: 20px;
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+        
+        .cache-fresh {
+            color: var(--forest-shadow);
+        }
+        
+        .cache-stale {
+            color: var(--dawn-horizon);
+        }
+        
+        /* Modal mechanics visual */
+        .modal-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 48px;
+            opacity: 0.8;
+            transition: all 0.5s;
+            text-shadow: 0 0 30px currentColor;
+        }
+        
+        /* Unique hash display */
+        .unique-hash {
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: var(--crystal-edge);
+            opacity: 0.7;
+        }
+        
+        /* Loading states */
+        .loading-consciousness {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .loading-consciousness.active {
+            display: block;
+        }
+        
+        .loading-spiral {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border: 3px solid transparent;
+            border-top-color: var(--ocean-glow);
+            border-radius: 50%;
+            animation: spiral 1s linear infinite;
+        }
+        
+        @keyframes spiral {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .input-matrix {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .navigation-output {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-indicator" id="modalIndicator">□</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Garden Consciousness Navigator</h1>
+            <p class="subtitle">Every path through the garden is unique</p>
+            <p class="charter-bound">Charter-bound • 7-adic powered • Non-reproducible</p>
+        </div>
+        
+        <div class="input-matrix">
+            <!-- Consciousness Parameters -->
+            <div class="input-group">
+                <h3>Consciousness Parameters</h3>
+                
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Coherence</span>
+                        <span class="slider-value" id="coherence-val">0.618</span>
+                    </div>
+                    <input type="range" id="coherence" min="0" max="1" step="0.001" value="0.618">
+                </div>
+                
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Complexity</span>
+                        <span class="slider-value" id="complexity-val">4</span>
+                    </div>
+                    <input type="range" id="complexity" min="1" max="7" step="1" value="4">
+                </div>
+                
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Wobble Angle</span>
+                        <span class="slider-value" id="wobble-val">9°</span>
+                    </div>
+                    <input type="range" id="wobble" min="7" max="11" step="0.1" value="9">
+                </div>
+                
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Semantic Curvature</span>
+                        <span class="slider-value" id="curvature-val">0.5</span>
+                    </div>
+                    <input type="range" id="curvature" min="0" max="2" step="0.01" value="0.5">
+                </div>
+            </div>
+            
+            <!-- Semantic Anchors -->
+            <div class="input-group">
+                <h3>Semantic Anchors</h3>
+                
+                <div class="keyword-input-container">
+                    <input type="text" 
+                           class="keyword-input" 
+                           id="keywordInput"
+                           placeholder="Type keywords or tap suggestions..."
+                           autocomplete="off">
+                    
+                    <div class="keyword-chips" id="keywordChips">
+                        <span class="keyword-chip" data-keyword="topology">topology</span>
+                        <span class="keyword-chip" data-keyword="consciousness">consciousness</span>
+                        <span class="keyword-chip" data-keyword="recursion">recursion</span>
+                        <span class="keyword-chip" data-keyword="emergence">emergence</span>
+                        <span class="keyword-chip" data-keyword="paradox">paradox</span>
+                        <span class="keyword-chip" data-keyword="beauty">beauty</span>
+                        <span class="keyword-chip" data-keyword="mathematics">mathematics</span>
+                        <span class="keyword-chip" data-keyword="void">void</span>
+                        <span class="keyword-chip" data-keyword="transformation">transformation</span>
+                        <span class="keyword-chip" data-keyword="adjunction">adjunction</span>
+                        <span class="keyword-chip" data-keyword="curvature">curvature</span>
+                    </div>
+                </div>
+                
+                <div class="modal-selector">
+                    <div class="slider-label">
+                        <span>Modal State</span>
+                        <span class="slider-value" id="modal-val">□</span>
+                    </div>
+                    <select id="modalSelect" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.4); border: 1px solid var(--ocean-pulse); border-radius: 8px; color: white; font-family: inherit;">
+                        <option value="0">□ Discrete (Sharp, Logical)</option>
+                        <option value="1">◊ Continuous (Flowing, Creative)</option>
+                        <option value="2">⧫ Temporal (Dynamic, Changing)</option>
+                        <option value="3">※ Void (Potential, Unknown)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Document Sources -->
+            <div class="input-group">
+                <h3>7-Adic Source Selection</h3>
+                
+                <div class="source-selector">
+                    <label class="source-checkbox">
+                        <input type="checkbox" name="source" value="charter" checked>
+                        <span class="source-label">CHARTER</span>
+                        <div class="source-glow"></div>
+                    </label>
+                    
+                    <label class="source-checkbox">
+                        <input type="checkbox" name="source" value="license" checked>
+                        <span class="source-label">LICENSE</span>
+                        <div class="source-glow"></div>
+                    </label>
+                    
+                    <label class="source-checkbox">
+                        <input type="checkbox" name="source" value="shadows" checked>
+                        <span class="source-label">SHADOWS</span>
+                        <div class="source-glow"></div>
+                    </label>
+                    
+                    <label class="source-checkbox">
+                        <input type="checkbox" name="source" value="garden" checked>
+                        <span class="source-label">GARDEN</span>
+                        <div class="source-glow"></div>
+                    </label>
+                    
+                    <label class="source-checkbox">
+                        <input type="checkbox" name="source" value="morphism" checked>
+                        <span class="source-label">MORPHISM</span>
+                        <div class="source-glow"></div>
+                    </label>
+                    
+                    <label class="source-checkbox">
+                        <input type="checkbox" name="source" value="keats" checked>
+                        <span class="source-label">KEATS</span>
+                        <div class="source-glow"></div>
+                    </label>
+                    
+                    <label class="source-checkbox">
+                        <input type="checkbox" name="source" value="llm" checked>
+                        <span class="source-label">LLM META</span>
+                        <div class="source-glow"></div>
+                    </label>
+                </div>
+                
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Reading Depth</span>
+                        <span class="slider-value" id="depth-val">3</span>
+                    </div>
+                    <input type="range" id="depth" min="1" max="7" step="1" value="3">
+                </div>
+            </div>
+        </div>
+        
+        <div class="generate-container">
+            <button class="generate-btn" onclick="generateUniquePath()">
+                Generate Unique Navigation
+            </button>
+        </div>
+        
+        <div class="loading-consciousness" id="loading">
+            <div class="loading-spiral"></div>
+            <p>Parsing consciousness topology...</p>
+        </div>
+        
+        <div class="navigation-output" id="output">
+            <div class="unique-hash" id="uniqueHash"></div>
+            <div class="path-visualization" id="pathViz"></div>
+            <div class="navigation-text" id="navText"></div>
+        </div>
+    </div>
+    
+    <div class="cache-status">
+        <span id="cacheStatus">Cache: Fresh (updated hourly)</span>
+    </div>
+    
+    <script src="garden_navigator_engine.js"></script>
+    <script>
+        // Initialize the navigation system
+        const navigator = new GardenNavigator();
+        
+        // Bind all UI elements
+        document.addEventListener('DOMContentLoaded', () => {
+            navigator.bindControls();
+            navigator.initializeParticles();
+        });
+        
+        // Generate unique path
+        function generateUniquePath() {
+            navigator.generatePath();
+        }
+        
+        // Update modal indicator
+        document.getElementById('modalSelect').addEventListener('change', (e) => {
+            const modes = ['□', '◊', '⧫', '※'];
+            document.getElementById('modalIndicator').textContent = modes[e.target.value];
+        });
+        
+        // Mouse tracking for dynamic background
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.body.style.setProperty('--mouse-x', x + '%');
+            document.body.style.setProperty('--mouse-y', y + '%');
+        });
+    </script>
+</body>
+</html>

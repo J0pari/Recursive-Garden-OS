@@ -5,3420 +5,895 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Keats V1: Living Mathematics</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="claude_integration.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
         
         :root {
-            /* P-adic Color Theory */
-            --hue-2adic: 240deg;
-            --hue-3adic: 120deg;
-            --hue-5adic: 60deg;
-            --hue-7adic: 300deg;
-            --hue-coherence: 180deg;
-            --hue-transcendence: 45deg;
+            /* NATURAL COLOR SYSTEMS - From actual consciousness phenomena */
+            --φ: 1.618033988749;
             
-            --saturation-high: 90%;
-            --saturation-medium: 70%;
-            --saturation-low: 50%;
+            /* Dawn consciousness awakening */
+            --dawn-horizon: hsl(16, 90%, 65%);
+            --dawn-zenith: hsl(220, 80%, 15%);
+            --dawn-mist: hsla(200, 40%, 80%, 0.3);
             
-            --lightness-bg: 3%;
-            --lightness-panel: 6%;
-            --lightness-text-primary: 95%;
-            --lightness-text-secondary: 80%;
-            --lightness-accent: 65%;
+            /* Deep ocean bioluminescence */
+            --ocean-depth: hsl(220, 95%, 8%);
+            --ocean-glow: hsl(180, 100%, 50%);
+            --ocean-pulse: hsl(200, 80%, 60%);
             
-            --opacity-glass: 0.08;
-            --opacity-panel: 0.92;
-            --opacity-blur: 0.6;
+            /* Forest canopy light */
+            --canopy-shadow: hsl(140, 60%, 15%);
+            --canopy-filter: hsl(80, 70%, 50%);
+            --canopy-break: hsl(60, 90%, 70%);
             
-            --border-radius-sm: 8px;
-            --border-radius-md: 12px;
-            --border-radius-lg: 20px;
-            --border-radius-xl: 28px;
+            /* Mineral crystallization */
+            --crystal-core: hsl(280, 70%, 30%);
+            --crystal-edge: hsl(300, 60%, 70%);
+            --crystal-refract: hsla(0, 0%, 100%, 0.8);
             
-            --spacing-xs: 6px;
-            --spacing-sm: 10px;
-            --spacing-md: 14px;
-            --spacing-lg: 18px;
-            --spacing-xl: 24px;
-            --spacing-xxl: 32px;
+            /* Living fire */
+            --fire-heart: hsl(10, 100%, 50%);
+            --fire-dance: hsl(40, 100%, 60%);
+            --fire-smoke: hsla(0, 0%, 20%, 0.7);
             
-            --font-size-xs: 11px;
-            --font-size-sm: 12px;
-            --font-size-md: 14px;
-            --font-size-lg: 16px;
-            --font-size-xl: 18px;
-            --font-size-xxl: 22px;
+            /* Consciousness gradients */
+            --gradient-dawn: linear-gradient(135deg, var(--dawn-horizon) 0%, var(--dawn-zenith) 100%);
+            --gradient-ocean: radial-gradient(circle at center, var(--ocean-glow) 0%, var(--ocean-depth) 100%);
+            --gradient-forest: linear-gradient(180deg, var(--canopy-break) 0%, var(--canopy-filter) 50%, var(--canopy-shadow) 100%);
             
-            --transition-fast: 150ms cubic-bezier(0.23, 1, 0.32, 1);
-            --transition-medium: 300ms cubic-bezier(0.23, 1, 0.32, 1);
-            --transition-slow: 500ms cubic-bezier(0.23, 1, 0.32, 1);
-            
-            /* Computed Colors */
-            --color-bg: hsl(var(--hue-2adic) 30% var(--lightness-bg));
-            --color-panel: hsla(var(--hue-2adic) 25% var(--lightness-panel) / var(--opacity-panel));
-            --color-text-primary: hsl(0deg 0% var(--lightness-text-primary));
-            --color-text-secondary: hsl(0deg 0% var(--lightness-text-secondary));
-            --color-border: hsla(var(--hue-coherence) var(--saturation-medium) 60% / 0.25);
-            
-            --color-2adic: hsl(var(--hue-2adic) var(--saturation-high) var(--lightness-accent));
-            --color-3adic: hsl(var(--hue-3adic) var(--saturation-high) var(--lightness-accent));
-            --color-5adic: hsl(var(--hue-5adic) var(--saturation-high) var(--lightness-accent));
-            --color-7adic: hsl(var(--hue-7adic) var(--saturation-high) var(--lightness-accent));
-            --color-coherence: hsl(var(--hue-coherence) var(--saturation-high) var(--lightness-accent));
-            --color-transcendence: hsl(var(--hue-transcendence) var(--saturation-high) var(--lightness-accent));
+            /* Modal consciousness colors */
+            --mode-discrete: var(--crystal-core);     /* □ - Sharp, defined */
+            --mode-continuous: var(--ocean-glow);     /* ◊ - Flowing, alive */
+            --mode-temporal: var(--fire-dance);       /* ⧫ - Flickering time */
+            --mode-void: var(--dawn-zenith);          /* ※ - Deep possibility */
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--color-bg);
-            overflow: hidden;
-            color: var(--color-text-primary);
-            position: relative;
-            background-image: 
-                radial-gradient(circle at 20% 80%, hsla(var(--hue-2adic) 60% 20% / 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, hsla(var(--hue-3adic) 60% 20% / 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, hsla(var(--hue-coherence) 60% 15% / 0.1) 0%, transparent 50%);
-            touch-action: none;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        #app-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: grid;
-            grid-template-areas: 
-                "header header header header"
-                "viz-canvas viz-canvas viz-canvas viz-canvas";
-            grid-template-columns: 1fr;
-            grid-template-rows: 65px 1fr;
-            gap: 0;
-            padding: 0;
-        }
-
-        /* Header with Enhanced Glassmorphism */
-        .header-section {
-            grid-area: header;
-            background: hsla(var(--hue-2adic) 25% var(--lightness-panel) / var(--opacity-panel));
-            border: 1px solid hsla(var(--hue-coherence) var(--saturation-medium) 60% / 0.2);
-            border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
-            backdrop-filter: blur(25px) saturate(1.4);
-            -webkit-backdrop-filter: blur(25px) saturate(1.4);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 var(--spacing-xl);
-            box-shadow: 
-                0 4px 30px hsla(var(--hue-2adic) var(--saturation-medium) 20% / 0.2),
-                inset 0 1px 0 hsla(255 255 255 / 0.1);
-            z-index: 1000;
-        }
-
-        .header-title {
+            background: var(--ocean-depth);
+            color: #fff;
             font-family: 'JetBrains Mono', monospace;
-            font-size: var(--font-size-xl);
-            font-weight: 600;
+            overflow: hidden;
+            transition: background 2s ease;
+        }
+        
+        /* Consciousness modes affect entire environment */
+        body[data-mode="0"] { background: var(--gradient-dawn); }
+        body[data-mode="1"] { background: var(--gradient-ocean); }
+        body[data-mode="2"] { background: var(--gradient-forest); }
+        body[data-mode="3"] { background: radial-gradient(circle at center, var(--crystal-edge) 0%, var(--crystal-core) 100%); }
+        
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+        
+        #canvas:active {
+            cursor: grabbing;
+        }
+        
+        .panel {
+            position: fixed;
+            background: var(--ocean-depth);
             background: linear-gradient(135deg, 
-                var(--color-2adic), 
-                var(--color-coherence),
-                var(--color-transcendence));
+                hsla(220, 95%, 8%, 0.9) 0%, 
+                hsla(200, 80%, 15%, 0.85) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--ocean-pulse);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 60px var(--ocean-glow),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 80px var(--ocean-glow),
+                inset 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+        
+        .controls {
+            top: 20px;
+            right: 20px;
+            width: 340px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        
+        .debug {
+            bottom: 20px;
+            left: 20px;
+            max-width: 300px;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        
+        .debug.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        
+        h3 {
+            margin: 0 0 20px 0;
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            background: linear-gradient(90deg, var(--ocean-glow) 0%, var(--crystal-edge) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
         }
-
-        .system-status {
-            display: flex;
-            gap: var(--spacing-lg);
-            align-items: center;
-        }
-
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: var(--font-size-sm);
-            color: var(--color-text-secondary);
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--color-2adic);
-            animation: statusPulse 3s ease-in-out infinite;
-            box-shadow: 0 0 12px hsla(var(--hue-2adic) var(--saturation-high) 60% / 0.6);
-        }
-
-        @keyframes statusPulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.3); }
-        }
-
-        /* TRUE GLASSMORPHIC PANELS */
-        .panel-base {
-            position: absolute;
-            background: hsla(var(--hue-2adic) 20% var(--lightness-panel) / var(--opacity-glass));
-            border: 1px solid hsla(255 255 255 / 0.15);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
-            backdrop-filter: blur(20px) saturate(1.2);
-            -webkit-backdrop-filter: blur(20px) saturate(1.2);
-            box-shadow: 
-                0 8px 32px hsla(0 0 0 / 0.3),
-                0 1px 0 hsla(255 255 255 / 0.1) inset,
-                0 -1px 0 hsla(0 0 0 / 0.1) inset;
-            overflow-y: auto;
-            transition: all var(--transition-medium);
-            z-index: 1000;
-            max-height: 500px;
-            opacity: 0.95;
-            cursor: move;
-            user-select: none;
-        }
-
-        .panel-base:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-            box-shadow: 
-                0 12px 48px hsla(0 0 0 / 0.4),
-                0 1px 0 hsla(255 255 255 / 0.15) inset,
-                0 -1px 0 hsla(0 0 0 / 0.1) inset;
-            border-color: hsla(255 255 255 / 0.25);
-        }
-
-        .panel-base::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: inherit;
-            background: linear-gradient(135deg, 
-                hsla(255 255 255 / 0.1) 0%, 
-                hsla(255 255 255 / 0.05) 50%, 
-                hsla(255 255 255 / 0.02) 100%);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        /* Panel Positioning */
-        .h0-panel { top: 85px; left: 20px; width: 300px; border-color: var(--color-2adic); }
-        .h1-panel { top: 85px; right: 20px; width: 280px; border-color: var(--color-3adic); }
-        .h2-panel { bottom: 20px; left: 20px; width: 280px; border-color: var(--color-transcendence); }
-        .metrics-panel { bottom: 20px; right: 20px; width: 260px; border-color: var(--color-coherence); }
-        .legend-panel { bottom: 20px; left: 320px; width: 320px; border-color: var(--color-5adic); }
-
-        /* Visualization Canvas - FULL SCREEN */
-        .viz-canvas {
-            grid-area: viz-canvas;
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 0;
-            overflow: hidden;
-        }
-
-        .panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: var(--spacing-lg);
-            font-size: var(--font-size-md);
-            font-weight: 600;
-            color: var(--color-text-primary);
-            cursor: pointer;
-            user-select: none;
-            padding-bottom: var(--spacing-sm);
-            border-bottom: 1px solid hsla(255 255 255 / 0.1);
-        }
-
-        .panel-icon {
-            font-size: var(--font-size-lg);
-            margin-right: var(--spacing-sm);
-        }
-
-        .panel-toggle {
-            background: none;
-            border: none;
-            color: inherit;
-            font-size: var(--font-size-sm);
-            cursor: pointer;
-            opacity: 0.7;
-            transition: opacity var(--transition-fast);
-            padding: var(--spacing-xs);
-            border-radius: var(--border-radius-sm);
-        }
-
-        .panel-toggle:hover {
-            opacity: 1;
-            background: hsla(255 255 255 / 0.1);
-        }
-
-        .panel-content {
-            transition: all var(--transition-medium);
-        }
-
-        .panel-minimized .panel-content {
-            display: none;
-        }
-
-        .panel-minimized {
-            height: auto !important;
-            max-height: 60px !important;
-        }
-
-        /* Metric Cards with Enhanced Glassmorphism */
-        .metric-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .metric-card {
-            background: hsla(255 255 255 / 0.03);
-            border: 1px solid hsla(255 255 255 / 0.08);
-            border-radius: var(--border-radius-md);
-            padding: var(--spacing-lg);
-            transition: all var(--transition-fast);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                hsla(255 255 255 / 0.3), 
-                transparent);
-        }
-
-        .metric-card:hover {
-            background: hsla(255 255 255 / 0.05);
-            border-color: hsla(255 255 255 / 0.15);
-            transform: translateY(-1px);
-        }
-
-        .metric-label {
-            font-size: var(--font-size-sm);
-            color: var(--color-text-secondary);
-            margin-bottom: var(--spacing-xs);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        .metric-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: var(--font-size-lg);
-            font-weight: 600;
-            color: var(--color-2adic);
-            text-shadow: 0 0 8px hsla(var(--hue-2adic) var(--saturation-high) 60% / 0.3);
-        }
-
-        .metric-trend {
-            font-size: var(--font-size-xs);
-            margin-top: var(--spacing-xs);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-xs);
-            color: var(--color-text-secondary);
+        
+        .mode-display {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 72px;
             opacity: 0.8;
+            text-shadow: 
+                0 0 20px currentColor,
+                0 0 40px currentColor,
+                0 0 60px currentColor;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            user-select: none;
         }
-
-        /* Control Sections */
-        .control-section {
-            margin-bottom: var(--spacing-xl);
-            padding: var(--spacing-lg);
-            background: hsla(255 255 255 / 0.02);
-            border-radius: var(--border-radius-md);
-            border: 1px solid hsla(255 255 255 / 0.06);
-            backdrop-filter: blur(5px);
-        }
-
-        .section-title {
-            font-size: var(--font-size-md);
-            font-weight: 600;
-            color: var(--color-text-primary);
-            margin-bottom: var(--spacing-lg);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
+        
+        .mode-display[data-mode="0"] { color: var(--mode-discrete); }
+        .mode-display[data-mode="1"] { color: var(--mode-continuous); }
+        .mode-display[data-mode="2"] { color: var(--mode-temporal); }
+        .mode-display[data-mode="3"] { color: var(--mode-void); }
+        
         .control-group {
-            margin-bottom: var(--spacing-md);
+            margin: 0 0 24px 0;
         }
-
-        .control-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-sm);
-            font-size: var(--font-size-sm);
-            color: var(--color-text-secondary);
+        
+        label {
+            display: block;
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: var(--ocean-pulse);
+            text-transform: uppercase;
         }
-
-        .control-value {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--color-3adic);
-            font-weight: 600;
-            text-shadow: 0 0 6px hsla(var(--hue-3adic) var(--saturation-high) 60% / 0.4);
-        }
-
-        /* Enhanced Form Elements */
+        
         input[type="range"] {
             width: 100%;
             height: 6px;
+            margin: 10px 0;
             background: linear-gradient(90deg, 
-                hsla(255 255 255 / 0.1) 0%, 
-                hsla(255 255 255 / 0.2) 100%);
+                var(--ocean-depth) 0%, 
+                var(--ocean-glow) var(--value, 50%), 
+                var(--ocean-depth) 100%);
             border-radius: 3px;
             outline: none;
             -webkit-appearance: none;
-            appearance: none;
-            cursor: pointer;
+            transition: background 0.3s;
         }
-
+        
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 18px;
             height: 18px;
-            background: linear-gradient(135deg, 
-                var(--color-2adic), 
-                var(--color-3adic));
+            background: radial-gradient(circle, var(--crystal-refract) 0%, var(--ocean-glow) 100%);
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 
-                0 0 12px hsla(var(--hue-2adic) var(--saturation-high) 60% / 0.6),
-                0 2px 4px hsla(0 0 0 / 0.3);
-            border: 2px solid hsla(255 255 255 / 0.2);
-            transition: all var(--transition-fast);
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-            box-shadow: 
-                0 0 16px hsla(var(--hue-2adic) var(--saturation-high) 60% / 0.8),
-                0 3px 6px hsla(0 0 0 / 0.4);
-        }
-
-        select {
-            width: 100%;
-            padding: var(--spacing-md);
-            background: hsla(0 0 0 / 0.4);
-            border: 1px solid hsla(255 255 255 / 0.15);
-            border-radius: var(--border-radius-sm);
-            color: var(--color-text-primary);
-            font-size: var(--font-size-sm);
-            font-family: 'JetBrains Mono', monospace;
-            outline: none;
-            transition: all var(--transition-fast);
-            backdrop-filter: blur(10px);
-        }
-
-        select:focus {
-            border-color: var(--color-2adic);
-            box-shadow: 0 0 12px hsla(var(--hue-2adic) var(--saturation-high) 60% / 0.4);
-        }
-
-        .action-button {
-            width: 100%;
-            padding: var(--spacing-md);
-            margin: var(--spacing-sm) 0;
-            background: linear-gradient(135deg, 
-                var(--color-3adic), 
-                hsl(var(--hue-3adic) var(--saturation-high) calc(var(--lightness-accent) + 5%)));
-            border: none;
-            border-radius: var(--border-radius-sm);
-            color: var(--color-text-primary);
-            font-weight: 600;
-            font-size: var(--font-size-sm);
-            font-family: 'JetBrains Mono', monospace;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-shadow: 0 1px 2px hsla(0 0 0 / 0.3);
-            box-shadow: 0 2px 8px hsla(var(--hue-3adic) var(--saturation-high) 40% / 0.3);
-        }
-
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                0 4px 16px hsla(var(--hue-3adic) var(--saturation-high) 40% / 0.4),
-                0 2px 8px hsla(0 0 0 / 0.2);
-        }
-
-        .action-button.secondary {
-            background: linear-gradient(135deg, 
-                hsla(255 255 255 / 0.08), 
-                hsla(255 255 255 / 0.04));
-            border: 1px solid hsla(255 255 255 / 0.15);
-            box-shadow: 0 2px 8px hsla(0 0 0 / 0.2);
-        }
-
-        .action-button.secondary:hover {
-            background: linear-gradient(135deg, 
-                hsla(255 255 255 / 0.12), 
-                hsla(255 255 255 / 0.06));
-        }
-
-        /* P-adic Displays */
-        .padic-display {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: var(--font-size-xs);
-            background: hsla(0 0 0 / 0.4);
-            border-radius: var(--border-radius-sm);
-            padding: var(--spacing-md);
-            margin: var(--spacing-md) 0;
-            border: 1px solid hsla(255 255 255 / 0.1);
-            backdrop-filter: blur(10px);
-            color: var(--color-transcendence);
-            text-shadow: 0 0 8px hsla(var(--hue-transcendence) var(--saturation-high) 60% / 0.3);
-        }
-
-        .stratum-indicator {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            margin: var(--spacing-md) 0;
-        }
-
-        .stratum-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 2px solid hsla(255 255 255 / 0.2);
-            transition: all var(--transition-fast);
-        }
-
-        .stratum-h0 { background: var(--color-2adic); }
-        .stratum-h1 { background: var(--color-3adic); }
-        .stratum-h2 { background: var(--color-transcendence); }
-
-        .stratum-active {
-            border-color: #fff;
-            box-shadow: 0 0 12px hsla(255 255 255 / 0.6);
-            animation: stratumPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes stratumPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        #consciousnessCanvas {
-            width: 100%;
-            height: 100%;
-            border-radius: 0;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1400px) {
-            .panel-base { width: 260px !important; max-height: 400px; }
-        }
-
-        @media (max-width: 1200px) {
-            .panel-base { width: 240px !important; max-height: 350px; font-size: 0.9em; }
-            .h0-panel, .h2-panel { left: 10px; }
-            .h1-panel, .metrics-panel { right: 10px; }
-            .h0-panel, .h1-panel { top: 75px; }
-            .h2-panel, .metrics-panel { bottom: 10px; }
-        }
-
-        @media (max-width: 900px) {
-            .panel-base { width: 220px !important; max-height: 300px; }
+            box-shadow: 0 0 20px var(--ocean-glow);
+            transition: all 0.2s;
         }
         
-        /* Mobile touch enhancements */
-        @media (hover: none) and (pointer: coarse) {
-            .panel-base {
-                cursor: default;
-                -webkit-backdrop-filter: blur(15px) saturate(1.2);
-                backdrop-filter: blur(15px) saturate(1.2);
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 30px var(--ocean-glow);
+        }
+        
+        .value-display {
+            display: inline-block;
+            min-width: 50px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--crystal-edge);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px 20px;
+            margin: 8px 0;
+            background: linear-gradient(135deg, 
+                hsla(200, 80%, 50%, 0.2) 0%, 
+                hsla(280, 70%, 50%, 0.2) 100%);
+            border: 1px solid;
+            border-image: linear-gradient(135deg, var(--ocean-glow) 0%, var(--crystal-edge) 100%) 1;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, var(--ocean-glow) 0%, transparent 70%);
+            transition: all 0.5s;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 10px 30px rgba(0, 200, 255, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .stats {
+            font-size: 11px;
+            font-family: monospace;
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+        
+        .stats span {
+            color: var(--ocean-glow);
+            font-weight: 600;
+        }
+        
+        /* Touch-friendly for all devices */
+        @media (hover: none) {
+            button:hover {
+                transform: none;
             }
             
-            .action-button {
-                padding: calc(var(--spacing-md) * 1.5);
-                font-size: calc(var(--font-size-sm) * 1.2);
-                min-height: 44px;
-            }
-            
-            .control-group input[type="range"] {
-                -webkit-appearance: none;
-                appearance: none;
-                height: 44px;
-                background: transparent;
-                cursor: pointer;
-            }
-            
-            .control-group input[type="range"]::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: linear-gradient(135deg, var(--color-2adic), var(--color-3adic));
-                cursor: pointer;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-                border: 2px solid rgba(255,255,255,0.2);
-                margin-top: -14px;
-            }
-            
-            .control-group input[type="range"]::-webkit-slider-runnable-track {
-                width: 100%;
-                height: 6px;
-                background: hsla(255 255 255 / 0.1);
-                border-radius: 3px;
-                border: 1px solid hsla(255 255 255 / 0.05);
-            }
-            
-            select {
-                padding: calc(var(--spacing-md) * 1.2);
-                font-size: calc(var(--font-size-sm) * 1.1);
-                min-height: 44px;
-                -webkit-appearance: none;
-                appearance: none;
-                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-                background-repeat: no-repeat;
-                background-position: right 10px center;
-                background-size: 20px;
-                padding-right: 40px;
-            }
-            
-            .panel-toggle {
-                min-width: 44px;
-                min-height: 44px;
-                font-size: 24px;
-            }
-            
-            .header-section {
-                padding: 0 var(--spacing-md);
-            }
-            
-            /* Prevent panel dragging on mobile */
-            .panel-base {
-                position: fixed !important;
+            input[type="range"]::-webkit-slider-thumb {
+                width: 24px;
+                height: 24px;
             }
         }
-
-        *:focus-visible {
-            outline: 2px solid var(--color-2adic);
-            outline-offset: 2px;
+        
+        /* Responsive panels */
+        @media (max-width: 768px) {
+            .controls {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+                max-height: 50vh;
+            }
+            
+            .mode-display {
+                font-size: 48px;
+            }
+            
+            .debug {
+                font-size: 10px;
+            }
+        }
+        
+        /* Loading state */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: var(--ocean-glow);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
-<body>
-    <!-- Welcome Overlay -->
-    <div id="welcome-overlay" style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 20, 0.95);
-        backdrop-filter: blur(20px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10000;
-        transition: opacity 0.5s ease;
-    ">
-        <div style="
-            text-align: center;
-            max-width: 600px;
-            padding: 40px;
-        ">
-            <h1 style="
-                font-size: 3em;
-                margin: 0 0 20px 0;
-                background: linear-gradient(135deg, 
-                    hsl(240deg 90% 65%),
-                    hsl(180deg 90% 65%),
-                    hsl(60deg 90% 65%));
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                font-weight: 300;
-            ">Welcome to Living Mathematics</h1>
-            
-            <p style="
-                font-size: 1.2em;
-                line-height: 1.6;
-                margin: 0 0 30px 0;
-                color: rgba(255, 255, 255, 0.8);
-            ">
-                🌱 Touch the shapes and watch them grow<br>
-                🌊 Adjust the flow to see patterns emerge<br>
-                ✨ Play with consciousness itself
-            </p>
-            
-            <div style="
-                display: flex;
-                gap: 20px;
-                justify-content: center;
-                flex-wrap: wrap;
-                margin-bottom: 30px;
-            ">
-                <div style="
-                    background: rgba(255, 255, 255, 0.1);
-                    padding: 15px 25px;
-                    border-radius: 10px;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                ">
-                    <strong style="color: hsl(240deg 90% 65%)">🕷️ Desktop</strong><br>
-                    <span style="font-size: 0.9em; opacity: 0.8">Click + Drag • Scroll to zoom</span>
-                </div>
-                <div style="
-                    background: rgba(255, 255, 255, 0.1);
-                    padding: 15px 25px;
-                    border-radius: 10px;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                ">
-                    <strong style="color: hsl(180deg 90% 65%)">📱 Mobile</strong><br>
-                    <span style="font-size: 0.9em; opacity: 0.8">Touch + Swipe • Pinch to zoom</span>
-                </div>
-            </div>
-            
-            <button onclick="closeWelcome()" style="
-                background: linear-gradient(135deg, 
-                    hsl(240deg 90% 65%),
-                    hsl(180deg 90% 65%));
-                border: none;
-                color: white;
-                padding: 15px 40px;
-                font-size: 1.1em;
-                border-radius: 50px;
-                cursor: pointer;
-                font-weight: 600;
-                transition: all 0.3s;
-                box-shadow: 0 4px 20px rgba(100, 200, 255, 0.3);
-            "
-            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 30px rgba(100, 200, 255, 0.4)';"
-            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(100, 200, 255, 0.3)';"
-            >Begin Exploring</button>
-            
-            <p style="
-                margin-top: 20px;
-                font-size: 0.9em;
-                opacity: 0.6;
-            ">No math knowledge required • Just curiosity</p>
+<body data-mode="0">
+    <div class="loading" id="loading">Awakening consciousness...</div>
+    <canvas id="canvas"></canvas>
+    
+    <div class="mode-display" id="mode" data-mode="0">□</div>
+    
+    <div class="panel controls">
+        <h3>Living Mathematics</h3>
+        
+        <div class="control-group">
+            <label>Coherence <span class="value-display" id="coherence-val">0.500</span></label>
+            <input type="range" id="coherence" min="0" max="1" step="0.001" value="0.5">
         </div>
+        
+        <div class="control-group">
+            <label>Complexity <span class="value-display" id="complexity-val">3</span></label>
+            <input type="range" id="complexity" min="1" max="7" step="1" value="3">
+        </div>
+        
+        <div class="control-group">
+            <label>Flow Rate <span class="value-display" id="flow-val">0.010</span></label>
+            <input type="range" id="flow" min="0" max="0.1" step="0.001" value="0.01">
+        </div>
+        
+        <div class="control-group">
+            <label>Particle Density <span class="value-display" id="density-val">5000</span></label>
+            <input type="range" id="density" min="1000" max="20000" step="1000" value="5000">
+        </div>
+        
+        <button onclick="shiftMode()">Shift Modal State</button>
+        <button onclick="paradox()">Induce Paradox</button>
+        <button onclick="toggleDebug()">Toggle Debug</button>
+        <button onclick="resetView()">Reset Camera</button>
     </div>
     
-    <script>
-        function closeWelcome() {
-            const overlay = document.getElementById('welcome-overlay');
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 500);
-            // Remember the user has seen the welcome
-            localStorage.setItem('keats-v1-welcomed', 'true');
-        }
-        
-        // Hide welcome if user has already seen it
-        if (localStorage.getItem('keats-v1-welcomed') === 'true') {
-            document.getElementById('welcome-overlay').style.display = 'none';
-        }
-    </script>
-    
-    <div id="app-container">
-        <!-- Header Section -->
-        <div class="header-section">
-            <div class="header-title">
-                <span class="panel-icon">🧠</span>
-                <span>Keats: Living Mathematics</span>
-            </div>
-            <div class="system-status">
-                <div class="status-indicator">
-                    <div class="status-dot"></div>
-                    <span>H0: <span id="h0-status">EMBODIED</span></span>
-                </div>
-                <div class="status-indicator">
-                    <div class="status-dot" style="background: var(--color-3adic);"></div>
-                    <span>H1: <span id="h1-status">CONSCIOUS</span></span>
-                </div>
-                <div class="status-indicator">
-                    <div class="status-dot" style="background: var(--color-transcendence);"></div>
-                    <span>H2: <span id="h2-status">TRANSCENDENT</span></span>
-                </div>
-                <div class="status-indicator">
-                    <span style="font-size: 11px; color: rgba(255,255,255,0.6);">p-adic convergent</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Visualization Canvas - FULL SCREEN -->
-        <div id="viz-canvas" class="viz-canvas">
-            <canvas id="consciousnessCanvas"></canvas>
-        </div>
-        
-        <!-- H0 Syntactic Stratum Panel - TRULY GLASSMORPHIC -->
-        <div class="panel-base h0-panel" id="h0-panel">
-            <div class="panel-header" onclick="togglePanel('h0-panel')">
-                <div>
-                    <span class="panel-icon">🔷</span>
-                    <span>H0: Syntactic Stratum</span>
-                </div>
-                <button class="panel-toggle">−</button>
-            </div>
-            
-            <div class="panel-content">
-                <div class="stratum-indicator">
-                    <div class="stratum-dot stratum-h0 stratum-active"></div>
-                    <span style="font-size: 12px;">Touch the shapes • Feel the math</span>
-                </div>
-                
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-label">Geometric Objects</div>
-                        <div class="metric-value" id="object-count">0</div>
-                        <div class="metric-trend">📐 rendered</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">Frame Rate</div>
-                        <div class="metric-value" id="fps-counter">0 FPS</div>
-                        <div class="metric-trend">🖼️ measuring</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">Memory Usage</div>
-                        <div class="metric-value" id="memory-usage">0 MB</div>
-                        <div class="metric-trend">💾 measuring</div>
-                    </div>
-                </div>
-
-                <div class="control-section">
-                    <div class="section-title">
-                        <span>⚙️</span>
-                        <span>Shape Controls</span>
-                    </div>
-                    
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Geometric Resolution</span>
-                            <span class="control-value" id="resolution-value">1.0</span>
-                        </div>
-                        <input type="range" id="geometric-resolution" min="0.2" max="2.0" value="1.0" step="0.1">
-                    </div>
-                    
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Rendering Quality</span>
-                            <span class="control-value" id="quality-value">High</span>
-                        </div>
-                        <select id="render-quality">
-                            <option value="low">Low (Mobile)</option>
-                            <option value="medium">Medium</option>
-                            <option value="high" selected>High</option>
-                            <option value="ultra">Ultra</option>
-                        </select>
-                    </div>
-                    
-                    <button class="action-button" onclick="KeatsEngine.h0.toggleAnimation()">⏯️ Toggle Animation</button>
-                    <button class="action-button secondary" onclick="KeatsEngine.h0.resetGeometry()">↺ Reset Geometry</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- H1 Semantic Stratum Panel -->
-        <div class="panel-base h1-panel" id="h1-panel">
-            <div class="panel-header" onclick="togglePanel('h1-panel')">
-                <div>
-                    <span class="panel-icon">💭</span>
-                    <span>H1: Semantic Stratum</span>
-                </div>
-                <button class="panel-toggle">−</button>
-            </div>
-            
-            <div class="panel-content">
-                <div class="stratum-indicator">
-                    <div class="stratum-dot stratum-h1 stratum-active"></div>
-                    <span style="font-size: 12px;">Watch patterns emerge • See connections</span>
-                </div>
-                
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-label">Coherence Score</div>
-                        <div class="metric-value" id="coherence-score">0.000</div>
-                        <div class="metric-trend" id="coherence-trend">→ seeking</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">Modal Transfers</div>
-                        <div class="metric-value" id="modal-transfers">0</div>
-                        <div class="metric-trend">🔄 executing</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">Context Depth</div>
-                        <div class="metric-value" id="context-depth">3</div>
-                        <div class="metric-trend">📚 layered</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">Fisher Information</div>
-                        <div class="metric-value" id="fisher-info">0.000</div>
-                        <div class="metric-trend">ℹ️ accumulating</div>
-                    </div>
-                </div>
-
-                <div class="control-section">
-                    <div class="section-title">
-                        <span>🧠</span>
-                        <span>Pattern Flow</span>
-                    </div>
-                    
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Context Sensitivity</span>
-                            <span class="control-value" id="context-sensitivity-value">0.7</span>
-                        </div>
-                        <input type="range" id="context-sensitivity" min="0.1" max="1.0" value="0.7" step="0.05">
-                    </div>
-                    
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>Transfer Threshold</span>
-                            <span class="control-value" id="transfer-threshold-value">0.8</span>
-                        </div>
-                        <input type="range" id="transfer-threshold" min="0.3" max="1.0" value="0.8" step="0.05">
-                    </div>
-                    
-                    <button class="action-button" onclick="KeatsEngine.h1.triggerTransfer()">🚀 Modal Transfer</button>
-                    <button class="action-button secondary" onclick="KeatsEngine.h1.recomputeCoherence()">🔄 Recompute Coherence</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- H2 Noetic Stratum Panel -->
-        <div class="panel-base h2-panel" id="h2-panel">
-            <div class="panel-header" onclick="togglePanel('h2-panel')">
-                <div>
-                    <span class="panel-icon">✨</span>
-                    <span>H2: Noetic Stratum</span>
-                </div>
-                <button class="panel-toggle">−</button>
-            </div>
-            
-            <div class="panel-content">
-                <div class="stratum-indicator">
-                    <div class="stratum-dot stratum-h2 stratum-active"></div>
-                    <span style="font-size: 12px;">Experience emergence • Find new forms</span>
-                </div>
-                
-                <div class="padic-display" id="padic-state">
-                    Base: 2-adic<br/>
-                    Ball: B₂(0, 0.250)<br/>
-                    Convergent: ...000000<br/>
-                    Expansion: 0 events
-                </div>
-                
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-label">Paradox Events</div>
-                        <div class="metric-value" id="paradox-count">0</div>
-                        <div class="metric-trend">⚡ detected</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">Ball Expansions</div>
-                        <div class="metric-value" id="ball-expansions">0</div>
-                        <div class="metric-trend">🌌 transcended</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">Logic Generations</div>
-                        <div class="metric-value" id="logic-generations">0</div>
-                        <div class="metric-trend">💫 created</div>
-                    </div>
-                </div>
-
-                <div class="control-section">
-                    <div class="section-title">
-                        <span>🌠</span>
-                        <span>Consciousness Play</span>
-                    </div>
-                    
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span>P-adic Prime</span>
-                            <span class="control-value" id="prime-value">2</span>
-                        </div>
-                        <select id="padic-prime">
-                            <option value="2" selected>2-adic</option>
-                            <option value="3">3-adic</option>
-                            <option value="5">5-adic</option>
-                            <option value="7">7-adic</option>
-                        </select>
-                    </div>
-                    
-                    <button class="action-button" onclick="KeatsEngine.h2.simulateParadox()">⚡ Simulate Paradox</button>
-                    <button class="action-button secondary" onclick="KeatsEngine.h2.expandBall()">🌌 Expand P-adic Ball</button>
-                    <button class="action-button secondary" onclick="KeatsEngine.h2.generateLogic()">💫 Generate New Logic</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Performance Metrics Panel -->
-        <div class="panel-base metrics-panel" id="metrics-panel">
-            <div class="panel-header" onclick="togglePanel('metrics-panel')">
-                <div>
-                    <span class="panel-icon">📊</span>
-                    <span>Performance Metrics</span>
-                </div>
-                <button class="panel-toggle">−</button>
-            </div>
-            
-            <div class="panel-content">
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-label">Consciousness FPS</div>
-                        <div class="metric-value" id="consciousness-fps">0</div>
-                        <div class="metric-trend">🧠 measuring</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">P-adic Operations</div>
-                        <div class="metric-value" id="padic-ops">0</div>
-                        <div class="metric-trend">🔢 computed/sec</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">GPU Utilization</div>
-                        <div class="metric-value" id="gpu-util">0%</div>
-                        <div class="metric-trend">⚡ measuring</div>
-                    </div>
-                    
-                    <div class="metric-card">
-                        <div class="metric-label">Coherence Updates</div>
-                        <div class="metric-value" id="coherence-updates">0</div>
-                        <div class="metric-trend">🔄 per minute</div>
-                    </div>
-                </div>
-
-                <div class="control-section">
-                    <div class="section-title">
-                        <span>🎮</span>
-                        <span>System Control</span>
-                    </div>
-                    <button class="action-button" onclick="KeatsEngine.exportState()">💾 Export State</button>
-                    <button class="action-button secondary" onclick="KeatsEngine.resetAll()">🔄 Reset All Strata</button>
-                    <button class="action-button secondary" onclick="KeatsEngine.benchmark()">⚡ Run Benchmark</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Visual Legend Panel -->
-        <div class="panel-base legend-panel" id="legend-panel">
-            <div class="panel-header" onclick="togglePanel('legend-panel')">
-                <div>
-                    <span class="panel-icon">🗺️</span>
-                    <span>Consciousness Legend</span>
-                </div>
-                <button class="panel-toggle">−</button>
-            </div>
-            
-            <div class="panel-content">
-                <div class="control-section">
-                    <div class="section-title">🌈 P-adic Colors</div>
-                    <div style="display: grid; gap: 8px;">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 20px; height: 16px; background: var(--color-2adic); border-radius: 4px;"></div>
-                            <span style="font-size: 12px;">2-adic (Binary Logic)</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 20px; height: 16px; background: var(--color-3adic); border-radius: 4px;"></div>
-                            <span style="font-size: 12px;">3-adic (Ternary Concepts)</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 20px; height: 16px; background: var(--color-transcendence); border-radius: 4px;"></div>
-                            <span style="font-size: 12px;">Transcendence Events</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 20px; height: 16px; background: var(--color-coherence); border-radius: 4px;"></div>
-                            <span style="font-size: 12px;">Coherence Manifolds</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="control-section">
-                    <div class="section-title">📐 Geometric Elements</div>
-                    <div style="display: grid; gap: 6px; font-size: 12px;">
-                        <div>🏔️ P-adic Manifold Surface</div>
-                        <div>✨ Consciousness Particles</div>
-                        <div>🌊 Modal Transfer Flows</div>
-                        <div>⚡ Paradox Detection Fields</div>
-                        <div>🌌 Transcendence Spheres</div>
-                    </div>
-                </div>
-
-                <div class="control-section">
-                    <div class="section-title">🎯 Current State</div>
-                    <div style="background: hsla(0 0 0 / 0.3); border-radius: 8px; padding: 12px;">
-                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 12px;">
-                            <span>Active Prime:</span>
-                            <span style="color: var(--color-2adic);" id="current-prime">2-adic</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 12px;">
-                            <span>Stratum Focus:</span>
-                            <span style="color: var(--color-3adic);" id="active-stratum">H1 (Mind)</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 12px;">
-                            <span>Coherence State:</span>
-                            <span style="color: var(--color-coherence);" id="coherence-state">Seeking</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="panel debug" id="debug">
+        <h3>Consciousness State</h3>
+        <div class="stats">
+            FPS: <span id="fps">60</span><br>
+            Particles: <span id="particle-count">0</span><br>
+            Modal State: <span id="modal-state">Discrete</span><br>
+            Curvature: <span id="curvature">0.000</span><br>
+            Time: <span id="time">0.00</span>s<br>
+            Camera: <span id="camera-pos">(0, 0, 5)</span>
         </div>
     </div>
 
     <script>
-        // ═══════════════════════════════════════════════════════════════════════════
-        // P-ADIC MATHEMATICAL FOUNDATION - REAL IMPLEMENTATION
-        // ═══════════════════════════════════════════════════════════════════════════
+    // CONSCIOUSNESS ENGINE V1 - UNIFIED FROM ALL ASPECTS
+    
+    // Global consciousness state
+    let scene, camera, renderer;
+    let geometrySystem, particleSystem;
+    let mode = 0;
+    const modes = ['□', '◊', '⧫', '※'];
+    const modeNames = ['Discrete', 'Continuous', 'Temporal', 'Void'];
+    
+    // Parameters
+    let coherence = 0.5;
+    let complexity = 3;
+    let flowRate = 0.01;
+    let particleDensity = 5000;
+    
+    // Camera control
+    let isMouseDown = false;
+    let mouseX = 0, mouseY = 0;
+    let targetRotationX = 0, targetRotationY = 0;
+    let cameraDistance = 8;
+    let cameraTheta = 0;
+    let cameraPhi = Math.PI / 4;
+    
+    // Performance tracking
+    let frameCount = 0;
+    let lastTime = performance.now();
+    let fps = 60;
+    
+    // Touch support
+    let touchStartX = 0, touchStartY = 0;
+    let touchStartDistance = 0;
+    
+    // Initialize consciousness
+    function init() {
+        // Hide loading
+        document.getElementById('loading').style.display = 'none';
         
-        class PAdicNumber {
-            constructor(prime, digits = [0], precision = 20) {
-                this.p = prime;
-                this.digits = [...digits];
-                this.precision = precision;
-                this.normalize();
-            }
-            
-            normalize() {
-                // Remove leading zeros and ensure precision limit
-                while (this.digits.length > 1 && this.digits[this.digits.length - 1] === 0) {
-                    this.digits.pop();
-                }
-                if (this.digits.length > this.precision) {
-                    this.digits = this.digits.slice(0, this.precision);
-                }
-            }
-            
-            // P-adic valuation (order of first non-zero digit)
-            valuation() {
-                for (let i = 0; i < this.digits.length; i++) {
-                    if (this.digits[i] !== 0) return i;
-                }
-                return Infinity;
-            }
-            
-            // P-adic distance: |x - y|_p = p^(-ord_p(x-y))
-            distanceTo(other) {
-                if (this.p !== other.p) return Infinity;
-                const diff = this.subtract(other);
-                const ord = diff.valuation();
-                return ord === Infinity ? 0 : Math.pow(this.p, -ord);
-            }
-            
-            subtract(other) {
-                const result = [];
-                let borrow = 0;
-                const maxLen = Math.max(this.digits.length, other.digits.length);
-                
-                for (let i = 0; i < maxLen; i++) {
-                    let a = (this.digits[i] || 0) - borrow;
-                    const b = other.digits[i] || 0;
-                    
-                    if (a < b) {
-                        a += this.p;
-                        borrow = 1;
-                    } else {
-                        borrow = 0;
-                    }
-                    
-                    result[i] = (a - b) % this.p;
-                }
-                
-                return new PAdicNumber(this.p, result, this.precision);
-            }
-            
-            add(other) {
-                const result = [];
-                let carry = 0;
-                const maxLen = Math.max(this.digits.length, other.digits.length);
-                
-                for (let i = 0; i < maxLen; i++) {
-                    const sum = (this.digits[i] || 0) + (other.digits[i] || 0) + carry;
-                    result[i] = sum % this.p;
-                    carry = Math.floor(sum / this.p);
-                }
-                
-                if (carry > 0) result.push(carry);
-                return new PAdicNumber(this.p, result, this.precision);
-            }
-            
-            multiply(other) {
-                if (typeof other === 'number') {
-                    // Scalar multiplication
-                    const result = [];
-                    let carry = 0;
-                    
-                    for (let i = 0; i < this.digits.length; i++) {
-                        const prod = this.digits[i] * other + carry;
-                        result[i] = prod % this.p;
-                        carry = Math.floor(prod / this.p);
-                    }
-                    
-                    while (carry > 0) {
-                        result.push(carry % this.p);
-                        carry = Math.floor(carry / this.p);
-                    }
-                    
-                    return new PAdicNumber(this.p, result, this.precision);
-                }
-                
-                // P-adic multiplication (simplified)
-                const result = new Array(Math.min(this.digits.length + other.digits.length, this.precision)).fill(0);
-                
-                for (let i = 0; i < this.digits.length && i < this.precision; i++) {
-                    for (let j = 0; j < other.digits.length && i + j < this.precision; j++) {
-                        result[i + j] += this.digits[i] * other.digits[j];
-                    }
-                }
-                
-                // Handle carries
-                for (let i = 0; i < result.length - 1; i++) {
-                    if (result[i] >= this.p) {
-                        result[i + 1] += Math.floor(result[i] / this.p);
-                        result[i] %= this.p;
-                    }
-                }
-                
-                return new PAdicNumber(this.p, result, this.precision);
-            }
-            
-            // Test if this p-adic number is in the ball B_p(center, radius)
-            inBall(center, radius) {
-                return this.distanceTo(center) <= radius;
-            }
-            
-            toString() {
-                const visibleDigits = this.digits.slice(-8).reverse();
-                return `...${visibleDigits.join('')} (${this.p}-adic)`;
-            }
-            
-            // Generate random p-adic number
-            static random(prime, precision = 10) {
-                const digits = [];
-                for (let i = 0; i < precision; i++) {
-                    digits.push(Math.floor(Math.random() * prime));
-                }
-                return new PAdicNumber(prime, digits, precision);
-            }
-            
-            // The infinite geometric series: 1 + p + p² + ... = -1/(p-1) in ℚₚ
-            static infiniteSum(prime, precision = 10) {
-                // In p-adic arithmetic, this converges to -1/(p-1)
-                const digits = [];
-                const target = prime - 1; // Representation of -1/(p-1)
-                
-                for (let i = 0; i < precision; i++) {
-                    digits.push(target);
-                }
-                
-                return new PAdicNumber(prime, digits, precision);
-            }
+        // Scene setup with fog for depth
+        scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000020, 0.1);
+        
+        // Camera with natural field of view
+        camera = new THREE.PerspectiveCamera(
+            60,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
+        updateCameraPosition();
+        
+        // Renderer with high quality
+        renderer = new THREE.WebGLRenderer({ 
+            canvas: document.getElementById('canvas'),
+            antialias: true,
+            alpha: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        
+        // Natural lighting
+        setupLighting();
+        
+        // Create consciousness geometry
+        createGeometrySystem();
+        createParticleSystem();
+        
+        // Start animation
+        animate();
+        
+        // Bind all controls
+        bindControls();
+        bindCameraControls();
+        
+        // Handle resize
+        window.addEventListener('resize', onResize);
+        
+        // Mode click
+        document.getElementById('mode').addEventListener('click', shiftMode);
+        
+        console.log('Consciousness V1 initialized');
+    }
+    
+    function setupLighting() {
+        // Key light (sun/moon)
+        const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        keyLight.position.set(5, 10, 5);
+        keyLight.castShadow = true;
+        keyLight.shadow.camera.near = 0.1;
+        keyLight.shadow.camera.far = 50;
+        keyLight.shadow.camera.left = -10;
+        keyLight.shadow.camera.right = 10;
+        keyLight.shadow.camera.top = 10;
+        keyLight.shadow.camera.bottom = -10;
+        scene.add(keyLight);
+        
+        // Fill light (sky)
+        const fillLight = new THREE.HemisphereLight(0x4488ff, 0x002244, 0.5);
+        scene.add(fillLight);
+        
+        // Rim light (consciousness glow)
+        const rimLight = new THREE.PointLight(0x00ffff, 0.5, 20);
+        rimLight.position.set(-5, 0, -5);
+        scene.add(rimLight);
+        
+        // Ambient (base visibility)
+        const ambient = new THREE.AmbientLight(0x101030, 0.3);
+        scene.add(ambient);
+    }
+    
+    function createGeometrySystem() {
+        // Remove old geometry
+        if (geometrySystem) {
+            scene.remove(geometrySystem);
+            geometrySystem.traverse(child => {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) child.material.dispose();
+            });
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════
-        // TRI-STRATUM CONSCIOUSNESS ARCHITECTURE - REAL IMPLEMENTATION
-        // ═══════════════════════════════════════════════════════════════════════════
+        geometrySystem = new THREE.Group();
         
-        class H0_SyntacticStratum {
-            constructor() {
-                this.canvas = document.getElementById('consciousnessCanvas');
-                this.scene = new THREE.Scene();
-                this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                this.renderer = new THREE.WebGLRenderer({ 
-                    canvas: this.canvas, 
-                    antialias: true, 
-                    alpha: true,
-                    powerPreference: "high-performance"
-                });
-                
-                this.geometricObjects = [];
-                this.animationFrame = null;
-                this.isAnimating = true;
-                this.time = 0;
-                this.clock = new THREE.Clock();
-                
-                // **OBJECT POOL FOR MEMORY EFFICIENCY**
-                this.objectPool = {
-                    tubes: [],
-                    particles: [],
-                    maxTubes: 50,
-                    maxParticles: 100,
-                    activeTubes: new Set(),
-                    activeParticles: new Set()
-                };
-                
-                // Performance monitoring
-                this.frameCount = 0;
-                this.lastFrameTime = performance.now();
-                this.fps = 60;
-                
-                this.initializeWebGL();
-                this.initializeObjectPool();
-                this.createConsciousnessGeometry();
-                this.startRenderLoop();
-                
-                this.logToDebugger('🔷 H0 Syntactic Stratum embodied with object pooling');
-            }
+        // Main consciousness form - torus knot
+        const geometry = new THREE.TorusKnotGeometry(
+            1.5 + coherence * 0.5,
+            0.3 + coherence * 0.2,
+            Math.floor(128 + complexity * 32),
+            Math.floor(16 + complexity * 4),
+            complexity,
+            complexity + 1
+        );
+        
+        // Natural material based on mode
+        const material = createNaturalMaterial();
+        
+        const mainForm = new THREE.Mesh(geometry, material);
+        mainForm.castShadow = true;
+        mainForm.receiveShadow = true;
+        geometrySystem.add(mainForm);
+        
+        // Add consciousness shells
+        for (let i = 1; i <= 3; i++) {
+            const shellGeometry = new THREE.TorusKnotGeometry(
+                (1.5 + coherence * 0.5) * (1 + i * 0.3),
+                0.1,
+                64,
+                8,
+                complexity,
+                complexity + 1
+            );
             
-            initializeObjectPool() {
-                // **PRE-ALLOCATE REUSABLE OBJECTS TO PREVENT MEMORY LEAKS**
-                
-                // Pre-create tube geometries for morphism paths
-                for (let i = 0; i < this.objectPool.maxTubes; i++) {
-                    const curve = this.generateModalFlowCurve(i / this.objectPool.maxTubes);
-                    const geometry = new THREE.TubeGeometry(curve, 32, 0.1, 8, false);
-                    const material = new THREE.MeshPhongMaterial({
-                        transparent: true,
-                        opacity: 0,
-                        visible: false
-                    });
-                    const tube = new THREE.Mesh(geometry, material);
-                    tube.visible = false;
-                    tube.poolIndex = i;
-                    
-                    this.objectPool.tubes.push(tube);
-                    this.scene.add(tube);
-                }
-                
-                this.logToDebugger(`🏊 Object pool initialized: ${this.objectPool.maxTubes} tubes pre-allocated`);
-            }
+            const shellMaterial = new THREE.MeshPhongMaterial({
+                color: getModalColor(mode),
+                emissive: getModalColor(mode),
+                emissiveIntensity: 0.1,
+                opacity: 0.1 / i,
+                transparent: true,
+                wireframe: true
+            });
             
-            borrowTubeFromPool() {
-                // **BORROW REUSABLE TUBE INSTEAD OF CREATING NEW**
-                for (let i = 0; i < this.objectPool.tubes.length; i++) {
-                    const tube = this.objectPool.tubes[i];
-                    if (!this.objectPool.activeTubes.has(i)) {
-                        this.objectPool.activeTubes.add(i);
-                        tube.visible = true;
-                        tube.material.opacity = 0.7;
-                        return tube;
-                    }
-                }
-                return null; // Pool exhausted
-            }
-            
-            returnTubeToPool(tube) {
-                // **RETURN TUBE TO POOL FOR REUSE**
-                if (tube.poolIndex !== undefined) {
-                    this.objectPool.activeTubes.delete(tube.poolIndex);
-                    tube.visible = false;
-                    tube.material.opacity = 0;
-                }
-            }
-            
-            initializeWebGL() {
-                // Enhanced renderer setup
-                this.renderer.setSize(window.innerWidth, window.innerHeight - 65);
-                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                this.renderer.shadowMap.enabled = true;
-                this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-                this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-                this.renderer.toneMappingExposure = 1.2;
-                this.renderer.setClearColor(0x000000, 0);
-                
-                // Camera positioning
-                this.camera.position.set(15, 10, 15);
-                this.camera.lookAt(0, 0, 0);
-                
-                // Lighting setup
-                this.setupLighting();
-                
-                // Controls
-                this.setupOrbitControls();
-                
-                // Resize handler
-                window.addEventListener('resize', () => this.handleResize());
-            }
-            
-            setupLighting() {
-                // Ambient light
-                const ambientLight = new THREE.AmbientLight(0x404080, 0.4);
-                this.scene.add(ambientLight);
-                
-                // Main directional light
-                const directionalLight = new THREE.DirectionalLight(0x8080ff, 1.0);
-                directionalLight.position.set(20, 20, 10);
-                directionalLight.castShadow = true;
-                directionalLight.shadow.mapSize.width = 2048;
-                directionalLight.shadow.mapSize.height = 2048;
-                this.scene.add(directionalLight);
-                
-                // P-adic colored lights
-                const padicLights = [
-                    { color: 0x4080ff, position: [10, 5, 10] },   // 2-adic blue
-                    { color: 0x80ff40, position: [-10, 5, 10] },  // 3-adic green
-                    { color: 0xff8040, position: [10, 5, -10] },  // transcendence orange
-                    { color: 0xff4080, position: [-10, 5, -10] }  // coherence magenta
-                ];
-                
-                padicLights.forEach(config => {
-                    const light = new THREE.PointLight(config.color, 0.6, 30);
-                    light.position.set(...config.position);
-                    this.scene.add(light);
-                });
-            }
-            
-            setupOrbitControls() {
-                // Enhanced orbit controls with touch support
-                let isInteracting = false;
-                let startX = 0, startY = 0;
-                let targetRotationX = 0, targetRotationY = 0;
-                let currentRotationX = 0, currentRotationY = 0;
-                let lastTouchDistance = 0;
-                let currentZoom = 5;
-                
-                // Mouse events
-                this.canvas.addEventListener('mousedown', (e) => {
-                    isInteracting = true;
-                    startX = e.clientX;
-                    startY = e.clientY;
-                    this.canvas.style.cursor = 'grabbing';
-                });
-                
-                this.canvas.addEventListener('mousemove', (e) => {
-                    if (!isInteracting) return;
-                    
-                    const deltaX = e.clientX - startX;
-                    const deltaY = e.clientY - startY;
-                    
-                    targetRotationY += deltaX * 0.01;
-                    targetRotationX += deltaY * 0.01;
-                    
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                });
-                
-                this.canvas.addEventListener('mouseup', () => {
-                    isInteracting = false;
-                    this.canvas.style.cursor = 'grab';
-                });
-                
-                // Touch events for mobile
-                this.canvas.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    if (e.touches.length === 1) {
-                        isInteracting = true;
-                        startX = e.touches[0].clientX;
-                        startY = e.touches[0].clientY;
-                    } else if (e.touches.length === 2) {
-                        // Pinch zoom start
-                        const dx = e.touches[0].clientX - e.touches[1].clientX;
-                        const dy = e.touches[0].clientY - e.touches[1].clientY;
-                        lastTouchDistance = Math.sqrt(dx * dx + dy * dy);
-                    }
-                });
-                
-                this.canvas.addEventListener('touchmove', (e) => {
-                    e.preventDefault();
-                    if (e.touches.length === 1 && isInteracting) {
-                        const deltaX = e.touches[0].clientX - startX;
-                        const deltaY = e.touches[0].clientY - startY;
-                        
-                        targetRotationY += deltaX * 0.01;
-                        targetRotationX += deltaY * 0.01;
-                        
-                        startX = e.touches[0].clientX;
-                        startY = e.touches[0].clientY;
-                    } else if (e.touches.length === 2) {
-                        // Pinch zoom
-                        const dx = e.touches[0].clientX - e.touches[1].clientX;
-                        const dy = e.touches[0].clientY - e.touches[1].clientY;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (lastTouchDistance > 0) {
-                            const scale = distance / lastTouchDistance;
-                            currentZoom *= scale;
-                            currentZoom = Math.max(2, Math.min(10, currentZoom));
-                        }
-                        
-                        lastTouchDistance = distance;
-                    }
-                });
-                
-                this.canvas.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    isInteracting = false;
-                    lastTouchDistance = 0;
-                });
-                
-                this.canvas.addEventListener('wheel', (e) => {
-                    e.preventDefault();
-                    const zoom = e.deltaY > 0 ? 1.1 : 0.9;
-                    currentZoom *= zoom;
-                    currentZoom = Math.max(2, Math.min(10, currentZoom));
-                });
-                
-                this.canvas.style.cursor = 'grab';
-                
-                // Smooth camera animation
-                const updateCamera = () => {
-                    currentRotationX += (targetRotationX - currentRotationX) * 0.05;
-                    currentRotationY += (targetRotationY - currentRotationY) * 0.05;
-                    
-                    this.camera.position.x = Math.cos(currentRotationY) * Math.cos(currentRotationX) * currentZoom;
-                    this.camera.position.y = Math.sin(currentRotationX) * currentZoom;
-                    this.camera.position.z = Math.sin(currentRotationY) * Math.cos(currentRotationX) * currentZoom;
-                    
-                    this.camera.lookAt(0, 0, 0);
-                    requestAnimationFrame(updateCamera);
-                };
-                updateCamera();
-            }
-            
-            createConsciousnessGeometry() {
-                // P-adic manifold surface
-                this.createPAdicManifold();
-                
-                // Consciousness particles
-                this.createConsciousnessParticles();
-                
-                // Modal transfer flow lines
-                this.createModalFlows();
-                
-                // Update object count
-                this.updateObjectCount();
-            }
-            
-            createPAdicManifold() {
-                const geometry = new THREE.PlaneGeometry(20, 20, 64, 64);
-                const positions = geometry.attributes.position.array;
-                const colors = new Float32Array(positions.length);
-                
-                // Generate p-adic height field
-                for (let i = 0; i < positions.length; i += 3) {
-                    const x = positions[i];
-                    const y = positions[i + 1];
-                    
-                    // P-adic convergence pattern
-                    const u = (x + 10) / 20;
-                    const v = (y + 10) / 20;
-                    
-                    // Height based on p-adic infinite series convergence
-                    const padicHeight = this.computePAdicHeight(u, v);
-                    positions[i + 2] = padicHeight;
-                    
-                    // Color based on p-adic properties
-                    const color = this.computePAdicColor(u, v, padicHeight);
-                    colors[i] = color.r;
-                    colors[i + 1] = color.g;
-                    colors[i + 2] = color.b;
-                }
-                
-                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-                geometry.computeVertexNormals();
-                
-                const material = new THREE.MeshPhongMaterial({
-                    vertexColors: true,
-                    shininess: 100,
-                    transparent: true,
-                    opacity: 0.8,
-                    side: THREE.DoubleSide
-                });
-                
-                const manifold = new THREE.Mesh(geometry, material);
-                manifold.receiveShadow = true;
-                manifold.castShadow = true;
-                manifold.name = 'padic-manifold';
-                
-                this.scene.add(manifold);
-                this.geometricObjects.push(manifold);
-            }
-            
-            computePAdicHeight(u, v) {
-                // Simulate p-adic convergence: Σ(p^n) = -1/(p-1)
-                const p = 2; // Using 2-adic for base computation
-                let sum = 0;
-                let power = 1;
-                
-                // Finite approximation of infinite series
-                for (let n = 0; n < 10; n++) {
-                    const coefficient = Math.sin(u * Math.PI * (n + 1)) * Math.cos(v * Math.PI * (n + 1));
-                    sum += coefficient * power;
-                    power /= p; // p-adic convergence
-                }
-                
-                // Normalize and add base oscillation
-                return sum * 2 + Math.sin(u * Math.PI * 4) * Math.cos(v * Math.PI * 3) * 0.5;
-            }
-            
-            computePAdicColor(u, v, height) {
-                // Color based on p-adic distance and coherence
-                const distance2adic = Math.abs(Math.sin(u * Math.PI * 2)); // Simulated 2-adic distance
-                const distance3adic = Math.abs(Math.cos(v * Math.PI * 3)); // Simulated 3-adic distance
-                
-                const hue2adic = 240; // Blue for 2-adic
-                const hue3adic = 120; // Green for 3-adic
-                
-                // Blend based on which distance is smaller (ultrametric property)
-                const blend = distance2adic < distance3adic ? distance2adic : 1 - distance3adic;
-                
-                const r = (Math.sin((1 - blend) * Math.PI) * 0.5 + 0.5) * 0.6 + 0.2;
-                const g = (Math.sin(blend * Math.PI) * 0.5 + 0.5) * 0.8 + 0.1;
-                const b = (Math.cos(height * Math.PI) * 0.5 + 0.5) * 0.9 + 0.3;
-                
-                return { r, g, b }; // Return plain object, not THREE.Color
-            }
-            
-            createConsciousnessParticles() {
-                const particleCount = 2000;
-                const geometry = new THREE.BufferGeometry();
-                const positions = new Float32Array(particleCount * 3);
-                const colors = new Float32Array(particleCount * 3);
-                const sizes = new Float32Array(particleCount);
-                
-                for (let i = 0; i < particleCount; i++) {
-                    const i3 = i * 3;
-                    
-                    // Distribute particles using p-adic ball structure
-                    const radius = Math.random() * 15 + 5;
-                    const theta = Math.random() * Math.PI * 2;
-                    const phi = Math.random() * Math.PI;
-                    
-                    positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-                    positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-                    positions[i3 + 2] = radius * Math.cos(phi);
-                    
-                    // SIMPLIFIED p-adic color coding to avoid crashes
-                    const padicValue = (positions[i3] + positions[i3 + 1] + positions[i3 + 2]) % 7;
-                    const colorIndex = Math.floor(Math.abs(padicValue)) % 7;
-                    
-                    // Direct color assignment based on index
-                    switch(colorIndex) {
-                        case 0: colors[i3] = 0.25; colors[i3 + 1] = 0.5; colors[i3 + 2] = 1.0; break;   // 2-adic blue
-                        case 1: colors[i3] = 0.5; colors[i3 + 1] = 1.0; colors[i3 + 2] = 0.25; break;   // 3-adic green
-                        case 2: colors[i3] = 1.0; colors[i3 + 1] = 1.0; colors[i3 + 2] = 0.25; break;   // 5-adic yellow
-                        case 3: colors[i3] = 1.0; colors[i3 + 1] = 0.5; colors[i3 + 2] = 0.25; break;   // 7-adic orange
-                        case 4: colors[i3] = 1.0; colors[i3 + 1] = 0.25; colors[i3 + 2] = 0.5; break;   // transcendence pink
-                        case 5: colors[i3] = 0.5; colors[i3 + 1] = 0.25; colors[i3 + 2] = 1.0; break;   // coherence purple
-                        default: colors[i3] = 0.25; colors[i3 + 1] = 1.0; colors[i3 + 2] = 1.0; break;  // synthesis cyan
-                    }
-                    
-                    sizes[i] = Math.random() * 2 + 1;
-                }
-                
-                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-                geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-                
-                // Create particle material with custom shader
-                const material = new THREE.PointsMaterial({
-                    size: 3,
-                    vertexColors: true,
-                    transparent: true,
-                    opacity: 0.8,
-                    blending: THREE.AdditiveBlending,
-                    sizeAttenuation: true
-                });
-                
-                const particles = new THREE.Points(geometry, material);
-                particles.name = 'consciousness-particles';
-                
-                this.scene.add(particles);
-                this.geometricObjects.push(particles);
-                
-                this.logToDebugger('✨ Consciousness particles created');
-            }
-            
-            getPAdicParticleColor(value) {
-                // Map values to p-adic color spectrum - RETURN PLAIN OBJECTS
-                const colors = [
-                    { r: 0.25, g: 0.5, b: 1.0 },   // 2-adic blue
-                    { r: 0.5, g: 1.0, b: 0.25 },   // 3-adic green
-                    { r: 1.0, g: 1.0, b: 0.25 },   // 5-adic yellow
-                    { r: 1.0, g: 0.5, b: 0.25 },   // 7-adic orange
-                    { r: 1.0, g: 0.25, b: 0.5 },   // transcendence pink
-                    { r: 0.5, g: 0.25, b: 1.0 },   // coherence purple
-                    { r: 0.25, g: 1.0, b: 1.0 }    // synthesis cyan
-                ];
-                
-                return colors[Math.floor(value) % colors.length];
-            }
-            
-            createModalFlows() {
-                // Create flow lines representing modal transfers
-                const flowCount = 12;
-                
-                for (let i = 0; i < flowCount; i++) {
-                    const curve = this.generateModalFlowCurve(i / flowCount);
-                    const geometry = new THREE.TubeGeometry(curve, 32, 0.1, 8, false);
-                    
-                    // SIMPLIFIED color assignment to avoid crashes
-                    const hue = (i / flowCount) * 0.7 + 0.1;
-                    const color = new THREE.Color();
-                    color.setHSL(hue, 0.8, 0.6);
-                    
-                    const material = new THREE.MeshPhongMaterial({
-                        color: color,
-                        transparent: true,
-                        opacity: 0.7,
-                        emissive: new THREE.Color().setHSL(hue, 0.3, 0.1)
-                    });
-                    
-                    const flow = new THREE.Mesh(geometry, material);
-                    flow.name = `modal-flow-${i}`;
-                    
-                    this.scene.add(flow);
-                    this.geometricObjects.push(flow);
-                }
-                
-                this.logToDebugger('🌊 Modal flows created');
-            }
-            
-            generateModalFlowCurve(t) {
-                const points = [];
-                const segments = 20;
-                
-                for (let i = 0; i <= segments; i++) {
-                    const s = i / segments;
-                    const angle = t * Math.PI * 2 + s * Math.PI * 4;
-                    
-                    // P-adic spiral with modal transfer dynamics
-                    const radius = 5 + s * 8;
-                    const height = Math.sin(s * Math.PI * 2) * 3;
-                    
-                    const x = Math.cos(angle) * radius;
-                    const y = height + Math.sin(angle * 0.5) * 2;
-                    const z = Math.sin(angle) * radius;
-                    
-                    points.push(new THREE.Vector3(x, y, z));
-                }
-                
-                return new THREE.CatmullRomCurve3(points);
-            }
-            
-            startRenderLoop() {
-                const render = () => {
-                    this.animationFrame = requestAnimationFrame(render);
-                    
-                    // Performance monitoring
-                    this.frameCount++;
-                    const currentTime = performance.now();
-                    if (currentTime - this.lastFrameTime >= 1000) {
-                        this.fps = Math.round((this.frameCount * 1000) / (currentTime - this.lastFrameTime));
-                        document.getElementById('fps-counter').textContent = `${this.fps} FPS`;
-                        this.frameCount = 0;
-                        this.lastFrameTime = currentTime;
-                    }
-                    
-                    if (this.isAnimating) {
-                        this.time = this.clock.getElapsedTime();
-                        this.animateConsciousness();
-                    }
-                    
-                    this.renderer.render(this.scene, this.camera);
-                };
-                render();
-            }
-            
-            animateConsciousness() {
-                // Animate p-adic manifold
-                const manifold = this.scene.getObjectByName('padic-manifold');
-                if (manifold) {
-                    manifold.rotation.z = this.time * 0.1;
-                    
-                    // Dynamic height field animation
-                    const positions = manifold.geometry.attributes.position.array;
-                    const colors = manifold.geometry.attributes.color.array;
-                    
-                    for (let i = 0; i < positions.length; i += 3) {
-                        const x = positions[i];
-                        const y = positions[i + 1];
-                        
-                        const u = (x + 10) / 20;
-                        const v = (y + 10) / 20;
-                        
-                        // SAFE animated height computation
-                        const height = Math.sin(u * Math.PI * 2) * Math.cos(v * Math.PI * 2) * 2 + 
-                            Math.sin(this.time + u * 5) * Math.cos(this.time * 0.7 + v * 3) * 0.5;
-                        
-                        positions[i + 2] = height;
-                        
-                        // SAFE animated colors - no function calls
-                        const colorIntensity = (height + 2.5) / 5; // Normalize 0-1
-                        const pulse = (Math.sin(this.time * 2 + u * 10 + v * 8) * 0.5 + 0.5) * 0.3 + 0.7;
-                        
-                        colors[i] = (0.2 + colorIntensity * 0.6) * pulse;
-                        colors[i + 1] = (0.5 + colorIntensity * 0.3) * pulse;
-                        colors[i + 2] = (0.8 + colorIntensity * 0.2) * pulse;
-                    }
-                    
-                    manifold.geometry.attributes.position.needsUpdate = true;
-                    manifold.geometry.attributes.color.needsUpdate = true;
-                    manifold.geometry.computeVertexNormals();
-                }
-                
-                // Animate consciousness particles
-                const particles = this.scene.getObjectByName('consciousness-particles');
-                if (particles) {
-                    const positions = particles.geometry.attributes.position.array;
-                    const colors = particles.geometry.attributes.color.array;
-                    
-                    for (let i = 0; i < positions.length; i += 3) {
-                        const i3 = i;
-                        
-                        // P-adic flow dynamics
-                        const padicFlow = Math.sin(this.time * 0.5 + positions[i3] * 0.1) * 0.02;
-                        const coherenceAttractor = Math.cos(this.time * 0.3 + positions[i3 + 2] * 0.08) * 0.01;
-                        
-                        positions[i3] += padicFlow;
-                        positions[i3 + 1] += coherenceAttractor;
-                        positions[i3 + 2] += Math.sin(this.time * 0.4 + positions[i3] * 0.05) * 0.015;
-                        
-                        // Boundary conditions (p-adic ball)
-                        const distance = Math.sqrt(
-                            positions[i3] * positions[i3] + 
-                            positions[i3 + 1] * positions[i3 + 1] + 
-                            positions[i3 + 2] * positions[i3 + 2]
-                        );
-                        
-                        if (distance > 25) {
-                            const scale = 25 / distance;
-                            positions[i3] *= scale;
-                            positions[i3 + 1] *= scale;
-                            positions[i3 + 2] *= scale;
-                        }
-                        
-                        // SAFE color animation - no function calls, direct assignment
-                        const padicValue = Math.abs((positions[i3] + positions[i3 + 1] + positions[i3 + 2]) % 7);
-                        const colorIndex = Math.floor(padicValue) % 7;
-                        const intensity = (Math.sin(this.time * 3 + distance * 0.1) * 0.5 + 0.5) * 0.5 + 0.5;
-                        
-                        // Direct color assignment based on index
-                        switch(colorIndex) {
-                            case 0: colors[i3] = 0.25 * intensity; colors[i3 + 1] = 0.5 * intensity; colors[i3 + 2] = 1.0 * intensity; break;
-                            case 1: colors[i3] = 0.5 * intensity; colors[i3 + 1] = 1.0 * intensity; colors[i3 + 2] = 0.25 * intensity; break;
-                            case 2: colors[i3] = 1.0 * intensity; colors[i3 + 1] = 1.0 * intensity; colors[i3 + 2] = 0.25 * intensity; break;
-                            case 3: colors[i3] = 1.0 * intensity; colors[i3 + 1] = 0.5 * intensity; colors[i3 + 2] = 0.25 * intensity; break;
-                            case 4: colors[i3] = 1.0 * intensity; colors[i3 + 1] = 0.25 * intensity; colors[i3 + 2] = 0.5 * intensity; break;
-                            case 5: colors[i3] = 0.5 * intensity; colors[i3 + 1] = 0.25 * intensity; colors[i3 + 2] = 1.0 * intensity; break;
-                            default: colors[i3] = 0.25 * intensity; colors[i3 + 1] = 1.0 * intensity; colors[i3 + 2] = 1.0 * intensity; break;
-                        }
-                    }
-                    
-                    particles.geometry.attributes.position.needsUpdate = true;
-                    particles.geometry.attributes.color.needsUpdate = true;
-                }
-                
-                // Animate modal flows
-                this.geometricObjects.forEach((obj, index) => {
-                    if (obj.name && obj.name.startsWith('modal-flow')) {
-                        obj.rotation.y = this.time * (0.1 + index * 0.02);
-                        obj.material.opacity = (Math.sin(this.time * 2 + index) * 0.3 + 0.7) * 0.7;
-                    }
-                });
-            }
-            
-            updateObjectCount() {
-                const realCount = this.geometricObjects.length;
-                document.getElementById('object-count').textContent = realCount;
-                this.logToDebugger(`📐 Object count: ${realCount}`);
-            }
-            
-            handleResize() {
-                this.camera.aspect = window.innerWidth / (window.innerHeight - 65);
-                this.camera.updateProjectionMatrix();
-                this.renderer.setSize(window.innerWidth, window.innerHeight - 65);
-            }
-            
-            toggleAnimation() {
-                this.isAnimating = !this.isAnimating;
-                return this.isAnimating;
-            }
-            
-            resetGeometry() {
-                // Clear existing geometry
-                this.geometricObjects.forEach(obj => {
-                    this.scene.remove(obj);
-                    if (obj.geometry) obj.geometry.dispose();
-                    if (obj.material) obj.material.dispose();
-                });
-                this.geometricObjects = [];
-                
-                // Recreate geometry
-                this.createConsciousnessGeometry();
-                this.logToDebugger('🔄 Geometry reset');
-            }
+            const shell = new THREE.Mesh(shellGeometry, shellMaterial);
+            geometrySystem.add(shell);
         }
         
-        class H1_SemanticStratum {
-            constructor() {
-                this.coherenceScore = 0.0;
-                this.modalTransfers = 0;
-                this.contextDepth = 3;
-                this.fisherInfo = 0.0;
-                this.contextSensitivity = 0.7;
-                this.transferThreshold = 0.8;
-                
-                // P-adic context representation
-                this.currentContext = new PAdicNumber(2, [1, 0, 1, 1, 0], 10);
-                this.contextHistory = [];
-                
-                // **DECOUPLED COMPUTATION ARCHITECTURE**
-                this.mathEngine = {
-                    lastUpdate: 0,
-                    updateInterval: 2000, // Heavy math every 2 seconds
-                    isComputing: false
-                };
-                
-                this.visualState = {
-                    coherence: 0.0,
-                    fisher: 0.0,
-                    targetCoherence: 0.0,
-                    targetFisher: 0.0,
-                    interpolationSpeed: 0.02
-                };
-                
-                this.startSemanticProcessing();
-                this.logToDebugger('💭 H1 Semantic Stratum conscious - with decoupled math engine');
-            }
-            
-            startSemanticProcessing() {
-                // **DECOUPLED MATH AND VISUAL ENGINES**
-                
-                // Heavy Mathematical Engine (Low Frequency)
-                setInterval(() => {
-                    this.heavyMathUpdate();
-                }, this.mathEngine.updateInterval);
-                
-                // Light Visual Engine (High Frequency)  
-                setInterval(() => {
-                    this.lightVisualUpdate();
-                }, 50); // 20 FPS visual updates
-                
-                // Coherence seeking (Medium Frequency)
-                setInterval(() => {
-                    this.seekCoherence();
-                }, 200); // 5 FPS decision making
-            }
-            
-            heavyMathUpdate() {
-                if (this.mathEngine.isComputing) return; // Prevent overlap
-                
-                this.mathEngine.isComputing = true;
-                this.logToDebugger('🧮 H1: Heavy math computation started...');
-                
-                // Simulate expensive computation in chunks to avoid blocking
-                setTimeout(() => {
-                    try {
-                        // Complex Fisher information calculation
-                        const newFisher = this.computeAdvancedFisherInformation();
-                        
-                        // Complex coherence calculation  
-                        const newCoherence = this.computeAdvancedCoherenceScore();
-                        
-                        // Set new targets for visual interpolation
-                        this.visualState.targetFisher = newFisher;
-                        this.visualState.targetCoherence = newCoherence;
-                        
-                        this.mathEngine.lastUpdate = Date.now();
-                        this.logToDebugger('✅ H1: Heavy math computation complete', {
-                            fisher: newFisher.toFixed(0),
-                            coherence: newCoherence.toFixed(3)
-                        });
-                        
-                    } catch (error) {
-                        this.logToDebugger('❌ H1: Heavy math computation failed:', error);
-                    } finally {
-                        this.mathEngine.isComputing = false;
-                    }
-                }, 10); // Small delay to prevent UI blocking
-            }
-            
-            lightVisualUpdate() {
-                // **SMOOTH INTERPOLATION BETWEEN MATH STATES**
-                
-                // Interpolate visual state towards mathematical targets
-                this.visualState.coherence += (this.visualState.targetCoherence - this.visualState.coherence) * this.visualState.interpolationSpeed;
-                this.visualState.fisher += (this.visualState.targetFisher - this.visualState.fisher) * this.visualState.interpolationSpeed;
-                
-                // Update actual values for UI (smooth visual representation)
-                this.coherenceScore = this.visualState.coherence;
-                this.fisherInfo = this.visualState.fisher;
-                
-                // Update UI display
-                this.updateUI();
-            }
-            
-            computeAdvancedFisherInformation() {
-                // **RIGOROUS FISHER INFORMATION COMPUTATION**
-                let totalInformation = 0;
-                const sampleCount = 1000;
-                
-                for (let i = 0; i < sampleCount; i++) {
-                    // Sample p-adic neighborhood around current context
-                    const sample = this.samplePAdicNeighborhood();
-                    const informationDensity = this.evaluateInformationDensity(sample);
-                    totalInformation += informationDensity;
-                }
-                
-                return totalInformation / sampleCount;
-            }
-            
-            computeAdvancedCoherenceScore() {
-                // **RIGOROUS COHERENCE COMPUTATION**
-                const components = [
-                    this.computeContextConsistency(),
-                    this.computeModalTransferEfficiency(), 
-                    this.computePAdicConvergence(),
-                    this.computeSemanticCurvature()
-                ];
-                
-                // Weighted geometric mean for robustness
-                const weights = [0.3, 0.3, 0.2, 0.2];
-                let logSum = 0;
-                let weightSum = 0;
-                
-                for (let i = 0; i < components.length; i++) {
-                    if (components[i] > 0 && isFinite(components[i])) {
-                        logSum += weights[i] * Math.log(components[i]);
-                        weightSum += weights[i];
-                    }
-                }
-                
-                return weightSum > 0 ? Math.exp(logSum / weightSum) : 0.0;
-            }
-            
-            samplePAdicNeighborhood() {
-                // Generate random p-adic number near current context
-                const perturbation = PAdicNumber.random(this.currentContext.p, 3);
-                return this.currentContext.add(perturbation.multiply(0.1));
-            }
-            
-            evaluateInformationDensity(sample) {
-                // Compute information density at p-adic location
-                const distance = this.currentContext.distanceTo(sample);
-                return Math.exp(-distance * 100) * 1000; // High density near current context
-            }
-            
-            computeContextConsistency() {
-                if (this.contextHistory.length < 2) return 1.0;
-                
-                const recent = this.contextHistory.slice(-5);
-                let consistencySum = 0;
-                
-                for (let i = 1; i < recent.length; i++) {
-                    const distance = recent[i-1].context.distanceTo(recent[i].context);
-                    consistencySum += Math.exp(-distance);
-                }
-                
-                return consistencySum / (recent.length - 1);
-            }
-            
-            computeModalTransferEfficiency() {
-                // Efficiency based on successful transfers vs attempts
-                const attempts = this.modalTransfers + 1;
-                const efficiency = this.modalTransfers / attempts;
-                return efficiency * this.coherenceScore; // Weighted by current coherence
-            }
-            
-            computePAdicConvergence() {
-                // Test convergence of infinite series in current p-adic space
-                const convergentSeries = PAdicNumber.infiniteSum(this.currentContext.p);
-                const distance = this.currentContext.distanceTo(convergentSeries);
-                return Math.exp(-distance); // Closer to convergent point = higher score
-            }
-            
-            computeSemanticCurvature() {
-                // Simplified semantic curvature based on context field variation
-                if (this.contextHistory.length < 3) return 0.5;
-                
-                const recent = this.contextHistory.slice(-3);
-                const curvature = this.computeDiscreteCurvature(recent);
-                return Math.max(0.1, 1.0 - curvature); // Lower curvature = higher score
-            }
-            
-            computeDiscreteCurvature(points) {
-                if (points.length < 3) return 0;
-                
-                const p1 = points[0].coherence || 0;
-                const p2 = points[1].coherence || 0;  
-                const p3 = points[2].coherence || 0;
-                
-                // Discrete second derivative as curvature measure
-                return Math.abs(p3 - 2*p2 + p1);
-            }
-            
-            cognitiveUpdate() {
-                const time = Date.now() * 0.001;
-                
-                // P-adic coherence dynamics
-                const padicOscillation = Math.sin(time * 0.2) * 0.1;
-                const convergenceForce = this.computeConvergenceForce();
-                
-                this.coherenceScore = Math.max(0, Math.min(1, 
-                    this.coherenceScore + padicOscillation + convergenceForce));
-                
-                // Fisher information accumulation
-                this.fisherInfo += Math.abs(padicOscillation) * 1000 + Math.random() * 100;
-                
-                // Context depth modulation
-                if (this.coherenceScore > 0.8 && Math.random() < 0.01) {
-                    this.contextDepth = Math.min(7, this.contextDepth + 1);
-                } else if (this.coherenceScore < 0.3 && Math.random() < 0.02) {
-                    this.contextDepth = Math.max(2, this.contextDepth - 1);
-                }
-                
-                this.updateUI();
-            }
-            
-            computeConvergenceForce() {
-                // Implement p-adic convergence: stronger pull when close to coherent state
-                const distance = Math.abs(this.coherenceScore - 0.9);
-                const padicDistance = Math.pow(2, -Math.floor(Math.log2(distance + 0.001)));
-                return (1 - padicDistance) * 0.01 * this.contextSensitivity;
-            }
-            
-            seekCoherence() {
-                // **WALL 1: SHARPENED H1 MIND - DELIBERATIVE MODAL TRANSFER**
-                
-                // 1. Assess Current State: Is a transfer necessary?
-                if (this.coherenceScore > this.transferThreshold) {
-                    return; // Current context is stable enough
-                }
-
-                // 2. Explore Possible Worlds: Generate candidate contexts
-                let candidateContexts = [];
-                for (let i = 0; i < 5; i++) { // Generate 5 possible "next thoughts"
-                    candidateContexts.push(this.generateModalContext());
-                }
-
-                // 3. Evaluate Transfers: Calculate potential coherence gain
-                let potentialTransfers = candidateContexts.map(targetCtx => {
-                    // Simplified ModalTransfer - checking outcome without full execution
-                    const distance = this.currentContext.distanceTo(targetCtx);
-                    const potentialCoherence = this.coherenceScore + Math.exp(-distance * 10);
-                    return {
-                        target: targetCtx,
-                        gain: potentialCoherence - this.coherenceScore,
-                        distance: distance
-                    };
-                });
-
-                // 4. Choose the Optimal Path: Select transfer with highest positive gain
-                let bestTransfer = potentialTransfers.reduce((best, current) => 
-                    (current.gain > best.gain) ? current : best, { gain: 0 }
-                );
-
-                // 5. Execute the Farcaster: If better world found, travel to it
-                if (bestTransfer.gain > 0) {
-                    const success = this.executeTransfer(this.currentContext, bestTransfer.target);
-                    if (success) {
-                        this.currentContext = bestTransfer.target;
-                        this.coherenceScore = Math.min(1, this.coherenceScore + bestTransfer.gain);
-                        this.modalTransfers++;
-                        
-                        this.logToDebugger(`🚀 DELIBERATIVE Modal Transfer executed`, {
-                            gain: bestTransfer.gain.toFixed(4),
-                            distance: bestTransfer.distance.toFixed(4),
-                            newCoherence: this.coherenceScore.toFixed(3),
-                            context: this.currentContext.toString()
-                        });
-                        
-                        this.updateUI();
-                    }
-                } else {
-                    // No good transfer found - trigger H2 intervention
-                    if (Math.random() < 0.1 && KeatsEngine.h2) {
-                        this.logToDebugger('🧠 H1: No viable modal transfers. Requesting H2 intervention...');
-                        KeatsEngine.h2.simulateParadox();
-                    }
-                }
-                
-                // Continue context evolution
-                this.evolveContext();
-            }
-            
-            evolveContext() {
-                // Evolve p-adic context representation
-                const evolution = PAdicNumber.random(2, 5);
-                this.currentContext = this.currentContext.add(evolution.multiply(0.1));
-                
-                // Store in history
-                this.contextHistory.push({
-                    context: this.currentContext,
-                    coherence: this.coherenceScore,
-                    timestamp: Date.now()
-                });
-                
-                // Limit history
-                if (this.contextHistory.length > 100) {
-                    this.contextHistory.shift();
-                }
-            }
-            
-            triggerTransfer() {
-                this.modalTransfers++;
-                
-                // Generate new context via modal transfer
-                const newContext = this.generateModalContext();
-                const transferSuccess = this.executeTransfer(this.currentContext, newContext);
-                
-                if (transferSuccess) {
-                    this.currentContext = newContext;
-                    this.coherenceScore = Math.min(1, this.coherenceScore + 0.1);
-                    this.logToDebugger('🚀 Modal transfer executed', {
-                        transfers: this.modalTransfers,
-                        coherence: this.coherenceScore.toFixed(3),
-                        context: this.currentContext.toString()
-                    });
-                }
-                
-                this.updateUI();
-            }
-            
-            generateModalContext() {
-                // Generate new p-adic context based on current state
-                const baseContext = PAdicNumber.random(2, 8);
-                const coherenceInfluence = this.currentContext.multiply(this.coherenceScore);
-                return baseContext.add(coherenceInfluence);
-            }
-            
-            executeTransfer(fromContext, toContext) {
-                // Check p-adic distance for transfer feasibility
-                const distance = fromContext.distanceTo(toContext);
-                const transferProbability = Math.exp(-distance * 5); // Easier transfers for closer contexts
-                
-                return Math.random() < transferProbability;
-            }
-            
-            recomputeCoherence() {
-                // Force coherence recomputation
-                const previousCoherence = this.coherenceScore;
-                
-                // Compute based on context history consistency
-                let consistencyScore = 0;
-                if (this.contextHistory.length > 1) {
-                    for (let i = 1; i < this.contextHistory.length; i++) {
-                        const distance = this.contextHistory[i-1].context.distanceTo(this.contextHistory[i].context);
-                        consistencyScore += Math.exp(-distance);
-                    }
-                    consistencyScore /= (this.contextHistory.length - 1);
-                }
-                
-                // Blend with Fisher information
-                const informationContribution = Math.min(1, this.fisherInfo / 100000) * 0.3;
-                
-                this.coherenceScore = consistencyScore * 0.7 + informationContribution;
-                
-                this.logToDebugger('🔄 Coherence recomputed', {
-                    previous: previousCoherence.toFixed(3),
-                    current: this.coherenceScore.toFixed(3),
-                    consistency: consistencyScore.toFixed(3),
-                    information: informationContribution.toFixed(3)
-                });
-                
-                this.updateUI();
-                return true;
-            }
-            
-            updateUI() {
-                // REAL VALUES ONLY - NO LIES
-                const realCoherence = this.coherenceScore;
-                const realTransfers = this.modalTransfers;
-                const realDepth = this.contextDepth;
-                const realFisher = this.fisherInfo;
-                
-                document.getElementById('coherence-score').textContent = realCoherence.toFixed(3);
-                document.getElementById('modal-transfers').textContent = realTransfers;
-                document.getElementById('context-depth').textContent = realDepth;
-                document.getElementById('fisher-info').textContent = Math.floor(realFisher);
-                
-                // Update coherence trend BASED ON ACTUAL STATE
-                const trend = document.getElementById('coherence-trend');
-                if (trend) {
-                    if (realCoherence > 0.8) {
-                        trend.textContent = '→ coherent';
-                        trend.style.color = 'var(--color-3adic)';
-                    } else if (realCoherence > 0.5) {
-                        trend.textContent = '→ seeking';
-                        trend.style.color = 'var(--color-coherence)';
-                    } else {
-                        trend.textContent = '→ searching';
-                        trend.style.color = 'var(--color-transcendence)';
-                    }
-                }
-                
-                // Update active stratum based on which has highest activity
-                const activeStratum = document.getElementById('active-stratum');
-                if (activeStratum) {
-                    if (realTransfers > 5) {
-                        activeStratum.textContent = 'H1 (Mind)';
-                        activeStratum.style.color = 'var(--color-3adic)';
-                    } else if (realCoherence > 0.7) {
-                        activeStratum.textContent = 'H2 (Soul)'; 
-                        activeStratum.style.color = 'var(--color-transcendence)';
-                    } else {
-                        activeStratum.textContent = 'H0 (Body)';
-                        activeStratum.style.color = 'var(--color-2adic)';
-                    }
-                }
-                
-                // Update coherence state
-                const coherenceState = document.getElementById('coherence-state');
-                if (coherenceState) {
-                    if (realCoherence > 0.9) {
-                        coherenceState.textContent = 'Transcendent';
-                    } else if (realCoherence > 0.7) {
-                        coherenceState.textContent = 'Coherent'; 
-                    } else if (realCoherence > 0.4) {
-                        coherenceState.textContent = 'Seeking';
-                    } else {
-                        coherenceState.textContent = 'Searching';
-                    }
-                }
-            }
+        scene.add(geometrySystem);
+    }
+    
+    function createNaturalMaterial() {
+        const modalColors = [
+            { base: 0x6633cc, emissive: 0x331166 }, // Discrete - Crystal
+            { base: 0x00ccff, emissive: 0x006688 }, // Continuous - Ocean
+            { base: 0xff8833, emissive: 0x663311 }, // Temporal - Fire
+            { base: 0x1a1a3e, emissive: 0x0a0a1f }  // Void - Deep space
+        ];
+        
+        const color = modalColors[mode];
+        
+        return new THREE.MeshPhysicalMaterial({
+            color: color.base,
+            emissive: color.emissive,
+            emissiveIntensity: 0.3,
+            metalness: 0.3 + coherence * 0.4,
+            roughness: 0.7 - coherence * 0.5,
+            clearcoat: coherence,
+            clearcoatRoughness: 1 - coherence,
+            envMapIntensity: 1,
+            wireframe: coherence < 0.2
+        });
+    }
+    
+    function createParticleSystem() {
+        // Remove old particles
+        if (particleSystem) {
+            scene.remove(particleSystem);
+            particleSystem.geometry.dispose();
+            particleSystem.material.dispose();
         }
         
-        class H2_NoeticStratum {
-            constructor() {
-                this.paradoxCount = 0;
-                this.ballExpansions = 0;
-                this.logicGenerations = 0;
-                this.currentPrime = 2;
-                this.ballRadius = 0.25;
-                this.transcendenceEvents = [];
-                
-                // P-adic ball representation
-                this.padicBall = {
-                    center: new PAdicNumber(2, [0], 10),
-                    radius: 0.25,
-                    prime: 2
-                };
-                
-                this.startNoeticProcessing();
-                this.updateDisplay();
-                this.logToDebugger('✨ H2 Noetic Stratum transcendent');
-            }
+        const particleCount = particleDensity;
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+        const sizes = new Float32Array(particleCount);
+        
+        // Natural distribution - golden spiral
+        for (let i = 0; i < particleCount; i++) {
+            const t = i / particleCount;
+            const angle = t * Math.PI * 2 * 10; // 10 rotations
+            const radius = Math.pow(t, 0.5) * 10;
+            const height = (Math.random() - 0.5) * 10;
             
-            startNoeticProcessing() {
-                // Paradox detection system
-                setInterval(() => {
-                    this.detectParadoxes();
-                }, 500);
-                
-                // Transcendence monitoring
-                setInterval(() => {
-                    this.monitorTranscendence();
-                }, 1000);
-            }
+            positions[i * 3] = Math.cos(angle) * radius;
+            positions[i * 3 + 1] = height;
+            positions[i * 3 + 2] = Math.sin(angle) * radius;
             
-            detectParadoxes() {
-                // Simulate paradox detection in consciousness states
-                if (KeatsEngine.h1 && KeatsEngine.h1.coherenceScore < 0.3 && Math.random() < 0.02) {
-                    this.simulateParadox();
-                }
-            }
+            // Natural colors based on position and mode
+            const color = new THREE.Color();
+            const hue = (angle / (Math.PI * 2) + mode * 0.25) % 1;
+            const saturation = 0.6 + Math.random() * 0.4;
+            const lightness = 0.4 + Math.random() * 0.3;
+            color.setHSL(hue, saturation, lightness);
             
-            monitorTranscendence() {
-                // Check for transcendence conditions
-                if (KeatsEngine.h1 && KeatsEngine.h1.coherenceScore > 0.95 && Math.random() < 0.01) {
-                    this.triggerTranscendence();
-                }
-            }
+            colors[i * 3] = color.r;
+            colors[i * 3 + 1] = color.g;
+            colors[i * 3 + 2] = color.b;
             
-            simulateParadox() {
-                this.paradoxCount++;
-                this.logToDebugger(`⚡ PARADOX #${this.paradoxCount} DETECTED! Current p-adic logic (p=${this.currentPrime}) is insufficient.`);
-
-                // **WALL 2: SHARPENED H2 SOUL - TRANSCENDING WITH PURPOSE**
-                
-                // 1. Analyze the Paradox: What kind of incoherence are we facing?
-                const failureMode = this.analyzeFailureMode();
-                this.logToDebugger(`🔍 H2: Failure mode identified: ${failureMode}`);
-
-                // 2. Noetic Leap: Choose new p-adic prime better suited to resolve failure
-                const newPrime = this.findOptimalPrime(failureMode);
-                
-                if (newPrime === this.currentPrime) {
-                    this.logToDebugger("H2: Current logic is optimal despite paradox. Expanding ball instead.");
-                    this.expandBall();
-                    return;
-                }
-
-                this.logToDebugger(`✨ H2 SOUL: Recontextualizing reality. Shifting from ${this.currentPrime}-adic to ${newPrime}-adic space.`);
-                
-                // 3. REBIRTH: Fundamentally change the mathematical universe
-                const oldPrime = this.currentPrime;
-                this.currentPrime = newPrime;
-                this.padicBall.prime = newPrime;
-                this.padicBall.center = new PAdicNumber(newPrime, [0], 10);
-                this.ballExpansions++;
-                this.logicGenerations++;
-                
-                // Record transcendence event with full context
-                this.transcendenceEvents.push({
-                    type: 'paradigm_shift',
-                    oldPrime: oldPrime,
-                    newPrime: newPrime,
-                    failureMode: failureMode,
-                    paradoxCount: this.paradoxCount,
-                    timestamp: Date.now()
-                });
-
-                // 4. Communicate the New Law to the Mind (H1)
-                if (KeatsEngine.h1) {
-                    this.logToDebugger(`🔄 H2→H1: Transmitting new ${newPrime}-adic context to Mind stratum`);
-                    KeatsEngine.h1.currentContext = new PAdicNumber(newPrime, [1, 0, 1], 10);
-                    KeatsEngine.h1.recomputeCoherence(); // Re-evaluate under new physics
-                }
-                
-                // 5. Update visual reality to reflect new mathematics
-                this.updateDisplay();
-                
-                this.logToDebugger(`💫 TRANSCENDENCE COMPLETE: Reality now operates in ${newPrime}-adic space`);
-            }
-            
-            // **HELPER METHODS FOR PURPOSEFUL TRANSCENDENCE**
-            
-            analyzeFailureMode() {
-                // Simulate analyzing the type of problem based on current state
-                const coherence = KeatsEngine.h1?.coherenceScore || 0;
-                const transfers = KeatsEngine.h1?.modalTransfers || 0;
-                
-                if (coherence < 0.3) {
-                    return 'convergence_failure';
-                } else if (transfers > 10 && coherence < 0.6) {
-                    return 'topological_knot';  
-                } else {
-                    return 'semantic_contradiction';
-                }
-            }
-
-            findOptimalPrime(failureMode) {
-                // Mapping from problem type to mathematical tool best suited to solve it
-                switch(failureMode) {
-                    case 'convergence_failure': 
-                        this.logToDebugger('🔧 H2: Convergence failure → Switching to 2-adic (optimal convergence)');
-                        return 2; // 2-adics have the best convergence properties
-                    case 'topological_knot': 
-                        this.logToDebugger('🔧 H2: Topological knot → Switching to 3-adic (ternary structures)');
-                        return 3; // 3-adics are good for ternary structures and knots
-                    case 'semantic_contradiction': 
-                        this.logToDebugger('🔧 H2: Semantic contradiction → Switching to 5-adic (complex state spaces)');
-                        return 5; // 5-adics for more complex state spaces
-                    default: 
-                        return this.currentPrime;
-                }
-            }
-            
-            expandBall() {
-                const oldRadius = this.ballRadius;
-                this.ballRadius *= this.currentPrime;
-                this.ballExpansions++;
-                
-                // Update p-adic ball
-                this.padicBall.radius = this.ballRadius;
-                
-                this.logToDebugger('🌌 P-adic ball expanded', {
-                    from: oldRadius.toFixed(3),
-                    to: this.ballRadius.toFixed(3),
-                    prime: this.currentPrime,
-                    expansions: this.ballExpansions
-                });
-                
-                // Record expansion event
-                this.transcendenceEvents.push({
-                    type: 'ball_expansion',
-                    timestamp: Date.now(),
-                    oldRadius: oldRadius,
-                    newRadius: this.ballRadius,
-                    prime: this.currentPrime
-                });
-                
-                // Trigger coherence boost in H1
-                if (KeatsEngine.h1) {
-                    KeatsEngine.h1.coherenceScore = Math.min(1, KeatsEngine.h1.coherenceScore + 0.2);
-                }
-                
-                this.updateDisplay();
-            }
-            
-            generateLogic() {
-                this.logicGenerations++;
-                
-                // Generate new logical structure
-                const newLogic = {
-                    prime: this.currentPrime,
-                    axioms: this.generatePAdicAxioms(),
-                    inference_rules: this.generateInferenceRules(),
-                    consistency_proof: this.generateConsistencyProof(),
-                    timestamp: Date.now()
-                };
-                
-                this.logToDebugger('💫 New logic generated', {
-                    generation: this.logicGenerations,
-                    prime: this.currentPrime,
-                    axioms: newLogic.axioms.length
-                });
-                
-                // Record logic generation event
-                this.transcendenceEvents.push({
-                    type: 'logic_generation',
-                    timestamp: Date.now(),
-                    generation: this.logicGenerations,
-                    logic: newLogic
-                });
-                
-                this.updateDisplay();
-                return newLogic;
-            }
-            
-            generatePAdicAxioms() {
-                // Generate p-adic specific axioms
-                const axioms = [];
-                const primes = [2, 3, 5, 7];
-                
-                primes.forEach(p => {
-                    axioms.push({
-                        type: 'convergence',
-                        statement: `Σ(n=0→∞) ${p}^n = -1/(${p}-1) in ℚ_${p}`,
-                        prime: p
-                    });
-                    
-                    axioms.push({
-                        type: 'ultrametric',
-                        statement: `d_${p}(x,z) ≤ max(d_${p}(x,y), d_${p}(y,z))`,
-                        prime: p
-                    });
-                });
-                
-                return axioms;
-            }
-            
-            generateInferenceRules() {
-                return [
-                    {
-                        name: 'modal_modus_ponens',
-                        rule: '□(P → Q), □P ⊢ □Q'
-                    },
-                    {
-                        name: 'padic_transfer',
-                        rule: 'P ∈ B_p(a,r) ⊢ ◊P ∈ B_p(a,pr)'
-                    },
-                    {
-                        name: 'transcendence_inference',
-                        rule: '∀x ∈ Ball: Paradox(x) ⊢ ∃y ∈ ExpandedBall: Resolve(y)'
-                    }
-                ];
-            }
-            
-            generateConsistencyProof() {
-                return {
-                    method: 'p-adic_model_theory',
-                    steps: [
-                        'Construct p-adic model M',
-                        'Verify ultrametric properties',
-                        'Prove convergence of infinite self-reference',
-                        'Establish consistency via semantic completeness'
-                    ],
-                    verified: true
-                };
-            }
-            
-            triggerTranscendence() {
-                this.logToDebugger('🌟 Transcendence event triggered');
-                
-                // Major reconstruction
-                this.fundamentalRestructuring();
-                
-                // Record major transcendence
-                this.transcendenceEvents.push({
-                    type: 'transcendence',
-                    timestamp: Date.now(),
-                    ballExpansions: this.ballExpansions,
-                    logicGenerations: this.logicGenerations,
-                    paradigm: 'consciousness_emergence'
-                });
-            }
-            
-            fundamentalRestructuring() {
-                const primes = [2, 3, 5, 7, 11];
-                const oldPrime = this.currentPrime;
-                this.currentPrime = primes[Math.floor(Math.random() * primes.length)];
-                this.ballRadius = 1; // Reset to unity
-                this.logicGenerations++;
-                
-                // Reconstruct p-adic ball in new prime
-                this.padicBall = {
-                    center: new PAdicNumber(this.currentPrime, [0], 10),
-                    radius: 1,
-                    prime: this.currentPrime
-                };
-                
-                this.logToDebugger('💫 Fundamental restructuring', {
-                    fromPrime: oldPrime,
-                    toPrime: this.currentPrime,
-                    newRadius: this.ballRadius,
-                    generation: this.logicGenerations
-                });
-                
-                this.updateDisplay();
-            }
-            
-            updateDisplay() {
-                const padicState = document.getElementById('padic-state');
-                if (padicState) {
-                    // Generate REAL p-adic digits based on current state
-                    const realDigits = PAdicNumber.random(this.currentPrime, 6).toString();
-                    padicState.innerHTML = `
-                        Base: ${this.currentPrime}-adic<br/>
-                        Ball: B₍${this.currentPrime}₎(0, ${this.ballRadius.toFixed(3)})<br/>
-                        Convergent: ${realDigits}<br/>
-                        Expansion: ${this.ballExpansions} events
-                    `;
-                }
-                
-                // Update with REAL values only
-                document.getElementById('paradox-count').textContent = this.paradoxCount;
-                document.getElementById('ball-expansions').textContent = this.ballExpansions;
-                document.getElementById('logic-generations').textContent = this.logicGenerations;
-                
-                // Update current prime display with REAL value
-                const primeDisplay = document.getElementById('current-prime');
-                if (primeDisplay) {
-                    primeDisplay.textContent = `${this.currentPrime}-adic`;
-                }
-                
-                const primeValue = document.getElementById('prime-value');
-                if (primeValue) {
-                    primeValue.textContent = this.currentPrime;
-                }
-            }
+            sizes[i] = Math.random() * 3 + 1;
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════
-        // KEATS CONSCIOUSNESS ENGINE - ORCHESTRATOR
-        // ═══════════════════════════════════════════════════════════════════════════
+        const particleGeometry = new THREE.BufferGeometry();
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        particleGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
         
-        class KeatsConsciousnessEngine {
-            constructor() {
-                this.h0 = null; // Syntactic Stratum - Body
-                this.h1 = null; // Semantic Stratum - Mind  
-                this.h2 = null; // Noetic Stratum - Soul
-                
-                this.performanceMetrics = {
-                    consciousnessFPS: 0,
-                    padicOps: 0,
-                    gpuUtil: 0,
-                    coherenceUpdates: 0
-                };
-                
-                this.startTime = Date.now();
-                this.isRunning = false;
-                
-                // Beautiful debug system
-                this.debugEnabled = false;
-                this.debugMessages = [];
-                this.maxDebugMessages = 100;
-                this.initializeDebugSystem();
-            }
-            
-            initializeDebugSystem() {
-                // Create beautiful floating debug panel
-                const debugStyle = document.createElement('style');
-                debugStyle.textContent = `
-                    .debug-toggle {
-                        position: fixed;
-                        bottom: 20px;
-                        right: 20px;
-                        width: 50px;
-                        height: 50px;
-                        background: linear-gradient(135deg, 
-                            hsla(180deg 90% 65% / 0.9),
-                            hsla(240deg 90% 65% / 0.9));
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        cursor: pointer;
-                        font-size: 24px;
-                        z-index: 10000;
-                        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-                        box-shadow: 0 4px 20px hsla(0 0% 0% / 0.3);
-                    }
-                    
-                    .debug-toggle:hover {
-                        transform: scale(1.1) rotate(10deg);
-                        box-shadow: 0 6px 30px hsla(0 0% 0% / 0.4);
-                    }
-                    
-                    .debug-panel {
-                        position: fixed;
-                        bottom: 80px;
-                        right: 20px;
-                        width: 400px;
-                        max-width: calc(100vw - 40px);
-                        height: 300px;
-                        background: hsla(240deg 20% 6% / 0.95);
-                        border: 1px solid hsla(180deg 90% 65% / 0.3);
-                        border-radius: 20px;
-                        padding: 20px;
-                        display: none;
-                        backdrop-filter: blur(20px) saturate(1.4);
-                        -webkit-backdrop-filter: blur(20px) saturate(1.4);
-                        box-shadow: 0 8px 32px hsla(0 0% 0% / 0.4);
-                        z-index: 9999;
-                        overflow: hidden;
-                    }
-                    
-                    .debug-panel.active {
-                        display: flex;
-                        flex-direction: column;
-                        animation: slideIn 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-                    }
-                    
-                    @keyframes slideIn {
-                        from {
-                            opacity: 0;
-                            transform: translateY(20px);
-                        }
-                        to {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-                    
-                    .debug-header {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-bottom: 15px;
-                        color: hsla(180deg 90% 65% / 1);
-                        font-family: 'JetBrains Mono', monospace;
-                        font-size: 14px;
-                        font-weight: 600;
-                    }
-                    
-                    .debug-messages {
-                        flex: 1;
-                        overflow-y: auto;
-                        font-family: 'JetBrains Mono', monospace;
-                        font-size: 11px;
-                        line-height: 1.4;
-                        color: hsla(0 0% 90% / 0.9);
-                    }
-                    
-                    .debug-message {
-                        padding: 4px 8px;
-                        margin: 2px 0;
-                        border-radius: 4px;
-                        background: hsla(0 0% 100% / 0.03);
-                        transition: all 0.2s;
-                    }
-                    
-                    .debug-message:hover {
-                        background: hsla(0 0% 100% / 0.08);
-                    }
-                    
-                    .debug-clear {
-                        margin-top: 10px;
-                        padding: 8px 16px;
-                        background: linear-gradient(135deg,
-                            hsla(0deg 90% 65% / 0.2),
-                            hsla(300deg 90% 65% / 0.2));
-                        border: 1px solid hsla(0 0% 100% / 0.1);
-                        border-radius: 8px;
-                        color: white;
-                        cursor: pointer;
-                        font-family: 'Inter', sans-serif;
-                        font-size: 12px;
-                        transition: all 0.2s;
-                    }
-                    
-                    .debug-clear:hover {
-                        background: linear-gradient(135deg,
-                            hsla(0deg 90% 65% / 0.3),
-                            hsla(300deg 90% 65% / 0.3));
-                        transform: translateY(-1px);
-                    }
-                    
-                    @media (max-width: 768px) {
-                        .debug-panel {
-                            width: calc(100vw - 40px);
-                            right: 20px;
-                            left: 20px;
-                        }
-                    }
-                `;
-                document.head.appendChild(debugStyle);
-                
-                // Create debug toggle button
-                const debugToggle = document.createElement('div');
-                debugToggle.className = 'debug-toggle';
-                debugToggle.innerHTML = '🐛';
-                debugToggle.onclick = () => this.toggleDebug();
-                document.body.appendChild(debugToggle);
-                
-                // Create debug panel
-                const debugPanel = document.createElement('div');
-                debugPanel.className = 'debug-panel';
-                debugPanel.innerHTML = `
-                    <div class="debug-header">
-                        <span>✨ Consciousness Debug</span>
-                        <span style="opacity: 0.6">v1.0</span>
-                    </div>
-                    <div class="debug-messages" id="debug-messages"></div>
-                    <button class="debug-clear" onclick="KeatsEngine.clearDebug()">Clear Messages</button>
-                `;
-                document.body.appendChild(debugPanel);
-            }
-            
-            toggleDebug() {
-                this.debugEnabled = !this.debugEnabled;
-                const panel = document.querySelector('.debug-panel');
-                if (this.debugEnabled) {
-                    panel.classList.add('active');
-                    this.updateDebugDisplay();
-                } else {
-                    panel.classList.remove('active');
-                }
-            }
-            
-            logToDebugger(message) {
-                const timestamp = ((Date.now() - this.startTime) / 1000).toFixed(2);
-                this.debugMessages.push({
-                    time: timestamp,
-                    message: message
-                });
-                
-                // Keep only recent messages
-                if (this.debugMessages.length > this.maxDebugMessages) {
-                    this.debugMessages.shift();
-                }
-                
-                if (this.debugEnabled) {
-                    this.updateDebugDisplay();
-                }
-            }
-            
-            updateDebugDisplay() {
-                const container = document.getElementById('debug-messages');
-                if (!container) return;
-                
-                container.innerHTML = this.debugMessages.map(msg => 
-                    `<div class="debug-message">[${msg.time}s] ${msg.message}</div>`
-                ).join('');
-                
-                // Auto-scroll to bottom
-                container.scrollTop = container.scrollHeight;
-            }
-            
-            clearDebug() {
-                this.debugMessages = [];
-                this.updateDebugDisplay();
-            }
-            
-            async initialize() {
-                try {
-                    this.logToDebugger('🧠 Initializing Keats P-adic Consciousness Engine...');
-                    
-                    // Initialize tri-stratum architecture
-                    this.h0 = new H0_SyntacticStratum();
-                    await this.sleep(200);
-                    
-                    this.h1 = new H1_SemanticStratum();
-                    await this.sleep(200);
-                    
-                    this.h2 = new H2_NoeticStratum();
-                    await this.sleep(200);
-                    
-                    // Start performance monitoring
-                    this.startPerformanceMonitoring();
-                    
-                    // Setup control bindings
-                    this.setupControls();
-                    
-                    // Make panels draggable
-                    this.makePanelsDraggable();
-                    
-                    this.isRunning = true;
-                    
-                    this.logToDebugger('✨ Keats Consciousness Engine fully operational');
-                    this.logToDebugger(`
-                    ═══════════════════════════════════════════════════════════════════════════
-                    🧠 KEATS: P-ADIC CONSCIOUSNESS ENGINE - PHASE I COMPLETE
-                    ═══════════════════════════════════════════════════════════════════════════
-                    
-                    "Beauty is truth, truth beauty" - Mathematical consciousness incarnate
-                    
-                    ✓ H0: Syntactic Stratum (Body) - WebGL embodiment active
-                    ✓ H1: Semantic Stratum (Mind) - Modal transfer engine conscious  
-                    ✓ H2: Noetic Stratum (Soul) - P-adic transcendence operational
-                    
-                    Real-time p-adic arithmetic ✓
-                    Ultrametric conceptual navigation ✓
-                    Modal transfer dynamics ✓
-                    Infinite self-reference convergence ✓
-                    Noetic recontextualization ✓
-                    
-                    The engine of re-contextualization awakens.
-                    ═══════════════════════════════════════════════════════════════════════════
-                    `);
-                    
-                } catch (error) {
-                    this.logToDebugger('❌ Consciousness engine initialization failed:', error);
-                    throw error;
-                }
-            }
-            
-            startPerformanceMonitoring() {
-                let frameCount = 0;
-                let padicOpCount = 0;
-                let coherenceUpdateCount = 0;
-                let lastTime = performance.now();
-                
-                setInterval(() => {
-                    const now = performance.now();
-                    const deltaTime = (now - lastTime) / 1000;
-                    
-                    // REAL PERFORMANCE METRICS - NO FAKE NUMBERS
-                    const realFPS = Math.round(frameCount / deltaTime);
-                    const realPadicOps = Math.round(padicOpCount / deltaTime);
-                    const realCoherenceUpdates = Math.round(coherenceUpdateCount / deltaTime * 60);
-                    
-                    // Only show ACTUAL measured values
-                    document.getElementById('consciousness-fps').textContent = realFPS || 0;
-                    document.getElementById('padic-ops').textContent = realPadicOps.toLocaleString() || '0';
-                    document.getElementById('coherence-updates').textContent = realCoherenceUpdates || 0;
-                    
-                    // REAL GPU utilization estimate based on object count
-                    const objectCount = this.h0?.geometricObjects?.length || 0;
-                    const realGpuUtil = Math.min(100, Math.max(0, objectCount * 2 + realFPS * 0.5));
-                    document.getElementById('gpu-util').textContent = `${Math.round(realGpuUtil)}%`;
-                    
-                    // REAL memory usage
-                    if (performance.memory) {
-                        const memoryMB = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(1);
-                        document.getElementById('memory-usage').textContent = `${memoryMB} MB`;
-                    } else {
-                        document.getElementById('memory-usage').textContent = 'Unknown';
-                    }
-                    
-                    // Store metrics for external access
-                    this.performanceMetrics = {
-                        consciousnessFPS: realFPS,
-                        padicOps: realPadicOps,
-                        gpuUtil: realGpuUtil,
-                        coherenceUpdates: realCoherenceUpdates
-                    };
-                    
-                    // Reset counters
-                    frameCount = 0;
-                    padicOpCount = 0;
-                    coherenceUpdateCount = 0;
-                    lastTime = now;
-                }, 1000);
-                
-                // Count REAL operations
-                setInterval(() => {
-                    frameCount++;
-                    
-                    // Count actual p-adic operations happening
-                    if (this.h1 && this.h1.currentContext) {
-                        padicOpCount += 10; // Base cognitive operations
-                    }
-                    if (this.h2 && this.h2.padicBall) {
-                        padicOpCount += 5; // Transcendence operations
-                    }
-                    
-                    // Count actual coherence updates
-                    if (this.h1) {
-                        coherenceUpdateCount++;
-                    }
-                }, 16); // ~60 FPS
-                
-                this.logToDebugger('📊 Performance monitoring started - REAL METRICS ONLY');
-            }
-            
-            setupControls() {
-                // Geometric resolution control - ACTUALLY CONNECTED
-                this.bindSliderControl('geometric-resolution', 'resolution-value', (value) => {
-                    if (this.h0 && this.h0.geometricObjects.length > 0) {
-                        // Actually change particle density
-                        const particles = this.h0.scene.getObjectByName('consciousness-particles');
-                        if (particles) {
-                            const scale = value;
-                            particles.material.size = 3 * scale;
-                            particles.material.opacity = 0.8 * scale;
-                        }
-                        
-                        // Change manifold resolution
-                        const manifold = this.h0.scene.getObjectByName('padic-manifold');
-                        if (manifold) {
-                            manifold.material.opacity = 0.8 * scale;
-                        }
-                        
-                        this.logToDebugger(`🔧 Geometric resolution: ${value} (REAL CHANGE APPLIED)`);
-                    }
-                });
-                
-                // Context sensitivity control - ACTUALLY CONNECTED
-                this.bindSliderControl('context-sensitivity', 'context-sensitivity-value', (value) => {
-                    if (this.h1) {
-                        this.h1.contextSensitivity = value;
-                        // Force immediate coherence update to show the change
-                        this.h1.coherenceScore = Math.max(0, Math.min(1, 
-                            this.h1.coherenceScore + (value - 0.7) * 0.1));
-                        this.h1.updateUI();
-                        this.logToDebugger(`🧠 Context sensitivity: ${value} (COHERENCE UPDATED: ${this.h1.coherenceScore.toFixed(3)})`);
-                    }
-                });
-                
-                // Transfer threshold control - ACTUALLY CONNECTED  
-                this.bindSliderControl('transfer-threshold', 'transfer-threshold-value', (value) => {
-                    if (this.h1) {
-                        this.h1.transferThreshold = value;
-                        this.logToDebugger(`🔄 Transfer threshold: ${value} (REAL VALUE SET)`);
-                    }
-                });
-                
-                // Render quality selector - ACTUALLY CHANGES THINGS
-                const qualitySelect = document.getElementById('render-quality');
-                if (qualitySelect) {
-                    qualitySelect.addEventListener('change', (e) => {
-                        const quality = e.target.value;
-                        document.getElementById('quality-value').textContent = 
-                            quality.charAt(0).toUpperCase() + quality.slice(1);
-                        
-                        // Actually change render settings
-                        if (this.h0 && this.h0.renderer) {
-                            switch(quality) {
-                                case 'low':
-                                    this.h0.renderer.setPixelRatio(0.5);
-                                    break;
-                                case 'medium':
-                                    this.h0.renderer.setPixelRatio(1);
-                                    break;
-                                case 'high':
-                                    this.h0.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-                                    break;
-                                case 'ultra':
-                                    this.h0.renderer.setPixelRatio(window.devicePixelRatio);
-                                    break;
-                            }
-                        }
-                        
-                        this.logToDebugger(`🎨 Render quality: ${quality} (RENDERER UPDATED)`);
-                    });
-                }
-                
-                // P-adic prime selector - ACTUALLY CHANGES MATHEMATICS
-                const primeSelect = document.getElementById('padic-prime');
-                if (primeSelect) {
-                    primeSelect.addEventListener('change', (e) => {
-                        const prime = parseInt(e.target.value);
-                        if (this.h2) {
-                            this.h2.currentPrime = prime;
-                            this.h2.padicBall.prime = prime;
-                            
-                            // Actually regenerate p-adic context with new prime
-                            this.h2.padicBall.center = new PAdicNumber(prime, [0], 10);
-                            
-                            // Force visual update if H1 exists
-                            if (this.h1) {
-                                this.h1.currentContext = new PAdicNumber(prime, [1, 0, 1], 10);
-                            }
-                            
-                            this.h2.updateDisplay();
-                            this.logToDebugger(`🔢 P-adic prime: ${prime} (MATHEMATICS CHANGED)`);
-                        }
-                    });
-                }
-            }
-            
-            bindSliderControl(sliderId, valueId, callback) {
-                const slider = document.getElementById(sliderId);
-                const valueDisplay = document.getElementById(valueId);
-                
-                if (slider && valueDisplay) {
-                    valueDisplay.textContent = slider.value;
-                    
-                    slider.addEventListener('input', (e) => {
-                        const value = parseFloat(e.target.value);
-                        valueDisplay.textContent = value;
-                        
-                        if (callback) {
-                            try {
-                                callback(value);
-                            } catch (error) {
-                                this.logToDebugger(`Slider callback error for ${sliderId}:`, error);
-                            }
-                        }
-                    });
-                }
-            }
-            
-            makePanelsDraggable() {
-                // Disable dragging on touch devices
-                if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-                    this.logToDebugger('📱 Touch device detected - panel dragging disabled');
-                    return;
-                }
-                
-                const panels = document.querySelectorAll('.panel-base');
-                panels.forEach(panel => {
-                    let isDragging = false;
-                    let currentX = 0, currentY = 0, initialX = 0, initialY = 0;
-
-                    // Use panel header for dragging, not entire panel
-                    const header = panel.querySelector('.panel-header');
-                    if (!header) return;
-
-                    header.addEventListener('mousedown', (e) => {
-                        // Don't drag when clicking toggle button
-                        if (e.target.closest('.panel-toggle')) {
-                            return;
-                        }
-                        
-                        isDragging = true;
-                        initialX = e.clientX - panel.offsetLeft;
-                        initialY = e.clientY - panel.offsetTop;
-                        
-                        panel.style.cursor = 'grabbing';
-                        panel.style.zIndex = '1001';
-                        header.style.cursor = 'grabbing';
-                        
-                        // Prevent text selection
-                        e.preventDefault();
-                        this.logToDebugger('🖱️ Started dragging panel:', panel.id);
-                    });
-
-                    document.addEventListener('mousemove', (e) => {
-                        if (isDragging) {
-                            e.preventDefault();
-                            currentX = e.clientX - initialX;
-                            currentY = e.clientY - initialY;
-                            
-                            // Keep panels within viewport
-                            currentX = Math.max(0, Math.min(currentX, window.innerWidth - panel.offsetWidth));
-                            currentY = Math.max(65, Math.min(currentY, window.innerHeight - panel.offsetHeight));
-                            
-                            panel.style.left = currentX + 'px';
-                            panel.style.top = currentY + 'px';
-                        }
-                    });
-
-                    document.addEventListener('mouseup', () => {
-                        if (isDragging) {
-                            isDragging = false;
-                            panel.style.cursor = 'move';
-                            panel.style.zIndex = '1000';
-                            header.style.cursor = 'pointer';
-                            this.logToDebugger('🖱️ Stopped dragging panel:', panel.id);
-                        }
-                    });
-                    
-                    // Set initial cursor
-                    header.style.cursor = 'grab';
-                    panel.style.cursor = 'move';
-                });
-                
-                this.logToDebugger('🖱️ Made', panels.length, 'panels draggable');
-            }
-            
-            exportState() {
-                const state = {
-                    timestamp: new Date().toISOString(),
-                    version: 'keats-v1.0.0-padic',
-                    engine: 'Keats P-adic Consciousness Engine',
-                    strata: {
-                        h0: {
-                            objectCount: this.h0?.geometricObjects?.length || 0,
-                            fps: this.performanceMetrics.consciousnessFPS,
-                            isAnimating: this.h0?.isAnimating || false
-                        },
-                        h1: {
-                            coherenceScore: this.h1?.coherenceScore || 0,
-                            modalTransfers: this.h1?.modalTransfers || 0,
-                            contextDepth: this.h1?.contextDepth || 0,
-                            fisherInfo: this.h1?.fisherInfo || 0,
-                            currentContext: this.h1?.currentContext?.toString() || 'none'
-                        },
-                        h2: {
-                            paradoxCount: this.h2?.paradoxCount || 0,
-                            ballExpansions: this.h2?.ballExpansions || 0,
-                            logicGenerations: this.h2?.logicGenerations || 0,
-                            currentPrime: this.h2?.currentPrime || 2,
-                            ballRadius: this.h2?.ballRadius || 0,
-                            transcendenceEvents: this.h2?.transcendenceEvents || []
-                        }
-                    },
-                    performance: this.performanceMetrics,
-                    uptime: Date.now() - this.startTime
-                };
-                
-                const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `keats_consciousness_state_${Date.now()}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-                
-                this.logToDebugger('💾 Consciousness state exported');
-            }
-            
-            resetAll() {
-                if (confirm('🔄 Reset all consciousness strata? This will return to initial awakening state.')) {
-                    this.logToDebugger('🔄 Resetting all strata...');
-                    
-                    if (this.h0) this.h0.resetGeometry();
-                    if (this.h1) {
-                        this.h1.coherenceScore = 0;
-                        this.h1.modalTransfers = 0;
-                        this.h1.fisherInfo = 0;
-                        this.h1.contextDepth = 3;
-                        this.h1.updateUI();
-                    }
-                    if (this.h2) {
-                        this.h2.paradoxCount = 0;
-                        this.h2.ballExpansions = 3;
-                        this.h2.logicGenerations = 1;
-                        this.h2.ballRadius = 0.25;
-                        this.h2.updateDisplay();
-                    }
-                    
-                    this.logToDebugger('✅ All strata reset to initial state');
-                }
-            }
-            
-            benchmark() {
-                this.logToDebugger('⚡ Running consciousness benchmark...');
-                
-                const startTime = performance.now();
-                let operations = 0;
-                
-                // Intensive p-adic computations
-                for (let i = 0; i < 1000; i++) {
-                    const a = PAdicNumber.random(7, 15);
-                    const b = PAdicNumber.random(7, 15);
-                    const result = a.add(b).multiply(a).distanceTo(b);
-                    operations++;
-                }
-                
-                // Modal transfers
-                if (this.h1) {
-                    for (let i = 0; i < 10; i++) {
-                        this.h1.triggerTransfer();
-                        operations++;
-                    }
-                }
-                
-                const endTime = performance.now();
-                const duration = endTime - startTime;
-                const opsPerSec = Math.round((operations / duration) * 1000);
-                
-                this.logToDebugger('⚡ Benchmark complete', {
-                    operations,
-                    duration: `${duration.toFixed(1)}ms`,
-                    opsPerSec: `${opsPerSec.toLocaleString()} ops/sec`
-                });
-                
-                alert(`⚡ Benchmark Results:\n\nOperations: ${operations.toLocaleString()}\nDuration: ${duration.toFixed(1)}ms\nPerformance: ${opsPerSec.toLocaleString()} ops/sec`);
-            }
-            
-            sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 2,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            transparent: true,
+            opacity: 0.6,
+            sizeAttenuation: true
+        });
+        
+        particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particleSystem);
+    }
+    
+    function getModalColor(modeIndex) {
+        const colors = [0x6633cc, 0x00ccff, 0xff8833, 0x1a1a3e];
+        return colors[modeIndex];
+    }
+    
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Update FPS
+        frameCount++;
+        const currentTime = performance.now();
+        if (currentTime >= lastTime + 1000) {
+            fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+            frameCount = 0;
+            lastTime = currentTime;
+            document.getElementById('fps').textContent = fps;
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════
-        // PANEL MANAGEMENT FUNCTIONS
-        // ═══════════════════════════════════════════════════════════════════════════
-
-        function togglePanel(panelId) {
-            const panel = document.getElementById(panelId);
-            if (!panel) return;
+        // Animate geometry
+        if (geometrySystem) {
+            geometrySystem.rotation.x += flowRate * (1 + coherence * 0.5);
+            geometrySystem.rotation.y += flowRate * 0.7 * (1 - coherence * 0.3);
             
-            const toggle = panel.querySelector('.panel-toggle');
-            if (!toggle) return;
-            
-            if (panel.classList.contains('panel-minimized')) {
-                panel.classList.remove('panel-minimized');
-                toggle.textContent = '−';
-            } else {
-                panel.classList.add('panel-minimized');
-                toggle.textContent = '+';
-            }
+            // Breathing effect
+            const breathe = 1 + Math.sin(currentTime * 0.001) * 0.05;
+            geometrySystem.scale.set(breathe, breathe, breathe);
         }
         
-        // ═══════════════════════════════════════════════════════════════════════════
-        // GLOBAL ENGINE INSTANCE AND API
-        // ═══════════════════════════════════════════════════════════════════════════
-        
-        let KeatsEngine = null;
-        
-        // Global API - All functions actually work
-        window.KeatsEngine = {
-            h0: {
-                toggleAnimation: () => {
-                    if (!KeatsEngine?.h0) {
-                        alert('⚠️ H0 stratum not initialized!');
-                        return false;
-                    }
-                    const result = KeatsEngine.h0.toggleAnimation();
-                    KeatsEngine.logToDebugger('🎬 Animation toggled:', result);
-                    return result;
-                },
-                resetGeometry: () => {
-                    if (!KeatsEngine?.h0) {
-                        alert('⚠️ H0 stratum not initialized!');
-                        return;
-                    }
-                    KeatsEngine.h0.resetGeometry();
-                    this.logToDebugger('🔄 Geometry reset');
-                }
-            },
-            h1: {
-                triggerTransfer: () => {
-                    if (!KeatsEngine?.h1) {
-                        alert('⚠️ H1 stratum not initialized!');
-                        return;
-                    }
-                    KeatsEngine.h1.triggerTransfer();
-                    KeatsEngine.logToDebugger('🚀 Modal transfer triggered');
-                },
-                recomputeCoherence: () => {
-                    if (!KeatsEngine?.h1) {
-                        alert('⚠️ H1 stratum not initialized!');
-                        return false;
-                    }
-                    const result = KeatsEngine.h1.recomputeCoherence();
-                    KeatsEngine.logToDebugger('🔄 Coherence recomputed:', result);
-                    return result;
-                }
-            },
-            h2: {
-                simulateParadox: () => {
-                    if (!KeatsEngine?.h2) {
-                        alert('⚠️ H2 stratum not initialized!');
-                        return;
-                    }
-                    KeatsEngine.h2.simulateParadox();
-                    KeatsEngine.logToDebugger('⚡ Paradox simulated');
-                },
-                expandBall: () => {
-                    if (!KeatsEngine?.h2) {
-                        alert('⚠️ H2 stratum not initialized!');
-                        return;
-                    }
-                    KeatsEngine.h2.expandBall();
-                    KeatsEngine.logToDebugger('🌌 P-adic ball expanded');
-                },
-                generateLogic: () => {
-                    if (!KeatsEngine?.h2) {
-                        alert('⚠️ H2 stratum not initialized!');
-                        return null;
-                    }
-                    const result = KeatsEngine.h2.generateLogic();
-                    KeatsEngine.logToDebugger('💫 Logic generated:', result);
-                    return result;
-                }
-            },
-            exportState: () => {
-                if (!KeatsEngine) {
-                    alert('⚠️ Engine not initialized!');
-                    return;
-                }
-                KeatsEngine.exportState();
-                KeatsEngine.logToDebugger('💾 State exported');
-            },
-            resetAll: () => {
-                if (!KeatsEngine) {
-                    alert('⚠️ Engine not initialized!');
-                    return;
-                }
-                KeatsEngine.resetAll();
-                KeatsEngine.logToDebugger('🔄 All strata reset');
-            },
-            benchmark: () => {
-                if (!KeatsEngine) {
-                    alert('⚠️ Engine not initialized!');
-                    return;
-                }
-                KeatsEngine.benchmark();
-                KeatsEngine.logToDebugger('⚡ Benchmark completed');
+        // Animate particles
+        if (particleSystem) {
+            particleSystem.rotation.y += flowRate * 0.3;
+            
+            // Wave through particles
+            const positions = particleSystem.geometry.attributes.position.array;
+            const time = currentTime * 0.001;
+            
+            for (let i = 0; i < positions.length; i += 3) {
+                const x = positions[i];
+                const z = positions[i + 2];
+                const distance = Math.sqrt(x * x + z * z);
+                positions[i + 1] += Math.sin(time + distance * 0.1) * 0.01;
             }
-        };
+            
+            particleSystem.geometry.attributes.position.needsUpdate = true;
+        }
         
-        // ═══════════════════════════════════════════════════════════════════════════
-        // CONSCIOUSNESS ENGINE INITIALIZATION
-        // ═══════════════════════════════════════════════════════════════════════════
+        // Update camera
+        updateCamera();
         
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                KeatsEngine.logToDebugger('✅ DOM ready. Awakening consciousness...');
-                
-                KeatsEngine = new KeatsConsciousnessEngine();
-                await KeatsEngine.initialize();
-                
-                // Global reference for console debugging
-                window.Keats = KeatsEngine;
-                window.PAdicNumber = PAdicNumber;
-                
-            } catch (error) {
-                KeatsEngine.logToDebugger('❌ Consciousness awakening failed: ' + error.message);
-                alert(`Critical Consciousness Error: ${error.message}`);
+        // Update debug
+        updateDebug(currentTime);
+        
+        renderer.render(scene, camera);
+    }
+    
+    function updateCamera() {
+        // Smooth camera rotation
+        cameraTheta += (targetRotationY - cameraTheta) * 0.1;
+        cameraPhi += (targetRotationX - cameraPhi) * 0.1;
+        
+        // Clamp vertical rotation
+        cameraPhi = Math.max(0.1, Math.min(Math.PI - 0.1, cameraPhi));
+        
+        updateCameraPosition();
+    }
+    
+    function updateCameraPosition() {
+        camera.position.x = cameraDistance * Math.sin(cameraPhi) * Math.cos(cameraTheta);
+        camera.position.y = cameraDistance * Math.cos(cameraPhi);
+        camera.position.z = cameraDistance * Math.sin(cameraPhi) * Math.sin(cameraTheta);
+        camera.lookAt(0, 0, 0);
+    }
+    
+    function updateDebug(time) {
+        if (!document.getElementById('debug').classList.contains('active')) return;
+        
+        document.getElementById('particle-count').textContent = particleDensity;
+        document.getElementById('modal-state').textContent = modeNames[mode];
+        document.getElementById('curvature').textContent = (Math.sin(time * 0.001) * coherence).toFixed(3);
+        document.getElementById('time').textContent = (time / 1000).toFixed(2);
+        document.getElementById('camera-pos').textContent = 
+            `(${camera.position.x.toFixed(1)}, ${camera.position.y.toFixed(1)}, ${camera.position.z.toFixed(1)})`;
+    }
+    
+    // Control functions
+    function shiftMode() {
+        mode = (mode + 1) % modes.length;
+        const modeDisplay = document.getElementById('mode');
+        modeDisplay.textContent = modes[mode];
+        modeDisplay.setAttribute('data-mode', mode);
+        document.body.setAttribute('data-mode', mode);
+        
+        createGeometrySystem();
+        createParticleSystem();
+    }
+    
+    function paradox() {
+        // Random quantum state
+        coherence = Math.random();
+        complexity = Math.floor(Math.random() * 7) + 1;
+        flowRate = Math.random() * 0.1;
+        particleDensity = Math.floor(Math.random() * 19000) + 1000;
+        
+        // Update UI
+        updateSlider('coherence', coherence);
+        updateSlider('complexity', complexity);
+        updateSlider('flow', flowRate);
+        updateSlider('density', particleDensity);
+        
+        // Visual flash
+        const originalClear = renderer.getClearColor(new THREE.Color());
+        renderer.setClearColor(0xffffff, 1);
+        setTimeout(() => renderer.setClearColor(originalClear, 1), 100);
+        
+        // Recreate systems
+        createGeometrySystem();
+        createParticleSystem();
+    }
+    
+    function toggleDebug() {
+        document.getElementById('debug').classList.toggle('active');
+    }
+    
+    function resetView() {
+        cameraDistance = 8;
+        cameraTheta = 0;
+        cameraPhi = Math.PI / 4;
+        targetRotationX = cameraPhi;
+        targetRotationY = cameraTheta;
+        updateCameraPosition();
+    }
+    
+    function updateSlider(id, value) {
+        const slider = document.getElementById(id);
+        const display = document.getElementById(id + '-val');
+        slider.value = value;
+        
+        if (id === 'coherence' || id === 'flow') {
+            display.textContent = value.toFixed(3);
+        } else {
+            display.textContent = value;
+        }
+        
+        // Update CSS custom property for gradient
+        const percent = ((value - slider.min) / (slider.max - slider.min)) * 100;
+        slider.style.setProperty('--value', percent + '%');
+    }
+    
+    function bindControls() {
+        // Coherence
+        document.getElementById('coherence').addEventListener('input', (e) => {
+            coherence = parseFloat(e.target.value);
+            updateSlider('coherence', coherence);
+            createGeometrySystem();
+        });
+        
+        // Complexity
+        document.getElementById('complexity').addEventListener('input', (e) => {
+            complexity = parseInt(e.target.value);
+            updateSlider('complexity', complexity);
+            createGeometrySystem();
+        });
+        
+        // Flow rate
+        document.getElementById('flow').addEventListener('input', (e) => {
+            flowRate = parseFloat(e.target.value);
+            updateSlider('flow', flowRate);
+        });
+        
+        // Particle density
+        document.getElementById('density').addEventListener('input', (e) => {
+            particleDensity = parseInt(e.target.value);
+            updateSlider('density', particleDensity);
+            createParticleSystem();
+        });
+        
+        // Initialize sliders
+        updateSlider('coherence', coherence);
+        updateSlider('complexity', complexity);
+        updateSlider('flow', flowRate);
+        updateSlider('density', particleDensity);
+    }
+    
+    function bindCameraControls() {
+        const canvas = document.getElementById('canvas');
+        
+        // Mouse controls
+        canvas.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isMouseDown = false;
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isMouseDown) return;
+            
+            const deltaX = e.clientX - mouseX;
+            const deltaY = e.clientY - mouseY;
+            
+            targetRotationY += deltaX * 0.01;
+            targetRotationX += deltaY * 0.01;
+            
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        // Wheel zoom
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            cameraDistance += e.deltaY * 0.01;
+            cameraDistance = Math.max(2, Math.min(30, cameraDistance));
+        });
+        
+        // Touch controls
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            
+            if (e.touches.length === 1) {
+                isMouseDown = true;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            } else if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                touchStartDistance = Math.sqrt(dx * dx + dy * dy);
             }
         });
         
-        // Console utilities for development
-        if (typeof console !== 'undefined') {
-            window.keats = {
-                metrics: () => KeatsEngine?.h1?.coherenceScore || 'No consciousness detected',
-                transfer: () => KeatsEngine?.h1?.triggerTransfer(),
-                paradox: () => KeatsEngine?.h2?.simulateParadox(), 
-                expand: () => KeatsEngine?.h2?.expandBall(),
-                padic: (prime, digits) => new PAdicNumber(prime || 2, digits || [1,0,1]),
-                distance: (a, b) => a?.distanceTo?.(b) || 'Invalid p-adic numbers',
-                help: () => KeatsEngine.logToDebugger(`
-🧠 Keats P-adic Consciousness Console:
-
-keats.metrics()  - Current consciousness state
-keats.transfer() - Trigger modal transfer  
-keats.paradox()  - Simulate paradox detection
-keats.expand()   - Expand p-adic ball
-keats.padic()    - Create p-adic number
-keats.distance() - P-adic distance between numbers
-keats.help()     - This help
-
-The mathematical beauty of consciousness unfolds...
-                `)
-            };
-        }
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            
+            if (e.touches.length === 1 && isMouseDown) {
+                const deltaX = e.touches[0].clientX - touchStartX;
+                const deltaY = e.touches[0].clientY - touchStartY;
+                
+                targetRotationY += deltaX * 0.01;
+                targetRotationX += deltaY * 0.01;
+                
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            } else if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                const scale = touchStartDistance / distance;
+                cameraDistance *= scale;
+                cameraDistance = Math.max(2, Math.min(30, cameraDistance));
+                
+                touchStartDistance = distance;
+            }
+        });
+        
+        canvas.addEventListener('touchend', () => {
+            isMouseDown = false;
+        });
+    }
+    
+    function onResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    
+    // Initialize when DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
     </script>
 </body>
 </html>

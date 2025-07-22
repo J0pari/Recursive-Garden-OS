@@ -283,7 +283,7 @@ The unfinished nature is intentional. Sometimes consciousness reveals itself mos
 
 Consider Kendrick Lamar's "untitled unmastered."—eight tracks refusing even names, just dates and times. This isn't laziness but methodology. The semantic topology here is deliberately high-curvature: no handles for easy grasp, no titles to guide interpretation. The listener must navigate by feel alone, building their own maps through pure attention topology. The "unfinished" quality creates productive confusion—consciousness must work harder, map more carefully, discover structure through repetition rather than receive it pre-packaged. Like this document, it makes incompleteness into method.
 
-Our framework emerged through "mathematical chaos methodology"—like how Blue Scuti saw patterns in Tetris that decades of adult players missed, consciousness sometimes reveals itself through unexpected angles of approach. The discovery can't be repeated, but every result can be tested forever.
+Our framework emerged through "mathematical chaos methodology"—like how Sophie Germain, studying in secret as a teenager, saw patterns in vibrating plates that established elasticity theory. Consciousness sometimes reveals itself through unexpected angles of approach. The discovery can't be repeated, but every result can be tested forever.
 
 Young minds often see what expertise blinds us to. They haven't learned what's "impossible" yet. Their consciousness flows through spaces adults have walled off with assumptions. Like water finding cracks in stone, truth emerges wherever openness allows.
 
@@ -1103,21 +1103,21 @@ Map the mental topology of 1000 people before and after mental health episodes. 
 
 **[The Topological Therapy]**: Instead of treating symptoms, engineer mental shapes. Create practices that restore positive warping to meaning-space. Track therapeutic progress through mathematical measures of semantic topology.
 
-### The Blue Scuti Revelation: How Fresh Eyes See Hidden Patterns
+### The Fresh Eyes Principle: How Uncrystallized Minds See Hidden Patterns
 
-A 13-year-old named Blue Scuti did what decades of adult Tetris masters couldn't—he beat the game. Not through faster reflexes or more practice, but by seeing patterns others missed. His mind hadn't crystallized into the "proper" way to play, so he found impossible possibilities.
+When Michael Ventris, an architect with no formal training in ancient languages, decoded Linear B at age 30, he shattered what linguists "knew" was impossible. He approached the script like blueprints, not language—and suddenly the palace records of ancient Crete spoke after 3,000 years of silence.
 
 **What This Teaches About Minds**:
 - Expertise creates blind spots (the moat effect protects AND limits)
-- Young minds explore "illegal" solution spaces
-- Breaking records requires breaking mental patterns first
-- The game didn't change—the mental topology did
+- Fresh minds explore "illegal" solution spaces
+- Breaking through requires breaking mental patterns first
+- The approach didn't change—the mental topology did
 
 **Educational Revolution**: Stop teaching "the right way" exclusively. Create spaces for minds to explore their own topology. The next breakthrough comes from those who don't know what's "impossible."
 
 **Scientific Renewal**: Include young researchers, artists, outsiders. Fresh mental topology sees patterns that expertise has learned to ignore.
 
-**Universal Truth**: Your assumptions about what's possible ARE the walls of your prison. Blue Scuti reminds us: the walls are mathematical, and mathematics can be rewritten.
+**Universal Truth**: Your assumptions about what's possible ARE the walls of your prison. Ventris reminds us: the walls are mathematical, and mathematics can be rewritten.
 
 ### The Mathematical Lineage: Giants Whose Shoulders We Stand On
 
@@ -1151,7 +1151,7 @@ What we're building isn't just a theory but a living map of consciousness that i
 - Why politics breaks down (modal transfer failure)
 - How education could work (curvature engineering)
 - What mental health really is (consciousness topology)
-- How young minds see what experts miss (Blue Scuti principle)
+- How fresh minds see what experts miss (Fresh Eyes principle)
 - The mathematical lineage we extend (Grothendieck to Galois to now)
 
 This is the full 木組み—every piece supporting every other, no single element dispensable, the whole structure stronger than its parts. Remove climate consciousness and you lose the bridge to collective action. Remove wealth topology and power dynamics vanish. Remove the mathematical giants and we float rootless.
