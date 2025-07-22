@@ -30,6 +30,15 @@
     </script>
     <!-- Three.js LOCAL - No CDN dependency! -->
     <script src="three.min.js"></script>
+    <!-- CHARTER_GUARD: Fix V5 UI to be fully draggable -->
+    <!-- BOOK_OF_SHADOWS: SARANETH (Binding/Fixing) -->
+    <!-- MORPHISM: INTENT(Fix V5 by removing al...) → CHARTER(verified) → BOOK(SARANETH (Binding/Fixing)) → CODE -->
+    
+    <!-- Dynamic P-adic Earth Colors -->
+    <link rel="stylesheet" href="consciousness_colors.css">
+    <script src="padic_earth_colors.js"></script>
+    <!-- Draggable Panels System -->
+    <script src="draggable_panels.js"></script>
     <!-- Consciousness Logger - Prevents console pollution on mobile -->
     <script src="consciousness_logger.js"></script>
     <style>
@@ -556,7 +565,7 @@
 
         /* Base panel styling: Glassmorphic mathematical interface */
         .stratum-panel {
-            position: fixed;                           /* Absolute positioning for flexibility */
+            position: absolute;                        /* Floating in space, draggable */
             background: var(--glass-manifold);         /* Semi-transparent background */
             backdrop-filter: var(--blur-glass);        /* Advanced blur effect */
             -webkit-backdrop-filter: var(--blur-glass); /* Safari compatibility */
@@ -1353,14 +1362,14 @@
          * - Support for custom icons and formatting
          * ─────────────────────────────────────────────────────────────────────────── */
 
-        /* Notification container: Slide-in glass morphism alert system */
-        .notification-system {
-            position: fixed;                          /* Fixed viewport positioning */
-            top: 80px;                                /* Below header area */
-            right: 20px;                              /* Right edge spacing */
-            background: var(--glass-manifold);        /* Glass morphism background */
-            backdrop-filter: var(--blur-glass);       /* Blur effect behind element */
-            border: 1px solid var(--glass-border);    /* Subtle glass border */
+        /* Notification messages inside glass panel */
+        .notification-message {
+            padding: 8px 12px;
+            margin: 4px 0;
+            background: hsla(185, 70%, 50%, 0.1);
+            border-left: 3px solid;
+            border-radius: 8px;
+            animation: swim-in 0.3s ease-out;
             border-radius: 14px;                      /* Rounded modern corners */
             padding: 14px 18px;                       /* Comfortable content spacing */
             z-index: 2000;                            /* High stacking order */
@@ -1566,7 +1575,7 @@
         @media (max-width: 768px) {
             /* Panel system: Stacked layout for better touch interaction */
             .stratum-panel {
-                position: fixed !important;           /* Force fixed positioning */
+                position: absolute !important;        /* Everything moveable on mobile */
                 margin: 15px;                         /* Consistent edge spacing */
                 max-width: calc(100vw - 30px);        /* Full width minus margins */
                 max-height: 45vh;                     /* Prevent excessive height */
@@ -1641,10 +1650,7 @@
     </style>
 </head>
 <body>
-    <!-- Console silence indicator -->
-    <div id="console-status" style="position: fixed; bottom: 5px; right: 5px; padding: 5px 10px; background: rgba(0,255,0,0.1); border: 1px solid rgba(0,255,0,0.3); border-radius: 5px; font-size: 10px; color: #0f0; z-index: 9999; font-family: monospace;">
-        Console: SILENCED 🔇
-    </div>
+    <!-- All UI elements exist inside beautiful glass panels -->
     <!-- ═══════════════════════════════════════════════════════════════════════════
          KEATS HTML ARCHITECTURE: Mathematical Interface Structure
          ═══════════════════════════════════════════════════════════════════════════
@@ -2409,7 +2415,19 @@
          NOTIFICATION SYSTEM: Real-time User Feedback Interface
          Dynamic notification display for system events, discoveries, and alerts
          ─────────────────────────────────────────────────────────────────────────── -->
-    <div id="notificationSystem" class="notification-system"></div>
+    <!-- Notification Panel - Floating glass in reef space -->
+    <div class="glass-panel reef-notification-panel layer-surface" id="notificationPanel" 
+         style="position: absolute; top: 20px; right: 20px; width: 320px; cursor: move; user-select: none;">
+        <div class="panel-header" style="padding: 12px 16px; border-bottom: 1px solid hsla(185, 70%, 65%, 0.2);">
+            <span style="font-size: 14px; color: hsla(175, 60%, 85%, 0.9);">🐠 System Messages</span>
+            <span class="panel-toggle" style="float: right; cursor: pointer;" onclick="togglePanel('notificationPanel')">−</span>
+        </div>
+        <div class="panel-content" id="notificationContent" style="padding: 16px; max-height: 300px; overflow-y: auto;">
+            <div id="notificationSystem" style="color: hsla(175, 60%, 85%, 0.8); font-size: 13px;">
+                <div style="opacity: 0.6;">Messages swim by here...</div>
+            </div>
+        </div>
+    </div>
 
     <script>
         /* ═══════════════════════════════════════════════════════════════════════════

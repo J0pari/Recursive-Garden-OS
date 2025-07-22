@@ -1,0 +1,1 @@
+Fix V5 by removing all fixed position UI elements, making everything draggable with boundary guards, and ensuring proper Charter routing for all future edits

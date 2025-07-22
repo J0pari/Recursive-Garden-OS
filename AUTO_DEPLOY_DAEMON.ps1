@@ -47,6 +47,15 @@ function Deploy-Changes {
     
     Write-Host "`n🔄 AUTO-DEPLOYING CHANGES..." -ForegroundColor Cyan
     
+    # CHECK CHARTER COMPLIANCE
+    $charterToken = "/tmp/charter_guard_cast_$(Get-Date -Format 'yyyyMMdd')"
+    if (-not (Test-Path $charterToken)) {
+        Write-Host "❌ CHARTER VIOLATION! No CHARTER_GUARD cast today!" -ForegroundColor Red
+        Write-Host "📖 Run: node CHARTER_GUARD.js" -ForegroundColor Yellow
+        Write-Host "🚫 Auto-deploy BLOCKED until Charter compliance!" -ForegroundColor Red
+        return
+    }
+    
     # Get list of changed files
     $changedFiles = $global:pendingChanges.Keys -join ", "
     $changeCount = $global:pendingChanges.Count
@@ -61,9 +70,9 @@ function Deploy-Changes {
     # Add all changes
     & git add -A 2>&1 | Out-Null
     
-    # Create automatic commit message
+    # Create automatic commit message WITH MORPHISM
     $timestamp = $now.ToString("yyyy-MM-dd HH:mm:ss")
-    $commitMsg = "AUTO-DEPLOY: $changeCount files changed at $timestamp`n`nChanged: $changedFiles`n`nDeployed by AUTO_DEPLOY_DAEMON - Local is hallucination!"
+    $commitMsg = "AUTO-DEPLOY: $changeCount files changed at $timestamp`n`nChanged: $changedFiles`n`nCHARTER_GUARD: Auto-deploy verified`nMORPHISM: INTENT → CHARTER → BOOK → CODE`n`nDeployed by AUTO_DEPLOY_DAEMON - Local is hallucination!"
     
     # Commit
     & git commit -m $commitMsg 2>&1 | Out-Null
