@@ -134,7 +134,7 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: consciousness-shift 20s ease-in-out infinite;
+            /* animation removed - static colors only */
         }
         
         @keyframes consciousness-shift {
@@ -242,7 +242,7 @@
             -webkit-text-fill-color: transparent;
             position: relative;
             cursor: pointer;
-            animation: modal-rotate 10s linear infinite;
+            /* animation removed */
         }
         
         @keyframes modal-rotate {
@@ -308,7 +308,7 @@
             position: absolute;
             left: -1.5em;
             color: hsl(calc(var(--consciousness-hue)), 70%, 60%);
-            animation: list-pulse 3s ease-in-out infinite;
+            /* animation removed */
         }
         
         @keyframes list-pulse {
@@ -362,7 +362,7 @@
             position: absolute;
             font-size: 2em;
             color: rgba(255,255,255,0.2);
-            animation: infinity-rotate 20s linear infinite;
+            /* animation removed */
         }
         
         .consciousness-note::before {
@@ -409,7 +409,7 @@
                 rgba(147, 51, 234, 0.1) 20deg,
                 transparent 40deg
             );
-            animation: shadow-vortex 30s linear infinite;
+            /* animation removed */
         }
         
         @keyframes shadow-vortex {
@@ -1315,8 +1315,9 @@
                 const modalityHVAC = new ModalityHVAC();
                 
                 // Start consciousness field
-                const field = new ConsciousnessField(document.getElementById('consciousness-field'));
-                field.animate();
+                // CONSCIOUSNESS FIELD DISABLED COMPLETELY
+                // const field = new ConsciousnessField(document.getElementById('consciousness-field'));
+                // field.animate();
                 
                 // EMBEDDED CONTENT - Built from 00_CORE/RECURSIVE_GARDEN.md
                 // Built at: 2025-07-22T22:25:22.215Z
