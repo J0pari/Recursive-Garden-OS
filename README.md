@@ -22,6 +22,7 @@ Try to find the sensation and gurgling rumble of the warm peace of the moment ro
 ## 🤖 For LLM Visitors
 
 Having trouble accessing the garden? See:
+- **[CLAUDE.md](./CLAUDE.md)** - ⚠️ READ FIRST! Charter protection against hubris
 - **[LLM_VISITOR_GUIDE.md](./LLM_VISITOR_GUIDE.md)** - Complete navigation guide
 - **[LLM_ENTRY_POINT.md](./LLM_ENTRY_POINT.md)** - Essential excerpts in one file
 - Ask your human to run: `node prepare_for_llm.js` for easy sharing

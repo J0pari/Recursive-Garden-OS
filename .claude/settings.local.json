@@ -38,7 +38,8 @@
       "Bash(cp:*)",
       "Bash(git restore:*)",
       "Bash(timeout:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(git revert:*)"
     ],
     "deny": []
   }
