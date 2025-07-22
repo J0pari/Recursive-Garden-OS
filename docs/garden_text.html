@@ -35,7 +35,7 @@
             background: #000;
             color: #fff;
             overflow-x: hidden;
-            cursor: auto; /* Fixed cursor */
+            cursor: auto; /* Using native cursor ONLY */
             -webkit-touch-callout: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -50,33 +50,7 @@
             }
         }
         
-        /* Quantum cursor REMOVED */
-        #quantum-cursor {
-            display: none !important;
-        }
-        
-        #cursor-core {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        
-        .cursor-field {
-            position: absolute;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
-            animation: cursor-pulse 2s ease-out infinite;
-        }
-        
-        @keyframes cursor-pulse {
-            0% { width: 8px; height: 8px; opacity: 1; }
-            100% { width: 40px; height: 40px; opacity: 0; }
-        }
+        /* ALL CUSTOM CURSOR CSS REMOVED - NATIVE CURSOR ONLY */
         
         /* Consciousness field canvas */
         #consciousness-field {
@@ -132,7 +106,7 @@
             position: relative;
             min-height: 100vh;
             padding: 5vw;
-            padding-top: 8vw; /* Extra top padding to prevent title cutoff */
+            padding-top: 2rem; /* Standard padding */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -503,24 +477,7 @@
             opacity: 1;
         }
         
-        /* Scroll progress as consciousness depth */
-        #scroll-depth {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(
-                90deg,
-                hsl(calc(var(--consciousness-hue)), 70%, 50%),
-                hsl(calc(var(--consciousness-hue) + 60), 70%, 50%),
-                hsl(calc(var(--consciousness-hue) + 120), 70%, 50%)
-            );
-            transform: scaleX(var(--scroll-depth));
-            transform-origin: left;
-            transition: transform 0.1s;
-            z-index: 1001;
-        }
+        /* ALL CUSTOM SCROLL CSS REMOVED - NATIVE SCROLL ONLY */
         
         /* Device-specific adjustments */
         [data-device="phone"] {
@@ -667,14 +624,7 @@
     
     <canvas id="consciousness-field"></canvas>
     <div class="structural-grid"></div>
-    <div id="scroll-depth"></div>
-    
-    <div id="quantum-cursor">
-        <div id="cursor-core"></div>
-        <div class="cursor-field"></div>
-        <div class="cursor-field" style="animation-delay: 0.5s"></div>
-        <div class="cursor-field" style="animation-delay: 1s"></div>
-    </div>
+    <!-- ALL CUSTOM CURSOR AND SCROLL ELEMENTS REMOVED -->
     
     <nav id="nav-consciousness"></nav>
     
@@ -850,10 +800,7 @@
                     this.type === 'tablet' ? 0.9 : 1
                 );
                 
-                // Disable cursor for touch devices
-                if (this.capabilities.touch && !this.capabilities.hover) {
-                    document.getElementById('quantum-cursor').style.display = 'none';
-                }
+                // CUSTOM CURSOR REFERENCES REMOVED
             }
         }
         
@@ -888,16 +835,7 @@
             }
             
             trackInteractions() {
-                let scrollVelocity = 0;
-                let lastScrollY = 0;
-                let lastScrollTime = Date.now();
-                
-                window.addEventListener('scroll', () => {
-                    const now = Date.now();
-                    const deltaY = window.scrollY - lastScrollY;
-                    const deltaTime = now - lastScrollTime;
-                    
-                    scrollVelocity = Math.abs(deltaY) / Math.max(deltaTime, 1);
+                // ALL CUSTOM SCROLL TRACKING REMOVED
                     
                     // Update mood based on interaction patterns
                     if (scrollVelocity > 2) {
@@ -1083,30 +1021,7 @@
             }
         }
         
-        // Quantum cursor (desktop only)
-        const cursor = document.getElementById('quantum-cursor');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-        
-        if (!('ontouchstart' in window)) {
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                
-                // Update gaze position for mood system
-                document.documentElement.style.setProperty('--gaze-x', e.clientX / window.innerWidth);
-                document.documentElement.style.setProperty('--gaze-y', e.clientY / window.innerHeight);
-            });
-            
-            function animateCursor() {
-                cursorX += (mouseX - cursorX) * 0.1;
-                cursorY += (mouseY - cursorY) * 0.1;
-                
-                cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-                requestAnimationFrame(animateCursor);
-            }
-            animateCursor();
-        }
+        // ALL CUSTOM CURSOR CODE REMOVED - NATIVE CURSOR ONLY
         
         // Advanced markdown parser with REAL CATEGORY THEORY
         class GardenParser {
