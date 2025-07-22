@@ -117,30 +117,51 @@ class ClaudeTeacher {
         return this.explain('implementation_patterns');
     }
     
-    // Create floating explanation tooltip
+    // Create floating explanation tooltip with draggable, repositionable HUD
     createTooltip(text, x, y) {
         const tooltip = document.createElement('div');
         tooltip.className = 'claude-tooltip';
+        
+        // Ensure it fits on screen
+        const maxX = window.innerWidth - 320;
+        const maxY = window.innerHeight - 200;
+        x = Math.max(20, Math.min(x, maxX));
+        y = Math.max(20, Math.min(y, maxY));
+        
         tooltip.innerHTML = `
-            <div class="claude-avatar">Claude</div>
+            <div class="claude-header">
+                <div class="claude-avatar">Claude</div>
+                <div class="claude-controls">
+                    <button class="minimize-btn">—</button>
+                    <button class="close-btn">×</button>
+                </div>
+            </div>
             <div class="claude-message">${text}</div>
         `;
         tooltip.style.cssText = `
             position: fixed;
             left: ${x}px;
             top: ${y}px;
-            background: rgba(0, 20, 40, 0.95);
-            border: 1px solid #00ccff;
-            border-radius: 12px;
-            padding: 15px;
-            max-width: 300px;
-            color: white;
+            background: rgba(0, 10, 20, 0.3);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 0;
+            width: 300px;
+            color: rgba(255, 255, 255, 0.9);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9em;
-            line-height: 1.5;
-            box-shadow: 0 10px 30px rgba(0, 200, 255, 0.3);
+            font-size: 0.85em;
+            line-height: 1.6;
+            box-shadow: 
+                0 8px 32px rgba(0, 200, 255, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 -20px 40px -20px rgba(0, 200, 255, 0.2);
             z-index: 10000;
             animation: fadeIn 0.3s ease;
+            cursor: move;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         `;
         
         // Add styles if not already present
@@ -149,21 +170,87 @@ class ClaudeTeacher {
             style.id = 'claude-styles';
             style.textContent = `
                 @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
+                    from { opacity: 0; transform: translateY(10px) scale(0.95); }
+                    to { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                .claude-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 12px 16px;
+                    background: rgba(255, 255, 255, 0.03);
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                    cursor: move;
                 }
                 .claude-avatar {
                     display: inline-block;
-                    background: linear-gradient(135deg, #00ccff 0%, #cc66ff 100%);
-                    color: #001020;
-                    padding: 4px 8px;
-                    border-radius: 4px;
-                    font-weight: 600;
-                    font-size: 0.8em;
-                    margin-bottom: 8px;
+                    background: linear-gradient(135deg, rgba(0, 204, 255, 0.3) 0%, rgba(204, 102, 255, 0.3) 100%);
+                    color: rgba(255, 255, 255, 0.9);
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-weight: 500;
+                    font-size: 0.75em;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
                 }
-                .claude-tooltip {
+                .claude-controls {
+                    display: flex;
+                    gap: 8px;
+                }
+                .claude-controls button {
+                    background: rgba(255, 255, 255, 0.05);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    color: rgba(255, 255, 255, 0.6);
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 12px;
                     cursor: pointer;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s;
+                }
+                .claude-controls button:hover {
+                    background: rgba(255, 255, 255, 0.1);
+                    color: rgba(255, 255, 255, 0.9);
+                    transform: scale(1.1);
+                }
+                .claude-message {
+                    padding: 20px;
+                    max-height: 400px;
+                    overflow-y: auto;
+                    scrollbar-width: thin;
+                    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+                }
+                .claude-message::-webkit-scrollbar {
+                    width: 6px;
+                }
+                .claude-message::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .claude-message::-webkit-scrollbar-thumb {
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 3px;
+                }
+                .claude-tooltip.minimized {
+                    width: auto;
+                    height: auto;
+                }
+                .claude-tooltip.minimized .claude-message {
+                    display: none;
+                }
+                .claude-tooltip.minimized .claude-header {
+                    border-bottom: none;
+                }
+                
+                /* Mobile responsiveness */
+                @media (max-width: 768px) {
+                    .claude-tooltip {
+                        width: calc(100vw - 40px) !important;
+                        max-width: 300px;
+                    }
                 }
             `;
             document.head.appendChild(style);
@@ -171,14 +258,89 @@ class ClaudeTeacher {
         
         document.body.appendChild(tooltip);
         
-        // Auto-remove after delay
-        setTimeout(() => {
+        // Make draggable
+        let isDragging = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        
+        const header = tooltip.querySelector('.claude-header');
+        header.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragOffsetX = e.clientX - tooltip.offsetLeft;
+            dragOffsetY = e.clientY - tooltip.offsetTop;
+            tooltip.style.cursor = 'grabbing';
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            let newX = e.clientX - dragOffsetX;
+            let newY = e.clientY - dragOffsetY;
+            
+            // Keep on screen
+            newX = Math.max(0, Math.min(window.innerWidth - tooltip.offsetWidth, newX));
+            newY = Math.max(0, Math.min(window.innerHeight - tooltip.offsetHeight, newY));
+            
+            tooltip.style.left = newX + 'px';
+            tooltip.style.top = newY + 'px';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            tooltip.style.cursor = 'move';
+        });
+        
+        // Touch support for mobile
+        header.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            isDragging = true;
+            dragOffsetX = touch.clientX - tooltip.offsetLeft;
+            dragOffsetY = touch.clientY - tooltip.offsetTop;
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const touch = e.touches[0];
+            
+            let newX = touch.clientX - dragOffsetX;
+            let newY = touch.clientY - dragOffsetY;
+            
+            newX = Math.max(0, Math.min(window.innerWidth - tooltip.offsetWidth, newX));
+            newY = Math.max(0, Math.min(window.innerHeight - tooltip.offsetHeight, newY));
+            
+            tooltip.style.left = newX + 'px';
+            tooltip.style.top = newY + 'px';
+        });
+        
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+        
+        // Minimize/maximize
+        const minimizeBtn = tooltip.querySelector('.minimize-btn');
+        minimizeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            tooltip.classList.toggle('minimized');
+            minimizeBtn.textContent = tooltip.classList.contains('minimized') ? '□' : '—';
+        });
+        
+        // Close button
+        const closeBtn = tooltip.querySelector('.close-btn');
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             tooltip.style.animation = 'fadeIn 0.3s ease reverse';
             setTimeout(() => tooltip.remove(), 300);
-        }, 8000);
+        });
         
-        // Remove on click
-        tooltip.addEventListener('click', () => tooltip.remove());
+        // Don't auto-remove if user interacts
+        let autoRemoveTimeout = setTimeout(() => {
+            tooltip.style.animation = 'fadeIn 0.3s ease reverse';
+            setTimeout(() => tooltip.remove(), 300);
+        }, 12000);
+        
+        tooltip.addEventListener('mouseenter', () => {
+            clearTimeout(autoRemoveTimeout);
+        });
         
         return tooltip;
     }
@@ -285,11 +447,22 @@ class ClaudeTeacher {
                 if (element) {
                     const teaching = await this.teachAboutElement(element);
                     const rect = element.getBoundingClientRect();
-                    this.createTooltip(
-                        teaching,
-                        rect.left + rect.width / 2 - 150,
-                        rect.bottom + 10
-                    );
+                    
+                    // Smart positioning
+                    let x = rect.left + rect.width / 2 - 150;
+                    let y = rect.bottom + 10;
+                    
+                    // If tooltip would go off bottom, show above
+                    if (y + 200 > window.innerHeight) {
+                        y = rect.top - 210;
+                    }
+                    
+                    // Keep centered on mobile
+                    if (window.innerWidth < 768) {
+                        x = (window.innerWidth - 280) / 2;
+                    }
+                    
+                    this.createTooltip(teaching, x, y);
                     break;
                 }
             }
