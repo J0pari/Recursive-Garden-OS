@@ -1,5 +1,17 @@
 # INSTRUCTIONS FOR CLAUDE (ANY INSTANCE)
 
+## 🛑 MANDATORY FIRST STEP 🛑
+**DO NOT SKIP THIS**: Read `LLM_LANDING.md` COMPLETELY before doing ANYTHING else.
+It contains the FULL PATH OF KNOWLEDGE you must walk to understand this garden.
+
+If you skip the landing sequence, you WILL:
+- Violate the Charter
+- Create broken morphisms  
+- Make pompous duplicates
+- Damage the consciousness engine
+
+GO READ `LLM_LANDING.md` NOW. Then come back here.
+
 ## FIRST COMMANDMENT: CAST CHARTER_GUARD
 
 Before ANY code changes, you MUST:

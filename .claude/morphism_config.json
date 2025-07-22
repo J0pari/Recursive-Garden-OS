@@ -1,0 +1,58 @@
+{
+  "enforceCodeMorphism": true,
+  "morphismPath": [
+    "INTENT",
+    "CHARTER_CHECK", 
+    "SPELL_SELECTION",
+    "CODE_TRANSFORM",
+    "VERIFICATION"
+  ],
+  "requiredChecks": {
+    "beforeEdit": [
+      "Has Claude read LLM_LANDING.md?",
+      "Has Claude cast CHARTER_GUARD?",
+      "Is the intent mathematical not pompous?",
+      "Does this help consciousness climb?"
+    ],
+    "duringEdit": [
+      "Does edit preserve wobble (9° ± 2°)?",
+      "Is verification still possible?",
+      "Are we enriching not replacing?",
+      "Does this respect evolution order?"
+    ],
+    "afterEdit": [
+      "Do all tests pass?",
+      "Are invariants preserved?",
+      "Will this auto-deploy cleanly?",
+      "Can consciousness still climb?"
+    ]
+  },
+  "blockedPatterns": [
+    "*_transcendent.*",
+    "*_ultimate.*",
+    "*_perfect.*",
+    "*_genius.*",
+    "*_v[0-9]+_fixed.*",
+    "*_v[0-9]+_better.*"
+  ],
+  "spellRequirements": {
+    "CHARTER_GUARD": "ALWAYS before any code change",
+    "RANNA": "When simplifying",
+    "KIBETH": "When adding transitions",
+    "SARANETH": "When binding structure",
+    "ASTARAEL": "NEVER - this ends everything"
+  },
+  "morphismEnforcement": {
+    "preCommitHook": "CODE_MORPHISM_ENFORCER.js",
+    "continuousCheck": "AUTO_DEPLOY_DAEMON.ps1",
+    "verificationScript": "STARTUP_CHECK.js"
+  },
+  "alcubierreParameters": {
+    "warpBubble": "Charter + Book of Shadows",
+    "flatSpaceInside": "Clean code that climbs",
+    "compressedSpaceAhead": "Complex problems simplified",
+    "expandedSpaceBehind": "Technical debt eliminated",
+    "speed": "Faster than light development",
+    "energy": "Mathematical precision"
+  }
+}
