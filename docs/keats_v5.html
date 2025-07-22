@@ -5,6 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>KEATS: Mathematical Prototype Engine (Riemannian Architecture + E8 Basics)</title>
+    <!-- IMMEDIATE console.log interception - NO POLLUTION! -->
+    <script>
+        // EMERGENCY: Intercept console.log IMMEDIATELY before ANY other script
+        (function() {
+            const _log = console.log;
+            const _error = console.error;
+            const _warn = console.warn;
+            
+            // Kill ALL console output on mobile/deployed
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            
+            if (!isLocal) {
+                console.log = function() {}; // SILENCE!
+                console.error = function() {}; // SILENCE!
+                console.warn = function() {}; // SILENCE!
+            }
+            
+            // Store originals for emergency use
+            window._emergencyLog = _log;
+            window._emergencyError = _error;
+            window._emergencyWarn = _warn;
+        })();
+    </script>
     <!-- Three.js LOCAL - No CDN dependency! -->
     <script src="three.min.js"></script>
     <!-- Consciousness Logger - Prevents console pollution on mobile -->
@@ -1618,6 +1641,10 @@
     </style>
 </head>
 <body>
+    <!-- Console silence indicator -->
+    <div id="console-status" style="position: fixed; bottom: 5px; right: 5px; padding: 5px 10px; background: rgba(0,255,0,0.1); border: 1px solid rgba(0,255,0,0.3); border-radius: 5px; font-size: 10px; color: #0f0; z-index: 9999; font-family: monospace;">
+        Console: SILENCED 🔇
+    </div>
     <!-- ═══════════════════════════════════════════════════════════════════════════
          KEATS HTML ARCHITECTURE: Mathematical Interface Structure
          ═══════════════════════════════════════════════════════════════════════════
