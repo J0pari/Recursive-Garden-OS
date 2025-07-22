@@ -171,6 +171,9 @@
 
         /* Main Three.js canvas element - handles mathematical rendering */
         #mathematicalCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             display: block;
@@ -178,6 +181,7 @@
             cursor: grab;                              /* Indicate interactive capability */
             transition: filter var(--transition-smooth);
             filter: brightness(1.05) contrast(1.1) saturate(1.2); /* Enhanced visual clarity */
+            z-index: 0;                                /* Behind panels */
         }
 
         #mathematicalCanvas:active {
@@ -22922,6 +22926,20 @@ Screen: ${screen.width}x${screen.height}
                  * ──────────────────────────────────────────────────────────────────── */
                 
                 showNotification('Initializing enhanced professional mathematical engine...', 'success');
+                
+                // CHARTER_GUARD: Ensure renderer container exists
+                const container = document.getElementById('threejs-container');
+                if (!container) {
+                    const newContainer = document.createElement('div');
+                    newContainer.id = 'threejs-container';
+                    newContainer.style.position = 'fixed';
+                    newContainer.style.top = '0';
+                    newContainer.style.left = '0';
+                    newContainer.style.width = '100%';
+                    newContainer.style.height = '100%';
+                    newContainer.style.zIndex = '1';
+                    document.body.appendChild(newContainer);
+                }
                 
                 /* ┌─ SUBMODULE: Mathematical Worker Background Process Setup
                  * │  PURPOSE: Optional Web Worker for computationally intensive operations
