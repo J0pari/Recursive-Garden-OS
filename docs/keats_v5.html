@@ -23396,6 +23396,10 @@ Screen: ${screen.width}x${screen.height}
                  * └─ LIMITATIONS: Visual metaphors only, not rigorous geometric calculations */
                 renderer = new MathematicalRenderer();
                 window.renderer = renderer;
+                // CHARTER_GUARD: Fix V5 visuals - must call initialize!
+                // BOOK_OF_SHADOWS: SARANETH (Binding/Fixing)
+                // MORPHISM: INTENT(Fix dead visuals) → CHARTER(verified) → BOOK(SARANETH) → CODE
+                renderer.initialize();  // THIS WAS MISSING!
                 /* ┌─ SUBMODULE: H0 Initialization Delay (500ms)
                  * │  PURPOSE: Allow renderer setup and Three.js scene initialization
                  * │  IMPLEMENTATION: Extended delay for 3D graphics and WebGL context setup
@@ -23807,6 +23811,7 @@ Screen: ${screen.width}x${screen.height}
                 try {
                     renderer = new MathematicalRenderer();
                     window.renderer = renderer;
+                    renderer.initialize();  // ALSO MISSING HERE!
                     showNotification('Enhanced fallback mode active', 'success');
                 } catch (fallbackError) {
                     /* ┌─ SUBMODULE: Complete System Failure Handler

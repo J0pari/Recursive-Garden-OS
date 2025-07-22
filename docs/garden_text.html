@@ -35,7 +35,7 @@
             background: #000;
             color: #fff;
             overflow-x: hidden;
-            cursor: none;
+            cursor: auto; /* Fixed cursor */
             -webkit-touch-callout: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -50,14 +50,9 @@
             }
         }
         
-        /* Quantum cursor */
+        /* Quantum cursor REMOVED */
         #quantum-cursor {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            pointer-events: none;
-            z-index: 99999;
-            mix-blend-mode: screen;
+            display: none !important;
         }
         
         #cursor-core {
@@ -137,6 +132,7 @@
             position: relative;
             min-height: 100vh;
             padding: 5vw;
+            padding-top: 8vw; /* Extra top padding to prevent title cutoff */
             display: flex;
             align-items: center;
             justify-content: center;
