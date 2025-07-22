@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const VersionEnforcer = require('./VERSION_ENFORCER');
 
 class CodeMorphismEnforcer {
     constructor() {
@@ -24,9 +25,13 @@ class CodeMorphismEnforcer {
         // Track edit intentions
         this.editIntentions = new Map();
         
+        // Version enforcer - PREVENT DUPLICATION
+        this.versionEnforcer = new VersionEnforcer();
+        
         // The morphism sequence
         this.morphismPath = [
             'INTENT',
+            'VERSION_CHECK',  // NEW! Prevent duplication
             'CHARTER_CHECK', 
             'SPELL_SELECTION',
             'CODE_TRANSFORM'
