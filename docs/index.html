@@ -113,37 +113,7 @@
             color: #666;
         }
     </style>
-    <script>
-        // Flexible button organization system - stable morphisms!
-        const portalConfig = {
-            // Button mappings - these are the stable morphisms
-            buttons: {
-                v5: { href: "keats_v5.html", text: "Try Version 5", primary: true },
-                v1to4: { href: "demos.html", text: "Versions 1-4", primary: false },
-                garden: { href: "garden_text.html", text: "Interactive Garden", primary: false },
-                pdf: { href: "RECURSIVE_GARDEN_ALIVE.pdf", text: "PDF Documentation", primary: false },
-                github: { href: "https://github.com/J0pari/Recursive-Garden-OS", text: "Source Code", primary: false }
-            },
-            
-            // Organization - can be changed without breaking morphisms
-            layout: {
-                featured: ["v5"],
-                secondary: ["v1to4", "garden"],
-                documentation: ["pdf", "github"]
-            }
-        };
-        
-        // Allow runtime reorganization
-        window.reorganizePortal = function(newLayout) {
-            portalConfig.layout = newLayout;
-            refreshPortal();
-        };
-        
-        function refreshPortal() {
-            // This would refresh the button display based on new organization
-            console.log("Portal reorganized:", portalConfig.layout);
-        }
-    </script>
+    <!-- JavaScript config removed - using static HTML only -->
 </head>
 <body>
     <h1>A Mathematical Garden</h1>
