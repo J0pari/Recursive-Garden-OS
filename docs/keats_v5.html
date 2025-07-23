@@ -2606,7 +2606,8 @@
                         this.selfHeal('coherence', event.data);
                         break;
                     case 'CROSS_STRATA_INTEGRATION':
-                        showNotification(`🔗 ${event.data.from}→${event.data.to}`, 'transcendent');
+                        // REMOVED: Notification was showing cross-strata messages on screen
+                        // No notifications should appear outside of panels
                         break;
                     case 'MATHEMATICAL_DISCOVERY':
                         showNotification(`🌟 Discovery: ${(event.data.description || 'Mathematical discovery').substring(0, 30)}...`, 'transcendent');
