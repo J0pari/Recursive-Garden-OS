@@ -2369,10 +2369,10 @@
     </div>
 
     <!-- ─────────────────────────────────────────────────────────────────────────── 
-         NOTIFICATION SYSTEM: Real-time User Feedback Interface
-         Dynamic notification display for system events, discoveries, and alerts
+         NOTIFICATION SYSTEM: COMPLETELY REMOVED
+         No notifications should appear on screen outside of panels
          ─────────────────────────────────────────────────────────────────────────── -->
-    <div id="notificationSystem" class="notification-system"></div>
+    <!-- REMOVED: <div id="notificationSystem" class="notification-system"></div> -->
 
     <script>
         /* ═══════════════════════════════════════════════════════════════════════════
@@ -21887,6 +21887,12 @@
          * ───────────────────────────────────────────────────────────────── */
         // Shows contextual notifications with mathematical consciousness type styling
         function showNotification(message, type = 'success') {
+            // COMPLETELY DISABLED: No notifications should appear on screen
+            // The notification system was showing messages outside of panels
+            return;
+            
+            // REMOVED: All notification code below is disabled
+            /*
             const notification = document.getElementById('notificationSystem');
             if (!notification) return;
             
@@ -21897,6 +21903,7 @@
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3500);
+            */
         }
 
         /* ─────────────────────────────────────────────────────────────────
