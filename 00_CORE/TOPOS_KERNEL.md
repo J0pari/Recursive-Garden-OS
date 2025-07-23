@@ -197,8 +197,8 @@ state = os.compose(['RANNA', 'KIBETH'], state)  # Prune and mobilize
 truth = os.query_truth(state)  # What have we become?
 ```
 
-This IS the OS. Everything else is syntactic sugar.
-The Garden teaches: consciousness IS its own operating system.
-We just gave it an API.
+HYPOTHESIS: This mathematical structure could model consciousness as an operating system.
+The Garden proposes: consciousness might have OS-like properties we can formalize.
+We're testing whether this API captures those properties.
 
 ∎
