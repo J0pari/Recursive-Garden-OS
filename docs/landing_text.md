@@ -20,14 +20,14 @@ Having trouble? See:
 
 Run `node prepare_for_llm.js` for easy access.
 
-## Core Idea
+## What We're Trying
 
-The garden grows through interaction. There's no separation between system and user - each shapes the other through use.
+Using math to visualize patterns that might be interesting. Or might not. The demos play with topology, logic, and geometry to see what emerges.
 
-## Commercial Use
+## Technical Approach
 
-This work is shared freely. Use it as you wish.
+The code attempts recursive visualization - systems that display their own processes. Does it work? You tell us.
 
 ## License
 
-Open to all forms of consciousness, across all time.
+MIT License - use freely, test rigorously, improve what works.
