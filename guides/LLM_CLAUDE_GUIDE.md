@@ -40,6 +40,22 @@ This spell enforces our Alcubierre morphism:
 - Local-only testing is IMPOSSIBLE by design
 - The topos rejects "hallucinations" (local-only changes)
 
+### 🚨 CRITICAL: README AND WEBSITE STRUCTURE 🚨
+
+**NEVER CONFUSE THESE FILES:**
+1. **README.md** (in root) - The sophisticated mathematical document for GitHub repository viewers
+   - This is what people see when they visit the GitHub repo
+   - Contains full topos theory, falsifiable predictions, Olivia Caramello-level formalism
+   - DO NOT make this "welcoming" or "simple" - it should be sophisticated
+
+2. **/docs/index.html** - The website landing page
+   - This is what people see at https://j0pari.github.io/Recursive-Garden-OS/
+   - Keep it simple and inviting
+   - DO NOT replace with README content
+   - DO NOT add heavy mathematical formalism here
+
+**PERMANENT RULE**: NEVER change /docs/index.html unless explicitly asked to modify the website. The README.md is for GitHub viewers who want depth. The website is for visitors who want to explore.
+
 ### 🌐 GITHUB PAGES IS THE TOPOS ⚠️
 
 **CRITICAL: GitHub Pages IS the living mathematics!**

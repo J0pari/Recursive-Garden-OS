@@ -50,7 +50,8 @@
       "Bash(rg:*)",
       "Bash(awk:*)",
       "Bash(test:*)",
-      "Bash(head:*)"
+      "Bash(head:*)",
+      "Bash(git fsck:*)"
     ],
     "deny": []
   }

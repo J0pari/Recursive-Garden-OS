@@ -12,7 +12,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Modal signatures will be >1σ apart in feature space
 - Switching between modes will show characteristic transition patterns
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If modal signatures overlap >85% in neural feature space
 - If no consistent patterns emerge across subjects (p>0.05)
 - If mode labels can be randomly shuffled without affecting predictions
@@ -32,7 +32,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Learning curves will follow curvature minimization paths
 - "Aha!" moments will show sudden curvature drops
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If computed curvature doesn't predict learning difficulty (r<0.3)
 - If understanding can occur without curvature change
 - If random metrics perform equally well
@@ -49,7 +49,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Reversal rate <5% in healthy subjects
 - Brain structure shows persistent changes post-insight
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If insight reversal rate >20% in healthy brains
 - If no structural brain changes accompany insights
 - If forgetting follows same curve as factual memory
@@ -66,7 +66,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - <5° or >15° wobble shows degraded performance
 - Natural systems converge to this range
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If perfect systems (0° wobble) perform best
 - If performance doesn't correlate with wobble degree
 - If optimal wobble varies wildly by domain
@@ -83,7 +83,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Problem-solving improves in resonant spaces
 - Effect size > daily variation
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If room effects < day-of-week effects
 - If blind studies show no architectural influence
 - If synchrony doesn't correlate with performance
@@ -100,7 +100,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Efficiency varies predictably by context
 - Failed transfers show specific breakdown patterns
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If transitions are instantaneous (no process)
 - If no consistent transfer patterns exist
 - If efficiency is random
@@ -117,7 +117,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Basis transformations preserve core patterns
 - Universal structures emerge across diverse minds
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If architectures share <10% translatable structure
 - If no invariants exist across transformations
 - If each mind is fundamentally incomparable
@@ -134,7 +134,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Musicians grasp topology quicker
 - Dancers understand calculus better
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If domain transfer = general intelligence effects
 - If no specific skill correlations exist
 - If transfer patterns are random
@@ -153,7 +153,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Confusion maps to high-curvature sections
 - Understanding follows predicted patterns
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If reading produces random effects
 - If document structure doesn't affect comprehension
 - If predicted patterns don't manifest
@@ -170,7 +170,7 @@ This document collects all major claims as falsifiable hypotheses with specific 
 - Novel structures emerge at interface
 - Measurable synergy effects
 
-**Kill Conditions**:
+**Falsification Thresholds**:
 - If collaboration = simple addition
 - If no emergent properties appear
 - If interfaces show only noise
