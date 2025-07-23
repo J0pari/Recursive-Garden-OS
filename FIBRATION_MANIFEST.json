@@ -1,0 +1,17 @@
+{
+  "generated": "2025-07-23T14:25:27.662Z",
+  "source": {
+    "path": "garden_core/RECURSIVE_GARDEN.md",
+    "hash": "f737bb3fcec5b46a9af1d0c228173527f0d6205675df0367300695c72c8e723a",
+    "lines": 2879,
+    "size": 246749
+  },
+  "principle": "The garden lives in its markdown source. All views must dynamically load from there.",
+  "forbidden": [
+    "Embedding content in HTML/JS files",
+    "Creating static copies",
+    "Hardcoding garden text",
+    "Caching without expiration"
+  ],
+  "enforcement": "This guardian runs on every commit to prevent static cancer"
+}
