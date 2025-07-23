@@ -2035,6 +2035,31 @@
             <button class="function-button" onclick="triggerModalTransfer()" title="Send your text to the mathematics engine">🚀 Send to Math</button>
             <button class="function-button" onclick="computeSemantics()" title="Find patterns in your words">🤔 Find Patterns</button>
             <button class="function-button secondary" onclick="clearContext()" title="Start fresh with empty text">🗑️ Clear Text</button>
+            
+            <!-- ─────────────────────────────────────────────────────────────────────
+                 TEXT INPUT AND ANALYSIS: Merged from separate panel
+                 ─────────────────────────────────────────────────────────────────────
+                 PURPOSE: Text input area for mathematical analysis with real-time results
+                 ───────────────────────────────────────────────────────────────── -->
+            <div style="margin-top: 18px;">
+                <textarea 
+                    class="text-input-field" 
+                    id="textInput" 
+                    placeholder="Type anything here - a thought, a question, a poem. The garden will find the math in your words..."
+                    spellcheck="true"
+                    autocomplete="on"
+                    autocorrect="on"
+                    autocapitalize="sentences"
+                ></textarea>
+                
+                <!-- Analysis operation buttons -->
+                <button class="function-button advanced" onclick="analyzeText()">🔍 Analyze Text</button>
+                
+                <!-- Results display area with dynamic styling -->
+                <div class="analysis-results" id="analysisResults">
+                    Ready for text analysis...
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2192,42 +2217,39 @@
             <button class="function-button" onclick="generateLogicalEvent()" title="Watch mathematics happen in real-time">⚡ Do Math</button>
             <button class="function-button advanced" onclick="maximizeDiscovery()" title="Find the most interesting patterns">🌟 Find Cool Stuff</button>
             <button class="function-button secondary" onclick="stabilizeField()" title="Return to calm starting state">🛡️ Reset to Calm</button>
+            
+            <!-- ─────────────────────────────────────────────────────────────────────
+                 MODAL LOGIC CONTROLS: Merged from separate panel
+                 ─────────────────────────────────────────────────────────────────────
+                 PURPOSE: Modal operators (necessity □, possibility ◇) and logical transformations
+                 ───────────────────────────────────────────────────────────────── -->
+            <div style="margin-top: 18px; padding-top: 18px; border-top: 1px solid hsla(0 0 100% / 0.1);">
+                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 12px; font-size: 11px;">🔮 LOGIC CONTROLS:</div>
+                
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Logic Value A</span>
+                        <span class="control-value" id="necessityValue">0.85</span>
+                    </div>
+                    <input type="range" class="field-slider" id="necessity" min="0.0" max="1.0" value="0.85" step="0.05">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Logic Value B</span>
+                        <span class="control-value" id="possibilityValue">0.65</span>
+                    </div>
+                    <input type="range" class="field-slider" id="possibility" min="0.0" max="1.0" value="0.65" step="0.05">
+                </div>
+
+                <!-- Modal operation buttons -->
+                <button class="function-button" onclick="applyNecessity()" title="Make connections stronger">□ Strengthen</button>
+                <button class="function-button" onclick="applyPossibility()" title="Make connections looser">◇ Loosen</button>
+                <button class="function-button transcendent" onclick="modalTransformation()" title="Transform the whole pattern">🌈 Transform All</button>
+            </div>
         </div>
     </div>
 
-    <!-- ─────────────────────────────────────────────────────────────────────────── 
-         MATHEMATICAL ANALYSIS ENGINE: Advanced NLP Text Processing Interface
-         Core text analysis system with p-adic decomposition and topological metrics
-         ─────────────────────────────────────────────────────────────────────────── -->
-    <div class="stratum-panel panel-analysis" id="panelAnalysis">
-        <div class="panel-header">
-            <div class="panel-title">
-                <span class="panel-icon">🎯</span>
-                <span>Text Input</span>
-            </div>
-            <div class="panel-toggle" onclick="togglePanel('panelAnalysis')">−</div>
-        </div>
-        <div class="panel-content">
-            <!-- Text input area for mathematical analysis -->
-            <textarea 
-                class="text-input-field" 
-                id="textInput" 
-                placeholder="Type anything here - a thought, a question, a poem. The garden will find the math in your words..."
-                spellcheck="true"
-                autocomplete="on"
-                autocorrect="on"
-                autocapitalize="sentences"
-            ></textarea>
-            
-            <!-- Analysis operation buttons -->
-            <button class="function-button advanced" onclick="analyzeText()">🔍 Analyze Text</button>
-            
-            <!-- Results display area with dynamic styling -->
-            <div class="analysis-results" id="analysisResults">
-                Ready for text analysis...
-            </div>
-        </div>
-    </div>
 
     <!-- ─────────────────────────────────────────────────────────────────────────── 
          SYSTEM MANAGEMENT INTERFACE: Global Controls and System Monitoring
@@ -2266,42 +2288,6 @@
         </div>
     </div>
 
-    <!-- ─────────────────────────────────────────────────────────────────────────── 
-         MODAL LOGIC ENGINE: Advanced Logical Operations Interface
-         Modal operators (necessity □, possibility ◇) and logical transformations
-         ─────────────────────────────────────────────────────────────────────────── -->
-    <div class="stratum-panel panel-modal" id="panelModal">
-        <div class="panel-header">
-            <div class="panel-title">
-                <span class="panel-icon">🔮</span>
-                <span>Logic Controls</span>
-            </div>
-            <div class="panel-toggle" onclick="togglePanel('panelModal')">−</div>
-        </div>
-        <div class="panel-content">
-            <!-- Modal operator controls -->
-            <div class="control-group">
-                <div class="control-label">
-                    <span>Logic Value A</span>
-                    <span class="control-value" id="necessityValue">0.85</span>
-                </div>
-                <input type="range" class="field-slider" id="necessity" min="0.0" max="1.0" value="0.85" step="0.05">
-            </div>
-
-            <div class="control-group">
-                <div class="control-label">
-                    <span>Logic Value B</span>
-                    <span class="control-value" id="possibilityValue">0.65</span>
-                </div>
-                <input type="range" class="field-slider" id="possibility" min="0.0" max="1.0" value="0.65" step="0.05">
-            </div>
-
-            <!-- Modal operation buttons -->
-            <button class="function-button" onclick="applyNecessity()" title="Make connections stronger">□ Strengthen</button>
-            <button class="function-button" onclick="applyPossibility()" title="Make connections looser">◇ Loosen</button>
-            <button class="function-button transcendent" onclick="modalTransformation()" title="Transform the whole pattern">🌈 Transform All</button>
-        </div>
-    </div>
 
     <!-- ─────────────────────────────────────────────────────────────────────────── 
          CROSS-STRATA CONNECTIONS & LEGEND: System Integration Visualization
@@ -2342,12 +2328,10 @@
             <div style="margin-bottom: 16px;">
                 <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">🎛️ PANEL GUIDE:</div>
                 <div style="font-size: 9px; line-height: 1.4; padding: 8px; background: hsla(0 0 0 / 0.3); border-radius: 6px;">
-                    <div><strong>🔷 H0 Geometric:</strong> 3D visualization & particle controls</div>
-                    <div><strong>📝 H1 Semantic:</strong> Natural language processing engine</div>
-                    <div><strong>🔢 H2 Logical:</strong> P-adic fields & topological analysis</div>
-                    <div><strong>⚗️ Analysis:</strong> Text analysis & mathematical extraction</div>
+                    <div><strong>🌊 Visualization:</strong> 3D visualization & particle controls</div>
+                    <div><strong>💭 Text Analysis:</strong> Natural language processing & analysis</div>
+                    <div><strong>✨ Math Tools:</strong> P-adic fields, logic controls & topological analysis</div>
                     <div><strong>🎛️ System:</strong> Global controls & performance monitoring</div>
-                    <div><strong>🔮 Modal Logic:</strong> Necessity/possibility operators</div>
                     <div><strong>🔗 This Panel:</strong> Cross-connections & UI explanations</div>
                 </div>
             </div>
