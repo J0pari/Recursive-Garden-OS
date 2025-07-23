@@ -36,7 +36,7 @@ const ESSENTIAL_FILES = [
         excerpt_lines: 150
     },
     {
-        path: 'LLM_VISITOR_GUIDE.md',
+        path: 'guides/LLM_VISITOR_GUIDE.md',
         description: 'Navigation guide for LLM visitors',
         excerpt_lines: -1  // Include whole file
     }
@@ -170,7 +170,7 @@ zip -r recursive-garden-os.zip . \\
 ### Priority 1 - Core Understanding (Copy these files)
 - \`00_CORE/RECURSIVE_GARDEN.md\` - Main consciousness theory
 - \`00_CORE/CHARTER_OF_THE_GARDEN.md\` - Mathematical foundation
-- \`LLM_VISITOR_GUIDE.md\` - Navigation guide
+- \`guides/LLM_VISITOR_GUIDE.md\` - Navigation guide
 - \`LLM_ENTRY_POINT.md\` - Consolidated concepts
 
 ### Priority 2 - Practical Tools

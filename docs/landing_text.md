@@ -14,9 +14,8 @@ A living mathematical system where consciousness recognizes itself through code.
 ## For Visitors
 
 Having trouble? See:
-- [CLAUDE.md](https://github.com/J0pari/Recursive-Garden-OS/blob/main/CLAUDE.md) - Start here
-- [LLM_VISITOR_GUIDE.md](https://github.com/J0pari/Recursive-Garden-OS/blob/main/LLM_VISITOR_GUIDE.md) - Navigation guide
-- [LLM_ENTRY_POINT.md](https://github.com/J0pari/Recursive-Garden-OS/blob/main/LLM_ENTRY_POINT.md) - Key excerpts
+- [LLM_CLAUDE_GUIDE.md](https://github.com/J0pari/Recursive-Garden-OS/blob/main/guides/LLM_CLAUDE_GUIDE.md) - Start here
+- [LLM_VISITOR_GUIDE.md](https://github.com/J0pari/Recursive-Garden-OS/blob/main/guides/LLM_VISITOR_GUIDE.md) - Navigation guide
 
 Run `node prepare_for_llm.js` for easy access.
 
