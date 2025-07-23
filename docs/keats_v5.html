@@ -403,7 +403,7 @@
             --glass-border: hsla(255 255 255 / 0.18);   /* Subtle boundary definition */
             --text-primary: hsl(0 0% 98%);              /* High-contrast readable text */
             --text-secondary: hsl(0 0% 85%);            /* Secondary information text */
-            --accent-field: hsl(var(--field-2adic) 95% 75%); /* Active field highlight */
+            --accent-field: hsl(220 15% 75%); /* Subtle blue-grey accent */
             
             /* Animation Timing Functions - Mathematically derived easing */
             --transition-smooth: 300ms cubic-bezier(0.25, 0.8, 0.25, 1); /* Golden ratio inspired */
@@ -525,9 +525,9 @@
         .stratum-panel {
             position: fixed;                           /* Absolute positioning for flexibility */
             background: var(--glass-manifold);         /* Semi-transparent background */
-            backdrop-filter: var(--blur-glass);        /* Advanced blur effect */
-            -webkit-backdrop-filter: var(--blur-glass); /* Safari compatibility */
-            border: 1px solid var(--glass-border);     /* Subtle boundary definition */
+            backdrop-filter: blur(20px) saturate(180%); /* Enhanced glass blur */
+            -webkit-backdrop-filter: blur(20px) saturate(180%); /* Safari enhanced glass */
+            border: 1px solid hsla(255 255 255 / 0.08); /* Very subtle glass edge */
             border-radius: 20px;                       /* Smooth mathematical curves */
             box-shadow: var(--depth-shadow);           /* Realistic depth perception */
             z-index: 1000;                            /* Above canvas, below notifications */
@@ -977,7 +977,7 @@
                 hsla(240 100% 90% / 0.15),           /* Primary field glow */
                 hsla(180 100% 85% / 0.12),           /* Secondary field accent */
                 hsla(300 85% 88% / 0.10));           /* Tertiary field harmony */
-            border: 1px solid var(--accent-field);   /* Field boundary */
+            border: 1px solid hsla(255 255 255 / 0.1); /* Subtle glass boundary */
             border-radius: 12px;                      /* Smooth mathematical curves */
             color: var(--text-primary);              /* High contrast text */
             font-size: 11px;                         /* Readable size */
@@ -995,7 +995,7 @@
 
         /* Field select hover state: Enhanced mathematical prominence */
         .field-select:hover {
-            border-color: var(--accent-transcendent); /* Transcendent field glow */
+            border-color: hsla(255 255 255 / 0.2); /* Soft white glow */
             background: linear-gradient(135deg, 
                 hsla(240 100% 90% / 0.25),           /* Intensified primary field */
                 hsla(180 100% 85% / 0.22),           /* Enhanced secondary field */
@@ -1007,7 +1007,7 @@
 
         /* Field select focus state: Active mathematical engagement */
         .field-select:focus {
-            border-color: var(--accent-field);       /* Active field boundary */
+            border-color: hsla(255 255 255 / 0.3); /* Active white boundary */
             box-shadow: 
                 0 0 25px var(--accent-field),        /* Focused field energy */
                 0 0 0 3px hsla(255 255 255 / 0.2);   /* Focus ring indicator */
@@ -1151,7 +1151,7 @@
 
         /* Text input focus state: Enhanced interaction feedback */
         .text-input-field:focus {
-            border-color: var(--accent-field);        /* Field theory accent border */
+            border-color: hsla(255 255 255 / 0.2); /* Soft focus border */
             box-shadow: 
                 0 0 30px hsla(var(--field-2adic) 80% 60% / 0.3), /* 2-adic field glow */
                 0 0 0 2px hsla(var(--field-2adic) 80% 60% / 0.20); /* Focus ring */
@@ -1403,7 +1403,7 @@
             height: 16px;                             /* Compact size for inline use */
             border: 2px solid hsla(255 255 255 / 0.2); /* Transparent base ring */
             border-radius: 50%;                       /* Perfect circle */
-            border-top-color: var(--accent-field);    /* Field theory accent color */
+            border-top-color: hsla(255 255 255 / 0.5); /* White spinner accent */
             animation: spin 1s linear infinite;       /* Continuous rotation */
         }
 
@@ -1502,7 +1502,7 @@
 
         /* Select focus state: Field theory accent highlighting */
         select:focus {
-            border-color: var(--accent-field);        /* Field theory accent border */
+            border-color: hsla(255 255 255 / 0.2); /* Soft focus border */
             box-shadow: 0 0 20px hsla(var(--field-2adic) 80% 60% / 0.2); /* 2-adic glow */
         }
 
@@ -1699,7 +1699,7 @@
     <div class="stratum-panel panel-h0" id="panelH0">
         <div class="panel-header">
             <div class="panel-title">
-                <span class="panel-icon">🔷</span>
+                <span class="panel-icon"></span>
                 <span>3D Visualization</span>
                 <span class="status-indicator" id="h0Status"></span>
             </div>
@@ -1892,9 +1892,9 @@
                  - Force application is simple physics simulation, not mathematical field theory
                  - Animation is visual interpolation, not mathematical evolution
                  ───────────────────────────────────────────────────────────────── -->
-            <button class="function-button" onclick="toggleAnimation()" title="Start or pause the dancing particles">⏯️ Start/Stop</button>
-            <button class="function-button" onclick="regenerateGeometry()" title="Create a new pattern of connections">✨ New Pattern</button>
-            <button class="function-button secondary" onclick="explodeParticles()" title="Watch ideas scatter and regroup">💥 Scatter</button>
+            <button class="function-button" onclick="toggleAnimation()" title="Start or pause the dancing particles">Start/Stop</button>
+            <button class="function-button" onclick="regenerateGeometry()" title="Create a new pattern of connections">New Pattern</button>
+            <button class="function-button secondary" onclick="explodeParticles()" title="Watch ideas scatter and regroup">Scatter</button>
             <button class="function-button" onclick="showHelp()" style="background: #059669;" title="What is all this? Click here!">❓ What's This?</button>
         </div>
     </div>
@@ -1926,7 +1926,7 @@
     <div class="stratum-panel panel-h1" id="panelH1">
         <div class="panel-header">
             <div class="panel-title">
-                <span class="panel-icon">💭</span>
+                <span class="panel-icon"></span>
                 <span>Text Analysis</span>
                 <span class="status-indicator semantic" id="h1Status"></span>
             </div>
@@ -2032,9 +2032,9 @@
                  - Semantic computation is keyword matching, not semantic understanding
                  - Context clearing resets counters, not mathematical context
                  ───────────────────────────────────────────────────────────────── -->
-            <button class="function-button" onclick="triggerModalTransfer()" title="Send your text to the mathematics engine">🚀 Send to Math</button>
-            <button class="function-button" onclick="computeSemantics()" title="Find patterns in your words">🤔 Find Patterns</button>
-            <button class="function-button secondary" onclick="clearContext()" title="Start fresh with empty text">🗑️ Clear Text</button>
+            <button class="function-button" onclick="triggerModalTransfer()" title="Send your text to the mathematics engine">Send to Math</button>
+            <button class="function-button" onclick="computeSemantics()" title="Find patterns in your words">Find Patterns</button>
+            <button class="function-button secondary" onclick="clearContext()" title="Start fresh with empty text">Clear Text</button>
             
             <!-- ─────────────────────────────────────────────────────────────────────
                  TEXT INPUT AND ANALYSIS: Merged from separate panel
@@ -2053,7 +2053,7 @@
                 ></textarea>
                 
                 <!-- Analysis operation buttons -->
-                <button class="function-button advanced" onclick="analyzeText()">🔍 Analyze Text</button>
+                <button class="function-button advanced" onclick="analyzeText()">Analyze Text</button>
                 
                 <!-- Results display area with dynamic styling -->
                 <div class="analysis-results" id="analysisResults">
@@ -2090,7 +2090,7 @@
     <div class="stratum-panel panel-h2" id="panelH2">
         <div class="panel-header">
             <div class="panel-title">
-                <span class="panel-icon">✨</span>
+                <span class="panel-icon"></span>
                 <span>Math Tools</span>
                 <span class="status-indicator transcendent" id="h2Status"></span>
             </div>
@@ -2214,9 +2214,9 @@
                  - No genuine mathematical discovery beyond pattern counting
                  - Operations are UI management, not mathematical computation
                  ───────────────────────────────────────────────────────────────── -->
-            <button class="function-button" onclick="generateLogicalEvent()" title="Watch mathematics happen in real-time">⚡ Do Math</button>
-            <button class="function-button advanced" onclick="maximizeDiscovery()" title="Find the most interesting patterns">🌟 Find Cool Stuff</button>
-            <button class="function-button secondary" onclick="stabilizeField()" title="Return to calm starting state">🛡️ Reset to Calm</button>
+            <button class="function-button" onclick="generateLogicalEvent()" title="Watch mathematics happen in real-time">Do Math</button>
+            <button class="function-button advanced" onclick="maximizeDiscovery()" title="Find the most interesting patterns">Find Cool Stuff</button>
+            <button class="function-button secondary" onclick="stabilizeField()" title="Return to calm starting state">Reset to Calm</button>
             
             <!-- ─────────────────────────────────────────────────────────────────────
                  MODAL LOGIC CONTROLS: Merged from separate panel
@@ -2224,7 +2224,7 @@
                  PURPOSE: Modal operators (necessity □, possibility ◇) and logical transformations
                  ───────────────────────────────────────────────────────────────── -->
             <div style="margin-top: 18px; padding-top: 18px; border-top: 1px solid hsla(0 0 100% / 0.1);">
-                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 12px; font-size: 11px;">🔮 LOGIC CONTROLS:</div>
+                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 12px; font-size: 11px;">LOGIC CONTROLS:</div>
                 
                 <div class="control-group">
                     <div class="control-label">
@@ -2243,9 +2243,9 @@
                 </div>
 
                 <!-- Modal operation buttons -->
-                <button class="function-button" onclick="applyNecessity()" title="Make connections stronger">□ Strengthen</button>
-                <button class="function-button" onclick="applyPossibility()" title="Make connections looser">◇ Loosen</button>
-                <button class="function-button transcendent" onclick="modalTransformation()" title="Transform the whole pattern">🌈 Transform All</button>
+                <button class="function-button" onclick="applyNecessity()" title="Make connections stronger">Strengthen</button>
+                <button class="function-button" onclick="applyPossibility()" title="Make connections looser">Loosen</button>
+                <button class="function-button transcendent" onclick="modalTransformation()" title="Transform the whole pattern">Transform All</button>
             </div>
         </div>
     </div>
@@ -2258,16 +2258,16 @@
     <div class="stratum-panel panel-system" id="panelSystem">
         <div class="panel-header">
             <div class="panel-title">
-                <span class="panel-icon">🎛️</span>
+                <span class="panel-icon"></span>
                 <span>System Management</span>
             </div>
             <div class="panel-toggle" onclick="togglePanel('panelSystem')">−</div>
         </div>
         <div class="panel-content">
             <!-- System operation controls -->
-            <button class="function-button transcendent" onclick="optimizeSystem()">🚀 Speed Up</button>
-            <button class="function-button" onclick="executeExportWithFeedback(this)" id="exportButton">💾 Save Data</button>
-            <button class="function-button secondary" onclick="resetSystem()">🔄 Reset All</button>
+            <button class="function-button transcendent" onclick="optimizeSystem()">Speed Up</button>
+            <button class="function-button" onclick="executeExportWithFeedback(this)" id="exportButton">Save Data</button>
+            <button class="function-button secondary" onclick="resetSystem()">Reset All</button>
             
             <!-- Real-time system metrics display -->
             <div style="margin-top: 18px; padding: 14px; background: hsla(0 0 0 / 0.3); border-radius: 10px; font-size: 10px; line-height: 1.4;">
@@ -2296,7 +2296,7 @@
     <div class="stratum-panel panel-legend" id="panelLegend">
         <div class="panel-header">
             <div class="panel-title">
-                <span class="panel-icon">🔗</span>
+                <span class="panel-icon"></span>
                 <span>Connections & Legend</span>
             </div>
             <div class="panel-toggle" onclick="togglePanel('panelLegend')">−</div>
@@ -2304,7 +2304,7 @@
         <div class="panel-content">
             <!-- Cross-Strata Connection Monitor -->
             <div style="margin-bottom: 16px;">
-                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">🔗 ACTIVE CONNECTIONS:</div>
+                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">ACTIVE CONNECTIONS:</div>
                 <div id="crossStrataConnections" style="font-size: 9px; line-height: 1.3; padding: 8px; background: hsla(0 0 0 / 0.4); border-radius: 6px; min-height: 40px;">
                     <div style="color: hsla(0 0 100% / 0.6);">Cross-strata monitoring disabled</div>
                 </div>
@@ -2312,7 +2312,7 @@
             
             <!-- Visual Elements Legend -->
             <div style="margin-bottom: 16px;">
-                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">🎨 VISUAL ELEMENTS:</div>
+                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">VISUAL ELEMENTS:</div>
                 <div style="font-size: 9px; line-height: 1.4; padding: 8px; background: hsla(0 0 0 / 0.3); border-radius: 6px;">
                     <div><strong style="color: #4FC3F7;">Blue Particles:</strong> E8 Lie Group roots (248 points)</div>
                     <div><strong style="color: #FFA726;">Orange Flow:</strong> Semantic-to-geometric amplification</div>
@@ -2326,24 +2326,24 @@
             
             <!-- Panel Icons Guide -->
             <div style="margin-bottom: 16px;">
-                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">🎛️ PANEL GUIDE:</div>
+                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">PANEL GUIDE:</div>
                 <div style="font-size: 9px; line-height: 1.4; padding: 8px; background: hsla(0 0 0 / 0.3); border-radius: 6px;">
-                    <div><strong>🌊 Visualization:</strong> 3D visualization & particle controls</div>
-                    <div><strong>💭 Text Analysis:</strong> Natural language processing & analysis</div>
-                    <div><strong>✨ Math Tools:</strong> P-adic fields, logic controls & topological analysis</div>
-                    <div><strong>🎛️ System:</strong> Global controls & performance monitoring</div>
-                    <div><strong>🔗 This Panel:</strong> Cross-connections & UI explanations</div>
+                    <div><strong>Visualization:</strong> 3D visualization & particle controls</div>
+                    <div><strong>Text Analysis:</strong> Natural language processing & analysis</div>
+                    <div><strong>Math Tools:</strong> P-adic fields, logic controls & topological analysis</div>
+                    <div><strong>System:</strong> Global controls & performance monitoring</div>
+                    <div><strong>This Panel:</strong> Cross-connections & UI explanations</div>
                 </div>
             </div>
             
             <!-- Mathematical Metrics Explanation -->
             <div>
-                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">📊 METRICS GUIDE:</div>
+                <div style="color: var(--accent-field); font-weight: 600; margin-bottom: 8px; font-size: 11px;">METRICS GUIDE:</div>
                 <div style="font-size: 9px; line-height: 1.4; padding: 8px; background: hsla(0 0 0 / 0.3); border-radius: 6px;">
-                    <div><strong>Fisher Information I(θ):</strong> Information geometric curvature</div>
-                    <div><strong>Betti Numbers β:</strong> Topological hole counting [β₀, β₁]</div>
+                    <div><strong>Fisher Information:</strong> Information geometric curvature</div>
+                    <div><strong>Betti Numbers:</strong> Topological hole counting [B0, B1]</div>
                     <div><strong>Prime Field Q_p:</strong> Current p-adic number field</div>
-                    <div><strong>Modal Operators:</strong> □ (necessity) ◇ (possibility)</div>
+                    <div><strong>Modal Operators:</strong> necessity / possibility</div>
                     <div><strong>Coherence Score:</strong> Semantic processing quality</div>
                     <div><strong>Chain Integrity:</strong> System mathematical consistency</div>
                     <div><strong>Context Depth:</strong> NLP semantic understanding levels</div>
@@ -2583,10 +2583,10 @@
                 switch (event.type) {
                     case 'GLOBAL_STATE_CERTIFIED':
                         const hashDisplay = (event.id || 'unknown').substring(0, 12);
-                        showNotification(`🛡️ State certified: ${hashDisplay}...`, 'success');
+                        showNotification(`State certified: ${hashDisplay}...`, 'success');
                         break;
                     case 'COHERENCE_VIOLATION':
-                        showNotification(`⚠️ Coherence violation detected`, 'error');
+                        showNotification(`Coherence violation detected`, 'error');
                         this.selfHeal('coherence', event.data);
                         break;
                     case 'CROSS_STRATA_INTEGRATION':
@@ -2594,7 +2594,7 @@
                         // No notifications should appear outside of panels
                         break;
                     case 'MATHEMATICAL_DISCOVERY':
-                        showNotification(`🌟 Discovery: ${(event.data.description || 'Mathematical discovery').substring(0, 30)}...`, 'transcendent');
+                        showNotification(`Discovery: ${(event.data.description || 'Mathematical discovery').substring(0, 30)}...`, 'transcendent');
                         break;
                     case 'PERFORMANCE_WARNING':
                         this.selfHeal('performance', event.data);
