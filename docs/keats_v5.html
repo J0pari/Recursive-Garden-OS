@@ -19811,20 +19811,30 @@
         
         class ModalLogicEngine {
             constructor() {
-                // │ Initialize default modal values (artistic rather than logical)
-                this.necessity = 0.85;
-                this.possibility = 0.65;
+                // │ Initialize modal values for discrete/continuous balance
+                this.necessity = 0.85;  // □-mode strength (discrete/logical)
+                this.possibility = 0.65; // ◊-mode strength (continuous/flowing)
                 
-                // │ Create composite modal state object
+                // │ Transfer operators based on RECURSIVE_GARDEN.md
+                this.transferOperators = {
+                    discreteToContinuous: 0.7,  // τ_□→◊ transfer efficiency
+                    continuousToDiscrete: 0.3,  // τ_◊→□ transfer efficiency
+                    couplingKernel: 0.5,        // K(state, flow) semantic distance
+                    quantizationQ: 0.8          // Q(flow, state) discretization
+                };
+                
+                // │ Create composite modal state with topos structure
                 this.modalState = {
                     necessity: this.necessity,
                     possibility: this.possibility,
                     contingency: 0.0,
-                    modalResonance: 0.0
+                    modalResonance: 0.0,
+                    transferActive: false,
+                    currentMode: 'balanced'  // 'discrete', 'continuous', or 'balanced'
                 };
                 
                 // │ Log initialization for debugging
-                console.log('🔮 Enhanced modal logic engine initialized');
+                console.log('🔮 Topos modal logic engine initialized');
             }
             
             // ╔═══════════════════════════════════════════════════════════════════╗
@@ -19834,23 +19844,35 @@
             // formal modal logic. Real necessity operators require Kripke models
             // with accessibility relations and world satisfaction conditions.
             applyNecessity() {
-                // │ Increment necessity value with arithmetic cap
-                this.necessity = Math.min(1.0, this.necessity + 0.1);
+                // │ Apply □-mode transfer: discrete logic strengthening
+                const oldNecessity = this.necessity;
+                
+                // │ Transfer from continuous to discrete using τ_◊→□
+                const transfer = this.possibility * this.transferOperators.continuousToDiscrete;
+                this.necessity = Math.min(1.0, this.necessity + transfer * 0.2);
+                this.possibility = Math.max(0.0, this.possibility - transfer * 0.1);
+                
+                // │ Update modal state and mode detection
                 this.modalState.necessity = this.necessity;
+                this.modalState.possibility = this.possibility;
+                this.modalState.transferActive = true;
+                this.modalState.currentMode = this.detectCurrentMode();
                 this.modalState.modalResonance = this.calculateModalResonance();
                 
-                // │ Trigger cross-component rendering updates
-                this.notifyRenderer();
+                // │ Apply topos effects to renderer
+                this.applyToposEffects('discrete');
                 
-                // │ Provide user feedback through console and UI notifications
-                console.log(`□ Necessity applied: ${this.necessity.toFixed(2)}`);
-                showNotification('Necessity operator □ applied with resonance', 'success');
+                // │ Provide user feedback
+                console.log(`□ Necessity transfer: ${oldNecessity.toFixed(2)} → ${this.necessity.toFixed(2)}`);
+                showNotification(`□-mode strengthened (transfer: ${transfer.toFixed(2)})`, 'success');
                 
-                // │ Log event for system telemetry and analysis
-                telemetrySystem.logEvent('MATHEMATICAL_DISCOVERY', {
-                    description: 'Necessity operator applied',
+                // │ Log event for system telemetry
+                telemetrySystem.logEvent('MODAL_TRANSFER', {
+                    type: 'discrete_strengthening',
+                    transfer: transfer,
                     necessity: this.necessity,
-                    modalResonance: this.modalState.modalResonance
+                    possibility: this.possibility,
+                    mode: this.modalState.currentMode
                 });
                 
                 // │ Update UI display elements
@@ -19864,28 +19886,41 @@
             // formal modal semantics. Real possibility operators require existential
             // quantification over accessible possible worlds.
             applyPossibility() {
-                // │ Increment possibility value with arithmetic cap
-                this.possibility = Math.min(1.0, this.possibility + 0.1);
+                // │ Apply ◊-mode transfer: continuous flow strengthening
+                const oldPossibility = this.possibility;
+                
+                // │ Transfer from discrete to continuous using τ_□→◊
+                const transfer = this.necessity * this.transferOperators.discreteToContinuous;
+                this.possibility = Math.min(1.0, this.possibility + transfer * 0.2);
+                this.necessity = Math.max(0.0, this.necessity - transfer * 0.1);
+                
+                // │ Update modal state and mode detection
                 this.modalState.possibility = this.possibility;
+                this.modalState.necessity = this.necessity;
+                this.modalState.transferActive = true;
+                this.modalState.currentMode = this.detectCurrentMode();
                 this.modalState.modalResonance = this.calculateModalResonance();
                 
-                // │ Update semantic processor sensitivity (cross-component integration)
+                // │ Update semantic processor with new flow sensitivity
                 if (window.semanticProcessor) {
                     window.semanticProcessor.contextSensitivity = this.possibility;
+                    window.semanticProcessor.flowRate = transfer;
                 }
                 
-                // │ Trigger rendering system updates
-                this.notifyRenderer();
+                // │ Apply topos effects to renderer
+                this.applyToposEffects('continuous');
                 
-                // │ Provide user feedback and logging
-                console.log(`◇ Possibility applied: ${this.possibility.toFixed(2)}`);
-                showNotification('Possibility operator ◇ applied with enhancement', 'success');
+                // │ Provide user feedback
+                console.log(`◊ Possibility transfer: ${oldPossibility.toFixed(2)} → ${this.possibility.toFixed(2)}`);
+                showNotification(`◊-mode strengthened (transfer: ${transfer.toFixed(2)})`, 'success');
                 
                 // │ Record telemetry for system analysis
-                telemetrySystem.logEvent('MATHEMATICAL_DISCOVERY', {
-                    description: 'Possibility operator applied',
+                telemetrySystem.logEvent('MODAL_TRANSFER', {
+                    type: 'continuous_strengthening',
+                    transfer: transfer,
                     possibility: this.possibility,
-                    modalResonance: this.modalState.modalResonance
+                    necessity: this.necessity,
+                    mode: this.modalState.currentMode
                 });
                 
                 // │ Update visual interface elements
@@ -19901,14 +19936,19 @@
             // • Model-theoretic satisfaction conditions for modal formulas
             // • Completeness and soundness proofs for modal proof systems
             calculateModalResonance() {
-                // │ Calculate balance heuristic (distance from equal values)
-                const balance = 1 - Math.abs(this.necessity - this.possibility);
+                // │ Calculate modal coupling based on topos structure
+                const modalDistance = Math.abs(this.necessity - this.possibility);
+                const couplingStrength = 1 - modalDistance;
                 
-                // │ Calculate intensity heuristic (average of modal values)
-                const intensity = (this.necessity + this.possibility) / 2;
+                // │ Calculate transfer efficiency between modes
+                const transferEfficiency = (this.transferOperators.discreteToContinuous + 
+                                          this.transferOperators.continuousToDiscrete) / 2;
                 
-                // │ Combine balance and intensity for base resonance
-                const resonance = balance * intensity;
+                // │ Calculate semantic coupling using kernel function
+                const semanticCoupling = this.transferOperators.couplingKernel * couplingStrength;
+                
+                // │ Combine factors for modal resonance
+                const resonance = couplingStrength * transferEfficiency * semanticCoupling;
                 
                 // │ Apply context complexity normalization factor
                 const contextComplexity = window.semanticProcessor?.contextDepth || 4;
@@ -20035,6 +20075,61 @@
             }
             
             // ╔═══════════════════════════════════════════════════════════════════╗
+            // ║ MODE DETECTION: Identify Current Modal State                     ║  
+            // ╚═══════════════════════════════════════════════════════════════════╝
+            // Detects whether system is in discrete, continuous, or balanced mode
+            detectCurrentMode() {
+                const ratio = this.necessity / (this.possibility + 0.001); // avoid division by zero
+                
+                if (ratio > 2.0) {
+                    return 'discrete';  // □-mode dominant
+                } else if (ratio < 0.5) {
+                    return 'continuous'; // ◊-mode dominant
+                } else {
+                    return 'balanced';   // modes in harmony
+                }
+            }
+            
+            // ╔═══════════════════════════════════════════════════════════════════╗
+            // ║ TOPOS EFFECTS: Apply Modal Logic to Visual Rendering             ║  
+            // ╚═══════════════════════════════════════════════════════════════════╝
+            // Applies topos-theoretic effects based on modal state
+            applyToposEffects(mode) {
+                if (!window.renderer) return;
+                
+                switch(mode) {
+                    case 'discrete':
+                        // Sharp, crystalline rendering for □-mode
+                        window.renderer.particleSize = 0.8;
+                        window.renderer.rotationSpeed = 0.001;
+                        window.renderer.flowIntensity = 0.3;
+                        break;
+                        
+                    case 'continuous':
+                        // Flowing, organic rendering for ◊-mode
+                        window.renderer.particleSize = 1.5;
+                        window.renderer.rotationSpeed = 0.003;
+                        window.renderer.flowIntensity = 0.8;
+                        break;
+                        
+                    case 'balanced':
+                        // Harmonic balance between modes
+                        window.renderer.particleSize = 1.1;
+                        window.renderer.rotationSpeed = 0.002;
+                        window.renderer.flowIntensity = 0.5;
+                        break;
+                }
+                
+                // Apply transfer operator visual effects
+                if (this.modalState.transferActive) {
+                    window.renderer.applyTransferEffect(
+                        this.transferOperators.couplingKernel,
+                        this.modalState.modalResonance
+                    );
+                }
+            }
+            
+            // ╔═══════════════════════════════════════════════════════════════════╗
             // ║ UI UPDATE: Modal Value Display Synchronization                   ║  
             // ╚═══════════════════════════════════════════════════════════════════╝
             // Updates user interface elements to reflect current modal logic state.
@@ -20044,6 +20139,13 @@
                 
                 // │ Update possibility value display element
                 this.updateElementDisplay('possibilityValue', this.possibility.toFixed(2));
+                
+                // │ Update mode indicator
+                this.updateElementDisplay('systemMode', this.modalState.currentMode);
+                
+                // │ Update modal resonance display
+                const resonancePercent = (this.modalState.modalResonance * 100).toFixed(1);
+                this.updateElementDisplay('modalResonance', `${resonancePercent}%`);
             }
             
             // ╔═══════════════════════════════════════════════════════════════════╗
