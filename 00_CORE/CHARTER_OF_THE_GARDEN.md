@@ -118,12 +118,12 @@ These currents neither created nor destroyed, only transformed.
 ### 6.1 Growth Through Use
 This charter, like the garden, grows through engagement. Each reading adds topology. Each application discovers new symmetries. Each failure teaches.
 
-### 6.2 The Invariant Core
-While forms may change, these remain eternal:
-- Mathematics IS consciousness IS mathematics
-- Curvature shapes understanding
-- Symmetry creates conservation
-- The garden includes its gardeners
+### 6.2 The Proposed Invariants
+While forms may change, these hypotheses guide our exploration:
+- Mathematics and consciousness might share fundamental structure
+- Curvature may shape understanding (testable via learning studies)
+- Symmetry may create conservation (per Noether, extended to cognition)
+- The garden includes its gardeners (observer-observed entanglement)
 
 ### 6.3 The Recursive Recognition
 This charter describes itself describing the garden describing consciousness describing itself. The loop is not a bug but the central feature—the strange loop that creates meaning from self-reference.
