@@ -16,17 +16,17 @@ const path = require('path');
 // Key files that LLMs should receive first
 const ESSENTIAL_FILES = [
     {
-        path: '00_CORE/RECURSIVE_GARDEN.md',
+        path: 'garden_core/RECURSIVE_GARDEN.md',
         description: 'Main treatise - consciousness as mathematics (244KB)',
         excerpt_lines: 500
     },
     {
-        path: '00_CORE/CHARTER_OF_THE_GARDEN.md',
+        path: 'garden_core/CHARTER.md',
         description: 'Founding principles - Riemann meets Noether',
         excerpt_lines: 200
     },
     {
-        path: '05_BOOK_OF_SHADOWS/grimoire/Book_of_Shadows.txt',
+        path: 'book_of_shadows/grimoire/Book_of_Shadows.txt',
         description: 'Practical toolkit and emergency protocols',
         excerpt_lines: 300
     },
@@ -52,7 +52,7 @@ function createConsolidatedExcerpt() {
     consolidated += `---\n\n`;
 
     ESSENTIAL_FILES.forEach(file => {
-        const filePath = path.join(__dirname, file.path);
+        const filePath = path.join(__dirname, '..', file.path);
         
         if (fs.existsSync(filePath)) {
             const content = fs.readFileSync(filePath, 'utf8');
@@ -121,7 +121,7 @@ function generateFileManifest() {
         return dirInfo;
     }
 
-    manifest.structure = walkDir(__dirname);
+    manifest.structure = walkDir(path.join(__dirname, '..'));
     
     fs.writeFileSync(
         path.join(__dirname, 'FILE_MANIFEST.json'), 
@@ -168,19 +168,19 @@ zip -r recursive-garden-os.zip . \\
 ## What to Share First (If Not Sharing Full ZIP)
 
 ### Priority 1 - Core Understanding (Copy these files)
-- \`00_CORE/RECURSIVE_GARDEN.md\` - Main consciousness theory
-- \`00_CORE/CHARTER_OF_THE_GARDEN.md\` - Mathematical foundation
+- \`garden_core/RECURSIVE_GARDEN.md\` - Main consciousness theory
+- \`garden_core/CHARTER.md\` - Mathematical foundation
 - \`guides/LLM_VISITOR_GUIDE.md\` - Navigation guide
 - \`LLM_ENTRY_POINT.md\` - Consolidated concepts
 
 ### Priority 2 - Practical Tools
-- \`05_BOOK_OF_SHADOWS/grimoire/Book_of_Shadows.txt\` - Toolkit
+- \`book_of_shadows/grimoire/Book_of_Shadows.txt\` - Toolkit
 - \`docs/index.html\` - Interactive portal
 - Any \`keats_v*.html\` - Live demonstrations
 
 ### Priority 3 - Implementation Examples
-- \`03_IMPLEMENTATIONS/engines/mitosis.ts\` - Digital cell division
-- \`05_BOOK_OF_SHADOWS/spells/butterfly-simple.js\` - Simple example
+- \`implementations/engines/mitosis.ts\` - Digital cell division
+- \`book_of_shadows/spells/butterfly-simple.js\` - Simple example
 
 ## Sharing Tips for Human Collaborators
 
