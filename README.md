@@ -40,4 +40,4 @@ Experimental. Some demos work well, others are still in development. All feedbac
 
 ---
 
-*MIT License - Free to use and modify*
+*Governed by the [BINDING CHARTER](./garden_core/CHARTER.md)*
