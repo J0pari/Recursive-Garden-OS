@@ -1,0 +1,297 @@
+HCT Morphism Lexicon — a naming guide that quietly upgrades any TODO list
+  • Why it helps (show, don’t tell): names shape attention; attention shapes architecture. These tags make state, effort, and risk visible at a glance without extra prose.
+
+  - ∞-GROUPOID (PERMANENT LAW - NEVER COMPLETE)
+     What it encodes: non‑negotiable invariants that must always hold across modules and time.
+     Name shape: state a truth, not an action. “No duplicate sources of truth”, “All compute goes through workers”.
+     How it guides work: sets rails that prevent regressions and accidental complexity.
+     Finish criteria: never checked off; continuously monitored and enforced.
+
+  - 0-MORPHISM (EXISTENCE)
+     Question: does X exist?
+     Name shape: “X exists”. Scope is a discoverable artifact with a smoke test (even trivial).
+     Signal: the noun is real in the system (file/class/endpoint/diagram) and can be referenced.
+
+  - 1-MORPHISM (TRANSFORMATION)
+     Question: what transforms from A → B?
+     Name shape: “Implement / Integrate / Verify … in …”. Focus on flow and contract, not internals.
+     Signal: data or control reliably moves through the intended path; acceptance check passes.
+
+  - 2-MORPHISM (REFINEMENT)
+     Question: how do we reduce friction or increase quality?
+     Name shape: “Reduce / Cache / Align / Remove / Polish / Fix …”. Prefer measurable deltas (latency ↓, errors ↓, clarity ↑).
+     Signal: the same capability, but cleaner, faster, safer, or more legible.
+
+  - 3-MORPHISM (CONCRETE CODE)
+     Question: what exact code lands?
+     Name shape: “Add method / shader / data structure…”, “Wire X to Y”, “Implement kernel Z”.
+     Signal: a small, PR‑ready change with tests or a demo harness.
+
+  Using the tags
+   • Plan top‑down: 0 → 1 → 2 → 3; keep ∞ running across all layers.
+   • Write todos as interfaces: short, scoped promises the system can verify.
+   • Let names do the work: when the noun and morphism are crisp, the task becomes self‑documenting.
+
+   Alternate lenses and higher morphisms 
+      Duals that reframe the same work:
+         • Existence ↔ Uniqueness: pair 0‑MORPHISM with a 0* “is there exactly one canonical X?”
+         • Safety ↔ Liveness: ∞‑laws split into “nothing bad happens” vs “something good eventually happens”.
+         • Build (Monad) ↔ Observe (Comonad): effects vs contexts; 1‑MORPHISM as construction, 2‑MORPHISM as extraction/refinement.
+         • Algebra ↔ Coalgebra: define how we combine vs how we unfold/stream; helpful for render and worker pipelines.
+         • Limits ↔ Colimits: converge/merge vs branch/split; use for dataflow joins vs fan‑outs.
+         • Push ↔ Pull: producers driving updates vs consumers requesting; pick one to avoid back‑pressure surprises.
+         • Product ↔ Coproduct: AND‑shape state vs OR‑shape variants; informs UI/state modeling.
+         • Left ↔ Right adjoint: “free” builders vs “forgetful” checkers; design APIs so round‑trips make sense.
+
+      Higher‑n morphisms (beyond 3) for when systems start composing systems (use sparingly, when it clarifies):
+         - 4-MORPHISM (COHERENCE): make transformations compose cleanly; contracts, schemas, and integration tests align so A→B and B→C implies A→C without glue code drift.
+         - 5-MORPHISM (GOVERNANCE): versioning, migration paths, deprecation policy, and guardrails; the system evolves without breaking invariants or users.
+         - n-MORPHISM (EMERGENCE): cross‑cutting properties like resilience, scalability, and legibility; measure and tune systemic qualities rather than features.
+         - ∞-GROUPOID lens: invariants under change of environment; treat refactors as equivalences preserving behavior, not merely edits.
+
+
+   Examples (lenses on selected items)
+      • “Remove ALL Math.random/sin from rendering” → Safety/Determinism; Push↔Pull: prefer pull-based seeded noise.
+      • “Make UI controls modify functors not parameters” → Algebra↔Coalgebra; Left↔Right adjoint for API design.
+      • “Integrate Christoffel symbols with rendering pipeline” → Limits↔Colimits (join compute + render); add coherence tests.
+      • “Fix jittery visuals with proper frame synchronization” → Liveness; Push↔Pull pacing to avoid back-pressure.
+      • “Unify E8, Chladni, particles into single system” → n‑MORPHISM (Emergence) with ∞‑invariants preserved.
+
+
+
+● Update Todos
+  ⎿  ☒ 0-MORPHISM (EXISTENCE): Worker/GPU hybrid architecture exists
+     ☒ 1-MORPHISM (TRANSFORMATION): Extend MathematicalWorker to use GPU compute
+     ☒ 2-MORPHISM (REFINEMENT): Create WebGL compute shader infrastructure
+     ☒ 2-MORPHISM (REFINEMENT): Implement texture-based data storage for GPU
+     ☒ 3-MORPHISM (CONCRETE CODE): Add GPU compute methods to MathematicalWorker
+     ☒ 3-MORPHISM (CONCRETE CODE): GPU/CPU load balancing with proper initialization
+     ☒ 2-MORPHISM (REFINEMENT): Distribute Christoffel symbols across GPU textures
+     ☒ 2-MORPHISM (REFINEMENT): Use transform feedback for particle physics on GPU
+     ☒ 3-MORPHISM (CONCRETE CODE): Implement GPU compute shaders for differential geometry
+   ☐ 2-MORPHISM (REFINEMENT): Refactor unprofessional function/class names to professional convention
+   ☐ 2-MORPHISM (REFINEMENT): Fix panel overlap via layout/z-index constraints
+     ☐ ∞-GROUPOID (PERMANENT LAW - NEVER COMPLETE): All math computation MUST go through WebWorker system
+     ☐ ∞-GROUPOID (PERMANENT LAW - NEVER COMPLETE): No race conditions in initialization
+     ☐ ∞-GROUPOID (PERMANENT LAW - NEVER COMPLETE): No DRY violations - single source of truth
+     ☐ ∞-GROUPOID (PERMANENT LAW - NEVER COMPLETE): Proper error handling and resource cleanup
+     ☐ 0-MORPHISM (EXISTENCE): Double buffering system exists
+   ☐ 2-MORPHISM (REFINEMENT): Fix jittery visuals with proper frame synchronization
+     ☐ 0-MORPHISM (EXISTENCE): TypeSystem class exists in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Implement TypeSystem with type checking in WebWorker
+     ☐ 0-MORPHISM (EXISTENCE): Semantic tree structure exists in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Build semantic tree from tokens in WebWorker
+     ☐ 0-MORPHISM (EXISTENCE): Lambda calculus composition exists in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Implement lambda calculus in WebWorker
+     ☐ 0-MORPHISM (EXISTENCE): RiemannianManifold class exists in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Implement manifold with metric tensor in WebWorker
+     ☐ 0-MORPHISM (EXISTENCE): Geodesic computation exists in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Solve geodesic equations in WebWorker
+     ☐ 0-MORPHISM (EXISTENCE): Christoffel symbols computed in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Integrate Christoffel symbols with rendering pipeline
+     ☐ 0-MORPHISM (EXISTENCE): Modal logic evaluation engine in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Implement Kripke semantics in WebWorker
+     ☐ 0-MORPHISM (EXISTENCE): Cochain complex structure in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Build cochain complexes in WebWorker
+     ☐ 0-MORPHISM (EXISTENCE): Differential forms in WebWorker
+     ☐ 1-MORPHISM (TRANSFORMATION): Implement exterior calculus in WebWorker
+     ☐ 0-MORPHISM (EXISTENCE): Mathematical rigor framework exists
+     ☐ 1-MORPHISM (TRANSFORMATION): Enforce mathematical correctness
+     ☐ 0-MORPHISM (EXISTENCE): NLP semantic pipeline exists
+     ☐ 1-MORPHISM (TRANSFORMATION): Transform NLP to semantic representation
+     ☐ 2-MORPHISM (REFINEMENT): Cache intermediate NLP processing results
+   ☐ 4-MORPHISM (COHERENCE): Realize NLP blueprint: compose tokenization → semantic → modal; achieve 5X throughput/latency improvement
+   ☐ 3-MORPHISM (CONCRETE CODE): Add streaming tokenizer in WebWorker with backpressure-aware channels (Push↔Pull)
+   ☐ 3-MORPHISM (CONCRETE CODE): Implement semantic cache keyed by doc hash; cache hits bypass modal evaluation (Limits↔Colimits)
+   ☐ 3-MORPHISM (CONCRETE CODE): Wire modal evaluator outputs into renderer messages; add contract tests (Coherence)
+     ☐ 0-MORPHISM (EXISTENCE): Semantic to modal logic transfer exists
+     ☐ 1-MORPHISM (TRANSFORMATION): Verify semantic to modal logic data flow
+     ☐ 0-MORPHISM (EXISTENCE): Modal to logical processor integration exists
+     ☐ 1-MORPHISM (TRANSFORMATION): Verify modal to logical processor connection
+     ☐ 0-MORPHISM (EXISTENCE): Logical to renderer feedback loop exists
+     ☐ 1-MORPHISM (TRANSFORMATION): Verify renderer receives logical processor data
+     ☐ 0-MORPHISM (EXISTENCE): Truth-driven unified renderer exists
+     ☐ 1-MORPHISM (TRANSFORMATION): Unify E8, Chladni, particles into single system
+     ☐ 2-MORPHISM (REFINEMENT): Remove ALL Math.random/sin from rendering
+     ☐ 0-MORPHISM (EXISTENCE): UI controls as natural transformations exist
+     ☐ 1-MORPHISM (TRANSFORMATION): Make UI controls modify functors not parameters
+     ☐ 2-MORPHISM (REFINEMENT): Fix Point Count to control Chladni sharpness
+     ☐ 2-MORPHISM (REFINEMENT): Add HSL color control sliders for Chladni
+     ☐ 2-MORPHISM (REFINEMENT): Fix or remove dead Particles toggle
+     ☐ 0-MORPHISM (EXISTENCE): Professional naming convention exists
+   ☐ 5-MORPHISM (GOVERNANCE): Enforce naming via lint rules and CI checks; define canonical prefixes/suffixes (Left↔Right adjoint)
+     ☐ 0-MORPHISM (EXISTENCE): Panel layout system exists
+   ☐ 4-MORPHISM (COHERENCE): Panel layout constraints compose (grid + snap + z-index) to forbid overlap
+     ☐ 2-MORPHISM (REFINEMENT): Add snap-to-grid for panel dragging
+     ☐ 2-MORPHISM (REFINEMENT): Fix ugly tab styling - remove colored borders
+● Update Todos
+  ⎿  ☒ 0-MORPHISM: Worker/GPU hybrid architecture exists
+     ☒ 1-MORPHISM: Extend MathematicalWorker to use GPU compute
+     ☒ 2-MORPHISM: Create WebGL compute shader infrastructure
+     ☒ 3-MORPHISM: Add GPU compute methods with error handling
+     ☒ 4-MORPHISM (COHERENCE): GPU/CPU automatic fallback paths work
+     ☒ 0-MORPHISM: Double buffering system exists
+     ☒ 1-MORPHISM: Implement frame sync Worker↔GPU↔Renderer
+     ☒ 2-MORPHISM: Reduce file size by removing excessive comments
+     ☒ 2-MORPHISM: Remove banner-style comment blocks
+     ☒ 3-MORPHISM: Delete deprecated/dead code sections
+     ☒ 3-MORPHISM: Consolidate verbose multi-line comments to single lines
+     ☒ 4-MORPHISM (COHERENCE): Verify file size reduced by >30%
+     ☒ 2-MORPHISM: Remove all emoji from code
+     ☐ 3-MORPHISM: FIX THE SYNTAX ERROR IN KEATS_V5.HTML IMMEDIATELY
+     ☐ 1-MORPHISM: Rename unprofessional names systematically
+     ☐ 1-MORPHISM: Fix panel overlap
+     ☐ ∞-GROUPOID: All math computation MUST go through WebWorker system
+     ☐ ∞-GROUPOID: No race conditions in initialization sequences
+     ☐ ∞-GROUPOID: No DRY violations - single source of truth
+     ☐ ∞-GROUPOID: Proper error handling and resource cleanup
+     ☐ ∞-GROUPOID: Deterministic rendering - no Math.random() in render loop
+     ☐ ∞-GROUPOID: HCT/MATH FORMALISM NEVER IN CODE/COMMENTS - SOBER PROFESSIONALISM ONLY
+     ☐ 0-MORPHISM: ScientificDebugger class exists with constructor
+     ☐ 2-MORPHISM: Get debug-console, debug-output, debug-toggle DOM elements
+     ☐ 2-MORPHISM: Initialize errorCount and warningCount to 0
+     ☐ 2-MORPHISM: Create logs array with maxLogs = 1000
+     ☐ 2-MORPHISM: Create perfStats object with fps, frameTime, lastTime
+     ☐ 2-MORPHISM: Add fpsHistory array of 60 frames for averaging
+     ☐ 2-MORPHISM: Add gpuMemory, drawCalls, triangles, jsHeap to perfStats
+     ☐ 2-MORPHISM: Create perfElements cache object with null initialization
+     ☐ 2-MORPHISM: Build errorPatterns knowledge base object
+     ☐ 3-MORPHISM: Add undefined_variable pattern with regex and diagnosis
+     ☐ 3-MORPHISM: Add toFixed pattern with causes array and solutions array
+     ☐ 3-MORPHISM: Add Cannot read properties pattern with 4 causes
+     ☐ 3-MORPHISM: Add is not a function pattern with 4 specific solutions
+     ☐ 2-MORPHISM: Initialize lastClickTime as null
+     ☐ 2-MORPHISM: Initialize lastSliderChange as null
+     ☐ 2-MORPHISM: Initialize lastMousePosition as null
+     ☐ 1-MORPHISM: Call setupErrorHandlers in constructor
+     ☐ 1-MORPHISM: Call setupInteractionTracking in constructor
+     ☐ 3-MORPHISM: Log system initialization with platform and browser info
+     ☐ 1-MORPHISM: Create setupInteractionTracking method
+     ☐ 3-MORPHISM: Add document click listener storing Date.now()
+     ☐ 3-MORPHISM: Add input listener for range sliders capturing name/value/timestamp
+     ☐ 3-MORPHISM: Add mousemove listener updating x,y coordinates
+     ☐ 1-MORPHISM: Create setupErrorHandlers method
+     ☐ 3-MORPHISM: Add window error event with capture phase true
+     ☐ 3-MORPHISM: Call handleErrorWithFullContext with all params
+     ☐ 3-MORPHISM: Add preventDefault and return true to suppress console
+     ☐ 3-MORPHISM: Add unhandledrejection listener for promises
+     ☐ 3-MORPHISM: Add PerformanceObserver for operations >100ms
+     ☐ 1-MORPHISM: Create handleErrorWithFullContext method
+     ☐ 3-MORPHISM: Increment errorCount in handleError
+     ☐ 3-MORPHISM: Call analyzeError for full analysis
+     ☐ 3-MORPHISM: Call displayError with analysis
+     ☐ 3-MORPHISM: Update UI button with error count
+     ☐ 3-MORPHISM: Auto-show debug console on error
+     ☐ 1-MORPHISM: Create analyzeError method - THE CORE
+     ☐ 3-MORPHISM: Loop through errorPatterns for regex match
+     ☐ 3-MORPHISM: Call analyzeCallStack for frame analysis
+     ☐ 3-MORPHISM: Call captureState for full snapshot
+     ☐ 3-MORPHISM: Call traceErrorCause to build event sequence
+     ☐ 3-MORPHISM: Call generateSolutions with ALL context
+     ☐ 3-MORPHISM: Call getErrorImpact for severity assessment
+     ☐ 3-MORPHISM: Return object with timestamp, error, pattern, stack, state, chain, solutions, impact
+     ☐ 1-MORPHISM: Create analyzeCallStack method
+     ☐ 3-MORPHISM: Parse stack with regex for function/file/line/column
+     ☐ 3-MORPHISM: Filter frames for update/render/calculate/init transitions
+     ☐ 3-MORPHISM: Return frames, transitions, depth, summary with arrow chain
+     ☐ 1-MORPHISM: Create captureState method for comprehensive snapshot
+     ☐ 3-MORPHISM: Capture window.app with currentModel, time, parameters
+     ☐ 3-MORPHISM: Capture isUpdating, experimentalDataCount, axisConfig
+     ☐ 3-MORPHISM: Capture DOM readyState and activeElement
+     ☐ 3-MORPHISM: Loop critical elements checking existence, type, value, disabled, checked
+     ☐ 3-MORPHISM: Capture performance.memory in MB format
+     ☐ 3-MORPHISM: Capture timing metrics domContentLoaded, loadComplete
+     ☐ 3-MORPHISM: Capture lastClick as ISO timestamp
+     ☐ 3-MORPHISM: Capture lastSliderChange object
+     ☐ 3-MORPHISM: Capture mousePosition coordinates
+     ☐ 1-MORPHISM: Create traceErrorCause causal chain builder
+     ☐ 3-MORPHISM: Add USER_INPUT to chain if slider changed
+     ☐ 3-MORPHISM: Add FUNCTION_CALL for each transition
+     ☐ 3-MORPHISM: Add DATA_FLOW for toFixed errors
+     ☐ 3-MORPHISM: Add final ERROR with message and location
+     ☐ 1-MORPHISM: Create generateSolutions with THREE systems
+     ☐ 3-MORPHISM: Add PATTERN-BASED solutions with 0.9 confidence
+     ☐ 3-MORPHISM: Add STATE-BASED solutions with 0.8 confidence
+     ☐ 3-MORPHISM: Add CAUSAL-CHAIN solutions with 0.7 confidence
+     ☐ 1-MORPHISM: Create getErrorImpact method
+     ☐ 3-MORPHISM: Assess severity as LOW/MEDIUM/HIGH/CRITICAL
+     ☐ 3-MORPHISM: Determine userImpact on functionality
+     ☐ 3-MORPHISM: Determine systemImpact cascading effects
+     ☐ 3-MORPHISM: Check if app not initialized sets CRITICAL
+     ☐ 1-MORPHISM: Create displayError visual report method
+     ☐ 3-MORPHISM: Clear previous error reports
+     ☐ 3-MORPHISM: Create styled div with gradient and shadow
+     ☐ 3-MORPHISM: Display ERROR section with message and location
+     ☐ 3-MORPHISM: Display INSTANT DIAGNOSIS if pattern matched
+     ☐ 3-MORPHISM: Display CAUSAL CHAIN with numbered steps
+     ☐ 3-MORPHISM: Display IMPACT ASSESSMENT with severity colors
+     ☐ 3-MORPHISM: Display SOLUTIONS grouped by category with confidence
+     ☐ 3-MORPHISM: Display STATE SNAPSHOT in formatted JSON
+     ☐ 1-MORPHISM: Create initPerformanceMonitoring method
+     ☐ 3-MORPHISM: Cache DOM elements with defensive null checks
+     ☐ 1-MORPHISM: Create startPerformanceLoop with RAF
+     ☐ 1-MORPHISM: Create updatePerformanceMetrics method
+     ☐ 3-MORPHISM: Calculate FPS with 60-frame average
+     ☐ 3-MORPHISM: Color code FPS based on performance
+     ☐ 3-MORPHISM: Get GPU draw calls and triangle counts
+     ☐ 3-MORPHISM: Calculate GPU memory estimates
+     ☐ 3-MORPHISM: Monitor JS heap usage percentage
+     ☐ 3-MORPHISM: Color warn if heap usage high
+     ☐ 1-MORPHISM: Setup DOMContentLoaded listener
+     ☐ 3-MORPHISM: Add debug-toggle click listener
+     ☐ 3-MORPHISM: Add debug-clear click listener
+     ☐ 3-MORPHISM: Add debug-export click listener
+     ☐ 3-MORPHISM: Add debug-hide click listener
+     ☐ 2-MORPHISM: Add keyboard shortcut for P probe mode
+     ☐ 2-MORPHISM: Add keyboard shortcut for M moisture toggle
+     ☐ 2-MORPHISM: Add keyboard shortcut for T thermal toggle
+     ☐ 2-MORPHISM: Add keyboard shortcut for Space pause/resume
+     ☐ 2-MORPHISM: Add keyboard shortcut for R reset camera
+     ☐ 2-MORPHISM: Add keyboard shortcut for H help toggle
+     ☐ 2-MORPHISM: Add keyboard shortcut for ESC exit probe
+     ☐ 0-MORPHISM: NotificationSystem class exists
+     ☐ 1-MORPHISM: Create show method with type and duration
+     ☐ 1-MORPHISM: Create error method with enhanced context
+     ☐ 1-MORPHISM: Create success method
+     ☐ 4-MORPHISM (COHERENCE): Integrate all debug subsystems seamlessly
+     ☐ 2-MORPHISM: Fix jittery visuals via timing (Push↔Pull)
+     ☐ 3-MORPHISM: Add requestAnimationFrame coordination
+     ☐ 4-MORPHISM (COHERENCE): Verify 60fps with no drops
+     ☐ 0-MORPHISM: TypeSystem class exists in WebWorker
+     ☐ 0-MORPHISM: Semantic tree structure exists in WebWorker
+     ☐ 0-MORPHISM: Lambda calculus evaluator exists in WebWorker
+     ☐ 1-MORPHISM: Build token→tree→semantic pipeline
+     ☐ 2-MORPHISM: Cache intermediate results (hash→semantic)
+     ☐ 3-MORPHISM: Add streaming tokenizer with backpressure
+     ☐ 4-MORPHISM (COHERENCE): Compose NLP cleanly for 5X speedup
+     ☐ 5-MORPHISM (GOVERNANCE): Version NLP API for compatibility
+     ☐ 0-MORPHISM: RiemannianManifold class exists in WebWorker
+     ☐ 0-MORPHISM: Geodesic solver exists in WebWorker
+     ☐ 0-MORPHISM: Christoffel symbol computer exists in WebWorker
+     ☐ 1-MORPHISM: Implement manifold↔renderer data flow
+     ☐ 2-MORPHISM: GPU-accelerate tensor computations
+     ☐ 3-MORPHISM: Add automatic differentiation
+     ☐ 4-MORPHISM (COHERENCE): Verify mathematical consistency
+     ☐ 0-MORPHISM: Modal logic evaluation engine exists
+     ☐ 0-MORPHISM: Kripke semantics structure exists
+     ☐ 1-MORPHISM: Implement modal operator evaluation
+     ☐ 2-MORPHISM: Optimize with memoization
+     ☐ 3-MORPHISM: Add Box/Diamond/Epistemic operators
+     ☐ 4-MORPHISM (COHERENCE): Ensure modal↔semantic coherence
+     ☐ 0-MORPHISM: Truth-driven unified renderer exists
+     ☐ 1-MORPHISM: Unify E8/Chladni/particles pipeline
+     ☐ 2-MORPHISM: Remove Math.random - use deterministic noise
+     ☐ 3-MORPHISM: Implement single render() with modes
+     ☐ 4-MORPHISM (COHERENCE): Verify visual coherence
+     ☐ 5-MORPHISM (GOVERNANCE): Performance budget 16ms/frame
+     ☐ 0-MORPHISM: UI controls as functors exist
+     ☐ 1-MORPHISM: Make controls modify functors not parameters
+     ☐ 2-MORPHISM: Fix Point Count→Chladni mapping
+     ☐ 2-MORPHISM: Add HSL color sliders
+     ☐ 3-MORPHISM: Implement functor modification logic
+     ☐ 4-MORPHISM (COHERENCE): UI changes compose cleanly
+     ☐ 0-MORPHISM: Professional naming convention exists
+     ☐ 5-MORPHISM (GOVERNANCE): Enforce via lint rules
+     ☐ 0-MORPHISM: Panel layout constraint system exists
+     ☐ 2-MORPHISM: Add snap-to-grid 10px
+     ☐ 4-MORPHISM (COHERENCE): Grid+snap+z compose forbid overlap

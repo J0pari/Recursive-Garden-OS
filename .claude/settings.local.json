@@ -51,7 +51,9 @@
       "Bash(awk:*)",
       "Bash(test:*)",
       "Bash(head:*)",
-      "Bash(git fsck:*)"
+      "Bash(git fsck:*)",
+      "Bash(start chrome \"file:///C:/Recursive Garden OS/docs/keats_v5.html\")",
+      "Bash(git fetch:*)"
     ],
     "deny": []
   }

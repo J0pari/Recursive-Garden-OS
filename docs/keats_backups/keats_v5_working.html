@@ -252,13 +252,15 @@
             }
         }
 
-            /** ┌─────────────────────────────────────────────────────────────────────────┐
-             * │  updateMetrics: Visual Debug Information Display                       │
-             * │  SIMPLIFICATION: Basic DOM updates, not real-time profiling           │
-             * └─────────────────────────────────────────────────────────────────────────┘ */
-            updateMetrics() {
-                this.updateElementDisplay('elementCount', this.scene.children.length);
-            }
+        /* ─────────────────────────────────────────────────────────────────────────── 
+         * PANEL INTERACTION COMPONENTS: Headers, Titles, and Controls
+         * ─────────────────────────────────────────────────────────────────────────── */
+
+        /* Panel header: Interactive title bar with collapse/expand functionality */
+        .panel-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid hsla(255 255 255 / 0.10);
+            display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
@@ -931,42 +933,266 @@
             }
         }
         
-    #debug-console { position: fixed; bottom: 60px; right: 20px; width: 420px; max-height: 360px; background: rgba(0,0,0,0.9); border: 1px solid #333; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #ddd; display: none; flex-direction: column; z-index: 100000 }
-    #debug-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #333 }
-    #debug-title { font-weight: 600; font-size: 12px; color: #ddd }
-    #debug-controls button { background: #1e1e1e; color: #ddd; border: 1px solid #333; padding: 4px 8px; margin-left: 6px; border-radius: 4px; cursor: pointer; font-size: 11px }
-    #debug-controls button:hover { background: #2a2a2a }
-    #debug-output { flex: 1; overflow-y: auto; padding: 8px 12px; line-height: 1.4 }
-    #debug-perf-panel { display: flex; gap: 12px; flex-wrap: wrap; padding: 8px 12px; border-top: 1px solid #333 }
-    .perf-item { font-size: 11px; color: #aaa }
-    .perf-item span { color: #8fda8f; font-weight: 600 }
-    .debug-entry { margin: 2px 0; padding: 2px 4px; border-radius: 3px }
-    .debug-system { color: #7fc7ff }
-    .debug-info { color: #ddd }
-    .debug-warning { color: #ffdd7f; background: rgba(255,220,100,0.1) }
-    .debug-error { color: #ff8f8f; background: rgba(255,100,100,0.12); font-weight: 600 }
-    .debug-success { color: #8fda8f; background: rgba(100,255,100,0.08) }
-    .debug-time { color: #9e8fff; font-size: 10px }
-    #debug-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 100000; background: #1e1e1e; color: #ddd; border: 1px solid #333; padding: 8px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer }
-    #debug-toggle.has-errors { border-color: #a33; color: #f88 }
-    .notification { position: fixed; top: 20px; right: 20px; min-width: 300px; max-width: 500px; padding: 12px 16px; background: rgba(0,0,0,0.9); border: 1px solid #333; border-radius: 8px; font-family: 'JetBrains Mono', monospace; color: #ddd; z-index: 100001; opacity: 0; transform: translateX(400px); transition: all 0.3s ease-out; pointer-events: none }
-    .notification.show { opacity: 1; transform: translateX(0); pointer-events: all }
-    .notification.error { border-color: #a33; color: #f88 }
-    .notification.success { border-color: #2f7; color: #9f9 }
-    #notification-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #ddd }
-    #notification-message { font-size: 12px; color: #ccc; line-height: 1.4 }
-    .error-report { margin: 10px 0; animation: slide-in 0.3s ease-out }
-    @keyframes slide-in { from { opacity: 0; transform: translateX(-20px) } to { opacity: 1; transform: translateX(0) } }
+        /* ═══════════════════════════════════════════════════════════════════════════
+           DEBUG CONSOLE STYLES - Mathematical Topos Error Analysis System
+           ═══════════════════════════════════════════════════════════════════════════ */
+        
+        #debug-console {
+            position: fixed;
+            bottom: 60px;
+            right: 20px;
+            width: 600px;
+            max-height: 500px;
+            background: linear-gradient(135deg, 
+                hsla(250, 80%, 5%, 0.95),
+                hsla(280, 70%, 8%, 0.95));
+            border: 2px solid hsla(270, 100%, 60%, 0.8);
+            border-radius: 12px;
+            box-shadow: 
+                0 0 40px hsla(270, 100%, 60%, 0.4),
+                0 10px 30px hsla(0, 0%, 0%, 0.8);
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 11px;
+            z-index: 100000;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        
+        #debug-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: hsla(270, 60%, 20%, 0.5);
+            border-bottom: 1px solid hsla(270, 100%, 60%, 0.3);
+            border-radius: 10px 10px 0 0;
+        }
+        
+        #debug-title {
+            color: hsla(270, 100%, 80%, 1);
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        #debug-controls button {
+            background: hsla(270, 60%, 30%, 0.6);
+            color: hsla(0, 0%, 90%, 1);
+            border: 1px solid hsla(270, 100%, 60%, 0.4);
+            padding: 4px 10px;
+            margin-left: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+        
+        #debug-controls button:hover {
+            background: hsla(270, 60%, 40%, 0.8);
+            border-color: hsla(270, 100%, 70%, 0.6);
+            box-shadow: 0 0 10px hsla(270, 100%, 60%, 0.3);
+        }
+        
+        #debug-output {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            color: hsla(0, 0%, 85%, 1);
+            line-height: 1.4;
+            max-height: 350px;
+        }
+        
+        #debug-output::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #debug-output::-webkit-scrollbar-track {
+            background: hsla(270, 60%, 10%, 0.3);
+        }
+        
+        #debug-output::-webkit-scrollbar-thumb {
+            background: hsla(270, 60%, 40%, 0.6);
+            border-radius: 4px;
+        }
+        
+        #debug-perf-panel {
+            display: flex;
+            justify-content: space-around;
+            padding: 8px;
+            background: hsla(270, 60%, 15%, 0.5);
+            border-top: 1px solid hsla(270, 100%, 60%, 0.3);
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .perf-item {
+            color: hsla(0, 0%, 70%, 1);
+            font-size: 10px;
+        }
+        
+        .perf-item span {
+            color: hsla(120, 100%, 70%, 1);
+            font-weight: 600;
+        }
+        
+        /* Debug entry types */
+        .debug-entry {
+            margin: 2px 0;
+            padding: 3px 5px;
+            border-radius: 3px;
+            word-wrap: break-word;
+        }
+        
+        .debug-system {
+            color: hsla(200, 100%, 70%, 1);
+        }
+        
+        .debug-info {
+            color: hsla(0, 0%, 80%, 1);
+        }
+        
+        .debug-warning {
+            color: hsla(40, 100%, 70%, 1);
+            background: hsla(40, 100%, 20%, 0.2);
+        }
+        
+        .debug-error {
+            color: hsla(0, 100%, 70%, 1);
+            background: hsla(0, 100%, 20%, 0.3);
+            font-weight: 600;
+        }
+        
+        .debug-success {
+            color: hsla(120, 100%, 70%, 1);
+            background: hsla(120, 100%, 20%, 0.2);
+        }
+        
+        .debug-time {
+            color: hsla(270, 60%, 60%, 1);
+            font-size: 9px;
+        }
+        
+        /* Debug toggle button */
+        #debug-toggle {
+            background: linear-gradient(135deg,
+                hsla(270, 80%, 30%, 0.9),
+                hsla(290, 70%, 25%, 0.9));
+            color: white;
+            border: 2px solid hsla(270, 100%, 60%, 0.6);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px hsla(270, 100%, 40%, 0.4);
+        }
+        
+        #debug-toggle:hover {
+            background: linear-gradient(135deg,
+                hsla(270, 80%, 40%, 0.95),
+                hsla(290, 70%, 35%, 0.95));
+            border-color: hsla(270, 100%, 70%, 0.8);
+            box-shadow: 0 6px 25px hsla(270, 100%, 50%, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        #debug-toggle.has-errors {
+            background: linear-gradient(135deg,
+                hsla(0, 80%, 30%, 0.9),
+                hsla(10, 70%, 25%, 0.9));
+            border-color: hsla(0, 100%, 60%, 0.8);
+            animation: pulse-error 2s infinite;
+        }
+        
+        @keyframes pulse-error {
+            0%, 100% { box-shadow: 0 4px 15px hsla(0, 100%, 50%, 0.4); }
+            50% { box-shadow: 0 4px 30px hsla(0, 100%, 50%, 0.8); }
+        }
+        
+        /* Notification system */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            min-width: 300px;
+            max-width: 500px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg,
+                hsla(250, 80%, 10%, 0.95),
+                hsla(280, 70%, 15%, 0.95));
+            border: 2px solid hsla(270, 100%, 60%, 0.6);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px hsla(0, 0%, 0%, 0.8);
+            font-family: 'JetBrains Mono', monospace;
+            color: white;
+            z-index: 100001;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.3s ease-out;
+            pointer-events: none;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+        
+        .notification.error {
+            border-color: hsla(0, 100%, 60%, 0.8);
+            background: linear-gradient(135deg,
+                hsla(0, 80%, 10%, 0.95),
+                hsla(10, 70%, 15%, 0.95));
+        }
+        
+        .notification.success {
+            border-color: hsla(120, 100%, 60%, 0.8);
+            background: linear-gradient(135deg,
+                hsla(120, 80%, 10%, 0.95),
+                hsla(130, 70%, 15%, 0.95));
+        }
+        
+        #notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: hsla(270, 100%, 80%, 1);
+        }
+        
+        #notification-message {
+            font-size: 12px;
+            color: hsla(0, 0%, 85%, 1);
+            line-height: 1.4;
+        }
+        
+        /* Error report styling */
+        .error-report {
+            margin: 10px 0;
+            animation: slide-in 0.3s ease-out;
+        }
+        
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="debug-console">
+    <!-- Debug Console HTML Elements -->
+    <div id="debug-console" style="display: none;">
         <div id="debug-header">
             <span id="debug-title">KEATS Topos Debugger</span>
             <div id="debug-controls">
-                <button id="debug-clear" title="Clear console output">Clear log</button>
-                <button id="debug-export" title="Download console output">Export log</button>
-                <button id="debug-hide" title="Hide debugger">Hide</button>
+                <button id="debug-clear">Clear</button>
+                <button id="debug-export">Export</button>
+                <button id="debug-hide">Hide</button>
             </div>
         </div>
         <div id="debug-output"></div>
@@ -979,8 +1205,15 @@
             <div class="perf-item">Heap: <span id="js-heap">--</span></div>
         </div>
     </div>
-    <button id="debug-toggle" title="Show/hide debugger">Debugger</button>
     
+    <!-- Debug Toggle Button (always visible, bottom right) -->
+    <button id="debug-toggle" 
+            onclick="var c=document.getElementById('debug-console'); if(c){c.style.display=c.style.display==='none'?'block':'none'}else{alert('Debug console not found')}"
+            style="position: fixed; bottom: 20px; right: 20px; z-index: 100000; background: linear-gradient(135deg, hsla(270, 80%, 30%, 0.9), hsla(290, 70%, 25%, 0.9)); color: white; border: 2px solid hsla(270, 100%, 60%, 0.6); padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer;">
+        Debug
+    </button>
+    
+    <!-- Notification System -->
     <div id="notification" class="notification">
         <div id="notification-title"></div>
         <div id="notification-message"></div>
@@ -1005,12 +1238,35 @@
         </div>
         <div class="panel-content">
 
-            <div class="control-group">
-                <div class="control-label">
-                    <span>Manifold Amplitude</span>
-                    <span class="control-value" id="curvatureValue">1.0</span>
+            <div class="metrics-grid">
+                <div class="metric-card" onclick="focusMetric('elements')">
+                    <div class="metric-label">3D Objects</div>
+                    <div class="metric-value" id="elementCount">0</div>
                 </div>
-                <input type="range" class="field-slider" id="curvature" min="0.1" max="8.0" value="1.0" step="0.1">
+                <div class="metric-card" onclick="focusMetric('fps')">
+                    <div class="metric-label">Frame Rate</div>
+                    <div class="metric-value" id="fpsCounter">0</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('calcs')">
+                    <div class="metric-label">Calcs/Sec</div>
+                    <div class="metric-value" id="calcsPerSecond">0</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('memory')">
+                    <div class="metric-label">Memory</div>
+                    <div class="metric-value" id="memoryUsage">0MB</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('gpu')">
+                    <div class="metric-label">GPU Load</div>
+                    <div class="metric-value" id="gpuUtilization">0%</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('curvature')">
+                    <div class="metric-label">Shape Factor</div>
+                    <div class="metric-value" id="manifoldCurvature">1.000</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('euler')">
+                    <div class="metric-label">Euler χ</div>
+                    <div class="metric-value" id="eulerCharacteristic">2</div>
+                </div>
             </div>
 
 
@@ -1020,6 +1276,15 @@
                     <span class="control-value" id="particleDensityValue">5000</span>
                 </div>
                 <input type="range" class="field-slider" id="particleDensity" min="1000" max="15000" value="5000" step="250">
+            </div>
+
+
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Shape Deform</span>
+                    <span class="control-value" id="curvatureValue">1.0</span>
+                </div>
+                <input type="range" class="field-slider" id="curvature" min="0.1" max="8.0" value="1.0" step="0.1">
             </div>
 
 
@@ -1054,36 +1319,10 @@
             </div>
 
 
-            <button class="function-button" onclick="toggleAnimation()" title="Toggle animation">Play/Pause</button>
-            <button class="function-button" onclick="regenerateGeometry()" title="Regenerate particle layout">New layout</button>
-            <button class="function-button secondary" onclick="explodeParticles()" title="Temporarily scatter particles">Scatter</button>
-            <button class="function-button" onclick="showHelp()" style="background: #059669;" title="Open help">Help</button>
-            <div class="metrics-grid">
-                <div class="metric-card" onclick="focusMetric('elements')">
-                    <div class="metric-label">3D Objects</div>
-                    <div class="metric-value" id="elementCount">0</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('fps')">
-                    <div class="metric-label">Frame Rate</div>
-                    <div class="metric-value" id="fpsCounter">0</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('calcs')">
-                    <div class="metric-label">Calcs/Sec</div>
-                    <div class="metric-value" id="calcsPerSecond">0</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('memory')">
-                    <div class="metric-label">Memory</div>
-                    <div class="metric-value" id="memoryUsage">0MB</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('gpu')">
-                    <div class="metric-label">GPU Load</div>
-                    <div class="metric-value" id="gpuUtilization">0%</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('tris')">
-                    <div class="metric-label">Triangles</div>
-                    <div class="metric-value" id="triangleCount">0</div>
-                </div>
-            </div>
+            <button class="function-button" onclick="toggleAnimation()" title="Start or pause the animation">Start/Pause</button>
+            <button class="function-button" onclick="regenerateGeometry()" title="Create a new particle layout">New Layout</button>
+            <button class="function-button secondary" onclick="explodeParticles()" title="Briefly spread particles out">Scatter Particles</button>
+            <button class="function-button" onclick="showHelp()" style="background: #059669;" title="Show a quick guide">Help</button>
         </div>
     </div>
 
@@ -1137,16 +1376,16 @@
             </div>
 
 
-            <button class="function-button" onclick="triggerModalTransfer()" title="Send text to analyzer">Send to analyzer</button>
-            <button class="function-button" onclick="computeSemantics()" title="Compute text features">Extract features</button>
-            <button class="function-button secondary" onclick="clearContext()" title="Clear input">Clear</button>
+            <button class="function-button" onclick="triggerModalTransfer()" title="Send your text to the math analyzer">Process Text</button>
+            <button class="function-button" onclick="computeSemantics()" title="Detect patterns in your text">Detect Patterns</button>
+            <button class="function-button secondary" onclick="clearContext()" title="Start fresh with empty text">Clear Text</button>
             
 
             <div style="margin-top: 18px;">
                 <textarea 
                     class="text-input-field" 
                     id="textInput" 
-                    placeholder="Enter text for analysis; the system will extract features and metrics."
+                    placeholder="Type anything here - a thought, a question, a poem. The garden will find the math in your words..."
                     spellcheck="true"
                     autocomplete="on"
                     autocorrect="on"
@@ -1176,6 +1415,24 @@
         </div>
         <div class="panel-content">
 
+            <div class="metrics-grid">
+                <div class="metric-card" onclick="focusMetric('paradoxes')">
+                    <div class="metric-label">Test Events</div>
+                    <div class="metric-value" id="paradoxCount">0</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('prime')">
+                    <div class="metric-label">P-adic Field</div>
+                    <div class="metric-value" id="currentPrime">Q₂</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('fisher')">
+                    <div class="metric-label">Math Value</div>
+                    <div class="metric-value" id="fisherInfo">0.000</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('betti')">
+                    <div class="metric-label">Math Array</div>
+                    <div class="metric-value" id="bettiNumbers">[1,0]</div>
+                </div>
+            </div>
 
 
             <div class="control-group">
@@ -1220,9 +1477,9 @@
                 </div>
 
                 <!-- Modal operation buttons -->
-                <button class="function-button" onclick="applyNecessity()" title="Increase edge weights">Increase edge weights</button>
-                <button class="function-button" onclick="applyPossibility()" title="Decrease edge weights">Decrease edge weights</button>
-                <button class="function-button transcendent" onclick="modalTransformation()" title="Apply global transform to all positions">Transform positions</button>
+                <button class="function-button" onclick="applyNecessity()" title="Increase connection strength">Increase Links</button>
+                <button class="function-button" onclick="applyPossibility()" title="Reduce connection strength">Reduce Links</button>
+                <button class="function-button transcendent" onclick="modalTransformation()" title="Apply a transformation to all particles">Transform Layout</button>
             </div>
         </div>
     </div>
@@ -1239,9 +1496,9 @@
         </div>
         <div class="panel-content">
             <!-- System operation controls -->
-            <button class="function-button transcendent" onclick="optimizeSystem()" title="Run performance optimizations">Optimize performance</button>
-            <button class="function-button" onclick="executeExportWithFeedback(this)" id="exportButton" title="Download system state as JSON">Export state</button>
-            <button class="function-button secondary" onclick="resetSystem()" title="Reset all components">Reset system</button>
+            <button class="function-button transcendent" onclick="optimizeSystem()" title="Increase performance">Speed Up</button>
+            <button class="function-button" onclick="executeExportWithFeedback(this)" id="exportButton">Save Data</button>
+            <button class="function-button secondary" onclick="resetSystem()">Reset All</button>
             
             <!-- Real-time system metrics display -->
             <div style="margin-top: 18px; padding: 14px; background: hsla(0 0 0 / 0.3); border-radius: 10px; font-size: 10px; line-height: 1.4;">
@@ -8510,7 +8767,23 @@
             console.log('Math init: ' + (navigator.hardwareConcurrency || 2) + ' cores');
         }
 
+        /* ═══════════════════════════════════════════════════════════════════════════
+         * MODULE: Performance-Truth Maximization Architecture
+         * PURPOSE: Unified computation pattern balancing performance with accuracy
+         * FOUNDATION: Web worker delegation, progressive complexity scaling
+         * PRINCIPLES: Device adaptation, intelligent caching, truth-level tracking
+         * CURRENT: Core infrastructure with mathematical integrity verification
+         * FUTURE: Enhanced device profiling, expanded worker specialization
+         * ═══════════════════════════════════════════════════════════════════════════ */
 
+        /* ───────────────────────────────────────────────────────────────────────────
+         * SUBMODULE: Performance-Truth Engine Core
+         * PURPOSE: Universal pattern for optimized mathematical computation
+         * APPROACH: Worker pools, device profiling, complexity scaling, caching
+         * PHILOSOPHY: Each computation reveals mathematical structure
+         * CURRENT: Basic infrastructure with truth-level tracking
+         * ENHANCEMENTS: Truth metrics, algorithmic honesty verification
+         * ─────────────────────────────────────────────────────────────────────────── */
         class PerformanceTruthMaximizationEngine {
             constructor(config = {}) {
                 this.config = {
@@ -8522,7 +8795,7 @@
                     ...config
                 };
                 
-
+                // Performance optimization infrastructure - WITH GRACEFUL FALLBACKS
                 try {
                     this.workerPool = new IntelligentWorkerPool(this.config.maxWorkers);
                 } catch (error) {
@@ -8564,7 +8837,7 @@
                     this.truthMetrics = { recordTruthRevelation: () => {}, recordCacheHit: () => {} };
                 }
 
-
+                // Mathematical integrity tracking - WITH GRACEFUL FALLBACKS
                 try {
                     this.algorithmicHonesty = new AlgorithmicHonestyTracker();
                 } catch (error) {
@@ -8608,12 +8881,15 @@
                 console.log('🚀 Performance-Truth Maximization Engine initialized with graceful fallbacks');
             }
             
-
+            /**
+             * UNIVERSAL COMPUTATION PATTERN: Maximum truth through optimal performance
+             * This pattern can be applied to ANY computational task in the system
+             */
             async computeWithMaximalTruth(computation) {
                 const taskId = this.generateTaskId(computation);
                 const device = this.deviceProfiler.getCapabilities();
                 
-
+                // Check cache for previous truth revelations
                 const cached = await this.computationCache.get(taskId, computation.truthLevel);
                 if (cached && cached.truthLevel >= computation.requestedTruthLevel) {
                     this.truthMetrics.recordCacheHit(cached.truthLevel);
@@ -8650,7 +8926,7 @@
                         throw new Error(`Mathematical integrity violation: ${integrity.violation}`);
                     }
                     
-
+                    // Enhance result with truth metrics
                     return {
                         ...result,
                         truthLevel: this.calculateTruthLevel(result, computation),
@@ -8718,6 +8994,9 @@
             }
         }
 
+        /* ───────────────────────────────────────────────────────────────────────────
+         * INTELLIGENT WORKER POOL: Self-Optimizing Parallel Computation
+         * ─────────────────────────────────────────────────────────────────────────── */
         class IntelligentWorkerPool {
             constructor(maxWorkers) {
                 this.maxWorkers = maxWorkers;
@@ -8822,6 +9101,9 @@
             }
         }
 
+        /* ───────────────────────────────────────────────────────────────────────────
+         * MATHEMATICAL CACHE: Truth-Preserving Intelligent Caching
+         * ─────────────────────────────────────────────────────────────────────────── */
         class MathematicalCache {
             constructor(strategy) {
                 this.strategy = strategy;
@@ -8881,7 +9163,9 @@
             }
         }
 
-
+        /* ───────────────────────────────────────────────────────────────────────────
+         * DEVICE CAPABILITY PROFILER: Adaptive Performance Optimization
+         * ─────────────────────────────────────────────────────────────────────────── */
         class DeviceCapabilityProfiler {
             constructor() {
                 this.capabilities = null;
@@ -8989,7 +9273,9 @@
             }
         }
 
-
+        /* ───────────────────────────────────────────────────────────────────────────
+         * PROGRESSIVE COMPLEXITY SCALER: Adaptive Mathematical Depth
+         * ─────────────────────────────────────────────────────────────────────────── */
         class ProgressiveComplexityScaler {
             constructor() {
                 this.scalingProfiles = new Map();
@@ -9078,7 +9364,9 @@
             }
         }
 
-
+        /* ───────────────────────────────────────────────────────────────────────────
+         * ADDITIONAL SUPPORTING CLASSES: Complete Architecture
+         * ─────────────────────────────────────────────────────────────────────────── */
 
         class TruthMaximizationMetrics {
             constructor() {
@@ -9185,7 +9473,51 @@
             mathematicalIntegrity: 'rigorous_verification'
         });
         
+        /* ═══════════════════════════════════════════════════════════════════════════
+         * MODULE: Semantic Analysis Engine
+         * PURPOSE: Natural language processing through algebraic geometry
+         * APPROACH: Text → schemes → cohomology → semantic understanding
+         * FOUNDATION: Grothendieck schemes, Noether invariants, p-adic completions
+         * CURRENT: Multi-dimensional linguistic analysis with consciousness fields
+         * FUTURE: Enhanced LLM integration, deeper sheaf-theoretic semantics
+         * ═══════════════════════════════════════════════════════════════════════════ */
 
+        /* ═══════════════════════════════════════════════════════════════════════════
+         * 🎭 GROTHENDIECK-NOETHER SEMANTIC ENGINE: Algebraic Geometry Inspired NLP
+         * ═══════════════════════════════════════════════════════════════════════════
+         * ARCHITECTURAL PARADIGM: Demonstrates the Performance-Truth Maximization pattern
+         * MATHEMATICAL FOUNDATION: Text as algebraic varieties, meaning as cohomology
+         * HYPERMODULARITY: Each computation method is reusable across all NLP tasks
+         * DRY PRINCIPLE: Zero duplication through intelligent mathematical abstraction
+         * 
+         * PERFORMANCE-TRUTH INTEGRATION:
+         * ✨ Web Worker delegation for heavy algebraic computations
+         * ✨ Progressive complexity scaling based on device capabilities  
+         * ✨ Intelligent caching of mathematical structures with truth levels
+         * ✨ Incremental revelation of deeper algebraic structure
+         * ✨ Mathematical integrity verification at every step
+         * 
+         * CORE MATHEMATICAL ARCHITECTURE:
+         * ✨ Text → Affine scheme Spec(R[words]/semantic_ideal)
+         * ✨ Meaning → Sheaf cohomology H^i(X, semantic_sheaf)
+         * ✨ P-adic analysis → Local semantic completions at primes
+         * ✨ E8 symmetry → Exceptional isomorphisms between semantic structures
+         * ✨ Modal logic → Étale fundamental group actions
+         * ✨ Understanding → Parallel transport on semantic fiber bundles
+         * 
+         * RENDERER SAFETY: Complete mathematical elegance with error isolation
+         * 
+         * CRITICAL ARCHITECTURE: ALL mathematical operations occur ONLY in WebWorkers
+         * ═══════════════════════════════════════════════════════════════════════════ */
+
+        /* ═══════════════════════════════════════════════════════════════════════════
+         * 🛡️ UNIVERSAL SYSTEM GUARDIAN: DRY Initialization & Architecture Enforcement
+         * ═══════════════════════════════════════════════════════════════════════════
+         * PURPOSE: Single source of truth for ALL system initialization
+         * ENFORCEMENT: WebWorker-only mathematics, rendering isolation, DRY compliance
+         * ARCHITECTURE: Universal fallback patterns, violation detection, self-healing
+         * REPLACEMENT: Eliminates all duplicated initialization patterns
+         * ═══════════════════════════════════════════════════════════════════════════ */
         class UniversalSystemGuardian {
             constructor() {
                 this.initializationPatterns = new Map();
@@ -9351,7 +9683,9 @@
         const systemGuardian = new UniversalSystemGuardian();
         window.systemGuardian = systemGuardian;
 
-
+        /* ───────────────────────────────────────────────────────────────────────────
+         * SUPPORTING CLASSES: Using Guardian patterns - NO MORE DUPLICATION
+         * ─────────────────────────────────────────────────────────────────────────── */
         class RateLimiter {
             constructor(maxRequests, timeWindow) {
                 this.maxRequests = maxRequests;
@@ -14291,6 +14625,8 @@
              * └─────────────────────────────────────────────────────────────────────────┘ */
             updateMetrics() {
                 this.updateElementDisplay('elementCount', this.scene.children.length);
+                this.updateElementDisplay('manifoldCurvature', this.manifoldCurvature.toFixed(3));
+                this.updateElementDisplay('eulerCharacteristic', this.topology.eulerCharacteristic);
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -14328,11 +14664,11 @@
                 }
                 
                 // GPU utilization estimation
-                const renderCalls = this.renderer.info.render.calls || 0;
+                const renderTime = this.renderer.info.render.calls || 0;
                 const triangles = this.renderer.info.render.triangles || 0;
-                const gpuEstimate = Math.min(100, Math.round((renderCalls * 2) + (triangles * 0.001) + (this.fps < 30 ? 30 : 0)));
+                const gpuEstimate = Math.min(100, Math.round((renderTime * 2) + (triangles * 0.001) + 
+                                            (this.fps < 30 ? 30 : 0)));
                 this.updateElementDisplay('gpuUtilization', `${gpuEstimate}%`);
-                this.updateElementDisplay('triangleCount', triangles);
                 
                 // Update object count
                 this.updateElementDisplay('elementCount', this.scene.children.length);
@@ -19933,43 +20269,43 @@
             `;
             
             helpPanel.innerHTML = `
-                <h2 style="color: #10b981; margin-bottom: 20px;">Controls and reference</h2>
+                <h2 style="color: #10b981; margin-bottom: 20px;">Welcome to the Consciousness Garden!</h2>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">3D visualization</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🗺️ 3D Visualization</h3>
                     <ul style="line-height: 1.8; margin-left: 20px;">
-                        <li><strong>Drag</strong> — rotate</li>
-                        <li><strong>Scroll</strong> — zoom</li>
-                        <li><strong>Double‑click</strong> — reset camera</li>
+                        <li><strong>Click and drag</strong> - Rotate the 3D view</li>
+                        <li><strong>Scroll</strong> - Zoom in and out</li>
+                        <li><strong>Double-click</strong> - Reset camera view</li>
                     </ul>
                 </div>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">Panels</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🎛️ The Three Gardens</h3>
                     <ul style="line-height: 1.8; margin-left: 20px;">
-                        <li><strong>Top‑left</strong> — particle field</li>
-                        <li><strong>Top‑right</strong> — text analysis</li>
-                        <li><strong>Bottom‑left</strong> — graph controls</li>
+                        <li><strong>Top Left</strong> - Watch particles dance (they're doing math!)</li>
+                        <li><strong>Top Right</strong> - Type your thoughts and see patterns emerge</li>
+                        <li><strong>Bottom Left</strong> - Play with the connections between ideas</li>
                     </ul>
                 </div>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">Quick start</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🚀 Try This First</h3>
                     <ol style="line-height: 1.8; margin-left: 20px;">
-                        <li>Use <strong>New layout</strong> to regenerate geometry</li>
-                        <li>Enter text, then <strong>Extract features</strong> or <strong>Analyze Text</strong></li>
-                        <li>Use <strong>Scatter</strong> to briefly separate particles</li>
-                        <li>All controls are non‑destructive; you can reset any time</li>
+                        <li>Click <strong>"New Pattern"</strong> to see different shapes</li>
+                        <li>Type anything in the text box and click <strong>"Find Patterns"</strong></li>
+                        <li>Click <strong>"Scatter"</strong> - watch the particles dance!</li>
+                        <li>Just play with buttons - nothing will break!</li>
                     </ol>
                 </div>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">What is shown</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">✨ What You're Seeing</h3>
                     <ul style="line-height: 1.8; margin-left: 20px;">
-                        <li><strong>Particles</strong> — positions in a synthetic field</li>
-                        <li><strong>Color</strong> — field/parameter encodings</li>
-                        <li><strong>Edges</strong> — graph connections</li>
-                        <li><strong>Motion</strong> — derived flow from current parameters</li>
+                        <li><strong>Flowing particles</strong> = Mathematical concepts in motion</li>
+                        <li><strong>Colors</strong> = Different P-adic field properties</li>
+                        <li><strong>Connections</strong> = Relationships between ideas</li>
+                        <li><strong>Movement</strong> = Information flow patterns</li>
                     </ul>
                 </div>
                 
@@ -19983,7 +20319,7 @@
                     cursor: pointer;
                     margin-top: 20px;
                     width: 100%;
-                ">Close</button>
+                ">Close Help</button>
             `;
             
             document.body.appendChild(helpPanel);
@@ -20805,6 +21141,7 @@ Screen: ${screen.width}x${screen.height}
                      * TECHNICAL: parseFloat conversion, toFixed formatting
                      * ─────────────────────────────────────────────────────────── */
                     const value = parseFloat(e.target.value);
+                    curvatureValue.textContent = value.toFixed(1);
                     updateSliderProgress(curvature, value, 0.1, 8.0);
                     
                     /* ───────────────────────────────────────────────────────────
@@ -23593,68 +23930,3 @@ Screen: ${screen.width}x${screen.height}
                 };
             }
         })(); // End of safety wrapper
-        (function(){
-            try{
-                if(!window.DEBUG){return}
-                const D=window.DEBUG
-                const now=()=>Date.now()
-                const clamp=(x,a,b)=>Math.max(a,Math.min(b,x))
-                const safeJson=(v)=>{try{return JSON.stringify(v)}catch(_){return '[unserializable]'}}
-                if(!D.ledger){D.ledger={events:[],morphisms:[],edges:[],errors:[],states:[],limits:{events:5000,morphisms:10000,errors:500}}}
-                const pushBounded=(arr,item,limit)=>{arr.push(item);if(arr.length>limit){arr.splice(0,arr.length-limit)}}
-                if(!D.morphisms){
-                    D.morphisms={
-                        _id:1,
-                        nodes:new Map(),
-                        edges:[],
-                        add:function(kind,data){const id=this._id++;const n={id,kind,data:data||{},t:now()};this.nodes.set(id,n);pushBounded(D.ledger.morphisms,n,D.ledger.limits.morphisms);return id},
-                        link:function(a,b,label){const e={a,b,label:label||'',t:now()};this.edges.push(e);pushBounded(D.ledger.edges,e,D.ledger.limits.morphisms);return e},
-                        path:function(a,b){const q=[a];const prev=new Map();const seen=new Set([a]);while(q.length){const x=q.shift();if(x===b)break;for(const e of this.edges){if(e.a===x&&!seen.has(e.b)){seen.add(e.b);prev.set(e.b,x);q.push(e.b)}}};if(!prev.has(b))return null;const out=[b];let cur=b;while(prev.has(cur)){cur=prev.get(cur);out.push(cur)}return out.reverse()},
-                        stats:function(){return{nodes:this.nodes.size,edges:this.edges.length,lastEdge:this.edges[this.edges.length-1]||null}}
-                    }
-                }
-                if(!D.causality){
-                    D.causality={
-                        causes:[],
-                        effects:[],
-                        link:function(cause,effect,meta){const r={cause,effect,meta:meta||{},t:now()};this.effects.push(r);pushBounded(this.causes,r,1000);return r},
-                        explain:function(analysis){const chain=[];if(analysis&&analysis.stack&&analysis.stack.frames){for(const f of analysis.stack.frames.slice(0,8)){chain.push({type:'frame',fn:f.function,file:f.file,line:f.line})}}const lastEvt=D.ledger.events[D.ledger.events.length-1]||null;const lastState=D.ledger.states[D.ledger.states.length-1]||null;return{event:lastEvt,state:lastState,stack:chain}}
-                    }
-                }
-                if(!D.optimizer){
-                    D.optimizer={
-                        gradientDescent:function(cfg){const p=Object.assign({},cfg.params||{});const keys=Object.keys(p);const step=cfg.step||0.01;const iters=cfg.iters||64;const bounds=cfg.bounds||{};const cost=cfg.cost;let best={params:Object.assign({},p),value:Infinity};for(let i=0;i<iters;i++){const g={};const base=cost(p);for(const k of keys){const eps=step;const old=p[k];p[k]=old+eps;const up=cost(p);p[k]=old-eps;const dn=cost(p);p[k]=old;g[k]=(up-dn)/(2*eps)}for(const k of keys){const lr=(cfg.lr&&cfg.lr[k])||step;p[k]=p[k]-lr*g[k];if(bounds[k]){const [lo,hi]=bounds[k];p[k]=clamp(p[k],lo,hi)}}const v=cost(p);if(v<best.value){best={params:Object.assign({},p),value:v}}}return best}
-                    }
-                }
-                if(!D.cache){
-                    D.cache=function(name,fn,keyer){const store=new Map();return function(){const key=keyer?keyer.apply(this,arguments):safeJson(Array.from(arguments));if(store.has(key))return store.get(key);const v=fn.apply(this,arguments);store.set(key,v);return v}}
-                }
-                if(!D.truthLedger){
-                    D.truthLedger={
-                        entries:[],
-                        record:function(s){const e={t:now(),s:Object.assign({},s)};pushBounded(this.entries,e,2000);return e},
-                        latest:function(){return this.entries[this.entries.length-1]||null}
-                    }
-                }
-                if(!D.recordState){
-                    D.recordState=function(){try{const s=D.getTruthfulStatus();D.truthLedger.record(s);pushBounded(D.ledger.states,{t:now(),s},2000)}catch(_){}}
-                }
-                if(!D.instrumented){
-                    D.instrumented=true
-                    try{
-                        const origAdd=EventTarget.prototype.addEventListener
-                        EventTarget.prototype.addEventListener=function(type,listener,opts){const wrap=function(ev){try{pushBounded(D.ledger.events,{t:now(),type,src:ev&&ev.target&&((ev.target.id)||ev.target.tagName)||'unknown'},D.ledger.limits.events)}catch(_){};return listener&&listener.call(this,ev)};return origAdd.call(this,type,wrap,opts)}
-                    }catch(_){}
-                    try{setInterval(D.recordState,500)}catch(_){}}
-                if(!window.debug)window.debug={}
-                window.debug.morphismAdd=function(kind,data){return D.morphisms.add(kind,data)}
-                window.debug.morphismLink=function(a,b,label){return D.morphisms.link(a,b,label)}
-                window.debug.morphismStats=function(){return D.morphisms.stats()}
-                window.debug.causalExplain=function(){try{const a={stack:D.analyzeCallStack((new Error()).stack)};return D.causality.explain(a)}catch(e){return{error:String(e)}}}
-                window.debug.optimize=function(cfg){return D.optimizer.gradientDescent(cfg)}
-                window.debug.cache=function(name,fn,keyer){return D.cache(name,fn,keyer)}
-                window.debug.truth=function(){return D.getTruthfulStatus()}
-                window.debug.snapshot=function(){try{return{t:now(),status:D.getTruthfulStatus(),keats:D.keatsMetrics||{},monitor:D.monitoringTargets||{},events:D.ledger.events.slice(-10),morphisms:D.morphisms.stats()}}catch(e){return{error:String(e)}}}
-                try{D.log('system','Debugger upgrades loaded') }catch(_){ }
-            }catch(e){try{console.warn('Debugger upgrade failed',e)}catch(_){} }
-        })()

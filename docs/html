@@ -1,0 +1,982 @@
+class ScientificDebugger {
+    constructor() {
+        this.console = document.getElementById('debug-console');
+        this.output = document.getElementById('debug-output');
+        this.toggleButton = document.getElementById('debug-toggle');
+        
+        this.errorCount = 0;
+        this.warningCount = 0;
+        this.logs = [];
+        this.maxLogs = 1000;
+        
+        // Performance telemetry with defensive initialization
+        this.perfStats = {
+            fps: 0,
+            frameTime: 0,
+            lastTime: performance.now(),
+            frames: 0,
+            fpsHistory: new Array(60).fill(0),
+            fpsIndex: 0,
+            gpuMemory: 0,
+            drawCalls: 0,
+            triangles: 0,
+            jsHeap: 0
+        };
+        
+        // Defensive element caching with null checks
+        this.perfElements = {
+            fps: null,
+            frameTime: null,
+            gpuMemory: null,
+            drawCalls: null,
+            triangles: null,
+            jsHeap: null
+        };
+        
+        // Error knowledge base for instant diagnosis
+        this.errorPatterns = {
+            'undefined_variable': {
+                pattern: /is not defined|ReferenceError.*not defined/,
+                diagnosis: 'Variable used before declaration or out of scope',
+                solution: 'Check variable scope and ensure it\'s declared before use',
+                critical: true
+            },
+            'toFixed': {
+                pattern: /toFixed|toPrecision|toExponential/,
+                diagnosis: 'Numeric formatting method called on non-numeric value',
+                causes: [
+                    'Value is undefined or null',
+                    'Value is NaN (Not a Number)',
+                    'Value is a string that cannot be converted to number',
+                    'Object property access returned undefined'
+                ],
+                solutions: [
+                    'Add null/undefined checks before formatting',
+                    'Use Number() or parseFloat() to ensure numeric type',
+                    'Check if calculation inputs are valid numbers',
+                    'Use optional chaining (?.) for property access'
+                ]
+            },
+            'Cannot read properties of undefined': {
+                pattern: /Cannot read propert(y|ies) of undefined/,
+                diagnosis: 'Attempting to access property on undefined object',
+                causes: [
+                    'Object not initialized yet',
+                    'Async operation not completed',
+                    'Array index out of bounds',
+                    'Function returned undefined instead of object'
+                ],
+                solutions: [
+                    'Add existence checks before property access',
+                    'Use optional chaining (obj?.property)',
+                    'Ensure proper initialization order',
+                    'Add default values in destructuring'
+                ]
+            },
+            'is not a function': {
+                pattern: /is not a function/,
+                diagnosis: 'Attempting to call a non-function value',
+                causes: [
+                    'Method name typo or case mismatch',
+                    'Object method not defined',
+                    'Module not loaded or initialized',
+                    'this context lost (common in callbacks)'
+                ],
+                solutions: [
+                    'Check method spelling and capitalization',
+                    'Verify object has the method defined',
+                    'Ensure modules loaded before use',
+                    'Use arrow functions or .bind() to preserve this'
+                ]
+            }
+        };
+        
+        // Track user interactions for causal analysis
+        this.lastClickTime = null;
+        this.lastSliderChange = null;
+        this.lastMousePosition = null;
+        
+        this.setupErrorHandlers();
+        this.setupInteractionTracking();
+        this.log('system', '🚀 Debug System Initialized with Enhanced Error Analysis');
+        this.log('info', `Platform: ${navigator.platform}, Browser: ${navigator.userAgent.match(/(?:firefox|chrome|safari|edge|opera)/i)?.[0] || 'Unknown'}`);
+        this.log('info', `Screen: ${window.innerWidth}x${window.innerHeight}, DPR: ${window.devicePixelRatio}`);
+    }
+    
+    setupInteractionTracking() {
+        // Track clicks
+        document.addEventListener('click', (e) => {
+            this.lastClickTime = Date.now();
+        });
+        
+        // Track slider changes
+        document.addEventListener('input', (e) => {
+            if (e.target.type === 'range') {
+                this.lastSliderChange = {
+                    name: e.target.id,
+                    value: e.target.value,
+                    timestamp: Date.now()
+                };
+            }
+        });
+        
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            this.lastMousePosition = { x: e.clientX, y: e.clientY };
+        });
+    }
+    
+    setupErrorHandlers() {
+        // Enhanced global error handler with complete causal analysis
+        window.addEventListener('error', (event) => {
+            this.handleErrorWithFullContext(event.error, event.filename, event.lineno, event.colno, event);
+            event.preventDefault();
+            return true; // Prevent default console logging
+        }, true); // Use capture phase to catch errors earlier
+        
+        // Promise rejection handler with deep analysis
+        window.addEventListener('unhandledrejection', (event) => {
+            this.log('error', `═══ UNHANDLED PROMISE REJECTION ═══`);
+            this.analyzePromiseRejection(event.reason, event.promise);
+            this.handleErrorWithFullContext(event.reason, 'Promise', 0, 0);
+            event.preventDefault();
+        });
+        
+        // Performance observer
+        if (window.PerformanceObserver) {
+            try {
+                const perfObserver = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.duration > 100) {
+                            this.log('warning', `Slow ${entry.entryType}: ${entry.name} took ${entry.duration.toFixed(2)}ms`);
+                        }
+                    }
+                });
+                perfObserver.observe({ entryTypes: ['measure'] });
+            } catch (e) {
+                // Some browsers don't support all entry types
+            }
+        }
+    }
+    
+    handleErrorWithFullContext(error, source, line, column, event) {
+        this.errorCount++;
+        
+        // Create error analysis
+        const analysis = this.analyzeError(error, source, line, column, event);
+        
+        // Display error report
+        this.displayError(analysis);
+        
+        // Update UI
+        this.toggleButton.classList.add('has-errors');
+        this.toggleButton.textContent = `🐛 Debug (${this.errorCount} errors)`;
+        
+        // Auto-show on error
+        this.show();
+    }
+    
+    analyzeError(error, source, line, column, event) {
+        const errorMessage = error?.message || error?.toString() || 'Unknown error';
+        
+        // Pattern matching for known errors
+        let matchedPattern = null;
+        for (const [key, pattern] of Object.entries(this.errorPatterns)) {
+            if (pattern.pattern.test(errorMessage)) {
+                matchedPattern = { name: key, ...pattern };
+                break;
+            }
+        }
+        
+        // Analyze call stack
+        const stackAnalysis = this.analyzeCallStack(error?.stack);
+        
+        // Capture current state
+        const stateSnapshot = this.captureState();
+        
+        // Trace error cause
+        const causalChain = this.traceErrorCause(error, stackAnalysis, stateSnapshot);
+        
+        // Generate solutions
+        const solutions = this.generateSolutions(matchedPattern, causalChain, stateSnapshot);
+        
+        return {
+            timestamp: new Date().toISOString(),
+            error: {
+                message: errorMessage,
+                type: error?.constructor?.name || 'Error',
+                source: source || 'Unknown',
+                location: { line, column }
+            },
+            pattern: matchedPattern,
+            stack: stackAnalysis,
+            state: stateSnapshot,
+            causalChain,
+            solutions,
+            impact: this.getErrorImpact(error, stateSnapshot)
+        };
+    }
+    
+    analyzeCallStack(stack) {
+        if (!stack) return { frames: [], summary: 'No stack trace available' };
+        
+        const frames = stack.split('\n').map((line, index) => {
+            const match = line.match(/at\s+(?:(.+?)\s+\()?(.+?):(\d+):(\d+)\)?/);
+            if (match) {
+                const [, fnName, file, lineNum, colNum] = match;
+                return {
+                    index,
+                    function: fnName || '<anonymous>',
+                    file: file.split('/').pop() || file,
+                    line: parseInt(lineNum),
+                    column: parseInt(colNum),
+                    raw: line.trim()
+                };
+            }
+            return { index, raw: line.trim() };
+        }).filter(frame => frame.file || frame.raw);
+        
+        // Identify key transition points
+        const transitions = frames.filter(frame => {
+            return frame.function?.includes('update') ||
+                   frame.function?.includes('render') ||
+                   frame.function?.includes('calculate') ||
+                   frame.function?.includes('init');
+        });
+        
+        return {
+            frames,
+            transitions,
+            depth: frames.length,
+            summary: `${frames.length} frames, key transitions: ${transitions.map(t => t.function).join(' → ')}`
+        };
+    }
+    
+    captureState() {
+        const state = {
+            app: {},
+            dom: {},
+            performance: {},
+            interaction: {}
+        };
+        
+        // Application state
+        try {
+            if (window.app) {
+                state.app = {
+                    initialized: true,
+                    currentModel: window.app.state?.currentModel,
+                    time: window.app.state?.time,
+                    parameters: { ...window.app.state?.parameters },
+                    isUpdating: window.app.isUpdating,
+                    experimentalDataCount: window.app.experimentalData?.length || 0,
+                    axisConfig: window.app.state?.axisConfig
+                };
+            } else {
+                state.app.initialized = false;
+            }
+        } catch (e) {
+            state.app.error = e.message;
+        }
+        
+        // DOM state
+        state.dom = {
+            readyState: document.readyState,
+            activeElement: document.activeElement?.tagName,
+            criticalElements: {}
+        };
+        
+        // Check critical elements
+        const criticalIds = [
+            'degradation-value', 'temperature-slider', 'moisture-slider',
+            'tg-value', 'shelf-life-value', 'enable-moisture', 'enable-thermal'
+        ];
+        
+        criticalIds.forEach(id => {
+            const elem = document.getElementById(id);
+            state.dom.criticalElements[id] = elem ? {
+                exists: true,
+                type: elem.tagName,
+                value: elem.value || elem.textContent,
+                disabled: elem.disabled,
+                checked: elem.checked
+            } : { exists: false };
+        });
+        
+        // Performance metrics
+        state.performance = {
+            memory: performance.memory ? {
+                used: (performance.memory.usedJSHeapSize / 1048576).toFixed(2) + ' MB',
+                total: (performance.memory.totalJSHeapSize / 1048576).toFixed(2) + ' MB',
+                limit: (performance.memory.jsHeapSizeLimit / 1048576).toFixed(2) + ' MB'
+            } : 'Not available',
+            timing: {
+                domContentLoaded: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
+                loadComplete: performance.timing.loadEventEnd - performance.timing.navigationStart
+            }
+        };
+        
+        // Recent interactions
+        state.interaction = {
+            lastClick: this.lastClickTime ? new Date(this.lastClickTime).toISOString() : null,
+            lastSliderChange: this.lastSliderChange || null,
+            mousePosition: this.lastMousePosition || null
+        };
+        
+        return state;
+    }
+    
+    traceErrorCause(error, stackAnalysis, stateSnapshot) {
+        const chain = [];
+        
+        // Initial trigger
+        if (stateSnapshot.interaction.lastSliderChange) {
+            chain.push({
+                type: 'USER_INPUT',
+                description: `User changed ${stateSnapshot.interaction.lastSliderChange.name} to ${stateSnapshot.interaction.lastSliderChange.value}`,
+                timestamp: stateSnapshot.interaction.lastSliderChange.timestamp
+            });
+        }
+        
+        // State transitions
+        if (stackAnalysis.transitions.length > 0) {
+            stackAnalysis.transitions.forEach(transition => {
+                chain.push({
+                    type: 'FUNCTION_CALL',
+                    description: `Called ${transition.function}`,
+                    location: `${transition.file}:${transition.line}`
+                });
+            });
+        }
+        
+        // Data flow
+        if (error?.message?.includes('toFixed')) {
+            chain.push({
+                type: 'DATA_FLOW',
+                description: 'Numeric formatting attempted on invalid value',
+                detail: 'Value likely became undefined during calculation or property access'
+            });
+        }
+        
+        // Final error
+        chain.push({
+            type: 'ERROR',
+            description: error?.message || 'Unknown error',
+            location: stackAnalysis.frames[0]?.raw || 'Unknown location'
+        });
+        
+        return chain;
+    }
+    
+    generateSolutions(pattern, causalChain, state) {
+        const solutions = [];
+        
+        // Pattern-based solutions
+        if (pattern) {
+            solutions.push({
+                category: 'IMMEDIATE_FIX',
+                solutions: pattern.solutions,
+                confidence: 0.9
+            });
+        }
+        
+        // State-based solutions
+        if (!state.app.initialized) {
+            solutions.push({
+                category: 'INITIALIZATION',
+                solutions: [
+                    'Ensure all dependencies are loaded before initialization',
+                    'Check if ArrheniusCore is available globally',
+                    'Verify module loading order in HTML'
+                ],
+                confidence: 0.8
+            });
+        }
+        
+        // Causal chain solutions
+        const hasUserInput = causalChain.some(c => c.type === 'USER_INPUT');
+        if (hasUserInput) {
+            solutions.push({
+                category: 'INPUT_VALIDATION',
+                solutions: [
+                    'Add input validation before processing slider values',
+                    'Implement bounds checking for all user inputs',
+                    'Add debouncing to prevent rapid updates'
+                ],
+                confidence: 0.7
+            });
+        }
+        
+        return solutions;
+    }
+    
+    getErrorImpact(error, state) {
+        let severity = 'LOW';
+        let userImpact = 'Minimal';
+        let systemImpact = 'Isolated';
+        
+        // Assess severity
+        if (error?.message?.includes('not defined') || error?.message?.includes('undefined')) {
+            severity = 'HIGH';
+            userImpact = 'Feature unavailable';
+            systemImpact = 'Cascading failures possible';
+        } else if (error?.message?.includes('toFixed')) {
+            severity = 'MEDIUM';
+            userImpact = 'Display issues';
+            systemImpact = 'Calculation errors';
+        }
+        
+        // Check if core functionality affected
+        if (!state.app.initialized || state.app.error) {
+            severity = 'CRITICAL';
+            userImpact = 'Application non-functional';
+            systemImpact = 'Complete failure';
+        }
+        
+        return { severity, userImpact, systemImpact };
+    }
+    
+    displayError(analysis) {
+        // Clear previous error reports
+        const existingReports = this.output.querySelectorAll('.error-report');
+        existingReports.forEach(report => report.remove());
+        
+        // Create error display
+        const report = document.createElement('div');
+        report.className = 'error-report';
+        report.style.cssText = `
+            background: linear-gradient(135deg, rgba(255, 0, 102, 0.2), rgba(138, 43, 226, 0.2));
+            border: 2px solid rgba(255, 0, 102, 0.8);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 8px 0;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 0 20px rgba(255, 0, 102, 0.5);
+        `;
+        
+        report.innerHTML = `
+            <div style="color: #ff66aa; font-size: 16px; font-weight: bold; margin-bottom: 12px;">
+                🔍 ERROR ANALYSIS
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                <div style="color: #ff3366; font-weight: bold;">ERROR:</div>
+                <div style="color: #fff; margin-left: 20px;">${analysis.error.message}</div>
+                <div style="color: #888; margin-left: 20px; font-size: 11px;">
+                    ${analysis.error.source}:${analysis.error.location.line}:${analysis.error.location.column}
+                </div>
+            </div>
+            
+            ${analysis.pattern ? `
+            <div style="margin-bottom: 16px;">
+                <div style="color: #00ff88; font-weight: bold;">INSTANT DIAGNOSIS:</div>
+                <div style="color: #fff; margin-left: 20px;">${analysis.pattern.diagnosis}</div>
+            </div>
+            ` : ''}
+            
+            <div style="margin-bottom: 16px;">
+                <div style="color: #00d4ff; font-weight: bold;">CAUSAL CHAIN:</div>
+                ${analysis.causalChain.map((step, i) => `
+                    <div style="margin-left: 20px; color: #fff;">
+                        ${i + 1}. [${step.type}] ${step.description}
+                        ${step.detail ? `<div style="margin-left: 20px; color: #888; font-size: 11px;">${step.detail}</div>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                <div style="color: #ffaa00; font-weight: bold;">IMPACT ASSESSMENT:</div>
+                <div style="margin-left: 20px; color: #fff;">
+                    Severity: <span style="color: ${analysis.impact.severity === 'CRITICAL' ? '#ff0066' : analysis.impact.severity === 'HIGH' ? '#ff6600' : '#ffaa00'}">${analysis.impact.severity}</span><br>
+                    User Impact: ${analysis.impact.userImpact}<br>
+                    System Impact: ${analysis.impact.systemImpact}
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                <div style="color: #00ff88; font-weight: bold;">SOLUTIONS (Confidence-ranked):</div>
+                ${analysis.solutions.map(category => `
+                    <div style="margin-left: 20px; margin-top: 8px;">
+                        <div style="color: #00d4ff;">${category.category} (${(category.confidence * 100).toFixed(0)}% confidence)</div>
+                        ${category.solutions.map(solution => `
+                            <div style="margin-left: 20px; color: #fff;">• ${solution}</div>
+                        `).join('')}
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div style="margin-bottom: 16px; background: rgba(0, 0, 0, 0.3); padding: 8px; border-radius: 4px;">
+                <div style="color: #ff66aa; font-weight: bold;">CURRENT STATE SNAPSHOT:</div>
+                <pre style="color: #888; font-size: 10px; margin: 4px 0;">${JSON.stringify(analysis.state, null, 2)}</pre>
+            </div>
+            
+            <div style="color: #666; font-size: 10px; text-align: right;">
+                ${analysis.timestamp}
+            </div>
+        `;
+        
+        this.output.appendChild(report);
+        this.output.scrollTop = this.output.scrollHeight;
+    }
+    
+    analyzePromiseRejection(reason, promise) {
+        this.log('error', 'Promise rejection details:');
+        this.log('error', `Reason: ${reason}`);
+        if (reason?.stack) {
+            this.log('error', 'Stack trace:');
+            reason.stack.split('\n').forEach(line => {
+                this.log('error', `  ${line}`);
+            });
+        }
+        
+        // Try to identify the source
+        if (promise) {
+            this.log('error', 'Promise state:', promise);
+        }
+    }
+    
+    handleError(error, source, line, column) {
+        this.handleErrorWithFullContext(error, source, line, column);
+    }
+    
+    captureAppState() {
+        this.log('error', '═══ APP STATE AT ERROR ═══');
+        try {
+            if (window.app) {
+                this.log('error', `Current model: ${window.app.state?.currentModel || 'undefined'}`);
+                this.log('error', `Time: ${window.app.state?.time || 'undefined'}`);
+                this.log('error', `Parameters:`, window.app.state?.parameters || {});
+                this.log('error', `Has experimental data: ${window.app.experimentalData?.length > 0 || false}`);
+            } else {
+                this.log('error', 'App not initialized yet');
+            }
+        } catch (e) {
+            this.log('error', `Failed to capture app state: ${e.message}`);
+        }
+    }
+    
+    captureExecutionContext() {
+        this.log('error', '═══ EXECUTION CONTEXT ═══');
+        try {
+            // Check if we're in initialization
+            if (!window.app) {
+                this.log('error', 'App not yet initialized - error during startup');
+            }
+            
+            // Check DOM readiness
+            this.log('error', `DOM state: ${document.readyState}`);
+            
+            // Check critical elements
+            const criticalElements = [
+                'degradation-value',
+                'temperature-slider',
+                'moisture-slider',
+                'tg-value',
+                'shelf-life-value'
+            ];
+            
+            criticalElements.forEach(id => {
+                const elem = document.getElementById(id);
+                this.log('error', `Element #${id}: ${elem ? 'exists' : 'MISSING'}`);
+                if (elem && elem.textContent !== undefined) {
+                    this.log('error', `  Content: "${elem.textContent}"`);
+                }
+            });
+            
+            // Check for any pending async operations
+            if (window.pendingOperations) {
+                this.log('error', `Pending operations: ${window.pendingOperations}`);
+            }
+        } catch (e) {
+            this.log('error', `Failed to capture execution context: ${e.message}`);
+        }
+    }
+    
+    log(level, message, data = null) {
+        // CRITICAL: Never log success if there are errors - be truthful
+        if (level === 'success' && this.errorCount > 0) {
+            level = 'warning';
+            message = `⚠️ [BLOCKED SUCCESS] ${message} (${this.errorCount} error${this.errorCount > 1 ? 's' : ''} present)`;
+        }
+        
+        const timestamp = new Date().toLocaleTimeString('en-US', {
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            fractionalSecondDigits: 3
+        });
+        
+        const logEntry = {
+            timestamp,
+            level,
+            message,
+            data
+        };
+        
+        this.logs.push(logEntry);
+        if (this.logs.length > this.maxLogs) {
+            this.logs.shift();
+        }
+        
+        // Add to UI
+        const entry = document.createElement('div');
+        entry.className = `debug-entry debug-${level}`;
+        entry.innerHTML = `<span class="debug-time">[${timestamp}]</span> ${this.escapeHtml(message)}`;
+        
+        if (data) {
+            const dataEl = document.createElement('pre');
+            dataEl.style.fontSize = '10px';
+            dataEl.style.marginLeft = '20px';
+            dataEl.textContent = JSON.stringify(data, null, 2);
+            entry.appendChild(dataEl);
+        }
+        
+        this.output.appendChild(entry);
+        this.output.scrollTop = this.output.scrollHeight;
+        
+        // Clean old entries
+        while (this.output.children.length > this.maxLogs) {
+            this.output.removeChild(this.output.firstChild);
+        }
+    }
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    getTruthfulStatus() {
+        // Return the honest state of the application - never lie
+        if (this.errorCount > 0) {
+            return {
+                status: 'ERROR',
+                message: `System has ${this.errorCount} error${this.errorCount > 1 ? 's' : ''}`,
+                healthy: false,
+                errors: this.errorCount,
+                warnings: this.warningCount
+            };
+        } else if (this.warningCount > 0) {
+            return {
+                status: 'WARNING',
+                message: `System operational with ${this.warningCount} warning${this.warningCount > 1 ? 's' : ''}`,
+                healthy: true,
+                errors: 0,
+                warnings: this.warningCount
+            };
+        } else {
+            return {
+                status: 'SUCCESS',
+                message: 'System fully operational',
+                healthy: true,
+                errors: 0,
+                warnings: 0
+            };
+        }
+    }
+    
+    measure(name, fn) {
+        const start = performance.now();
+        try {
+            const result = fn();
+            const duration = performance.now() - start;
+            this.log('info', `Performance: ${name} completed in ${duration.toFixed(2)}ms`);
+            return result;
+        } catch (error) {
+            const duration = performance.now() - start;
+            this.log('error', `Performance: ${name} failed after ${duration.toFixed(2)}ms`);
+            throw error;
+        }
+    }
+    
+    show() {
+        this.console.style.display = 'block';
+    }
+    
+    hide() {
+        this.console.style.display = 'none';
+    }
+    
+    toggle() {
+        if (this.console.style.display === 'none') {
+            this.show();
+        } else {
+            this.hide();
+        }
+    }
+    
+    clear() {
+        this.output.innerHTML = '';
+        this.log('system', 'Console cleared');
+    }
+    
+    export() {
+        const logText = this.logs.map(log => 
+            `[${log.timestamp}] ${log.level.toUpperCase()}: ${log.message}${log.data ? '\n' + JSON.stringify(log.data, null, 2) : ''}`
+        ).join('\n');
+        
+        const blob = new Blob([logText], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `debug_log_${Date.now()}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        this.log('info', 'Debug log exported');
+    }
+    
+    // Performance Monitoring System
+    initPerformanceMonitoring() {
+        try {
+            // Cache DOM elements with defensive null checks
+            this.perfElements.fps = document.getElementById('fps-counter');
+            this.perfElements.frameTime = document.getElementById('frame-time');
+            this.perfElements.gpuMemory = document.getElementById('gpu-memory');
+            this.perfElements.drawCalls = document.getElementById('draw-calls');
+            this.perfElements.triangles = document.getElementById('triangle-count');
+            this.perfElements.jsHeap = document.getElementById('js-heap');
+            
+            // Start monitoring loop (defensive - won't crash if elements missing)
+            this.startPerformanceLoop();
+        } catch (e) {
+            // Silently fail - performance monitoring is non-critical
+            console.warn('Performance monitoring unavailable:', e);
+        }
+    }
+    
+    startPerformanceLoop() {
+        const updatePerf = () => {
+            try {
+                this.updatePerformanceMetrics();
+            } catch (e) {
+                // Never crash the main app due to perf monitoring
+            }
+            requestAnimationFrame(updatePerf);
+        };
+        requestAnimationFrame(updatePerf);
+    }
+    
+    updatePerformanceMetrics() {
+        const now = performance.now();
+        const deltaTime = now - this.perfStats.lastTime;
+        
+        // FPS calculation (defensive - clamp to reasonable values)
+        if (deltaTime > 0 && deltaTime < 1000) {
+            const fps = Math.min(144, Math.max(0, 1000 / deltaTime));
+            this.perfStats.fpsHistory[this.perfStats.fpsIndex] = fps;
+            this.perfStats.fpsIndex = (this.perfStats.fpsIndex + 1) % 60;
+            
+            // Average FPS over last 60 frames
+            const avgFps = this.perfStats.fpsHistory.reduce((a, b) => a + b, 0) / 60;
+            
+            // Update display (defensive - check element exists)
+            if (this.perfElements.fps) {
+                this.perfElements.fps.textContent = avgFps.toFixed(1);
+                // Color code based on performance
+                this.perfElements.fps.style.color = 
+                    avgFps >= 55 ? 'var(--primary)' :
+                    avgFps >= 30 ? 'var(--warning)' : 
+                    'var(--accent)';
+            }
+            
+            if (this.perfElements.frameTime) {
+                this.perfElements.frameTime.textContent = deltaTime.toFixed(2) + ' ms';
+            }
+        }
+        
+        // GPU Memory (if available via WebGL extension)
+        if (window.app && window.app.viz && window.app.viz.renderer) {
+            try {
+                const info = window.app.viz.renderer.info;
+                if (info) {
+                    if (this.perfElements.drawCalls) {
+                        this.perfElements.drawCalls.textContent = info.render.calls || '--';
+                    }
+                    if (this.perfElements.triangles) {
+                        const triangles = info.render.triangles || 0;
+                        this.perfElements.triangles.textContent = 
+                            triangles > 1000000 ? (triangles / 1000000).toFixed(1) + 'M' :
+                            triangles > 1000 ? (triangles / 1000).toFixed(1) + 'K' :
+                            triangles.toString();
+                    }
+                }
+                
+                // GPU memory via extension (defensive)
+                const gl = window.app.viz.renderer.getContext();
+                if (gl && gl.getExtension) {
+                    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+                    if (ext && this.perfElements.gpuMemory) {
+                        // Estimate based on texture/buffer usage
+                        const programs = info?.programs?.length || 0;
+                        const textures = info?.memory?.textures || 0;
+                        const geometries = info?.memory?.geometries || 0;
+                        const estimate = (programs * 10 + textures * 4 + geometries * 2);
+                        this.perfElements.gpuMemory.textContent = 
+                            estimate > 1000 ? (estimate / 1000).toFixed(1) + ' GB' :
+                            estimate + ' MB';
+                    }
+                }
+            } catch (e) {
+                // Silent fail for GPU metrics
+            }
+        }
+        
+        // JS Heap (if available)
+        if (performance.memory && this.perfElements.jsHeap) {
+            const heapMB = (performance.memory.usedJSHeapSize / 1048576).toFixed(1);
+            const limitMB = (performance.memory.jsHeapSizeLimit / 1048576).toFixed(0);
+            this.perfElements.jsHeap.textContent = `${heapMB}/${limitMB} MB`;
+            
+            // Warn if heap usage is high
+            const heapPercent = performance.memory.usedJSHeapSize / performance.memory.jsHeapSizeLimit;
+            this.perfElements.jsHeap.style.color = 
+                heapPercent < 0.5 ? 'var(--primary)' :
+                heapPercent < 0.8 ? 'var(--warning)' :
+                'var(--accent)';
+        }
+        
+        this.perfStats.lastTime = now;
+    }
+}
+
+// Initialize debug system
+const DEBUG = new ScientificDebugger();
+
+// Setup debug button event listeners when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    const debugToggle = document.getElementById('debug-toggle');
+    if (debugToggle) debugToggle.addEventListener('click', () => DEBUG.toggle());
+    
+    const debugClear = document.getElementById('debug-clear');
+    if (debugClear) debugClear.addEventListener('click', () => DEBUG.clear());
+    
+    const debugExport = document.getElementById('debug-export');
+    if (debugExport) debugExport.addEventListener('click', () => DEBUG.export());
+    
+    const debugHide = document.getElementById('debug-hide');
+    if (debugHide) debugHide.addEventListener('click', () => DEBUG.hide());
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        // Ignore if typing in an input field
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        
+        switch(e.key.toLowerCase()) {
+            case 'p':
+                // P = Enable probe mode
+                if (app && app.viz3d) {
+                    app.viz3d.probeMode = true;
+                    DEBUG.log('info', 'Probe mode activated (press P)');
+                }
+                break;
+                
+            case 'm':
+                // M = Toggle moisture axis
+                const moistureCheckbox = document.getElementById('moisture-toggle');
+                if (moistureCheckbox) {
+                    moistureCheckbox.checked = !moistureCheckbox.checked;
+                    moistureCheckbox.dispatchEvent(new Event('change'));
+                    DEBUG.log('info', `Moisture axis ${moistureCheckbox.checked ? 'enabled' : 'disabled'} (press M)`);
+                }
+                break;
+                
+            case 't':
+                // T = Toggle thermal physics
+                const thermalCheckbox = document.getElementById('thermal-toggle');
+                if (thermalCheckbox) {
+                    thermalCheckbox.checked = !thermalCheckbox.checked;
+                    thermalCheckbox.dispatchEvent(new Event('change'));
+                    DEBUG.log('info', `Thermal physics ${thermalCheckbox.checked ? 'enabled' : 'disabled'} (press T)`);
+                }
+                break;
+                
+            case ' ':
+                // Space = Pause/resume animation
+                e.preventDefault(); // Prevent page scroll
+                if (app && app.viz3d) {
+                    app.viz3d.isAnimating = !app.viz3d.isAnimating;
+                    if (app.viz3d.isAnimating && !app.viz3d.rafId) {
+                        app.viz3d.animate();
+                    }
+                    DEBUG.log('info', `Animation ${app.viz3d.isAnimating ? 'resumed' : 'paused'} (press Space)`);
+                }
+                break;
+                
+            case 'r':
+                // R = Reset camera view
+                if (app && app.viz3d && app.viz3d.controls) {
+                    app.viz3d.controls.reset();
+                    DEBUG.log('info', 'Camera view reset (press R)');
+                }
+                break;
+                
+            case 'h':
+                // H = Toggle help/tutorial
+                const tutorialPanel = document.getElementById('tutorial-panel');
+                if (tutorialPanel) {
+                    if (tutorialPanel.style.display === 'none') {
+                        tutorialPanel.style.display = 'block';
+                    } else {
+                        closeTutorial();
+                    }
+                }
+                break;
+                
+            case 'escape':
+                // ESC = Exit probe mode
+                if (app && app.viz3d) {
+                    app.viz3d.probeMode = false;
+                    DEBUG.log('info', 'Probe mode deactivated (ESC)');
+                }
+                break;
+        }
+    });
+});
+
+// NOTIFICATION SYSTEM
+
+class NotificationSystem {
+    show(title, message, type = 'info', duration = 3000) {
+        const notification = document.getElementById('notification');
+        const titleEl = document.getElementById('notification-title');
+        const messageEl = document.getElementById('notification-message');
+        
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+        
+        notification.className = `notification show ${type}`;
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, duration);
+    }
+    
+    error(title, message, details = null) {
+        // Enhance error message with context
+        let enhancedMessage = message;
+        
+        if (details) {
+            if (details.expected && details.actual) {
+                enhancedMessage += ` (Expected: ${details.expected}, Actual: ${details.actual})`;
+            }
+            if (details.suggestion) {
+                enhancedMessage += `. ${details.suggestion}`;
+            }
+            if (details.context) {
+                enhancedMessage += ` [Context: ${details.context}]`;
+            }
+        }
+        
+        this.show(title, enhancedMessage, 'error', 5000);
+        DEBUG.log('error', `${title}: ${enhancedMessage}`, details);
+    }
+    
+    success(title, message) {
+        this.show(title, message, 'success');
+        DEBUG.log('success', `${title}: ${message}`);
+    }
+}
+
+const NOTIFY = new NotificationSystem();
