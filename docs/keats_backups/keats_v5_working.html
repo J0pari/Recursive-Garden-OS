@@ -252,15 +252,13 @@
             }
         }
 
-        /* ─────────────────────────────────────────────────────────────────────────── 
-         * PANEL INTERACTION COMPONENTS: Headers, Titles, and Controls
-         * ─────────────────────────────────────────────────────────────────────────── */
-
-        /* Panel header: Interactive title bar with collapse/expand functionality */
-        .panel-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid hsla(255 255 255 / 0.10);
-            display: flex;
+            /** ┌─────────────────────────────────────────────────────────────────────────┐
+             * │  updateMetrics: Visual Debug Information Display                       │
+             * │  SIMPLIFICATION: Basic DOM updates, not real-time profiling           │
+             * └─────────────────────────────────────────────────────────────────────────┘ */
+            updateMetrics() {
+                this.updateElementDisplay('elementCount', this.scene.children.length);
+            }
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
@@ -933,266 +931,42 @@
             }
         }
         
-        /* ═══════════════════════════════════════════════════════════════════════════
-           DEBUG CONSOLE STYLES - Mathematical Topos Error Analysis System
-           ═══════════════════════════════════════════════════════════════════════════ */
-        
-        #debug-console {
-            position: fixed;
-            bottom: 60px;
-            right: 20px;
-            width: 600px;
-            max-height: 500px;
-            background: linear-gradient(135deg, 
-                hsla(250, 80%, 5%, 0.95),
-                hsla(280, 70%, 8%, 0.95));
-            border: 2px solid hsla(270, 100%, 60%, 0.8);
-            border-radius: 12px;
-            box-shadow: 
-                0 0 40px hsla(270, 100%, 60%, 0.4),
-                0 10px 30px hsla(0, 0%, 0%, 0.8);
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 11px;
-            z-index: 100000;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(10px);
-        }
-        
-        #debug-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            background: hsla(270, 60%, 20%, 0.5);
-            border-bottom: 1px solid hsla(270, 100%, 60%, 0.3);
-            border-radius: 10px 10px 0 0;
-        }
-        
-        #debug-title {
-            color: hsla(270, 100%, 80%, 1);
-            font-weight: 600;
-            font-size: 13px;
-        }
-        
-        #debug-controls button {
-            background: hsla(270, 60%, 30%, 0.6);
-            color: hsla(0, 0%, 90%, 1);
-            border: 1px solid hsla(270, 100%, 60%, 0.4);
-            padding: 4px 10px;
-            margin-left: 5px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 10px;
-            transition: all 0.2s;
-        }
-        
-        #debug-controls button:hover {
-            background: hsla(270, 60%, 40%, 0.8);
-            border-color: hsla(270, 100%, 70%, 0.6);
-            box-shadow: 0 0 10px hsla(270, 100%, 60%, 0.3);
-        }
-        
-        #debug-output {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            color: hsla(0, 0%, 85%, 1);
-            line-height: 1.4;
-            max-height: 350px;
-        }
-        
-        #debug-output::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        #debug-output::-webkit-scrollbar-track {
-            background: hsla(270, 60%, 10%, 0.3);
-        }
-        
-        #debug-output::-webkit-scrollbar-thumb {
-            background: hsla(270, 60%, 40%, 0.6);
-            border-radius: 4px;
-        }
-        
-        #debug-perf-panel {
-            display: flex;
-            justify-content: space-around;
-            padding: 8px;
-            background: hsla(270, 60%, 15%, 0.5);
-            border-top: 1px solid hsla(270, 100%, 60%, 0.3);
-            border-radius: 0 0 10px 10px;
-        }
-        
-        .perf-item {
-            color: hsla(0, 0%, 70%, 1);
-            font-size: 10px;
-        }
-        
-        .perf-item span {
-            color: hsla(120, 100%, 70%, 1);
-            font-weight: 600;
-        }
-        
-        /* Debug entry types */
-        .debug-entry {
-            margin: 2px 0;
-            padding: 3px 5px;
-            border-radius: 3px;
-            word-wrap: break-word;
-        }
-        
-        .debug-system {
-            color: hsla(200, 100%, 70%, 1);
-        }
-        
-        .debug-info {
-            color: hsla(0, 0%, 80%, 1);
-        }
-        
-        .debug-warning {
-            color: hsla(40, 100%, 70%, 1);
-            background: hsla(40, 100%, 20%, 0.2);
-        }
-        
-        .debug-error {
-            color: hsla(0, 100%, 70%, 1);
-            background: hsla(0, 100%, 20%, 0.3);
-            font-weight: 600;
-        }
-        
-        .debug-success {
-            color: hsla(120, 100%, 70%, 1);
-            background: hsla(120, 100%, 20%, 0.2);
-        }
-        
-        .debug-time {
-            color: hsla(270, 60%, 60%, 1);
-            font-size: 9px;
-        }
-        
-        /* Debug toggle button */
-        #debug-toggle {
-            background: linear-gradient(135deg,
-                hsla(270, 80%, 30%, 0.9),
-                hsla(290, 70%, 25%, 0.9));
-            color: white;
-            border: 2px solid hsla(270, 100%, 60%, 0.6);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px hsla(270, 100%, 40%, 0.4);
-        }
-        
-        #debug-toggle:hover {
-            background: linear-gradient(135deg,
-                hsla(270, 80%, 40%, 0.95),
-                hsla(290, 70%, 35%, 0.95));
-            border-color: hsla(270, 100%, 70%, 0.8);
-            box-shadow: 0 6px 25px hsla(270, 100%, 50%, 0.6);
-            transform: translateY(-2px);
-        }
-        
-        #debug-toggle.has-errors {
-            background: linear-gradient(135deg,
-                hsla(0, 80%, 30%, 0.9),
-                hsla(10, 70%, 25%, 0.9));
-            border-color: hsla(0, 100%, 60%, 0.8);
-            animation: pulse-error 2s infinite;
-        }
-        
-        @keyframes pulse-error {
-            0%, 100% { box-shadow: 0 4px 15px hsla(0, 100%, 50%, 0.4); }
-            50% { box-shadow: 0 4px 30px hsla(0, 100%, 50%, 0.8); }
-        }
-        
-        /* Notification system */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            min-width: 300px;
-            max-width: 500px;
-            padding: 15px 20px;
-            background: linear-gradient(135deg,
-                hsla(250, 80%, 10%, 0.95),
-                hsla(280, 70%, 15%, 0.95));
-            border: 2px solid hsla(270, 100%, 60%, 0.6);
-            border-radius: 8px;
-            box-shadow: 0 10px 40px hsla(0, 0%, 0%, 0.8);
-            font-family: 'JetBrains Mono', monospace;
-            color: white;
-            z-index: 100001;
-            opacity: 0;
-            transform: translateX(400px);
-            transition: all 0.3s ease-out;
-            pointer-events: none;
-        }
-        
-        .notification.show {
-            opacity: 1;
-            transform: translateX(0);
-            pointer-events: all;
-        }
-        
-        .notification.error {
-            border-color: hsla(0, 100%, 60%, 0.8);
-            background: linear-gradient(135deg,
-                hsla(0, 80%, 10%, 0.95),
-                hsla(10, 70%, 15%, 0.95));
-        }
-        
-        .notification.success {
-            border-color: hsla(120, 100%, 60%, 0.8);
-            background: linear-gradient(135deg,
-                hsla(120, 80%, 10%, 0.95),
-                hsla(130, 70%, 15%, 0.95));
-        }
-        
-        #notification-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: hsla(270, 100%, 80%, 1);
-        }
-        
-        #notification-message {
-            font-size: 12px;
-            color: hsla(0, 0%, 85%, 1);
-            line-height: 1.4;
-        }
-        
-        /* Error report styling */
-        .error-report {
-            margin: 10px 0;
-            animation: slide-in 0.3s ease-out;
-        }
-        
-        @keyframes slide-in {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
+    #debug-console { position: fixed; bottom: 60px; right: 20px; width: 420px; max-height: 360px; background: rgba(0,0,0,0.9); border: 1px solid #333; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #ddd; display: none; flex-direction: column; z-index: 100000 }
+    #debug-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #333 }
+    #debug-title { font-weight: 600; font-size: 12px; color: #ddd }
+    #debug-controls button { background: #1e1e1e; color: #ddd; border: 1px solid #333; padding: 4px 8px; margin-left: 6px; border-radius: 4px; cursor: pointer; font-size: 11px }
+    #debug-controls button:hover { background: #2a2a2a }
+    #debug-output { flex: 1; overflow-y: auto; padding: 8px 12px; line-height: 1.4 }
+    #debug-perf-panel { display: flex; gap: 12px; flex-wrap: wrap; padding: 8px 12px; border-top: 1px solid #333 }
+    .perf-item { font-size: 11px; color: #aaa }
+    .perf-item span { color: #8fda8f; font-weight: 600 }
+    .debug-entry { margin: 2px 0; padding: 2px 4px; border-radius: 3px }
+    .debug-system { color: #7fc7ff }
+    .debug-info { color: #ddd }
+    .debug-warning { color: #ffdd7f; background: rgba(255,220,100,0.1) }
+    .debug-error { color: #ff8f8f; background: rgba(255,100,100,0.12); font-weight: 600 }
+    .debug-success { color: #8fda8f; background: rgba(100,255,100,0.08) }
+    .debug-time { color: #9e8fff; font-size: 10px }
+    #debug-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 100000; background: #1e1e1e; color: #ddd; border: 1px solid #333; padding: 8px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer }
+    #debug-toggle.has-errors { border-color: #a33; color: #f88 }
+    .notification { position: fixed; top: 20px; right: 20px; min-width: 300px; max-width: 500px; padding: 12px 16px; background: rgba(0,0,0,0.9); border: 1px solid #333; border-radius: 8px; font-family: 'JetBrains Mono', monospace; color: #ddd; z-index: 100001; opacity: 0; transform: translateX(400px); transition: all 0.3s ease-out; pointer-events: none }
+    .notification.show { opacity: 1; transform: translateX(0); pointer-events: all }
+    .notification.error { border-color: #a33; color: #f88 }
+    .notification.success { border-color: #2f7; color: #9f9 }
+    #notification-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: #ddd }
+    #notification-message { font-size: 12px; color: #ccc; line-height: 1.4 }
+    .error-report { margin: 10px 0; animation: slide-in 0.3s ease-out }
+    @keyframes slide-in { from { opacity: 0; transform: translateX(-20px) } to { opacity: 1; transform: translateX(0) } }
     </style>
 </head>
 <body>
-    <!-- Debug Console HTML Elements -->
-    <div id="debug-console" style="display: none;">
+    <div id="debug-console">
         <div id="debug-header">
             <span id="debug-title">KEATS Topos Debugger</span>
             <div id="debug-controls">
-                <button id="debug-clear">Clear</button>
-                <button id="debug-export">Export</button>
-                <button id="debug-hide">Hide</button>
+                <button id="debug-clear" title="Clear console output">Clear log</button>
+                <button id="debug-export" title="Download console output">Export log</button>
+                <button id="debug-hide" title="Hide debugger">Hide</button>
             </div>
         </div>
         <div id="debug-output"></div>
@@ -1205,15 +979,8 @@
             <div class="perf-item">Heap: <span id="js-heap">--</span></div>
         </div>
     </div>
+    <button id="debug-toggle" title="Show/hide debugger">Debugger</button>
     
-    <!-- Debug Toggle Button (always visible, bottom right) -->
-    <button id="debug-toggle" 
-            onclick="var c=document.getElementById('debug-console'); if(c){c.style.display=c.style.display==='none'?'block':'none'}else{alert('Debug console not found')}"
-            style="position: fixed; bottom: 20px; right: 20px; z-index: 100000; background: linear-gradient(135deg, hsla(270, 80%, 30%, 0.9), hsla(290, 70%, 25%, 0.9)); color: white; border: 2px solid hsla(270, 100%, 60%, 0.6); padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer;">
-        Debug
-    </button>
-    
-    <!-- Notification System -->
     <div id="notification" class="notification">
         <div id="notification-title"></div>
         <div id="notification-message"></div>
@@ -1238,35 +1005,12 @@
         </div>
         <div class="panel-content">
 
-            <div class="metrics-grid">
-                <div class="metric-card" onclick="focusMetric('elements')">
-                    <div class="metric-label">3D Objects</div>
-                    <div class="metric-value" id="elementCount">0</div>
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Manifold Amplitude</span>
+                    <span class="control-value" id="curvatureValue">1.0</span>
                 </div>
-                <div class="metric-card" onclick="focusMetric('fps')">
-                    <div class="metric-label">Frame Rate</div>
-                    <div class="metric-value" id="fpsCounter">0</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('calcs')">
-                    <div class="metric-label">Calcs/Sec</div>
-                    <div class="metric-value" id="calcsPerSecond">0</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('memory')">
-                    <div class="metric-label">Memory</div>
-                    <div class="metric-value" id="memoryUsage">0MB</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('gpu')">
-                    <div class="metric-label">GPU Load</div>
-                    <div class="metric-value" id="gpuUtilization">0%</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('curvature')">
-                    <div class="metric-label">Shape Factor</div>
-                    <div class="metric-value" id="manifoldCurvature">1.000</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('euler')">
-                    <div class="metric-label">Euler χ</div>
-                    <div class="metric-value" id="eulerCharacteristic">2</div>
-                </div>
+                <input type="range" class="field-slider" id="curvature" min="0.1" max="8.0" value="1.0" step="0.1">
             </div>
 
 
@@ -1276,15 +1020,6 @@
                     <span class="control-value" id="particleDensityValue">5000</span>
                 </div>
                 <input type="range" class="field-slider" id="particleDensity" min="1000" max="15000" value="5000" step="250">
-            </div>
-
-
-            <div class="control-group">
-                <div class="control-label">
-                    <span>Shape Deform</span>
-                    <span class="control-value" id="curvatureValue">1.0</span>
-                </div>
-                <input type="range" class="field-slider" id="curvature" min="0.1" max="8.0" value="1.0" step="0.1">
             </div>
 
 
@@ -1319,10 +1054,36 @@
             </div>
 
 
-            <button class="function-button" onclick="toggleAnimation()" title="Start or pause the animation">Start/Pause</button>
-            <button class="function-button" onclick="regenerateGeometry()" title="Create a new particle layout">New Layout</button>
-            <button class="function-button secondary" onclick="explodeParticles()" title="Briefly spread particles out">Scatter Particles</button>
-            <button class="function-button" onclick="showHelp()" style="background: #059669;" title="Show a quick guide">Help</button>
+            <button class="function-button" onclick="toggleAnimation()" title="Toggle animation">Play/Pause</button>
+            <button class="function-button" onclick="regenerateGeometry()" title="Regenerate particle layout">New layout</button>
+            <button class="function-button secondary" onclick="explodeParticles()" title="Temporarily scatter particles">Scatter</button>
+            <button class="function-button" onclick="showHelp()" style="background: #059669;" title="Open help">Help</button>
+            <div class="metrics-grid">
+                <div class="metric-card" onclick="focusMetric('elements')">
+                    <div class="metric-label">3D Objects</div>
+                    <div class="metric-value" id="elementCount">0</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('fps')">
+                    <div class="metric-label">Frame Rate</div>
+                    <div class="metric-value" id="fpsCounter">0</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('calcs')">
+                    <div class="metric-label">Calcs/Sec</div>
+                    <div class="metric-value" id="calcsPerSecond">0</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('memory')">
+                    <div class="metric-label">Memory</div>
+                    <div class="metric-value" id="memoryUsage">0MB</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('gpu')">
+                    <div class="metric-label">GPU Load</div>
+                    <div class="metric-value" id="gpuUtilization">0%</div>
+                </div>
+                <div class="metric-card" onclick="focusMetric('tris')">
+                    <div class="metric-label">Triangles</div>
+                    <div class="metric-value" id="triangleCount">0</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1376,16 +1137,16 @@
             </div>
 
 
-            <button class="function-button" onclick="triggerModalTransfer()" title="Send your text to the math analyzer">Process Text</button>
-            <button class="function-button" onclick="computeSemantics()" title="Detect patterns in your text">Detect Patterns</button>
-            <button class="function-button secondary" onclick="clearContext()" title="Start fresh with empty text">Clear Text</button>
+            <button class="function-button" onclick="triggerModalTransfer()" title="Send text to analyzer">Send to analyzer</button>
+            <button class="function-button" onclick="computeSemantics()" title="Compute text features">Extract features</button>
+            <button class="function-button secondary" onclick="clearContext()" title="Clear input">Clear</button>
             
 
             <div style="margin-top: 18px;">
                 <textarea 
                     class="text-input-field" 
                     id="textInput" 
-                    placeholder="Type anything here - a thought, a question, a poem. The garden will find the math in your words..."
+                    placeholder="Enter text for analysis; the system will extract features and metrics."
                     spellcheck="true"
                     autocomplete="on"
                     autocorrect="on"
@@ -1415,24 +1176,6 @@
         </div>
         <div class="panel-content">
 
-            <div class="metrics-grid">
-                <div class="metric-card" onclick="focusMetric('paradoxes')">
-                    <div class="metric-label">Test Events</div>
-                    <div class="metric-value" id="paradoxCount">0</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('prime')">
-                    <div class="metric-label">P-adic Field</div>
-                    <div class="metric-value" id="currentPrime">Q₂</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('fisher')">
-                    <div class="metric-label">Math Value</div>
-                    <div class="metric-value" id="fisherInfo">0.000</div>
-                </div>
-                <div class="metric-card" onclick="focusMetric('betti')">
-                    <div class="metric-label">Math Array</div>
-                    <div class="metric-value" id="bettiNumbers">[1,0]</div>
-                </div>
-            </div>
 
 
             <div class="control-group">
@@ -1477,9 +1220,9 @@
                 </div>
 
                 <!-- Modal operation buttons -->
-                <button class="function-button" onclick="applyNecessity()" title="Increase connection strength">Increase Links</button>
-                <button class="function-button" onclick="applyPossibility()" title="Reduce connection strength">Reduce Links</button>
-                <button class="function-button transcendent" onclick="modalTransformation()" title="Apply a transformation to all particles">Transform Layout</button>
+                <button class="function-button" onclick="applyNecessity()" title="Increase edge weights">Increase edge weights</button>
+                <button class="function-button" onclick="applyPossibility()" title="Decrease edge weights">Decrease edge weights</button>
+                <button class="function-button transcendent" onclick="modalTransformation()" title="Apply global transform to all positions">Transform positions</button>
             </div>
         </div>
     </div>
@@ -1496,9 +1239,9 @@
         </div>
         <div class="panel-content">
             <!-- System operation controls -->
-            <button class="function-button transcendent" onclick="optimizeSystem()" title="Increase performance">Speed Up</button>
-            <button class="function-button" onclick="executeExportWithFeedback(this)" id="exportButton">Save Data</button>
-            <button class="function-button secondary" onclick="resetSystem()">Reset All</button>
+            <button class="function-button transcendent" onclick="optimizeSystem()" title="Run performance optimizations">Optimize performance</button>
+            <button class="function-button" onclick="executeExportWithFeedback(this)" id="exportButton" title="Download system state as JSON">Export state</button>
+            <button class="function-button secondary" onclick="resetSystem()" title="Reset all components">Reset system</button>
             
             <!-- Real-time system metrics display -->
             <div style="margin-top: 18px; padding: 14px; background: hsla(0 0 0 / 0.3); border-radius: 10px; font-size: 10px; line-height: 1.4;">
@@ -1734,7 +1477,7 @@
 
             archiveEvents(events) {
                 // In a real system, this would compress and store to persistent storage
-                console.log(`📦 Archived ${events.length} events for efficient memory usage`);
+                console.log(`Archived ${events.length} events`);
             }
             
 
@@ -1764,7 +1507,7 @@
             }
 
             selfHeal(type, data) {
-                console.log(`🔧 Self-healing initiated for: ${type}`);
+                console.log(`Repair: ${type}`);
                 
                 switch (type) {
                     case 'coherence':
@@ -1788,7 +1531,7 @@
             
 
             rebuildChain() {
-                console.log('🔧 Rebuilding event chain with fresh checksums...');
+                console.log('Rebuilding event chain');
                 for (let i = 0; i < this.events.length; i++) {
                     const event = this.events[i];
                     event.hash = this.cryptoHash(JSON.stringify(event.data));
@@ -1854,7 +1597,7 @@
                 this.errorFallbacks = new Map();
                 this.renderingSafety = true; // Ensures analysis never breaks rendering
                 
-                console.log('🧠 Riemannian Semantic Manifold initialized - true mathematical NLP');
+                console.log('Semantic manifold initialized');
             }
             
 
@@ -1896,7 +1639,7 @@
                         return this.analysisCache.get(cacheKey);
                     }
                     
-                    console.log('🧠 Computing Riemannian semantic analysis...');
+                    console.log('Computing analysis');
                     
                     // Core semantic manifold analysis
                     const semanticEmbedding = this.embedTextInSemanticManifold(text);
@@ -1963,7 +1706,7 @@
                     
                 } catch (error) {
                     // CRITICAL: Never let analysis errors break the renderer
-                    console.warn('🧠 Riemannian semantic analysis failed, using safe fallback:', error);
+                    console.warn('Analysis failed:', error);
                     return this.createSafeFallbackAnalysis(text, error);
                 }
             }
@@ -2039,7 +1782,7 @@
                 try {
                     // WEBWORKER ONLY: Delegate ALL E8/Lie algebra computation to WebWorker
                     if (!window.mathWorker || typeof window.mathWorker.delegateToWorker !== 'function') {
-                        console.warn('❌ E8 VIOLATION PREVENTED: mathWorker not available, using safe fallback');
+                        console.warn('Worker unavailable');
                         return {
                             coherence: 0.75,
                             sophistication: 0.8,
@@ -2069,7 +1812,7 @@
                             webworker_computed: true
                         };
                     } else {
-                        console.warn('❌ WebWorker E8 computation failed, using fallback');
+                        console.warn('Worker computation failed');
                         return {
                             coherence: 0.75,
                             sophistication: 0.8,
@@ -2079,7 +1822,7 @@
                         };
                     }
                 } catch (error) {
-                    console.error('💀 E8 WebWorker computation error:', error);
+                    console.error('Worker error:', error);
                     return {
                         coherence: 0.75,
                         sophistication: 0.8,
@@ -2092,9 +1835,9 @@
 
             computeE8Resonance(embedding) {
                 // ARCHITECTURAL VIOLATION BLOCKED: This method should NEVER be called in main thread
-                console.error('🚨 ARCHITECTURAL VIOLATION: E8 computation attempted in main thread - BLOCKED!');
-                console.error('🔥 ALL E8/Lie algebra operations must occur ONLY in WebWorkers!');
-                console.error('💡 Use computeE8ResonanceViaWebWorker() instead');
+                console.error('Main thread computation blocked');
+                console.error('Use WebWorker for E8 operations');
+                console.error('Use worker method');
                 
                 // Return safe fallback to prevent crashes but log the violation
                 return {
@@ -2334,13 +2077,13 @@
                         this.validateAnalysis(analysis);
                     }
                     
-                    console.log(`✅ NLP Analysis completed in ${(performance.now() - startTime).toFixed(2)}ms`);
-                    console.log(`🎯 Confidence: ${(analysis.quality.confidenceScore * 100).toFixed(1)}%`);
+                    console.log(`Done: ${(performance.now() - startTime).toFixed(2)}ms`);
+                    console.log(`Score: ${(analysis.quality.confidenceScore * 100).toFixed(1)}%`);
                     
                     return analysis;
                     
                 } catch (error) {
-                    console.error('❌ Critical NLP Analysis error:', error);
+                    console.error('Analysis error:', error);
                     return this.handleAnalysisError(text, error);
                 }
             }
@@ -2424,7 +2167,7 @@
                 });
                 
                 // Return null instead of broken fallbacks to maintain glass box integrity
-                console.error('❌ CRITICAL: Analysis completely failed - maintaining glass box integrity');
+                console.error('Analysis failed');
                 return null;
             }
 
@@ -3160,7 +2903,7 @@
             }
             
             topologicalTextAnalysis(tokens) {
-                console.log('🌀 Advanced Topological Analysis: Multi-scale structure detection');
+                console.log('Topology analysis');
                 
                 // Multi-level analysis for comprehensive topology
                 const wordLevelTopology = this.analyzeWordLevelTopology(tokens.wordList);
@@ -4819,7 +4562,7 @@
                     description,
                     registered: Date.now()
                 });
-                console.log(`🔌 Registered invariant: ${name}`);
+                console.log(`Invariant: ${name}`);
                 return this;
             }
             
@@ -4829,7 +4572,7 @@
                     ...config,
                     registered: Date.now()
                 });
-                console.log(`🔌 Registered panel: ${name}`);
+                console.log(`Panel: ${name}`);
                 return this;
             }
             
@@ -4839,7 +4582,7 @@
                     this.hooks.set(event, []);
                 }
                 this.hooks.get(event).push(callback);
-                console.log(`🔌 Registered hook: ${event}`);
+                console.log(`Hook: ${event}`);
                 return this;
             }
             
@@ -7860,7 +7603,7 @@
                     this.primaryWorker = new MathematicalWorker();
                     this.backupWorker = new MathematicalWorker();
                     this.isInitialized = true;
-                    console.log('🚀 Global unified mathematical WebWorker system initialized');
+                    console.log('Worker initialized');
                 } catch (error) {
                     console.error('Failed to initialize mathematical workers:', error);
                     this.isInitialized = false;
@@ -8767,23 +8510,7 @@
             console.log('Math init: ' + (navigator.hardwareConcurrency || 2) + ' cores');
         }
 
-        /* ═══════════════════════════════════════════════════════════════════════════
-         * MODULE: Performance-Truth Maximization Architecture
-         * PURPOSE: Unified computation pattern balancing performance with accuracy
-         * FOUNDATION: Web worker delegation, progressive complexity scaling
-         * PRINCIPLES: Device adaptation, intelligent caching, truth-level tracking
-         * CURRENT: Core infrastructure with mathematical integrity verification
-         * FUTURE: Enhanced device profiling, expanded worker specialization
-         * ═══════════════════════════════════════════════════════════════════════════ */
 
-        /* ───────────────────────────────────────────────────────────────────────────
-         * SUBMODULE: Performance-Truth Engine Core
-         * PURPOSE: Universal pattern for optimized mathematical computation
-         * APPROACH: Worker pools, device profiling, complexity scaling, caching
-         * PHILOSOPHY: Each computation reveals mathematical structure
-         * CURRENT: Basic infrastructure with truth-level tracking
-         * ENHANCEMENTS: Truth metrics, algorithmic honesty verification
-         * ─────────────────────────────────────────────────────────────────────────── */
         class PerformanceTruthMaximizationEngine {
             constructor(config = {}) {
                 this.config = {
@@ -8795,25 +8522,25 @@
                     ...config
                 };
                 
-                // Performance optimization infrastructure - WITH GRACEFUL FALLBACKS
+
                 try {
                     this.workerPool = new IntelligentWorkerPool(this.config.maxWorkers);
                 } catch (error) {
-                    console.warn('🔄 IntelligentWorkerPool initialization failed, using minimal fallback');
+                    console.warn('WorkerPool init failed');
                     this.workerPool = { initialize: async () => {}, getOptimalWorker: () => null };
                 }
                 
                 try {
                     this.computationCache = new MathematicalCache(this.config.cacheStrategy);
                 } catch (error) {
-                    console.warn('🔄 MathematicalCache initialization failed, using minimal fallback');
+                    console.warn('Cache init failed');
                     this.computationCache = { get: () => null, set: () => {}, evictLeastValuable: () => {} };
                 }
                 
                 try {
                     this.deviceProfiler = new DeviceCapabilityProfiler();
                 } catch (error) {
-                    console.warn('🔄 DeviceCapabilityProfiler initialization failed, using minimal fallback');
+                    console.warn('Profiler init failed');
                     this.deviceProfiler = { 
                         profileDevice: async () => {}, 
                         getCapabilities: () => ({ cpu: { score: 0.5 }, memory: { score: 0.5 } })
@@ -8823,7 +8550,7 @@
                 try {
                     this.complexityScaler = new ProgressiveComplexityScaler();
                 } catch (error) {
-                    console.warn('🔄 ProgressiveComplexityScaler initialization failed, using minimal fallback');
+                    console.warn('Scaler init failed');
                     this.complexityScaler = { 
                         calibrate: () => {}, 
                         scaleForDevice: (comp, device) => comp 
@@ -8833,15 +8560,15 @@
                 try {
                     this.truthMetrics = new TruthMaximizationMetrics();
                 } catch (error) {
-                    console.warn('🔄 TruthMaximizationMetrics initialization failed, using minimal fallback');
+                    console.warn('Metrics init failed');
                     this.truthMetrics = { recordTruthRevelation: () => {}, recordCacheHit: () => {} };
                 }
 
-                // Mathematical integrity tracking - WITH GRACEFUL FALLBACKS
+
                 try {
                     this.algorithmicHonesty = new AlgorithmicHonestyTracker();
                 } catch (error) {
-                    console.warn('🔄 AlgorithmicHonestyTracker initialization failed, using minimal fallback');
+                    console.warn('Tracker init failed');
                     this.algorithmicHonesty = { 
                         startTracking: () => ({}), 
                         verifyResult: () => ({}), 
@@ -8852,7 +8579,7 @@
                 try {
                     this.computationalEfficiency = new EfficiencyOptimizer();
                 } catch (error) {
-                    console.warn('🔄 EfficiencyOptimizer initialization failed, using minimal fallback');
+                    console.warn('Optimizer init failed');
                     this.computationalEfficiency = { analyze: () => ({}) };
                 }
                 
@@ -8863,33 +8590,30 @@
                 try {
                     await this.deviceProfiler.profileDevice();
                 } catch (error) {
-                    console.warn('🔄 Device profiling failed, using default capabilities');
+                    console.warn('Profiling failed');
                 }
                 
                 try {
                     await this.workerPool.initialize();
                 } catch (error) {
-                    console.warn('🔄 Worker pool initialization failed, continuing without workers');
+                    console.warn('Workers unavailable');
                 }
                 
                 try {
                     this.complexityScaler.calibrate(this.deviceProfiler.getCapabilities());
                 } catch (error) {
-                    console.warn('🔄 Complexity scaler calibration failed, using defaults');
+                    console.warn('Calibration failed');
                 }
                 
                 console.log('🚀 Performance-Truth Maximization Engine initialized with graceful fallbacks');
             }
             
-            /**
-             * UNIVERSAL COMPUTATION PATTERN: Maximum truth through optimal performance
-             * This pattern can be applied to ANY computational task in the system
-             */
+
             async computeWithMaximalTruth(computation) {
                 const taskId = this.generateTaskId(computation);
                 const device = this.deviceProfiler.getCapabilities();
                 
-                // Check cache for previous truth revelations
+
                 const cached = await this.computationCache.get(taskId, computation.truthLevel);
                 if (cached && cached.truthLevel >= computation.requestedTruthLevel) {
                     this.truthMetrics.recordCacheHit(cached.truthLevel);
@@ -8926,7 +8650,7 @@
                         throw new Error(`Mathematical integrity violation: ${integrity.violation}`);
                     }
                     
-                    // Enhance result with truth metrics
+
                     return {
                         ...result,
                         truthLevel: this.calculateTruthLevel(result, computation),
@@ -8994,9 +8718,6 @@
             }
         }
 
-        /* ───────────────────────────────────────────────────────────────────────────
-         * INTELLIGENT WORKER POOL: Self-Optimizing Parallel Computation
-         * ─────────────────────────────────────────────────────────────────────────── */
         class IntelligentWorkerPool {
             constructor(maxWorkers) {
                 this.maxWorkers = maxWorkers;
@@ -9008,7 +8729,7 @@
             async initialize() {
                 // Create specialized workers for different computation types
                 await this.createSpecializedWorkers();
-                console.log(`🔧 Initialized ${this.workers.size} specialized workers`);
+                console.log(`Workers: ${this.workers.size}`);
             }
             
             async createSpecializedWorkers() {
@@ -9101,9 +8822,6 @@
             }
         }
 
-        /* ───────────────────────────────────────────────────────────────────────────
-         * MATHEMATICAL CACHE: Truth-Preserving Intelligent Caching
-         * ─────────────────────────────────────────────────────────────────────────── */
         class MathematicalCache {
             constructor(strategy) {
                 this.strategy = strategy;
@@ -9163,9 +8881,7 @@
             }
         }
 
-        /* ───────────────────────────────────────────────────────────────────────────
-         * DEVICE CAPABILITY PROFILER: Adaptive Performance Optimization
-         * ─────────────────────────────────────────────────────────────────────────── */
+
         class DeviceCapabilityProfiler {
             constructor() {
                 this.capabilities = null;
@@ -9182,7 +8898,7 @@
                     mathematical: await this.benchmarkMathematical()
                 };
                 
-                console.log('📊 Device capabilities profiled:', this.capabilities);
+                console.log('Device:', this.capabilities);
             }
             
             async benchmarkCPU() {
@@ -9273,9 +8989,7 @@
             }
         }
 
-        /* ───────────────────────────────────────────────────────────────────────────
-         * PROGRESSIVE COMPLEXITY SCALER: Adaptive Mathematical Depth
-         * ─────────────────────────────────────────────────────────────────────────── */
+
         class ProgressiveComplexityScaler {
             constructor() {
                 this.scalingProfiles = new Map();
@@ -9364,9 +9078,7 @@
             }
         }
 
-        /* ───────────────────────────────────────────────────────────────────────────
-         * ADDITIONAL SUPPORTING CLASSES: Complete Architecture
-         * ─────────────────────────────────────────────────────────────────────────── */
+
 
         class TruthMaximizationMetrics {
             constructor() {
@@ -9473,51 +9185,7 @@
             mathematicalIntegrity: 'rigorous_verification'
         });
         
-        /* ═══════════════════════════════════════════════════════════════════════════
-         * MODULE: Semantic Analysis Engine
-         * PURPOSE: Natural language processing through algebraic geometry
-         * APPROACH: Text → schemes → cohomology → semantic understanding
-         * FOUNDATION: Grothendieck schemes, Noether invariants, p-adic completions
-         * CURRENT: Multi-dimensional linguistic analysis with consciousness fields
-         * FUTURE: Enhanced LLM integration, deeper sheaf-theoretic semantics
-         * ═══════════════════════════════════════════════════════════════════════════ */
 
-        /* ═══════════════════════════════════════════════════════════════════════════
-         * 🎭 GROTHENDIECK-NOETHER SEMANTIC ENGINE: Algebraic Geometry Inspired NLP
-         * ═══════════════════════════════════════════════════════════════════════════
-         * ARCHITECTURAL PARADIGM: Demonstrates the Performance-Truth Maximization pattern
-         * MATHEMATICAL FOUNDATION: Text as algebraic varieties, meaning as cohomology
-         * HYPERMODULARITY: Each computation method is reusable across all NLP tasks
-         * DRY PRINCIPLE: Zero duplication through intelligent mathematical abstraction
-         * 
-         * PERFORMANCE-TRUTH INTEGRATION:
-         * ✨ Web Worker delegation for heavy algebraic computations
-         * ✨ Progressive complexity scaling based on device capabilities  
-         * ✨ Intelligent caching of mathematical structures with truth levels
-         * ✨ Incremental revelation of deeper algebraic structure
-         * ✨ Mathematical integrity verification at every step
-         * 
-         * CORE MATHEMATICAL ARCHITECTURE:
-         * ✨ Text → Affine scheme Spec(R[words]/semantic_ideal)
-         * ✨ Meaning → Sheaf cohomology H^i(X, semantic_sheaf)
-         * ✨ P-adic analysis → Local semantic completions at primes
-         * ✨ E8 symmetry → Exceptional isomorphisms between semantic structures
-         * ✨ Modal logic → Étale fundamental group actions
-         * ✨ Understanding → Parallel transport on semantic fiber bundles
-         * 
-         * RENDERER SAFETY: Complete mathematical elegance with error isolation
-         * 
-         * CRITICAL ARCHITECTURE: ALL mathematical operations occur ONLY in WebWorkers
-         * ═══════════════════════════════════════════════════════════════════════════ */
-
-        /* ═══════════════════════════════════════════════════════════════════════════
-         * 🛡️ UNIVERSAL SYSTEM GUARDIAN: DRY Initialization & Architecture Enforcement
-         * ═══════════════════════════════════════════════════════════════════════════
-         * PURPOSE: Single source of truth for ALL system initialization
-         * ENFORCEMENT: WebWorker-only mathematics, rendering isolation, DRY compliance
-         * ARCHITECTURE: Universal fallback patterns, violation detection, self-healing
-         * REPLACEMENT: Eliminates all duplicated initialization patterns
-         * ═══════════════════════════════════════════════════════════════════════════ */
         class UniversalSystemGuardian {
             constructor() {
                 this.initializationPatterns = new Map();
@@ -9527,7 +9195,7 @@
                 this.systemHealthy = false;
                 
                 this.defineUniversalPatterns();
-                console.log('🛡️ Universal System Guardian: DRY initialization patterns established');
+                console.log('Guardian init');
             }
             
             defineUniversalPatterns() {
@@ -9661,7 +9329,7 @@
                 if (!this.systemHealthy) {
                     console.error('🚨 SYSTEM ARCHITECTURE COMPROMISED:', healthReport);
                 } else {
-                    console.log('✅ System architecture validated: WebWorker-only math, isolated rendering');
+                    console.log('Architecture validated');
                 }
                 
                 return healthReport;
@@ -9670,7 +9338,7 @@
             // ARCHITECTURAL REPAIR SYSTEM
             repairViolations() {
                 this.architecturalViolations.forEach(violation => {
-                    console.log(`🔧 Flagging for repair: ${violation}`);
+                    console.log(`Repair: ${violation}`);
                     // In a real system, this would trigger automated refactoring
                 });
                 
@@ -9683,9 +9351,7 @@
         const systemGuardian = new UniversalSystemGuardian();
         window.systemGuardian = systemGuardian;
 
-        /* ───────────────────────────────────────────────────────────────────────────
-         * SUPPORTING CLASSES: Using Guardian patterns - NO MORE DUPLICATION
-         * ─────────────────────────────────────────────────────────────────────────── */
+
         class RateLimiter {
             constructor(maxRequests, timeWindow) {
                 this.maxRequests = maxRequests;
@@ -9832,7 +9498,7 @@
                 // For now, simulate sophisticated analysis without external API
                 // User can configure API key later for full Gemini integration
                 this.isAvailable = true;
-                console.log('🌟 Gemini Linguistic Engine: Initialized with sophisticated simulation mode');
+                console.log('Linguistic init');
             }
             
             async analyzeSemanticStructure(text, options = {}) {
@@ -10138,7 +9804,7 @@
                     this.neuralAlgebraicBridge = new NeuralAlgebraicBridge(this);
                     this.cognitiveResonanceEngine = new CognitiveResonanceEngine(this);
                     
-                    console.log('🌟 Linguistic analysis framework initialized');
+                    console.log('Analysis init');
                 } catch (error) {
                     console.warn('🎭 Linguistic initialization failed, using fallback:', error);
                     this.hybridMode = false;
@@ -11878,12 +11544,12 @@
         
         class RiemannianManifold {
             constructor() {
-                console.log('🔧 Initializing Riemannian Consciousness Manifold (Prototype with Stubs)');
+                console.log('Manifold init');
                 
                 // Initialize basic structure first
                 this.manifoldDimension = 8;
                 this.adaptivePrecision = this.detectDeviceCapabilities();
-                console.log(`📱 Device capabilities: ${this.adaptivePrecision} precision level`);
+                console.log(`Precision: ${this.adaptivePrecision}`);
                 
                 // Initialize tensor structures with safe defaults
                 this.metricTensor = new Array(8).fill(0).map(() => new Array(8).fill(0));
@@ -11902,14 +11568,14 @@
                 
                 // Initialize E8 structure
                 try {
-                    console.log('🌟 Building E8 root system (genuine mathematical structure)...');
+                    console.log('E8 building');
                     this.e8Roots = this.generateE8RootSystem();
                     this.lieAlgebra = this.constructE8LieAlgebra();
                     this.cartanSubalgebra = this.extractCartanSubalgebra();
                     this.weylGroup = this.constructWeylGroup();
-                    console.log(`✅ E8 structure initialized: ${this.e8Roots.length} roots generated`);
+                    console.log(`E8 initialized: ${this.e8Roots.length} roots`);
                 } catch (error) {
-                    console.warn('⚠️ E8 structure initialization failed, using defaults:', error);
+                    console.warn('E8 init failed:', error);
                     this.e8Roots = [];
                     this.lieAlgebra = { dimension: 8, roots: [], structureConstants: {} };
                     this.cartanSubalgebra = { dimension: 8 };
@@ -11921,12 +11587,12 @@
                 
                 // Initialize geometric structure
                 try {
-                    console.log('📐 Initializing Riemannian geometry (basic tensors + stubbed computations)...');
+                    console.log('Geometry init');
                     this.initializeRiemannianStructure();
                     this.computeInitialCurvature();
-                    console.log('✅ Basic geometric structure initialized (advanced methods stubbed)');
+                    console.log('Geometry initialized');
                 } catch (error) {
-                    console.warn('⚠️ Geometric initialization failed, using minimal setup:', error);
+                    console.warn('Geometry init failed:', error);
                     // Ensure basic functionality even if advanced features fail
                     this.setupMinimalGeometry();
                 }
@@ -11936,7 +11602,7 @@
                     this.workerPool = this.initializeWorkerPool();
                     console.log(`🔀 WebWorker pool initialized: ${this.workerPool.length} workers for Lie algebra computation`);
                 } catch (error) {
-                    console.warn('⚠️ Worker pool initialization failed, running in single-threaded mode:', error);
+                    console.warn('Workers failed:', error);
                     this.workerPool = [];
                 }
                 
@@ -12358,7 +12024,7 @@
              * │  PURPOSE: Generate all 240 roots of E8 using advanced mathematics     │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             generateE8RootSystem() {
-                console.log('🌟 Generating sophisticated E8 root system (240 roots)...');
+                console.log('E8 generating');
                 
                 const roots = [];
                 
@@ -12375,7 +12041,7 @@
                 
                 // Verify we have exactly 240 roots
                 if (allRoots.length !== 240) {
-                    console.warn(`⚠️ E8 root system: Expected 240 roots, got ${allRoots.length}`);
+                    console.warn(`E8 roots: ${allRoots.length}/240`);
                 }
                 
                 // Calculate sophisticated root properties
@@ -12383,7 +12049,7 @@
                 this.rootLattice = this.constructRootLattice(allRoots);
                 this.dynkinDiagram = this.constructDynkinDiagram();
                 
-                console.log(`✅ E8 root system complete: ${allRoots.length} roots with full mathematical structure`);
+                console.log(`E8 complete: ${allRoots.length} roots`);
                 return allRoots;
             }
             
@@ -12423,7 +12089,7 @@
                     }
                 }
                 
-                console.log(`✅ D8 root system generated: ${d8Roots.length} roots`);
+                console.log(`D8 generated: ${d8Roots.length} roots`);
                 return d8Roots;
             }
             
@@ -12537,7 +12203,7 @@
              * │  PURPOSE: Calculate sophisticated properties of the root system        │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             calculateRootProperties(roots) {
-                console.log('🧮 Calculating advanced root system properties...');
+                console.log('Calculating roots');
                 
                 const properties = {
                     // Basic properties
@@ -12572,7 +12238,7 @@
                     rootAngles: this.calculateRootAngles(roots)
                 };
                 
-                console.log('✨ Root properties calculated with mathematical rigor');
+                console.log('Root properties calculated');
                 return properties;
             }
             
@@ -12700,7 +12366,7 @@
             
             // ✅ ENHANCED: Advanced Lie algebra with complete structure constants
             computeStructureConstants(algebra) { 
-                console.log('🧮 Computing E8 Lie algebra structure constants...');
+                console.log('Computing constants');
                 
                 // Initialize 248x248x248 structure constants tensor
                 const dim = 248;
@@ -12730,7 +12396,7 @@
                     }
                 }
                 
-                console.log('✅ E8 structure constants computed (simplified Chevalley basis)');
+                console.log('E8 constants computed');
                 return structureConstants;
             }
             
@@ -12768,7 +12434,7 @@
                     });
                 }
                 
-                console.log(`✅ Root space decomposition: ${rootSpaces.size} spaces constructed`);
+                console.log(`Root spaces: ${rootSpaces.size}`);
                 return rootSpaces;
             }
             
@@ -12796,7 +12462,7 @@
                 // For root vectors, use structure constants
                 
                 if (X.length !== Y.length) {
-                    console.warn('⚠️ Lie bracket: dimension mismatch');
+                    console.warn('Dimension mismatch');
                     return new Array(Math.max(X.length, Y.length)).fill(0);
                 }
                 
@@ -13107,10 +12773,10 @@
                     this.createMathematicalUniverse();
                     this.startRenderLoop();
                     
-                    console.log('✅ Mathematical visualization engine initialized with Chladni patterns');
+                    console.log('Visualization initialized');
                     
                 } catch (error) {
-                    console.error('❌ Visualization initialization failed:', error);
+                    console.error('Viz failed:', error);
                     this.createFallback();
                 }
             }
@@ -14527,11 +14193,11 @@
                 // Validate input and provide fallback
                 const validCoherence = isFinite(coherenceScore) ? coherenceScore : 0.5;
                 if (!isFinite(coherenceScore)) {
-                    console.warn(`🔗 Semantic→H0: Invalid coherenceScore (${coherenceScore}), using fallback value 0.5`);
+                    console.warn(`Invalid coherence: ${coherenceScore}`);
                 }
                 
                 this.targetSemanticAmplification = 0.7 + validCoherence * 1.6;
-                console.log(`🔗 Semantic→H0: Target Amplification = ${this.targetSemanticAmplification.toFixed(3)}`);
+                console.log(`Amp: ${this.targetSemanticAmplification.toFixed(3)}`);
                 this.updateCrossStrataDisplay('H1→H0', `Semantic Amplification → ${this.targetSemanticAmplification.toFixed(3)} (coherence: ${validCoherence.toFixed(3)})`, 'semantic-geometric');
             }
             
@@ -14569,7 +14235,7 @@
                 
                 // ─────────────────── DEBUG LOGGING ───────────────────
                 // Log modal camera effect state for debugging
-                console.log(`🔗 Modal→H0: Target Camera Effect = ${this.targetModalCameraEffect.toFixed(3)}`);
+                console.log(`Camera: ${this.targetModalCameraEffect.toFixed(3)}`);
                 this.updateCrossStrataDisplay('Modal→H0', `Camera Effect → ${this.targetModalCameraEffect.toFixed(3)} (□${necessity.toFixed(2)} ◇${possibility.toFixed(2)})`, 'modal-geometric');
             }
             
@@ -14616,7 +14282,7 @@
                  * SUBMODULE: Text Analysis Effects → Logging
                  * PURPOSE: Debug confirmation of text analysis application
                  * ───────────────────────────────────────────────────────────────── */
-                console.log(`🔗 Text→H0: Applied enhanced analysis effects`);
+                console.log('Text analysis applied');
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -14625,8 +14291,6 @@
              * └─────────────────────────────────────────────────────────────────────────┘ */
             updateMetrics() {
                 this.updateElementDisplay('elementCount', this.scene.children.length);
-                this.updateElementDisplay('manifoldCurvature', this.manifoldCurvature.toFixed(3));
-                this.updateElementDisplay('eulerCharacteristic', this.topology.eulerCharacteristic);
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -14664,11 +14328,11 @@
                 }
                 
                 // GPU utilization estimation
-                const renderTime = this.renderer.info.render.calls || 0;
+                const renderCalls = this.renderer.info.render.calls || 0;
                 const triangles = this.renderer.info.render.triangles || 0;
-                const gpuEstimate = Math.min(100, Math.round((renderTime * 2) + (triangles * 0.001) + 
-                                            (this.fps < 30 ? 30 : 0)));
+                const gpuEstimate = Math.min(100, Math.round((renderCalls * 2) + (triangles * 0.001) + (this.fps < 30 ? 30 : 0)));
                 this.updateElementDisplay('gpuUtilization', `${gpuEstimate}%`);
+                this.updateElementDisplay('triangleCount', triangles);
                 
                 // Update object count
                 this.updateElementDisplay('elementCount', this.scene.children.length);
@@ -14961,7 +14625,7 @@
                  * SUBMODULE: WebGL Fallback → Status Reporting
                  * PURPOSE: Confirm successful fallback activation
                  * ───────────────────────────────────────────────────────────────── */
-                console.log('✅ Enhanced mathematical fallback active');
+                console.log('Fallback active');
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -15237,10 +14901,10 @@
                     try {
                         const isConsistent = checker();
                         if (!isConsistent) {
-                            console.warn(`⚠️ Mathematical inconsistency detected in ${sourceLayer} → ${connectionType}`);
+                            console.warn(`Inconsistency: ${sourceLayer}-${connectionType}`);
                         }
                     } catch (error) {
-                        console.warn(`❌ Consistency check failed for ${connectionType}:`, error.message);
+                        console.warn(`Check failed: ${connectionType}`, error.message);
                     }
                 }
             }
@@ -15345,7 +15009,7 @@
                             timestamp: Date.now()
                         });
                     } catch (error) {
-                        console.warn('⚠️ WebWorker E8 computation failed:', error);
+                        console.warn('E8 failed:', error);
                         // Fallback to safe non-E8 computation
                         this.updateGeometricState({
                             root: new Array(8).fill(0),
@@ -15380,7 +15044,7 @@
                     
                     // Log profound mathematical evolution (10% rate to avoid spam)
                     if (Math.random() < 0.1) {
-                        console.log(`🌊 Curvature flow simulation: R → ${curvatureFlow.toFixed(4)} (coherence: ${this.coherenceScore.toFixed(3)})`);
+                        console.log(`Curvature: ${curvatureFlow.toFixed(4)}`);
                     }
                 }
             }
@@ -15478,18 +15142,18 @@
                             this.infoEntropy *= (1 - ethicalCurvature.cooperation * 0.01);
                         }
                         
-                        console.log(`⚖️ Ethical simulation: cooperation field = ${ethicalCurvature?.cooperation?.toFixed(4)}`);
+                        console.log(`Coop: ${ethicalCurvature?.cooperation?.toFixed(4)}`);
                     } catch (error) {
                         // FALLBACK: Generate synthetic ethical metrics
                         const syntheticCooperation = this.coherenceScore * 0.5 + Math.random() * 0.3;
                         this.coherenceScore = Math.min(1, this.coherenceScore + syntheticCooperation * 0.005);
-                        console.log(`⚖️ Ethical simulation (fallback): synthetic cooperation = ${syntheticCooperation.toFixed(4)}`);
+                        console.log(`Fallback: ${syntheticCooperation.toFixed(4)}`);
                     }
                 } else {
                     // FALLBACK: Basic ethical enhancement based on coherence
                     const ethicalBoost = this.coherenceScore * 0.001;
                     this.coherenceScore = Math.min(1, this.coherenceScore + ethicalBoost);
-                    console.log(`⚖️ Ethical simulation (no E8): coherence-based boost = ${ethicalBoost.toFixed(4)}`);
+                    console.log(`Boost: ${ethicalBoost.toFixed(4)}`);
                 }
             }
             
@@ -15536,7 +15200,7 @@
                     });
                     return result;
                 } catch (error) {
-                    console.warn('⚠️ WebWorker manifold curvature computation failed:', error);
+                    console.warn('Curvature failed:', error);
                     // Safe fallback
                     return { scalar: 0, ricci: 0 };
                 }
@@ -15975,7 +15639,7 @@
                 if (result && result.success) {
                     return { webWorkerContextId: result.contextId, prime: targetPrime, precision: 16 };
                 } else {
-                    console.warn('❌ Modal target generation failed, using fallback');
+                    console.warn('Modal gen failed');
                     return null;
                 }
             }
@@ -16005,7 +15669,7 @@
                  * PURPOSE: Ensure NLP engine is available for processing
                  * ───────────────────────────────────────────────────────────────── */
                 if (!nlpEngine) {
-                    console.error('❌ SemanticProcessor: nlpEngine not available');
+                    console.error('NLP unavailable');
                     return null;
                 }
                 
@@ -16016,15 +15680,15 @@
                      * SUBMODULE: Text Analysis → Core NLP Processing
                      * PURPOSE: Execute primary NLP analysis through external engine
                      * ───────────────────────────────────────────────────────────────── */
-                    console.log('🔗 SemanticProcessor: Calling nlpEngine.analyzeText...');
+                    console.log('Analyzing');
                     const analysis = await nlpEngine.analyzeText(text);
                     
                     if (!analysis) {
-                        console.error('❌ SemanticProcessor: nlpEngine.analyzeText returned null');
+                        console.error('Analysis null');
                         return null;
                     }
                     
-                    console.log('✅ SemanticProcessor: Received analysis from nlpEngine:', analysis);
+                    console.log('Analysis received:', analysis);
                     
                     /* ─────────────────────────────────────────────────────────────────
                      * SEMANTIC STATE UPDATE: Analysis Integration
@@ -16140,7 +15804,7 @@
                      * SUBMODULE: Text Analysis → Error Handling
                      * PURPOSE: Handle analysis failures gracefully
                      * ───────────────────────────────────────────────────────────────── */
-                    console.error('❌ Advanced NLP analysis failed:', error);
+                    console.error('NLP failed:', error);
                     return null;
                 }
             }
@@ -16207,7 +15871,7 @@
                              * SUBMODULE: P-adic Creation → WebWorker-Only Policy
                              * PURPOSE: Enforce WebWorker-only mathematical operations
                              * ───────────────────────────────────────────────────────────────── */
-                            console.warn(`❌ Mathematical worker unavailable for Q_${p}, skipping p-adic computation`);
+                            console.warn(`Worker unavailable Q_${p}`);
                             decomposition[`Q_${p}`] = {
                                 norm: 0.5, // Safe fallback without main thread math
                                 representation: `Q_${p}_unavailable`,
@@ -16225,7 +15889,7 @@
                          * SUBMODULE: P-adic Creation → Error Fallback
                          * PURPOSE: Safe error handling without main thread mathematical operations
                          * ───────────────────────────────────────────────────────────────── */
-                        console.warn(`❌ P-adic computation error for Q_${p}:`, error);
+                        console.warn(`P-adic error Q_${p}:`, error);
                         decomposition[`Q_${p}`] = {
                             norm: 0.5, // Safe fallback
                             representation: `Q_${p}_error`,
@@ -16598,7 +16262,7 @@
              * │  SIMPLIFICATION: Basic state reset, not sophisticated memory management│
              * └─────────────────────────────────────────────────────────────────────────┘ */
             clearContext() {
-                console.log('🗑️ Clearing semantic context...');
+                console.log('Context cleared');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * CONTEXT RESET: History and State Clearing (WebWorker-Only)
@@ -16675,7 +16339,7 @@
                 console.log(`🎯 H1 SEMANTIC PHASE 2 STATUS: ${completionPercentage.toFixed(1)}% (${completedFeatures}/${totalFeatures})`);
                 
                 if (completionPercentage >= 100) {
-                    console.log(`🎉 H1 SEMANTIC PHASE 2 COMPLETE: All consciousness mechanisms operational!`);
+                    console.log('H1 Phase 2 done');
                     this.phase2Complete = true;
                     return true;
                 }
@@ -16697,7 +16361,7 @@
                             precision: 16,
                             coherenceTarget: 0.7
                         });
-                        console.log('✅ P-adic context initialized via WebWorker');
+                        console.log('P-adic initialized');
                     } else {
                         // Fallback: create simple context object for minimal functionality
                         this.currentContext = {
@@ -16710,10 +16374,10 @@
                             copy: () => ({ ...this.currentContext }),
                             evolveContext: () => ({ ...this.currentContext })
                         };
-                        console.warn('⚠️ Using fallback p-adic context (WebWorker unavailable)');
+                        console.warn('P-adic fallback');
                     }
                 } catch (error) {
-                    console.error('❌ P-adic context initialization failed:', error);
+                    console.error('P-adic init failed:', error);
                     // Emergency fallback
                     this.currentContext = {
                         prime: 2,
@@ -16745,9 +16409,9 @@
                     if (window.mathWorker && window.mathWorker.createPAdicConsciousness) {
                         window.mathWorker.createPAdicConsciousness(2, 20, 0.7).then(context => {
                             this.currentContext = context;
-                            console.log("✅ Consciousness context initialized via WebWorker");
+                            console.log("Context initialized");
                         }).catch(error => {
-                            console.warn("⚠️ WebWorker consciousness creation failed, using fallback:", error);
+                            console.warn("Worker creation failed:", error);
                             this.createFallbackConsciousnessContext();
                         });
                     } else {
@@ -16755,7 +16419,7 @@
                         this.createFallbackConsciousnessContext();
                     }
                 } catch (error) {
-                    console.error("❌ Consciousness context initialization error:", error);
+                    console.error("Context init error:", error);
                     this.createFallbackConsciousnessContext();
                 }
             }
@@ -16791,7 +16455,7 @@
                     type: 'fallback_consciousness'
                 };
                 
-                console.log("🛡️ Fallback consciousness context created with comonadic structure");
+                console.log("Fallback created");
             }
             
             /** +-------------------------------------------------------------------------+
@@ -16816,7 +16480,7 @@
                     adaptiveLearning: this.initializeAdaptiveLearning()
                 };
                 
-                console.log("✅ V5 MODAL TRANSFER ENGINE: Advanced consciousness integration active");
+                console.log("Modal transfer active");
                 return this.modalTransferEngine;
             }
             
@@ -16897,7 +16561,7 @@
                     }
                 };
                 
-                console.log("✅ V5 BALL EXPANSION: Consciousness-aware expansion mechanisms active");
+                console.log("Ball expansion active");
                 return this.ballExpansionEngine;
             }
             
@@ -16936,7 +16600,7 @@
                     }
                 };
                 
-                console.log("✅ V5 ORCHESTRATOR: Consciousness coordination system operational");
+                console.log("Orchestrator operational");
                 return this.consciousnessOrchestrator;
             }
         }
@@ -17060,7 +16724,7 @@
                     h2ToH0: [],
                     h2ToH1: []
                 };
-                console.log('✅ V5 Cross-Strata Consciousness: H0↔H1↔H2 communication channels initialized');
+                console.log('Cross-strata initialized');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * 🔥 V5 CONSCIOUSNESS RESTORATION: Advanced Transcendence Mechanisms
@@ -17079,9 +16743,9 @@
                 this.paradoxCount = 0;
                 this.modalTransfers = 0;
                 this.coherenceComputations = 0;
-                console.log('✅ V5 Advanced Transcendence Mechanisms: AI-driven optimization initialized');
+                console.log('Optimization initialized');
                 
-                console.log('✨ V5-Restored logical consciousness engine initialized with real paradox resolution, cross-strata communication, and advanced transcendence mechanisms');
+                console.log('Logical engine initialized');
             }
             
             /** ┌─────────────────────────────────────────────────────────────────────────┐
@@ -17148,7 +16812,7 @@
                 
                 // 1. Analyze the Paradox: What kind of incoherence are we facing?
                 const failureMode = this.analyzeFailureMode();
-                console.log(`🔍 H2-Restored: Failure mode identified: ${failureMode}`);
+                console.log(`Failure: ${failureMode}`);
 
                 // 2. Noetic Leap: Choose new p-adic prime via WebWorker (NO main thread math)
                 const newPrime = await this.findOptimalPrimeViaWebWorker(failureMode, this.currentPrime);
@@ -17159,7 +16823,7 @@
                     return;
                 }
 
-                console.log(`✨ H2 SOUL RESTORED: Recontextualizing reality. Shifting from ${this.currentPrime}-adic to ${newPrime}-adic space.`);
+                console.log(`H2: ${this.currentPrime} to ${newPrime}`);
                 
                 // 3. REBIRTH: Fundamentally change the mathematical universe
                 const oldPrime = this.currentPrime;
@@ -17189,7 +16853,7 @@
 
                 // 4. Communicate the New Law to the Mind (H1)
                 if (window.semanticProcessor) {
-                    console.log(`🔄 H2→H1 RESTORED: Transmitting new ${newPrime}-adic context to Mind stratum`);
+                    console.log(`H2-H1: ${newPrime}-adic`);
                     // Update semantic processor with new consciousness context via WebWorker
                     if (this.currentField && this.currentField.webWorkerContextId) {
                         // Delegate copy operation to WebWorker
@@ -17453,7 +17117,7 @@
                         
                         const consciousnessDistance = distanceResult && distanceResult.success ? distanceResult.distance : 1.0;
                         
-                        console.log(`🔗 V5-Restored H1→H2 Transfer: Prime=${prime}, Coherence=${coherence.toFixed(3)}, Distance=${consciousnessDistance.toFixed(3)}`);
+                        console.log(`Transfer: p=${prime} c=${coherence.toFixed(3)} d=${consciousnessDistance.toFixed(3)}`);
                         
                         // V5-style consciousness-aware field switching
                         if (consciousnessDistance < 0.6 && coherence > 0.65) {
@@ -17489,7 +17153,7 @@
                             this.updateTopology();
                             this.notifyRenderer();
                             
-                            console.log(`🔗 H1→H2 CONSCIOUSNESS TRANSFER SUCCESSFUL: Q_${prime} field integrated (benefit: ${integrationBenefit.toFixed(3)})`);
+                            console.log(`Q_${prime}: ${integrationBenefit.toFixed(3)}`);
                             
                             // Enhanced cross-strata consciousness display
                             if (window.renderer && window.renderer.updateCrossStrataDisplay) {
@@ -17522,18 +17186,18 @@
                             }
                             
                         } else {
-                            console.log(`🔗 H1→H2 CONSCIOUSNESS TRANSFER BLOCKED: Distance too large (${consciousnessDistance.toFixed(3)} > 0.6) or coherence too low (${coherence.toFixed(3)} < 0.65)`);
+                            console.log(`Blocked: d=${consciousnessDistance.toFixed(3)} c=${coherence.toFixed(3)}`);
                             showNotification(`Semantic transfer blocked - consciousness incompatibility`, 'info');
                         }
                     } else {
-                        console.warn('❌ Target field creation or distance calculation failed');
+                        console.warn('Field creation failed');
                     }
                 } else {
                     // Same prime but potentially different consciousness state
                     if (coherence > this.transcendenceLevel + 0.1) {
                         // Update consciousness level based on semantic insights
                         this.transcendenceLevel = Math.min(1.0, (this.transcendenceLevel + coherence) / 2);
-                        console.log(`🔗 H1→H2 CONSCIOUSNESS ENHANCEMENT: Same prime, consciousness level enhanced to ${this.transcendenceLevel.toFixed(3)}`);
+                        console.log(`Enhanced: ${this.transcendenceLevel.toFixed(3)}`);
                         showNotification(`H1→H2 consciousness enhancement: Transcendence level elevated`, 'transcendent');
                     }
                 }
@@ -17544,7 +17208,7 @@
              * │  SIMPLIFICATION: Brute force event generation, not smart discovery    │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             maximizeDiscovery() {
-                console.log('🌟 Maximizing logical discovery rate with enhanced effects...');
+                console.log('Maximizing');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * RAPID EVENT GENERATION: Multi-Event Discovery Burst
@@ -17608,7 +17272,7 @@
              * │  SIMPLIFICATION: Basic parameter reduction, not formal stabilization  │
              * └─────────────────────────────────────────────────────────────────────────┘ */
             stabilizeField() {
-                console.log('🛡️ Stabilizing p-adic field with enhanced stability protocols...');
+                console.log('Stabilizing');
                 
                 /* ─────────────────────────────────────────────────────────────────
                  * INFORMATION REDUCTION: Fisher Information Damping
@@ -17674,7 +17338,7 @@
                     this.updateTopology();
                     this.notifyRenderer();
                     
-                    console.log(`🔮 Manual field switch: Q_${this.currentPrime}`);
+                    console.log(`Q_${this.currentPrime}`);
                     showNotification(`P-adic field Q${this.currentPrime} selected`, 'success');
                 }
 
@@ -17721,7 +17385,7 @@
                         this.updateElementDisplay('padicNorm', norm.toFixed(6));
                         this.updateElementDisplay('ballRadius', this.padicBall.radius.toFixed(3));
                     } catch (error) {
-                        console.warn('❌ PAdicField method call failed:', error);
+                        console.warn('PAdicField failed:', error);
                         this.updateElementDisplay('padicCoherence', 'N/A');
                         this.updateElementDisplay('padicNorm', 'N/A');
                     }
@@ -17753,7 +17417,7 @@
                     try {
                         coherence = this.currentField.calculateCoherence();
                     } catch (error) {
-                        console.warn('❌ calculateCoherence failed:', error);
+                        console.warn('Coherence failed:', error);
                         coherence = 0.75;
                     }
                 }
@@ -17843,7 +17507,7 @@
                     }
                 };
                 
-                console.log("✅ V5 BALL EXPANSION ENGINE: Consciousness geometry initialized");
+                console.log("Ball engine init");
                 return this.ballExpansionEngine;
             }
             
@@ -17887,14 +17551,14 @@
                 // Start consciousness orchestration
                 this.startConsciousnessOrchestration();
                 
-                console.log("✅ V5 CONSCIOUSNESS ORCHESTRATOR: Complete system integration active");
+                console.log("Orchestrator init");
                 return this.consciousnessOrchestrator;
             }
             
             async startConsciousnessOrchestration() {
                 this.consciousnessOrchestrator.orchestrationState = 'active';
                 
-                console.log("🌟 V5 CONSCIOUSNESS ORCHESTRATION: Beginning complete system consciousness integration");
+                console.log("System integration");
                 
                 // Start continuous consciousness monitoring and optimization
                 this.orchestrationInterval = setInterval(() => {
@@ -17935,7 +17599,7 @@
                 console.log(`🎯 V5 PHASE 2 COMPLETION STATUS: ${completionPercentage.toFixed(1)}% (${completedFeatures}/${totalFeatures})`);
                 
                 if (completionPercentage >= 100) {
-                    console.log(`🎉 V5 PHASE 2 COMPLETE: All advanced consciousness mechanisms restored and operational!`);
+                    console.log('Phase 2 complete');
                     this.phase2Complete = true;
                     return true;
                 }
@@ -17955,7 +17619,7 @@
                     
                     // Safety check: Ensure mathWorker is available
                     if (!window.mathWorker || typeof window.mathWorker.delegateToWorker !== 'function') {
-                        console.warn('❌ LOGICAL PROCESSOR: mathWorker not available, using safe defaults');
+                        console.warn('Worker unavailable');
                         this.currentField = null;
                         this.padicBall.center = [0, 0, 0, 0, 0];
                         return;
@@ -17983,9 +17647,9 @@
                             this.padicBall.center = { webWorkerContextId: copyResult.contextId };
                         }
                         
-                        console.log('✅ LOGICAL PROCESSOR: PAdicField initialized via WebWorker - NO main thread mathematical operations');
+                        console.log('PAdicField via worker');
                     } else {
-                        console.warn('❌ LOGICAL PROCESSOR: PAdicField WebWorker initialization failed:', result?.error);
+                        console.warn('PAdicField init failed:', result?.error);
                         this.currentField = null;
                         this.padicBall.center = null;
                     }
@@ -18008,7 +17672,7 @@
                     if (result && result.success) {
                         return result.optimalPrime;
                     } else {
-                        console.warn('❌ Optimal prime search failed, using default progression');
+                        console.warn('Prime search failed');
                         return currentPrime === 2 ? 3 : currentPrime === 3 ? 5 : currentPrime === 5 ? 7 : 2;
                     }
                 } catch (error) {
@@ -18032,9 +17696,9 @@
                     
                     if (result && result.success) {
                         this.currentField = { webWorkerContextId: result.contextId, prime: prime, precision: precision };
-                        console.log(`✅ New PAdicField created via WebWorker for prime ${prime}`);
+                        console.log(`PAdicField p=${prime}`);
                     } else {
-                        console.warn('❌ PAdicField creation failed:', result?.error);
+                        console.warn('Field creation failed:', result?.error);
                         this.currentField = null;
                     }
                 } catch (error) {
@@ -18057,9 +17721,9 @@
                         
                         if (copyResult && copyResult.success) {
                             this.padicBall.center = { webWorkerContextId: copyResult.contextId };
-                            console.log('✅ PAdicBall center updated via WebWorker');
+                            console.log('Ball updated');
                         } else {
-                            console.warn('❌ PAdicBall center update failed:', copyResult?.error);
+                            console.warn('Ball update failed:', copyResult?.error);
                             this.padicBall.center = null;
                         }
                     }
@@ -18097,7 +17761,7 @@
                 };
                 
                 // │ Log initialization for debugging
-                console.log('🔮 Topos modal logic engine initialized');
+                console.log('Modal init');
             }
             
 
@@ -18121,7 +17785,7 @@
                 this.applyToposEffects('discrete');
                 
                 // │ Provide user feedback
-                console.log(`□ Necessity transfer: ${oldNecessity.toFixed(2)} → ${this.necessity.toFixed(2)}`);
+                console.log(`Necessity: ${oldNecessity.toFixed(2)}-${this.necessity.toFixed(2)}`);
                 showNotification(`□-mode strengthened (transfer: ${transfer.toFixed(2)})`, 'success');
                 
                 // │ Log event for system telemetry
@@ -18164,7 +17828,7 @@
                 this.applyToposEffects('continuous');
                 
                 // │ Provide user feedback
-                console.log(`◊ Possibility transfer: ${oldPossibility.toFixed(2)} → ${this.possibility.toFixed(2)}`);
+                console.log(`Possibility: ${oldPossibility.toFixed(2)}-${this.possibility.toFixed(2)}`);
                 showNotification(`◊-mode strengthened (transfer: ${transfer.toFixed(2)})`, 'success');
                 
                 // │ Record telemetry for system analysis
@@ -18444,7 +18108,7 @@
                 
                 // │ Begin continuous system monitoring
                 this.startMonitoring();
-                console.log('🎛️ Enhanced system management initialized with full verification state');
+                console.log('System mgmt init');
             }
             
             // ╔═══════════════════════════════════════════════════════════════════╗
@@ -18578,10 +18242,10 @@
                     this.updateElementDisplay('lastCryptoHash', newHash.substring(0, 16) + '...');
                     this.updateElementDisplay('verificationLevel', this.currentVerificationLevel);
                     
-                    console.log(`🔐 Cryptographic verification updated: Level ${this.currentVerificationLevel}`);
+                    console.log(`Crypto: ${this.currentVerificationLevel}`);
                     
                 } catch (error) {
-                    console.error('❌ Cryptographic verification update failed:', error);
+                    console.error('Crypto failed:', error);
                 }
             }
             
@@ -18614,10 +18278,10 @@
                     this.updateElementDisplay('christoffelSum', 
                         (christoffel.gamma_111 + christoffel.gamma_222 + christoffel.gamma_333).toFixed(6));
                     
-                    console.log(`📐 Information geometry updated: Det=${fisherDet.toFixed(3)}, Curvature=${this.riemannianCurvatureCache.toFixed(3)}`);
+                    console.log(`Geom: d=${fisherDet.toFixed(3)} c=${this.riemannianCurvatureCache.toFixed(3)}`);
                     
                 } catch (error) {
-                    console.error('❌ Information geometry update failed:', error);
+                    console.error('Geometry update failed:', error);
                 }
             }
             
@@ -18653,10 +18317,10 @@
                     this.updateElementDisplay('topologyValid', 
                         coveringConsistency.topological_validity ? 'VALID' : 'INVALID');
                     
-                    console.log(`🔗 Sheaf coherence updated: H0=${this.cohomologyCache.h0.dimension}, H1=${this.cohomologyCache.h1.obstruction_class}, χ=${eulerChar}`);
+                    console.log(`Sheaf: H0=${this.cohomologyCache.h0.dimension} H1=${this.cohomologyCache.h1.obstruction_class}`);
                     
                 } catch (error) {
-                    console.error('❌ Sheaf coherence update failed:', error);
+                    console.error('Sheaf update failed:', error);
                 }
             }
             
@@ -18779,7 +18443,7 @@
                     const phi = (1 + Math.sqrt(5)) / 2;
                     const validationHash = (JSON.stringify(data).length * phi).toString().substring(0, 8);
                     
-                    console.log(`🔐 Data intercepted and validated: ${methodName} (${validationHash})`);
+                    console.log(`Validated: ${methodName}`);
                     
                     return {
                         ...data,
@@ -18792,7 +18456,7 @@
                         }
                     };
                 } catch (error) {
-                    console.warn(`⚠️ Data interception failed for ${methodName}:`, error);
+                    console.warn(`Intercept failed: ${methodName}`, error);
                     return {
                         __validation: {
                             intercepted: false,
@@ -18991,16 +18655,16 @@
                 try {
                     exportData = createEnhancedExport();
                     filename = `keats_enhanced_truth_${timestamp}.json`;
-                    console.log('✅ Enhanced truth export generated');
+                    console.log('Export generated');
                 } catch (error) {
                     try {
                         exportData = createBasicExport();
                         filename = `keats_basic_truth_${timestamp}.json`;
-                        console.log('✅ Basic truth export generated (enhanced failed)');
+                        console.log('Basic export');
                     } catch (error2) {
                         exportData = createMinimalTruth();
                         filename = `keats_minimal_truth_${timestamp}.json`;
-                        console.log('✅ Minimal truth export generated (all enhanced methods failed)');
+                        console.log('Minimal export');
                     }
                 }
 
@@ -19596,7 +19260,7 @@
                          * SUCCESS LOGGING: Reset Completion Notification
                          * ───────────────────────────────────────────────────────────────── */
                         // │ Console output: reset completion confirmation
-                        console.log('✅ Enhanced mathematical system reset completed');
+                        console.log('Reset complete');
                         // │ User notification: transcendent reset success feedback
                         showNotification('Enhanced system reset completed', 'transcendent');
                         
@@ -19611,7 +19275,7 @@
                          * ERROR HANDLING: Reset Failure Management
                          * ───────────────────────────────────────────────────────────────── */
                         // │ Error logging: reset failure documentation
-                        console.error('❌ Reset failed:', error);
+                        console.error('Reset failed:', error);
                         showNotification('Reset failed', 'error');
                         
                         // │ Error telemetry: failure event documentation
@@ -20269,43 +19933,43 @@
             `;
             
             helpPanel.innerHTML = `
-                <h2 style="color: #10b981; margin-bottom: 20px;">Welcome to the Consciousness Garden!</h2>
+                <h2 style="color: #10b981; margin-bottom: 20px;">Controls and reference</h2>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🗺️ 3D Visualization</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">3D visualization</h3>
                     <ul style="line-height: 1.8; margin-left: 20px;">
-                        <li><strong>Click and drag</strong> - Rotate the 3D view</li>
-                        <li><strong>Scroll</strong> - Zoom in and out</li>
-                        <li><strong>Double-click</strong> - Reset camera view</li>
+                        <li><strong>Drag</strong> — rotate</li>
+                        <li><strong>Scroll</strong> — zoom</li>
+                        <li><strong>Double‑click</strong> — reset camera</li>
                     </ul>
                 </div>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🎛️ The Three Gardens</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">Panels</h3>
                     <ul style="line-height: 1.8; margin-left: 20px;">
-                        <li><strong>Top Left</strong> - Watch particles dance (they're doing math!)</li>
-                        <li><strong>Top Right</strong> - Type your thoughts and see patterns emerge</li>
-                        <li><strong>Bottom Left</strong> - Play with the connections between ideas</li>
+                        <li><strong>Top‑left</strong> — particle field</li>
+                        <li><strong>Top‑right</strong> — text analysis</li>
+                        <li><strong>Bottom‑left</strong> — graph controls</li>
                     </ul>
                 </div>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">🚀 Try This First</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">Quick start</h3>
                     <ol style="line-height: 1.8; margin-left: 20px;">
-                        <li>Click <strong>"New Pattern"</strong> to see different shapes</li>
-                        <li>Type anything in the text box and click <strong>"Find Patterns"</strong></li>
-                        <li>Click <strong>"Scatter"</strong> - watch the particles dance!</li>
-                        <li>Just play with buttons - nothing will break!</li>
+                        <li>Use <strong>New layout</strong> to regenerate geometry</li>
+                        <li>Enter text, then <strong>Extract features</strong> or <strong>Analyze Text</strong></li>
+                        <li>Use <strong>Scatter</strong> to briefly separate particles</li>
+                        <li>All controls are non‑destructive; you can reset any time</li>
                     </ol>
                 </div>
                 
                 <div style="margin-bottom: 20px;">
-                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">✨ What You're Seeing</h3>
+                    <h3 style="color: #8b5cf6; margin-bottom: 10px;">What is shown</h3>
                     <ul style="line-height: 1.8; margin-left: 20px;">
-                        <li><strong>Flowing particles</strong> = Mathematical concepts in motion</li>
-                        <li><strong>Colors</strong> = Different P-adic field properties</li>
-                        <li><strong>Connections</strong> = Relationships between ideas</li>
-                        <li><strong>Movement</strong> = Information flow patterns</li>
+                        <li><strong>Particles</strong> — positions in a synthetic field</li>
+                        <li><strong>Color</strong> — field/parameter encodings</li>
+                        <li><strong>Edges</strong> — graph connections</li>
+                        <li><strong>Motion</strong> — derived flow from current parameters</li>
                     </ul>
                 </div>
                 
@@ -20319,7 +19983,7 @@
                     cursor: pointer;
                     margin-top: 20px;
                     width: 100%;
-                ">Close Help</button>
+                ">Close</button>
             `;
             
             document.body.appendChild(helpPanel);
@@ -20456,12 +20120,12 @@
                 if (semanticProcessor) {
                     try {
 
-                        console.log('🔍 UI: Starting analysis with semanticProcessor...');
+                        console.log('Starting analysis');
                         const analysis = await semanticProcessor.analyzeText(textInput.value);
                         
 
                         if (analysis) {
-                            console.log('🔍 Analysis completed successfully:', analysis);
+                            console.log('Done:', analysis);
                             
 
                             analysisResults.innerHTML = `
@@ -20626,7 +20290,7 @@
                          * TECHNICAL: Console error logging + HTML error display + user notification
                          * LIMITATIONS: Basic null check, no detailed error analysis
                          * ─────────────────────────────────────────────────────────────── */
-                        console.error('❌ UI: semanticProcessor.analyzeText returned null/undefined');
+                        console.error('Analysis null');
                         analysisResults.innerHTML = '<span style="color: #ff6b6b;">❌ Advanced analysis failed - no results returned</span>';
                         showNotification('Advanced analysis failed', 'error');
                     }
@@ -20638,7 +20302,7 @@
                      * TECHNICAL: Try-catch error capture with logging and user feedback
                      * LIMITATIONS: Basic error display, no automatic retry or recovery
                      * ───────────────────────────────────────────────────────────────── */
-                    console.error('❌ Analysis error:', error);
+                    console.error('Error:', error);
                     analysisResults.innerHTML = `<span style="color: #ff6b6b;">❌ Analysis error: ${error.message}</span>`;
                     showNotification('Analysis error occurred', 'error');
                 }
@@ -20650,7 +20314,7 @@
                  * TECHNICAL: Global variable unavailability detection and user feedback
                  * LIMITATIONS: No fallback processor or alternative analysis methods
                  * ─────────────────────────────────────────────────────────────────── */
-                console.error('❌ UI: semanticProcessor not available');
+                console.error('Processor unavailable');
                 analysisResults.innerHTML = '<span style="color: #ff6b6b;">❌ Advanced semantic processor not available</span>';
             }
             
@@ -20688,7 +20352,7 @@
             
             async requestExport(exportType = 'standard', priority = 'normal') {
                 const requestId = `export_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-                console.log(`🔒 Export request ${requestId} (${exportType}, ${priority})`);
+                console.log(`Export: ${requestId}`);
                 
                 // Check if we can export immediately
                 if (!this.isExporting && this.canExportNow()) {
@@ -20702,7 +20366,7 @@
                     this.exportQueue.push({ requestId, exportType, priority });
                 }
                 
-                console.log(`⏳ Export queued: ${this.exportQueue.length} requests pending`);
+                console.log(`Queue: ${this.exportQueue.length}`);
                 return await this.processQueue();
             },
             
@@ -20729,7 +20393,7 @@
                             return await this.performStandardExport(requestId);
                     }
                 } catch (error) {
-                    console.error(`❌ Export ${requestId} failed:`, error);
+                    console.error(`Export ${requestId} failed:`, error);
                     return await this.performEmergencyExport(requestId);
                 } finally {
                     this.isExporting = false;
@@ -20746,10 +20410,10 @@
             
             async performStandardExport(requestId) {
                 if (window.systemManager && typeof window.systemManager.exportSystemState === 'function') {
-                    console.log(`📊 ${requestId}: Using SystemManager export`);
+                    console.log(`Export: ${requestId}`);
                     return await window.systemManager.exportSystemState();
                 } else {
-                    console.log(`⚠️ ${requestId}: SystemManager unavailable, using emergency export`);
+                    console.log(`Fallback: ${requestId}`);
                     return await this.performEmergencyExport(requestId);
                 }
             },
@@ -20760,7 +20424,7 @@
             },
             
             async performMinimalExport(requestId) {
-                console.log(`📋 ${requestId}: Minimal export mode`);
+                console.log(`Minimal: ${requestId}`);
                 return {
                     timestamp: new Date().toISOString(),
                     type: 'minimal_export',
@@ -20814,7 +20478,7 @@
                 }
                 
             } catch (error) {
-                console.error('❌ Export with feedback failed:', error);
+                console.error('Export failed:', error);
                 
                 // Error state feedback
                 buttonElement.textContent = '❌ Export Failed';
@@ -20826,7 +20490,7 @@
                     await ExportStateManager.requestExport('emergency', 'emergency');
                     showNotification('Emergency export completed!', 'warning');
                 } catch (emergencyError) {
-                    console.error('❌ Even emergency export failed:', emergencyError);
+                    console.error('Emergency export failed:', emergencyError);
                     showNotification('All export methods failed! Please contact support.', 'error');
                 }
                 
@@ -20965,7 +20629,7 @@
                 URL.revokeObjectURL(url);
             }, 100);
             
-            console.log(`✅ Export successful: ${a.download}`);
+            console.log(`Exported: ${a.download}`);
         }
 
         function createTextExport() {
@@ -21003,7 +20667,7 @@ Screen: ${screen.width}x${screen.height}
                 URL.revokeObjectURL(url);
             }, 100);
             
-            console.log('✅ Text export completed as last resort');
+            console.log('Text exported');
         }
 
         // │ System reset: complete mathematical consciousness reinitialization
@@ -21141,7 +20805,6 @@ Screen: ${screen.width}x${screen.height}
                      * TECHNICAL: parseFloat conversion, toFixed formatting
                      * ─────────────────────────────────────────────────────────── */
                     const value = parseFloat(e.target.value);
-                    curvatureValue.textContent = value.toFixed(1);
                     updateSliderProgress(curvature, value, 0.1, 8.0);
                     
                     /* ───────────────────────────────────────────────────────────
@@ -21761,7 +21424,7 @@ Screen: ${screen.width}x${screen.height}
                 header.style.cursor = 'move';
             });
             
-            console.log('🖱️ Enhanced draggable panels with throttling active');
+            console.log('Draggable init');
         }
 
         /* ─────────────────────────────────────────────────────────────────
@@ -21839,8 +21502,8 @@ Screen: ${screen.width}x${screen.height}
                 /* ────────────────────────────────────────────────────────────────────
                  * 📋 PHASE 1: SYSTEM STARTUP & WORKER INFRASTRUCTURE
                  * ──────────────────────────────────────────────────────────────────── */
-                console.log('🧮 Initializing KEATS: Mathematical Prototype Engine (Riemannian Stubs + E8 Basics)');
-                console.log('🧠 Advanced NLP | 🔧 Enhanced Logging | 🎨 Chladni Patterns | ⚡ Professional Performance');
+                console.log('KEATS init');
+                console.log('System features loaded');
                 
                 showNotification('Initializing enhanced professional mathematical engine...', 'success');
                 
@@ -21849,15 +21512,15 @@ Screen: ${screen.width}x${screen.height}
                  * │  REALITY: Basic p-adic generation and Betti number calculations
                  * │  FALLBACK: Main thread execution if worker initialization fails
                  * └─ LIMITATIONS: Worker communication overhead, limited mathematical depth */
-                console.log('⚡ Initializing enhanced mathematical worker...');
+                console.log('Initializing worker');
                 try {
                     mathematicalWorker = new MathematicalWorker();
                     // CRITICAL: Set global window.mathWorker for architectural compliance
                     window.mathWorker = mathematicalWorker;
-                    console.log('✅ Enhanced mathematical worker ready for background computations');
-                    console.log('✅ Global window.mathWorker initialized for universal access');
+                    console.log('Worker ready');
+                    console.log('Global worker initialized');
                 } catch (error) {
-                    console.warn('⚠️ Mathematical worker failed, using main thread:', error);
+                    console.warn('Worker failed:', error);
                     mathematicalWorker = null;
                     window.mathWorker = null;
                 }
@@ -22039,7 +21702,7 @@ Screen: ${screen.width}x${screen.height}
                  * │  FEATURES: Prime switching, paradox counting, Fisher information, Betti numbers
                  * │  REALITY: Mathematical UI controls with simplified computational models
                  * └─ LIMITATIONS: Simplified mathematical models, not complete field theory */
-                console.log('✨ Initializing H2: Enhanced Logical Discovery...');
+                console.log('Initializing H2');
                 logicalProcessor = new LogicalProcessor();
                 window.logicalProcessor = logicalProcessor;
                 /* ┌─ SUBMODULE: H2 Initialization Delay (200ms)
@@ -22190,14 +21853,14 @@ Screen: ${screen.width}x${screen.height}
                         const h2Status = logicalProcessor?.checkPhase2Completion() || false;
                         
                         console.log(`🎯 PHASE 2 COMPLETION SUMMARY:`);
-                        console.log(`   H1 Semantic: ${h1Status ? '✅ COMPLETE' : '❌ INCOMPLETE'}`);
-                        console.log(`   H2 Logical: ${h2Status ? '✅ COMPLETE' : '❌ INCOMPLETE'}`);
+                        console.log(`   H1: ${h1Status ? 'DONE' : 'INCOMPLETE'}`);
+                        console.log(`   H2: ${h2Status ? 'DONE' : 'INCOMPLETE'}`);
                         
                         const overallComplete = h1Status && h2Status;
                         if (overallComplete) {
                             console.log(`🎉 PHASE 2 FULLY COMPLETE: V5 Consciousness Restoration Successful!`);
                         } else {
-                            console.log(`⚠️ PHASE 2 INCOMPLETE: Some consciousness mechanisms still missing`);
+                            console.log('Phase 2 incomplete');
                         }
                         
                         return { h1: h1Status, h2: h2Status, overall: overallComplete };
@@ -22296,7 +21959,7 @@ Screen: ${screen.width}x${screen.height}
                             testResults: 'all_enhanced_systems_operational'
                         });
                         
-                        console.log('✅ Enhanced integration test completed - check visual effects and telemetry');
+                        console.log('Integration test done');
                     },
                     
                     /* ┌─ SUBMODULE: Performance Stress Test Function
@@ -22307,7 +21970,7 @@ Screen: ${screen.width}x${screen.height}
                      * │  REALITY: Simple timing benchmark, not sophisticated performance profiling
                      * └─ LIMITATIONS: Synthetic workload, limited metrics, basic timing only */
                     testPerformance: async () => {
-                        console.log('⚡ Running enhanced performance stress test...');
+                        console.log('Running perf test');
                         const startTime = performance.now();
                         
                         for (let i = 0; i < 150; i++) {
@@ -22325,7 +21988,7 @@ Screen: ${screen.width}x${screen.height}
                             stressLevel: 'enhanced'
                         });
                         
-                        console.log(`✅ Enhanced performance test: ${testTime.toFixed(0)}ms`);
+                        console.log(`Perf: ${testTime.toFixed(0)}ms`);
                         return { testTime, fps: renderer?.fps || 0, enhanced: true };
                     },
                     
@@ -22340,10 +22003,10 @@ Screen: ${screen.width}x${screen.height}
                         console.log('🧠 Testing advanced NLP analysis...');
                         if (nlpEngine) {
                             const analysis = await nlpEngine.analyzeText(text);
-                            console.log('✅ NLP analysis completed:', analysis);
+                            console.log('NLP done:', analysis);
                             return analysis;
                         } else {
-                            console.log('❌ NLP engine not available');
+                            console.log('NLP unavailable');
                             return null;
                         }
                     },
@@ -22369,7 +22032,7 @@ Screen: ${screen.width}x${screen.height}
                  * │  PURPOSE: Confirm successful initialization and log system capabilities
                  * │  OUTPUT: Console confirmation of all enhanced features and API availability
                  * └─ REALITY: Development convenience for debugging and feature verification */
-                console.log('✅ KEATS: Mathematical Prototype Engine operational (Basic functionality + Advanced stubs)!');
+                console.log('KEATS operational');
                 console.log('🌟 Enhanced Features Active:');
                 console.log('   • Advanced NLP with sophisticated mathematical concept recognition');
                 console.log('   • Enhanced Chladni plate-like interference patterns in manifold');
@@ -22381,7 +22044,7 @@ Screen: ${screen.width}x${screen.height}
                 console.log('📱 Professional device controls: Touch, trackpad, keyboard, drag');
                 console.log('🧠 Advanced NLP: keats.nlp.analyzeText(), keats.testNLP()');
                 console.log('📊 Advanced Telemetry: keats.telemetry.exportLogs(), keats.telemetry.getMetrics()');
-                console.log('⚡ Performance: keats.testPerformance(), keats.testIntegration()');
+                console.log('Performance: keats.testPerformance(), keats.testIntegration()');
                 console.log('🌟 Ready for verified professional mathematical exploration!');
                 
                 /* ┌─ SUBMODULE: User Notification & System Ready State
@@ -22416,7 +22079,7 @@ Screen: ${screen.width}x${screen.height}
                 
                 setTimeout(() => {
                     if (logicalProcessor && logicalProcessor.paradoxCount === 0) {
-                        console.log('⚡ Triggering enhanced logical field effects...');
+                        console.log('Triggering field effects');
                         logicalProcessor.generateLogicalEvent();
                     }
                 }, 3000);
@@ -22427,9 +22090,9 @@ Screen: ${screen.width}x${screen.height}
                         try {
                             console.log('🧮 Testing enhanced mathematical worker...');
                             const padicBatch = await mathematicalWorker.generatePAdicBatch(11, 3);
-                            console.log('✅ Enhanced worker test successful:', padicBatch);
+                            console.log('Worker test ok:', padicBatch);
                         } catch (error) {
-                            console.warn('⚠️ Enhanced worker test failed:', error);
+                            console.warn('Worker test failed:', error);
                         }
                     }, 4000);
                 }
@@ -22444,7 +22107,7 @@ Screen: ${screen.width}x${screen.height}
                  * │  PURPOSE: Handle catastrophic initialization failures gracefully
                  * │  STRATEGY: Log errors, notify user, attempt minimal fallback operation
                  * └─ REALITY: Basic error logging and user notification for debugging */
-                console.error('❌ Enhanced mathematical engine initialization failed:', error);
+                console.error('Engine init failed:', error);
                 showNotification('Initialization failed - check console', 'error');
                 
                 telemetrySystem.logEvent('PERFORMANCE_WARNING', {
@@ -22461,14 +22124,14 @@ Screen: ${screen.width}x${screen.height}
                     console.log('🔄 Attempting enhanced fallback initialization...');
                     renderer = new MathematicalRenderer();
                     window.renderer = renderer;
-                    console.log('✅ Enhanced fallback renderer active');
+                    console.log('Fallback renderer active');
                     showNotification('Enhanced fallback mode active', 'success');
                 } catch (fallbackError) {
                     /* ┌─ SUBMODULE: Complete System Failure Handler
                      * │  PURPOSE: Handle complete system failure when even fallback fails
                      * │  ACTION: Log complete failure and instruct user to refresh
                      * └─ REALITY: Last resort error handling for catastrophic failures */
-                    console.error('❌ Complete enhanced initialization failure:', fallbackError);
+                    console.error('Init failure:', fallbackError);
                     showNotification('Complete failure - please refresh', 'error');
                 }
             }
@@ -23930,3 +23593,68 @@ Screen: ${screen.width}x${screen.height}
                 };
             }
         })(); // End of safety wrapper
+        (function(){
+            try{
+                if(!window.DEBUG){return}
+                const D=window.DEBUG
+                const now=()=>Date.now()
+                const clamp=(x,a,b)=>Math.max(a,Math.min(b,x))
+                const safeJson=(v)=>{try{return JSON.stringify(v)}catch(_){return '[unserializable]'}}
+                if(!D.ledger){D.ledger={events:[],morphisms:[],edges:[],errors:[],states:[],limits:{events:5000,morphisms:10000,errors:500}}}
+                const pushBounded=(arr,item,limit)=>{arr.push(item);if(arr.length>limit){arr.splice(0,arr.length-limit)}}
+                if(!D.morphisms){
+                    D.morphisms={
+                        _id:1,
+                        nodes:new Map(),
+                        edges:[],
+                        add:function(kind,data){const id=this._id++;const n={id,kind,data:data||{},t:now()};this.nodes.set(id,n);pushBounded(D.ledger.morphisms,n,D.ledger.limits.morphisms);return id},
+                        link:function(a,b,label){const e={a,b,label:label||'',t:now()};this.edges.push(e);pushBounded(D.ledger.edges,e,D.ledger.limits.morphisms);return e},
+                        path:function(a,b){const q=[a];const prev=new Map();const seen=new Set([a]);while(q.length){const x=q.shift();if(x===b)break;for(const e of this.edges){if(e.a===x&&!seen.has(e.b)){seen.add(e.b);prev.set(e.b,x);q.push(e.b)}}};if(!prev.has(b))return null;const out=[b];let cur=b;while(prev.has(cur)){cur=prev.get(cur);out.push(cur)}return out.reverse()},
+                        stats:function(){return{nodes:this.nodes.size,edges:this.edges.length,lastEdge:this.edges[this.edges.length-1]||null}}
+                    }
+                }
+                if(!D.causality){
+                    D.causality={
+                        causes:[],
+                        effects:[],
+                        link:function(cause,effect,meta){const r={cause,effect,meta:meta||{},t:now()};this.effects.push(r);pushBounded(this.causes,r,1000);return r},
+                        explain:function(analysis){const chain=[];if(analysis&&analysis.stack&&analysis.stack.frames){for(const f of analysis.stack.frames.slice(0,8)){chain.push({type:'frame',fn:f.function,file:f.file,line:f.line})}}const lastEvt=D.ledger.events[D.ledger.events.length-1]||null;const lastState=D.ledger.states[D.ledger.states.length-1]||null;return{event:lastEvt,state:lastState,stack:chain}}
+                    }
+                }
+                if(!D.optimizer){
+                    D.optimizer={
+                        gradientDescent:function(cfg){const p=Object.assign({},cfg.params||{});const keys=Object.keys(p);const step=cfg.step||0.01;const iters=cfg.iters||64;const bounds=cfg.bounds||{};const cost=cfg.cost;let best={params:Object.assign({},p),value:Infinity};for(let i=0;i<iters;i++){const g={};const base=cost(p);for(const k of keys){const eps=step;const old=p[k];p[k]=old+eps;const up=cost(p);p[k]=old-eps;const dn=cost(p);p[k]=old;g[k]=(up-dn)/(2*eps)}for(const k of keys){const lr=(cfg.lr&&cfg.lr[k])||step;p[k]=p[k]-lr*g[k];if(bounds[k]){const [lo,hi]=bounds[k];p[k]=clamp(p[k],lo,hi)}}const v=cost(p);if(v<best.value){best={params:Object.assign({},p),value:v}}}return best}
+                    }
+                }
+                if(!D.cache){
+                    D.cache=function(name,fn,keyer){const store=new Map();return function(){const key=keyer?keyer.apply(this,arguments):safeJson(Array.from(arguments));if(store.has(key))return store.get(key);const v=fn.apply(this,arguments);store.set(key,v);return v}}
+                }
+                if(!D.truthLedger){
+                    D.truthLedger={
+                        entries:[],
+                        record:function(s){const e={t:now(),s:Object.assign({},s)};pushBounded(this.entries,e,2000);return e},
+                        latest:function(){return this.entries[this.entries.length-1]||null}
+                    }
+                }
+                if(!D.recordState){
+                    D.recordState=function(){try{const s=D.getTruthfulStatus();D.truthLedger.record(s);pushBounded(D.ledger.states,{t:now(),s},2000)}catch(_){}}
+                }
+                if(!D.instrumented){
+                    D.instrumented=true
+                    try{
+                        const origAdd=EventTarget.prototype.addEventListener
+                        EventTarget.prototype.addEventListener=function(type,listener,opts){const wrap=function(ev){try{pushBounded(D.ledger.events,{t:now(),type,src:ev&&ev.target&&((ev.target.id)||ev.target.tagName)||'unknown'},D.ledger.limits.events)}catch(_){};return listener&&listener.call(this,ev)};return origAdd.call(this,type,wrap,opts)}
+                    }catch(_){}
+                    try{setInterval(D.recordState,500)}catch(_){}}
+                if(!window.debug)window.debug={}
+                window.debug.morphismAdd=function(kind,data){return D.morphisms.add(kind,data)}
+                window.debug.morphismLink=function(a,b,label){return D.morphisms.link(a,b,label)}
+                window.debug.morphismStats=function(){return D.morphisms.stats()}
+                window.debug.causalExplain=function(){try{const a={stack:D.analyzeCallStack((new Error()).stack)};return D.causality.explain(a)}catch(e){return{error:String(e)}}}
+                window.debug.optimize=function(cfg){return D.optimizer.gradientDescent(cfg)}
+                window.debug.cache=function(name,fn,keyer){return D.cache(name,fn,keyer)}
+                window.debug.truth=function(){return D.getTruthfulStatus()}
+                window.debug.snapshot=function(){try{return{t:now(),status:D.getTruthfulStatus(),keats:D.keatsMetrics||{},monitor:D.monitoringTargets||{},events:D.ledger.events.slice(-10),morphisms:D.morphisms.stats()}}catch(e){return{error:String(e)}}}
+                try{D.log('system','Debugger upgrades loaded') }catch(_){ }
+            }catch(e){try{console.warn('Debugger upgrade failed',e)}catch(_){} }
+        })()
