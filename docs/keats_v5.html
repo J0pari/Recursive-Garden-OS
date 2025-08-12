@@ -128,24 +128,25 @@
          * - Extend interaction with JavaScript panel handlers
          * ═══════════════════════════════════════════════════════════════════════════ */
 
-        /* Base panel styling: Glassmorphic mathematical interface */
+        /* Base panel styling: Pure glass aesthetic */
         .stratum-panel {
-            position: fixed;                           /* Absolute positioning for flexibility */
-            background: var(--glass-manifold);         /* Semi-transparent background */
-            backdrop-filter: blur(20px) saturate(180%); /* Enhanced glass blur */
-            -webkit-backdrop-filter: blur(20px) saturate(180%); /* Safari enhanced glass */
-            border: 1px solid hsla(255 255 255 / 0.08); /* Very subtle glass edge */
-            border-radius: 20px;                       /* Smooth mathematical curves */
-            box-shadow: var(--depth-shadow);           /* Realistic depth perception */
-            z-index: 1000;                            /* Above canvas, below notifications */
-            transition: box-shadow var(--transition-smooth), border-color var(--transition-smooth);
-            cursor: move;                              /* Indicate draggable capability */
-            overflow: hidden;                          /* Clean content boundaries */
-            min-width: 280px;                         /* Minimum readable width */
-            max-height: 85vh;                         /* Prevent viewport overflow */
+            position: fixed;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px) saturate(120%);
+            -webkit-backdrop-filter: blur(16px) saturate(120%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.08),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+            min-width: 280px;
+            max-height: 85vh;
         }
 
-        /* Hover glow effect: Enhanced interactivity feedback */
+        /* Glass shimmer effect */
         .stratum-panel::before {
             content: '';
             position: absolute;
@@ -153,34 +154,31 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg,        /* Diagonal light gradient */
-                hsla(255 255 255 / 0.08) 0%,
-                hsla(255 255 255 / 0.04) 50%,
-                hsla(255 255 255 / 0.02) 100%);
-            border-radius: inherit;                    /* Match parent radius */
-            pointer-events: none;                      /* Don't interfere with interaction */
-            opacity: 0;                               /* Hidden by default */
-            transition: opacity var(--transition-smooth);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.03) 0%,
+                transparent 100%);
+            border-radius: inherit;
+            pointer-events: none;
         }
 
         .stratum-panel:hover {
+            transform: translateY(-1px);
             box-shadow: 
-                0 16px 60px hsla(0 0 0 / 0.4),
-                0 0 0 1px hsla(255 255 255 / 0.12) inset;
-            border-color: hsla(255 255 255 / 0.25);
-        }
-
-        .stratum-panel:hover::before {
-            opacity: 1;
+                0 12px 40px rgba(0, 0, 0, 0.12),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.08);
         }
 
         .stratum-panel.minimized {
-            height: auto !important;
-            max-height: 60px;
+            height: 40px !important;
         }
 
         .stratum-panel.minimized .panel-content {
             display: none;
+        }
+        
+        .stratum-panel.minimized .panel-header {
+            padding: 8px 12px;
+            cursor: move;
         }
 
 
@@ -190,7 +188,6 @@
             top: 20px;
             left: 20px;
             width: 340px;
-            border-color: hsla(var(--field-2adic) 95% 75% / 0.35);
         }
 
         /* H1 Stratum: Semantic Processing - Secondary position */
@@ -295,26 +292,29 @@
             transform: scale(1.1);                    /* Subtle scale on hover */
         }
 
-        /* Panel toggle button: Minimize/maximize functionality */
+        /* Panel toggle button: Frosted glass */
         .panel-toggle {
-            width: 28px;
-            height: 28px;
-            background: hsla(255 255 255 / 0.10);     /* Semi-transparent base */
-            border: 1px solid hsla(255 255 255 / 0.20); /* Subtle border */
-            border-radius: 8px;                       /* Rounded corners */
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
-            transition: all var(--transition-fast);
+            transition: all 0.2s;
         }
 
         .panel-toggle:hover {
-            background: hsla(255 255 255 / 0.15);     /* Brighter on hover */
-            transform: scale(1.1);                    /* Scale feedback */
+            background: rgba(255, 255, 255, 0.12);
+            transform: scale(1.05);
+            cursor: pointer;
         }
 
         /* ─────────────────────────────────────────────────────────────────────────── 
@@ -804,31 +804,22 @@
 
 
 
-        /* Scrollbar width: Compact for unobtrusive presence */
+        /* Pure glass scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;                               /* Narrow width for subtlety */
+            width: 6px;
         }
 
-        /* Scrollbar track: Transparent background lane */
         ::-webkit-scrollbar-track {
-            background: hsla(255 255 255 / 0.03);     /* Very subtle track */
-            border-radius: 4px;                       /* Rounded track ends */
+            background: transparent;
         }
 
-        /* Scrollbar thumb: Interactive draggable element */
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg,
-                hsla(255 255 255 / 0.20),            /* Light gradient start */
-                hsla(255 255 255 / 0.30));           /* Light gradient end */
-            border-radius: 4px;                       /* Rounded thumb */
-            transition: background var(--transition-fast); /* Smooth hover transitions */
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
         }
 
-        /* Scrollbar thumb hover: Enhanced visibility */
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg,
-                hsla(255 255 255 / 0.30),            /* Brighter on hover */
-                hsla(255 255 255 / 0.40));           /* Enhanced gradient */
+            background: rgba(255, 255, 255, 0.15);
         }
 
 
@@ -21622,6 +21613,7 @@ Screen: ${screen.width}x${screen.height}
                 
                 const startDrag = (clientX, clientY) => {
                     if (!modalState.possible) return false;
+                    if (!panel.classList.contains('minimized')) return false;
                     isDragging = true;
                     initialX = clientX - panel.offsetLeft;
                     initialY = clientY - panel.offsetTop;
