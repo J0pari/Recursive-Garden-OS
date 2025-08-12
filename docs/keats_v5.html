@@ -21295,16 +21295,367 @@ Screen: ${screen.width}x${screen.height}
          * TECHNICAL: Mouse/touch event handling, throttled position updates, boundary checks
          * LIMITATIONS: Fixed z-index management, no panel snapping or grid alignment
          * ═══════════════════════════════════════════════════════════════════════════ */
+        const PanelManifold = {
+            panels: new Map(),
+            GRID_QUANTUM: 10,
+            riemannianMetric: null,
+            modalStates: new WeakMap(),
+            deviceCapabilities: null,
+            renderPressure: new Map(),
+            visibilityField: null,
+            occlusionTensor: null,
+            
+            init() {
+                this.initializeRiemannianStructure();
+                this.computeDeviceManifold();
+                this.establishModalLogic();
+                this.createOcclusionTensor();
+                this.startFieldDynamics();
+            },
+            
+            initializeRiemannianStructure() {
+                const viewport = { w: window.innerWidth, h: window.innerHeight };
+                const pixelRatio = window.devicePixelRatio || 1;
+                
+                this.riemannianMetric = {
+                    g: (x, y) => {
+                        const centerDist = Math.sqrt((x - viewport.w/2)**2 + (y - viewport.h/2)**2);
+                        const edgePressure = Math.min(x, y, viewport.w - x, viewport.h - y);
+                        const curvature = 1 + 0.5 * Math.exp(-edgePressure / 100);
+                        return curvature * (1 + 0.1 * Math.sin(centerDist / 100));
+                    },
+                    christoffel: (i, j, k, pos) => {
+                        const h = 0.01;
+                        const dgdx = (this.riemannianMetric.g(pos[0] + h, pos[1]) - 
+                                     this.riemannianMetric.g(pos[0] - h, pos[1])) / (2 * h);
+                        const dgdy = (this.riemannianMetric.g(pos[0], pos[1] + h) - 
+                                     this.riemannianMetric.g(pos[0], pos[1] - h)) / (2 * h);
+                        return 0.5 * (dgdx * (i === 0) + dgdy * (j === 1));
+                    },
+                    geodesic: (start, end, steps = 20) => {
+                        const path = [start];
+                        const dt = 1 / steps;
+                        let pos = [...start];
+                        let vel = [(end[0] - start[0]) * dt, (end[1] - start[1]) * dt];
+                        
+                        for (let t = 0; t < steps; t++) {
+                            const Γ = this.riemannianMetric.christoffel(0, 0, 0, pos);
+                            vel[0] -= Γ * vel[0] * vel[0] * dt;
+                            vel[1] -= Γ * vel[1] * vel[1] * dt;
+                            pos[0] += vel[0];
+                            pos[1] += vel[1];
+                            path.push([...pos]);
+                        }
+                        return path;
+                    }
+                };
+            },
+            
+            computeDeviceManifold() {
+                const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+                const hasTouch = 'ontouchstart' in window;
+                const memory = navigator.deviceMemory || 4;
+                const cores = navigator.hardwareConcurrency || 4;
+                const connection = navigator.connection?.effectiveType || '4g';
+                
+                this.deviceCapabilities = {
+                    computeCapacity: cores * memory / 32,
+                    renderBudget: isMobile ? 8.33 : 16.67,
+                    interactionModality: hasTouch ? 'touch' : 'pointer',
+                    networkLatency: connection === '4g' ? 50 : 200,
+                    viewportStability: isMobile ? 0.7 : 0.95,
+                    
+                    canRender: (complexity) => {
+                        const pressure = Array.from(this.renderPressure.values())
+                            .reduce((a, b) => a + b, 0);
+                        return pressure + complexity < this.deviceCapabilities.computeCapacity;
+                    },
+                    
+                    optimalGridSize: () => {
+                        return isMobile ? 20 : 10;
+                    }
+                };
+                
+                this.GRID_QUANTUM = this.deviceCapabilities.optimalGridSize();
+            },
+            
+            establishModalLogic() {
+                document.querySelectorAll('.stratum-panel').forEach(panel => {
+                    const id = panel.id || `panel_${performance.now()}`;
+                    panel.id = id;
+                    
+                    const header = panel.querySelector('.panel-header span');
+                    const isMathTools = header?.textContent?.includes('Math Tools');
+                    
+                    const modalState = {
+                        necessary: panel.classList.contains('essential'),
+                        possible: !panel.classList.contains('locked'),
+                        collapsed: panel.classList.contains('collapsed'),
+                        visibility: this.computeVisibility(panel),
+                        renderPriority: isMathTools ? 0.9 : 0.5,
+                        minDimensions: {
+                            w: isMathTools ? 300 : 200,
+                            h: isMathTools ? 250 : 150
+                        },
+                        
+                        box: (predicate) => {
+                            return modalState.necessary && predicate(modalState);
+                        },
+                        diamond: (predicate) => {
+                            return modalState.possible && predicate(modalState);
+                        }
+                    };
+                    
+                    this.modalStates.set(panel, modalState);
+                    this.panels.set(id, {
+                        element: panel,
+                        bounds: panel.getBoundingClientRect(),
+                        zIndex: parseInt(panel.style.zIndex) || 1000,
+                        modalState: modalState,
+                        geodesicCache: new Map()
+                    });
+                });
+            },
+            
+            computeVisibility(panel) {
+                const rect = panel.getBoundingClientRect();
+                const viewport = {
+                    w: window.innerWidth,
+                    h: window.innerHeight
+                };
+                
+                const visible = {
+                    x: Math.max(0, Math.min(rect.right, viewport.w) - Math.max(rect.left, 0)),
+                    y: Math.max(0, Math.min(rect.bottom, viewport.h) - Math.max(rect.top, 0))
+                };
+                
+                const area = visible.x * visible.y;
+                const totalArea = rect.width * rect.height;
+                
+                return totalArea > 0 ? area / totalArea : 0;
+            },
+            
+            createOcclusionTensor() {
+                const panels = Array.from(this.panels.values());
+                const n = panels.length;
+                
+                this.occlusionTensor = {
+                    T: Array(n).fill().map(() => Array(n).fill(0)),
+                    
+                    compute: () => {
+                        for (let i = 0; i < n; i++) {
+                            for (let j = 0; j < n; j++) {
+                                if (i === j) continue;
+                                
+                                const pi = panels[i].bounds;
+                                const pj = panels[j].bounds;
+                                const zi = panels[i].zIndex;
+                                const zj = panels[j].zIndex;
+                                
+                                if (zi > zj) {
+                                    const overlap = this.computeOverlap(pi, pj);
+                                    this.occlusionTensor.T[i][j] = overlap / (pj.width * pj.height);
+                                }
+                            }
+                        }
+                    },
+                    
+                    getRenderPressure: (panelIndex) => {
+                        return this.occlusionTensor.T[panelIndex]
+                            .reduce((sum, occlusion) => sum + occlusion, 0);
+                    },
+                    
+                    getOccludedBy: (panelIndex) => {
+                        return this.occlusionTensor.T
+                            .map((row, i) => row[panelIndex] > 0.1 ? i : -1)
+                            .filter(i => i >= 0);
+                    }
+                };
+            },
+            
+            computeOverlap(rect1, rect2) {
+                const x = Math.max(0, Math.min(rect1.right, rect2.right) - Math.max(rect1.left, rect2.left));
+                const y = Math.max(0, Math.min(rect1.bottom, rect2.bottom) - Math.max(rect1.top, rect2.top));
+                return x * y;
+            },
+            
+            startFieldDynamics() {
+                this.visibilityField = {
+                    potential: new Map(),
+                    gradient: new Map(),
+                    
+                    update: () => {
+                        this.panels.forEach((panel, id) => {
+                            const visibility = this.computeVisibility(panel.element);
+                            const modalState = this.modalStates.get(panel.element);
+                            
+                            const potential = visibility * modalState.renderPriority;
+                            this.visibilityField.potential.set(id, potential);
+                            
+                            const neighbors = this.findNeighbors(panel);
+                            const gradient = neighbors.map(n => {
+                                const nPotential = this.visibilityField.potential.get(n.id) || 0;
+                                return (potential - nPotential) / this.distance(panel, n);
+                            }).reduce((a, b) => a + b, 0);
+                            
+                            this.visibilityField.gradient.set(id, gradient);
+                        });
+                    },
+                    
+                    flowToOptimal: (panel, target) => {
+                        const gradient = this.visibilityField.gradient.get(panel.id) || 0;
+                        const metric = this.riemannianMetric.g(target[0], target[1]);
+                        
+                        return [
+                            target[0] - gradient * 10 / metric,
+                            target[1] - gradient * 10 / metric
+                        ];
+                    }
+                };
+                
+                setInterval(() => {
+                    this.visibilityField.update();
+                    this.occlusionTensor.compute();
+                    this.updateRenderPressure();
+                }, 100);
+            },
+            
+            findNeighbors(panel) {
+                const threshold = 200;
+                return Array.from(this.panels.values()).filter(p => {
+                    if (p === panel) return false;
+                    return this.distance(panel, p) < threshold;
+                });
+            },
+            
+            distance(p1, p2) {
+                const dx = p1.bounds.left + p1.bounds.width/2 - p2.bounds.left - p2.bounds.width/2;
+                const dy = p1.bounds.top + p1.bounds.height/2 - p2.bounds.top - p2.bounds.height/2;
+                return Math.sqrt(dx * dx + dy * dy);
+            },
+            
+            updateRenderPressure() {
+                this.panels.forEach((panel, id) => {
+                    const modalState = this.modalStates.get(panel.element);
+                    const complexity = panel.element.querySelectorAll('*').length * 0.01;
+                    const visibility = this.computeVisibility(panel.element);
+                    const pressure = complexity * visibility * modalState.renderPriority;
+                    
+                    this.renderPressure.set(id, pressure);
+                });
+            },
+            
+            findOptimalPosition(panel, targetX, targetY) {
+                const modalState = this.modalStates.get(panel);
+                const panelData = this.panels.get(panel.id);
+                
+                if (!modalState.possible) {
+                    return null;
+                }
+                
+                const geodesic = this.riemannianMetric.geodesic(
+                    [panel.offsetLeft, panel.offsetTop],
+                    [targetX, targetY]
+                );
+                
+                for (let point of geodesic) {
+                    const snapped = [
+                        Math.round(point[0] / this.GRID_QUANTUM) * this.GRID_QUANTUM,
+                        Math.round(point[1] / this.GRID_QUANTUM) * this.GRID_QUANTUM
+                    ];
+                    
+                    if (this.canPlaceAt(panel, snapped[0], snapped[1])) {
+                        return { x: snapped[0], y: snapped[1] };
+                    }
+                }
+                
+                return this.visibilityField.flowToOptimal(panelData, [targetX, targetY]);
+            },
+            
+            canPlaceAt(panel, x, y) {
+                const modalState = this.modalStates.get(panel);
+                const w = Math.max(panel.offsetWidth, modalState.minDimensions.w);
+                const h = Math.max(panel.offsetHeight, modalState.minDimensions.h);
+                
+                if (x < 0 || y < 0 || x + w > window.innerWidth || y + h > window.innerHeight) {
+                    return false;
+                }
+                
+                for (const [id, other] of this.panels) {
+                    if (other.element === panel) continue;
+                    
+                    const otherModal = this.modalStates.get(other.element);
+                    if (otherModal.necessary && this.computeOverlap(
+                        { left: x, top: y, right: x + w, bottom: y + h },
+                        other.bounds
+                    ) > 0) {
+                        return false;
+                    }
+                }
+                
+                return this.deviceCapabilities.canRender(
+                    this.renderPressure.get(panel.id) || 0
+                );
+            },
+            
+            bringToFront(panel) {
+                const panels = Array.from(this.panels.values());
+                const maxZ = Math.max(...panels.map(p => p.zIndex));
+                
+                const panelData = this.panels.get(panel.id);
+                panelData.zIndex = maxZ + 1;
+                panel.style.zIndex = maxZ + 1;
+                
+                this.occlusionTensor.compute();
+            }
+        };
+        
         function makePanelsDraggable() {
-            /* ─────────────────────────────────────────────────────────────────
-             * SUBMODULE 1: Panel Discovery & State Initialization
-             * PURPOSE: Finds all stratum panels and initializes drag state variables
-             * TECHNICAL: DOM querySelectorAll with forEach iteration
-             * ───────────────────────────────────────────────────────────────── */
+            PanelManifold.init();
+            
             const panels = document.querySelectorAll('.stratum-panel');
             panels.forEach(panel => {
                 let isDragging = false;
                 let currentX = 0, currentY = 0, initialX = 0, initialY = 0;
+                const panelData = PanelManifold.panels.get(panel.id);
+                const modalState = PanelManifold.modalStates.get(panel);
+                
+                const startDrag = (clientX, clientY) => {
+                    if (!modalState.possible) return false;
+                    isDragging = true;
+                    initialX = clientX - panel.offsetLeft;
+                    initialY = clientY - panel.offsetTop;
+                    PanelManifold.bringToFront(panel);
+                    return true;
+                };
+                
+                const updatePosition = (clientX, clientY) => {
+                    const targetX = clientX - initialX;
+                    const targetY = clientY - initialY;
+                    
+                    const optimal = PanelManifold.findOptimalPosition(panel, targetX, targetY);
+                    if (optimal) {
+                        currentX = optimal.x;
+                        currentY = optimal.y;
+                        
+                        const h = Math.max(panel.offsetHeight, modalState.minDimensions.h);
+                        currentY = Math.min(currentY, window.innerHeight - h);
+                        
+                        panel.style.left = currentX + 'px';
+                        panel.style.top = currentY + 'px';
+                        panel.style.minHeight = modalState.minDimensions.h + 'px';
+                        
+                        PanelManifold.updateAllBounds();
+                    }
+                };
+                
+                const endDrag = () => {
+                    if (isDragging) {
+                        isDragging = false;
+                        panel.style.zIndex = panelData.zIndex;
+                        header.style.cursor = 'move';
+                    }
+                };
 
                 /* ───────────────────────────────────────────────────────────────
                  * SUBMODULE 2: Header Element Validation & Safety Check
@@ -21321,13 +21672,10 @@ Screen: ${screen.width}x${screen.height}
                  * ─────────────────────────────────────────────────────────────── */
                 header.addEventListener('mousedown', (e) => {
                     if (e.target.closest('.panel-toggle')) return;
-                    
-                    isDragging = true;
-                    initialX = e.clientX - panel.offsetLeft;
-                    initialY = e.clientY - panel.offsetTop;
-                    panel.style.zIndex = '1001';
-                    header.style.cursor = 'grabbing';
-                    e.preventDefault();
+                    if (startDrag(e.clientX, e.clientY)) {
+                        header.style.cursor = 'grabbing';
+                        e.preventDefault();
+                    }
                 });
 
                 /* ───────────────────────────────────────────────────────────────
@@ -21337,14 +21685,11 @@ Screen: ${screen.width}x${screen.height}
                  * ─────────────────────────────────────────────────────────────── */
                 header.addEventListener('touchstart', (e) => {
                     if (e.target.closest('.panel-toggle')) return;
-                    
-                    isDragging = true;
                     const touch = e.touches[0];
-                    initialX = touch.clientX - panel.offsetLeft;
-                    initialY = touch.clientY - panel.offsetTop;
-                    panel.style.zIndex = '1001';
-                    header.style.cursor = 'grabbing';
-                    e.preventDefault();
+                    if (startDrag(touch.clientX, touch.clientY)) {
+                        header.style.cursor = 'grabbing';
+                        e.preventDefault();
+                    }
                 }, { passive: false });
 
                 /* ───────────────────────────────────────────────────────────────
@@ -21356,14 +21701,7 @@ Screen: ${screen.width}x${screen.height}
                     if (isDragging) {
                         e.preventDefault();
                         throttleManager.throttle(`drag_${panel.id}`, () => {
-                            currentX = e.clientX - initialX;
-                            currentY = e.clientY - initialY;
-                            
-                            currentX = Math.max(0, Math.min(currentX, window.innerWidth - panel.offsetWidth));
-                            currentY = Math.max(0, Math.min(currentY, window.innerHeight - panel.offsetHeight));
-                            
-                            panel.style.left = currentX + 'px';
-                            panel.style.top = currentY + 'px';
+                            updatePosition(e.clientX, e.clientY);
                         }, 16);
                     }
                 });
@@ -21377,15 +21715,8 @@ Screen: ${screen.width}x${screen.height}
                     if (isDragging && e.touches.length === 1) {
                         e.preventDefault();
                         const touch = e.touches[0];
-                        throttleManager.throttle(`drag_touch_${panel.id}`, () => {
-                            currentX = touch.clientX - initialX;
-                            currentY = touch.clientY - initialY;
-                            
-                            currentX = Math.max(0, Math.min(currentX, window.innerWidth - panel.offsetWidth));
-                            currentY = Math.max(0, Math.min(currentY, window.innerHeight - panel.offsetHeight));
-                            
-                            panel.style.left = currentX + 'px';
-                            panel.style.top = currentY + 'px';
+                        throttleManager.throttle(`drag_${panel.id}`, () => {
+                            updatePosition(touch.clientX, touch.clientY);
                         }, 16);
                     }
                 }, { passive: false });
@@ -21395,26 +21726,8 @@ Screen: ${screen.width}x${screen.height}
                  * PURPOSE: Ends drag operation and resets visual state
                  * TECHNICAL: Drag state reset with z-index and cursor restoration
                  * ─────────────────────────────────────────────────────────────── */
-                document.addEventListener('mouseup', () => {
-                    if (isDragging) {
-                        isDragging = false;
-                        panel.style.zIndex = '1000';
-                        header.style.cursor = 'move';
-                    }
-                });
-
-                /* ───────────────────────────────────────────────────────────────
-                 * SUBMODULE 8: Touch Release Handler - Touch Drag Termination
-                 * PURPOSE: Ends touch drag operation and resets visual state
-                 * TECHNICAL: Touch end detection with state and style reset
-                 * ─────────────────────────────────────────────────────────────── */
-                document.addEventListener('touchend', () => {
-                    if (isDragging) {
-                        isDragging = false;
-                        panel.style.zIndex = '1000';
-                        header.style.cursor = 'move';
-                    }
-                }, { passive: false });
+                document.addEventListener('mouseup', endDrag);
+                document.addEventListener('touchend', endDrag);
 
                 /* ───────────────────────────────────────────────────────────────
                  * SUBMODULE 9: Initial Cursor State Setup
